@@ -4038,7 +4038,8 @@
                     },
                     "usage": {
                         "description": "Object, containing UNIX timestamp as a key and measurement as a value.",
-                        "type": "object",
+                        "type": "array",
+                        "items": {},
                         "example": {
                             "1741644917": 259657728,
                             "1741650310": 259031040,
