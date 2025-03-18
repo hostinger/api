@@ -40,9 +40,6 @@
   - `200` response: added `disk`.`description`
   - `200` response: added `memory`.`description`
   - `200` response: added `cpus`.`description`
-  - `200` response: added `actions_lock`.`description`
-  - `200` response: added `state`.`description`
-  - `200` response: added `hostname`.`description`
   - `200` response: changed `firewall_group_id`.`description`
   - `200` response: changed `id`.`description`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
@@ -133,9 +130,6 @@
   - `200` response: added `items`.`disk`.`description`
   - `200` response: added `items`.`memory`.`description`
   - `200` response: added `items`.`cpus`.`description`
-  - `200` response: added `items`.`actions_lock`.`description`
-  - `200` response: added `items`.`state`.`description`
-  - `200` response: added `items`.`hostname`.`description`
   - `200` response: changed `items`.`firewall_group_id`.`description`
   - `200` response: changed `items`.`id`.`description`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`:
@@ -157,9 +151,6 @@
   - `200` response: added `disk`.`description`
   - `200` response: added `memory`.`description`
   - `200` response: added `cpus`.`description`
-  - `200` response: added `actions_lock`.`description`
-  - `200` response: added `state`.`description`
-  - `200` response: added `hostname`.`description`
   - `200` response: changed `firewall_group_id`.`description`
   - `200` response: changed `id`.`description`
 - `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
@@ -285,7 +276,19 @@
   - `200` response: added `items`.`name`.`description`
   - `200` response: added `items`.`id`.`description`
 - `GET` `/api/domains/v1/portfolio`:
-  - `200` response: added `items`.`status`.`description`
-  - `200` response: added `items`.`type`.`description`
   - `200` response: added `items`.`name`.`description`
+  - `200` response: added `items`.`id`.`description`
+- `GET` `/api/billing/v1/subscriptions`: `200` response: added `items`.`id`.`description`
+- `GET` `/api/billing/v1/payment-methods`: `200` response: added `items`.`id`.`description`
+- `POST` `/api/billing/v1/orders`:
+  - `200` response: added `currency`.`description`
+  - `200` response: added `id`.`description`
+- `GET` `/api/billing/v1/catalog`:
+  - `200` response: removed support for `items`.`prices`.`items`.`currency_code` property
+  - `200` response: added support for `items`.`prices`.`items`.`currency` property
+  - `200` response: added `items`.`prices`.`items`.`period_unit`.`description`
+  - `200` response: added `items`.`prices`.`items`.`period`.`description`
+  - `200` response: changed `items`.`prices`.`items`.`first_period_price`.`description`
+  - `200` response: added `items`.`prices`.`items`.`name`.`description`
+  - `200` response: added `items`.`prices`.`items`.`id`.`description`
   - `200` response: added `items`.`id`.`description`
