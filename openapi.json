@@ -3733,14 +3733,17 @@
             "VPS.V1.Action.ActionResource": {
                 "properties": {
                     "id": {
+                        "description": "Action ID",
                         "type": "integer",
                         "example": 8123712
                     },
                     "name": {
+                        "description": "Action name",
                         "type": "string",
                         "example": "action_name"
                     },
                     "state": {
+                        "description": "Action state",
                         "type": "string",
                         "enum": [
                             "success",
@@ -3781,10 +3784,12 @@
             "VPS.V1.Backup.BackupResource": {
                 "properties": {
                     "id": {
+                        "description": "Backup ID",
                         "type": "integer",
                         "example": 325
                     },
                     "location": {
+                        "description": "Location of the backup",
                         "type": "string",
                         "example": "nl-srv-openvzbackups"
                     },
@@ -3806,25 +3811,30 @@
             "VPS.V1.DataCenter.DataCenterResource": {
                 "properties": {
                     "id": {
+                        "description": "Data center ID",
                         "type": "integer",
                         "example": 29
                     },
                     "name": {
+                        "description": "Data center name",
                         "type": "string",
                         "example": "phx",
                         "nullable": true
                     },
                     "location": {
+                        "description": "Data center location country (two letter code)",
                         "type": "string",
                         "example": "us",
                         "nullable": true
                     },
                     "city": {
+                        "description": "Data center location city",
                         "type": "string",
                         "example": "Phoenix",
                         "nullable": true
                     },
                     "continent": {
+                        "description": "Data center location continent",
                         "type": "string",
                         "example": "North America",
                         "nullable": true
@@ -3842,11 +3852,12 @@
             "VPS.V1.Firewall.FirewallResource": {
                 "properties": {
                     "id": {
-                        "description": "ID of the IP address",
+                        "description": "Firewall ID",
                         "type": "integer",
                         "example": 65224
                     },
                     "name": {
+                        "description": "Firewall name",
                         "type": "string",
                         "example": "HTTP and SSH only"
                     },
