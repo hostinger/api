@@ -3985,7 +3985,9 @@
                                 "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "CPU usage in percentage, 0 - 100%",
+                        "type": "object"
                     },
                     "ram_usage": {
                         "oneOf": [
@@ -3993,7 +3995,9 @@
                                 "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "RAM usage in bytes",
+                        "type": "object"
                     },
                     "disk_space": {
                         "oneOf": [
@@ -4001,7 +4005,9 @@
                                 "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Disk space usage in bytes",
+                        "type": "object"
                     },
                     "outgoing_traffic": {
                         "oneOf": [
@@ -4009,7 +4015,9 @@
                                 "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Outgoing traffic in bytes",
+                        "type": "object"
                     },
                     "incoming_traffic": {
                         "oneOf": [
@@ -4017,7 +4025,9 @@
                                 "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Incoming traffic in bytes",
+                        "type": "object"
                     },
                     "uptime": {
                         "oneOf": [
@@ -4025,7 +4035,9 @@
                                 "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Uptime in milliseconds",
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -4033,18 +4045,13 @@
             "VPS.V1.Metrics.MetricsResource": {
                 "properties": {
                     "unit": {
+                        "description": "Measurement unit",
                         "type": "string",
                         "example": "measurement_unit"
                     },
                     "usage": {
-                        "description": "Object, containing UNIX timestamp as a key and measurement as a value.",
-                        "type": "array",
-                        "items": {},
-                        "example": {
-                            "1741644917": 259657728,
-                            "1741650310": 259031040,
-                            "1741648510": 259608576
-                        }
+                        "description": "Object, containing UNIX timestamps as a key and measurement as a value.",
+                        "type": "object"
                     }
                 },
                 "type": "object"
