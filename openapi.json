@@ -1,0 +1,4360 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Hostinger Public API",
+        "description": "> [!caution]\n> Currently, this API is in beta stage, meaning that braking changes, while unlikely, but might be introduced.\n> If you encounter any issues or have any feedback, please create an issue on the [Github Repository](https://github.com/hostinger/api/issues).\n# Overview\nThe Hostinger Public API provides a comprehensive set of endpoints that allow developers to interact with Hostinger's services programmatically. \nThis API enables you to manage various aspects of your Hostinger account.\n\nThe Hostinger Public API is a (mostly) RESTful API that uses standard HTTP methods and status codes.\n# Authentication\nThe Hostinger Public API uses API Tokens for authentication. To authenticate your requests, you need to include a valid bearer token in the Authorization header of your HTTP requests:\n```yaml\nAuthorization: Bearer YOUR_API_TOKEN\n```\nAPI tokens for individual users can be created and managed from the [Public API page](#) of the Hostinger Panel.\nTokens will have same permissions as the owning user. Optionally, tokens can be set to expire after a certain period of time.\n# Rate Limiting\nTo ensure fair usage and prevent abuse, the API enforces rate limits on the number of requests that can be made within a certain time period. \nIf you exceed the rate limit, you will receive a 429 Too Many Requests response. Rate limit headers are included in the response to help you manage your requests.\n# Parameters\nAll requests sent to API must be with content type `application/json`. `POST`, `PUT`, `PATCH` methods may include an JSON object. Documentation provides required structure and examples of the object.\nSome endpoints require path parameters. These parameters are included in the URL path and are marked with curly braces.\n# Pagination\nSome endpoints return a large number of items. To make these responses more manageable, the API uses pagination.\nBy default, the API returns 50 items per page. \n \n The page number can be specified using the `page` query parameter, for example: `/api/vps/v1/public-keys?page=2`\n# Errors\nThe Hostinger Public API uses standard HTTP status codes to indicate the success or failure of a request.\nIn case of an error, the API will return a JSON response with an `error` field, containing a human-readable error message.\nError responses also contains `correlation_id` field which can be used to identify the request in case you need to contact support.\n# Change log\nFor information on the latest changes to the API, please refer to the [Change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).\n# Support            \nIf you have any questions, feedback or feature requests, please create an [issue](https://github.com/hostinger/api/issues) or [discussion](https://github.com/hostinger/api/discussions) on the repository.\n\nFor any support take a look at our [Github Repository](https://github.com/hostinger/api/), dedicated for the Hostinger Public API.",
+        "contact": {
+            "name": "Hostinger",
+            "url": "https://www.hostinger.com",
+            "email": ""
+        },
+        "version": "0.0.1-beta"
+    },
+    "paths": {
+        "/api/billing/v1/catalog": {
+            "get": {
+                "tags": [
+                    "Billing: Catalog"
+                ],
+                "summary": "Get catalog item list",
+                "description": "This endpoint retrieves a list of catalog items available for order. \n\nPrices in catalog items is displayed as cents (without floating point), e.g: float `17.99` is displayed as integer `1799`.",
+                "operationId": "b13c8ae8be76c85bd53dfe52a08bdd34",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Catalog.CatalogItemCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/orders": {
+            "post": {
+                "tags": [
+                    "Billing: Orders"
+                ],
+                "summary": "Create new service order",
+                "description": "This endpoint creates a new service order. \n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatically renewal.",
+                "operationId": "7bad45003c73d9156dcffcb8ace49002",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Billing.V1.Order.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/payment-methods": {
+            "get": {
+                "tags": [
+                    "Billing: Payment methods"
+                ],
+                "summary": "Get payment method list",
+                "description": "This endpoint retrieves a list of available payment methods that can be used for placing new orders.\n\nIf you want to add new payment method, please use [hPanel](https://hpanel.hostinger.com/billing/payment-methods).",
+                "operationId": "88c9df324b2eb8118680f2ea8953648e",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Payments.PaymentMethodCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/subscriptions": {
+            "get": {
+                "tags": [
+                    "Billing: Subscriptions"
+                ],
+                "summary": "Get subscription list",
+                "description": "This endpoint retrieves a list of all subscriptions associated with your account.",
+                "operationId": "a3bbc8ed52047bfa4fe1a82d22ba7f2f",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Subscription.SubscriptionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/portfolio": {
+            "get": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Get domain list",
+                "description": "This endpoint retrieves a list of all domains associated with your account.",
+                "operationId": "71a342d63f34872a74375f24346b0410",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Domain.DomainCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/data-centers": {
+            "get": {
+                "tags": [
+                    "VPS: Data centers"
+                ],
+                "summary": "Get data centers list",
+                "description": "This endpoint retrieves a list of all data centers available.",
+                "operationId": "6924b21c7595c4537fb02c6532aee9ca",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.DataCenter.DataCenterCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}": {
+            "post": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Activate firewall",
+                "description": "This endpoint activates a firewall for a specified virtual machine. \n\nOnly one firewall can be active for a virtual machine at a time.",
+                "operationId": "472e809000007788b39d8089268dc270",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    },
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall/{firewallId}/deactivate/{virtualMachineId}": {
+            "post": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Deactivate firewall",
+                "description": "This endpoint deactivates a firewall for a specified virtual machine.",
+                "operationId": "08bd86698db82f0eed626ec28e035af9",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    },
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall/{firewallId}": {
+            "get": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Get firewall",
+                "description": "This endpoint retrieves firewall by its ID and rules associated with it.",
+                "operationId": "b8a2f8a5d107c0c6acb27666ea26676f",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Delete firewall",
+                "description": "This endpoint deletes a specified firewall. \n\nAny virtual machine that has this firewall activated will automatically have it deactivated.",
+                "operationId": "0fb86d0e12fc666ea8f0c1b31ab48b9e",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall": {
+            "get": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Get firewall list",
+                "description": "This endpoint retrieves a list of all firewalls available.",
+                "operationId": "19dbc5495b27d6e6da2e01cf46872a6e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallCollection"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Create new firewall",
+                "description": "This endpoint creates a new firewall.",
+                "operationId": "5fe1ae2a79e58ab44266a1134abd2aac",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.Firewall.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall/{firewallId}/rules/{ruleId}": {
+            "put": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Update firewall rule",
+                "description": "This endpoint updates a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
+                "operationId": "65a71c65dcbc8dff659becd0875f84bc",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    },
+                    {
+                        "name": "firewallRuleId",
+                        "in": "path",
+                        "description": "Firewall Rule ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallRuleResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Delete firewall rule",
+                "description": "This endpoint deletes a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
+                "operationId": "b4e88954bb768cdd57f7d1ad72b8c1ad",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    },
+                    {
+                        "name": "firewallRuleId",
+                        "in": "path",
+                        "description": "Firewall Rule ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall/{firewallId}/rules": {
+            "post": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Create firewall rule",
+                "description": "This endpoint creates new firewall rule from a specified firewall. \nBy default, the firewall drops all incoming traffic, which means you must add accept rules for all ports you want to use.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
+                "operationId": "1be9465e40ee35be21c233cf9860d430",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.Firewall.Rules.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallRuleResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/firewall/{firewallId}/sync/{virtualMachineId}": {
+            "post": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Sync firewall",
+                "description": "This endpoint syncs a firewall for a specified virtual machine.\n\nFirewall can loose sync with virtual machine if the firewall has new rules added, removed or updated.",
+                "operationId": "531d9bff8d1dad46dc4de431f977f092",
+                "parameters": [
+                    {
+                        "name": "firewallId",
+                        "in": "path",
+                        "description": "Firewall ID",
+                        "required": true,
+                        "example": 428
+                    },
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/public-keys/attach/{virtualMachineId}": {
+            "post": {
+                "tags": [
+                    "VPS: Public Keys"
+                ],
+                "summary": "Attach public key",
+                "description": "This endpoint attaches an existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.",
+                "operationId": "aec000e183808a4a1cd6648ce15d8516",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.PublicKey.AttachRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/public-keys/{publicKeyId}": {
+            "delete": {
+                "tags": [
+                    "VPS: Public Keys"
+                ],
+                "summary": "Delete a public key",
+                "description": "This endpoint deletes a public key from your account. \n\n**Deleting public key from account does not remove it from virtual machine** ",
+                "operationId": "4aa793e6d89cad1f007e83ad4b1068c9",
+                "parameters": [
+                    {
+                        "name": "publicKeyId",
+                        "in": "path",
+                        "description": "Public Key ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/public-keys": {
+            "get": {
+                "tags": [
+                    "VPS: Public Keys"
+                ],
+                "summary": "Get public key list",
+                "description": "This endpoint retrieves a list of public keys associated with your account.",
+                "operationId": "b20676cf34d0436873c95953c8a7f59d",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyCollection"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VPS: Public Keys"
+                ],
+                "summary": "Create new public key",
+                "description": "This endpoint allows you to add a new public key to your account, \nwhich can then be attached to virtual machine instances for secure access.",
+                "operationId": "4f8768bf0fabd0e9542697de1defb6cf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.PublicKey.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/templates/{templateId}": {
+            "get": {
+                "tags": [
+                    "VPS: OS Templates"
+                ],
+                "summary": "Get template",
+                "description": "This endpoint retrieves details of a specific OS template for virtual machines.",
+                "operationId": "4973e54a9c4828e5ab3aa7b69224f0ed",
+                "parameters": [
+                    {
+                        "name": "templateId",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Template.TemplateResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/templates": {
+            "get": {
+                "tags": [
+                    "VPS: OS Templates"
+                ],
+                "summary": "Get template list",
+                "description": "This endpoint retrieves a list of available OS templates for virtual machines.",
+                "operationId": "0dbc13256010593917112cd97db57ed6",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Template.TemplateCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/actions/{actionId}": {
+            "get": {
+                "tags": [
+                    "VPS: Actions"
+                ],
+                "summary": "Get action",
+                "description": "This endpoint retrieves details of a specific action performed on a specified virtual machine. \n\nThis endpoint allows you to view detailed information about a particular action, including the action name, timestamp, and status.",
+                "operationId": "be9a06178e7bf73b1ec0171f246c255e",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "actionId",
+                        "in": "path",
+                        "description": "Action ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/actions": {
+            "get": {
+                "tags": [
+                    "VPS: Actions"
+                ],
+                "summary": "Get action list",
+                "description": "This endpoint retrieves a list of actions performed on a specified virtual machine.\n\nActions are operations or events that have been executed on the virtual machine, such as starting, stopping, or modifying \nthe machine. This endpoint allows you to view the history of these actions, providing details about each action, \nsuch as the action name, timestamp, and status.",
+                "operationId": "179a0535542649134e8de8cdcafed2aa",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/VPS.V1.Action.ActionCollection"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}": {
+            "delete": {
+                "tags": [
+                    "VPS: Backups"
+                ],
+                "summary": "Delete backup",
+                "description": "This endpoint deletes a specified backup for a virtual machine.",
+                "operationId": "7b3f27b226349eb313e14c0a465e8ad3",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "backupId",
+                        "in": "path",
+                        "description": "Backup ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/backups": {
+            "get": {
+                "tags": [
+                    "VPS: Backups"
+                ],
+                "summary": "Get backup list",
+                "description": "This endpoint retrieves a list of backups for a specified virtual machine.",
+                "operationId": "cd21f9fc07e6dcc2f32bd50f9a21fcc2",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": 1
+                    },
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/VPS.V1.Backup.BackupCollection"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}/restore": {
+            "post": {
+                "tags": [
+                    "VPS: Backups"
+                ],
+                "summary": "Restore backup",
+                "description": "This endpoint restores a backup for a specified virtual machine.\n\nThe system will then initiate the restore process, which may take some time depending on the size of the backup.\n\n**All data on the virtual machine will be overwritten with the data from the backup.**",
+                "operationId": "6bd73bb372162845c938929e27709c41",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "backupId",
+                        "in": "path",
+                        "description": "Backup ID",
+                        "required": true,
+                        "example": 428
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/hostname": {
+            "put": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Set hostname",
+                "description": "This endpoint sets the hostname for a specified virtual machine. \nChanging hostname does not update PTR record automatically.\nIf you want your virtual machine to be reachable by a hostname, \nyou need to point your domain A/AAAA records to virtual machine IP as well.",
+                "operationId": "b45785a8fe1275338c040f9df1f1b657",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.HostnameUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Reset hostname",
+                "description": "This endpoint resets the hostname and PTR record of a specified virtual machine to the default value.",
+                "operationId": "59ed35913e077b67c51a9e8009966148",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}": {
+            "get": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Get virtual machine",
+                "description": "This endpoint retrieves detailed information about a specified virtual machine.",
+                "operationId": "8cb683294fd95b66361571070488df77",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.VirtualMachine.VirtualMachineResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines": {
+            "get": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Get virtual machine list",
+                "description": "This endpoint retrieves a list of all available virtual machines.",
+                "operationId": "f58cb0f4a60b91dfe79cc666434ee41c",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.VirtualMachine.VirtualMachineCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/monarx": {
+            "get": {
+                "tags": [
+                    "VPS: Malware scanner"
+                ],
+                "summary": "Get scan metrics",
+                "description": "This endpoint retrieves the scan metrics for the [Monarx](https://www.monarx.com/) malware scanner installed on a specified virtual machine.\nThe scan metrics provide detailed information about the malware scans performed by Monarx, including the number of scans, \ndetected threats, and other relevant statistics. This information is useful for monitoring the security status of the \nvirtual machine and assessing the effectiveness of the malware scanner.",
+                "operationId": "35aa57796a9499931a66370753451c78",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Malware.MetricsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VPS: Malware scanner"
+                ],
+                "summary": "Install Monarx",
+                "description": "This endpoint installs the Monarx malware scanner on a specified virtual machine. \n\n[Monarx](https://www.monarx.com/) is a security tool designed to detect and prevent malware infections on virtual machines. \nBy installing Monarx, users can enhance the security of their virtual machines, ensuring that they are protected against malicious software.",
+                "operationId": "4b547f19b0271f8c8ee5105b505fa3ae",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Malware scanner"
+                ],
+                "summary": "Uninstall Monarx",
+                "description": "This endpoint uninstalls the Monarx malware scanner on a specified virtual machine.\nIf Monarx is not installed, the request will still be processed without any effect.",
+                "operationId": "1b92f5ee98649c8fda82f7a47f43892e",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/metrics": {
+            "get": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Get metrics",
+                "description": "This endpoint retrieves the historical metrics for a specified virtual machine.\nIt includes the following metrics: \n- CPU usage\n- Memory usage\n- Disk usage\n- Network usage\n- Uptime",
+                "operationId": "0fffcb32888b3b956447140facb3f1d0",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.MetricGetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers": {
+            "put": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Set nameservers",
+                "description": "This endpoint sets the nameservers for a specified virtual machine.\nBe aware, that improper nameserver configuration can lead to the virtual machine being unable to resolve domain names.",
+                "operationId": "09df7553a7c00d06a332895f45d93a30",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.NameserversUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/ptr": {
+            "post": {
+                "tags": [
+                    "VPS: PTR records"
+                ],
+                "summary": "Create PTR record",
+                "description": "This endpoint creates or updates a PTR (Pointer) record for a specified virtual machine.",
+                "operationId": "30c8c049091d36b5f9101efa7479eb8d",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: PTR records"
+                ],
+                "summary": "Delete PTR record",
+                "description": "This endpoint deletes a PTR (Pointer) record for a specified virtual machine. \n\nOnce deleted, reverse DNS lookups to the virtual machine's IP address will no longer return the previously configured hostname.",
+                "operationId": "55ebc59b436e519a40d98da160d3d699",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password": {
+            "put": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Set panel password",
+                "description": "This endpoint sets the panel password for a specified virtual machine. \nIf virtual machine does not use panel OS, the request will still be processed without any effect.\nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall).",
+                "operationId": "c4795112958d4409d876caf172c3542b",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.PanelPasswordUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/recovery": {
+            "post": {
+                "tags": [
+                    "VPS: Recovery"
+                ],
+                "summary": "Start recovery mode",
+                "description": "This endpoint initiates the recovery mode for a specified virtual machine. \nRecovery mode is a special state that allows users to perform system rescue operations, \nsuch as repairing file systems, recovering data, or troubleshooting issues that prevent the virtual machine \nfrom booting normally. \n\nVirtual machine will boot recovery disk image and original disk image will be mounted in `/mnt` directory.",
+                "operationId": "c9357b8103b95fa7279c1c3ae17f8913",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.Recovery.StartRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Recovery"
+                ],
+                "summary": "Stop recovery mode",
+                "description": "This endpoint stops the recovery mode for a specified virtual machine. \nIf virtual machine is not in recovery mode, this operation will fail.",
+                "operationId": "50b7d47a7e359ae1044a3af5402c6ae6",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall": {
+            "post": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Recreate virtual machine",
+                "description": "This endpoint will recreate a virtual machine from scratch. \nThe recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state.\nSnapshots, if there are any, will be deleted.\n\n## Password Requirements\nPassword will be checked against leaked password databases. \nRequirements for the password are:\n- At least 8 characters long\n- At least one uppercase letter\n- At least one lowercase letter\n- At least one number\n- Is not leaked publicly\n\n**This operation is irreversible and will result in the loss of all data stored on the virtual machine!**",
+                "operationId": "097a1333f22ee38f8909ee4836041637",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.ReinstallRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/restart": {
+            "post": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Restart virtual machine",
+                "description": "This endpoint restarts a specified virtual machine. This is equivalent to fully stopping and starting the virtual machine.\nIf the virtual machine was stopped, it will be started.",
+                "operationId": "6d22791c9b5a4a647fb0a4bc2d124f54",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/root-password": {
+            "put": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Set root password",
+                "description": "This endpoint sets the root password for a specified virtual machine. \nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall).",
+                "operationId": "69fe20caabf3a80d4d138d5adc7ef337",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.RootPasswordUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/setup": {
+            "post": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Setup new virtual machine",
+                "description": "This endpoint will setup newly purchased virtual machine. Such virtual machines has `initial` state. \nNew virtual machine can be purchased using [`/api/billing/v1/orders`](/#tag/billing-orders/POST/api/billing/v1/orders) endpoint.                        ",
+                "operationId": "22fb079c5fa7d514bb9f7b7b29170dc2",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.SetupRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.VirtualMachine.VirtualMachineResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots": {
+            "get": {
+                "tags": [
+                    "VPS: Snapshots"
+                ],
+                "summary": "Get snapshots list",
+                "description": "This endpoint retrieves a list of snapshots for a specified virtual machine.\nCurrently, only one snapshot can be created per virtual machine.",
+                "operationId": "2e5405f47949cebd2eff107ea64729a5",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Snapshot.SnapshotCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VPS: Snapshots"
+                ],
+                "summary": "Create snapshot",
+                "description": "This endpoint creates a snapshot of a specified virtual machine. \nA snapshot captures the state and data of the virtual machine at a specific point in time, \nallowing users to restore the virtual machine to that state if needed. \nThis operation is useful for backup purposes, system recovery, \nand testing changes without affecting the current state of the virtual machine.\n\n**Creating new snapshot will overwrite the existing snapshot!**",
+                "operationId": "846ef15651b599892511d8ff4506bcc4",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Snapshots"
+                ],
+                "summary": "Delete snapshot",
+                "description": "This endpoint deletes a snapshot of a specified virtual machine.",
+                "operationId": "f2f3505fb6d0a52b5631edec240d6a3f",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots/restore": {
+            "post": {
+                "tags": [
+                    "VPS: Snapshots"
+                ],
+                "summary": "Restore snapshot",
+                "description": "This endpoint restores a specified virtual machine to a previous state using a snapshot. \nRestoring from a snapshot allows users to revert the virtual machine to that state, which is useful for system recovery, undoing changes, or testing.",
+                "operationId": "77b51a3d8bc015f4f79745d582fbbe28",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/start": {
+            "post": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Start virtual machine",
+                "description": "This endpoint starts a specified virtual machine. \nIf the virtual machine is already running, the request will still be processed without any effect.",
+                "operationId": "71e5eee82e3be207bc5e0ceb6602faea",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/stop": {
+            "post": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Stop virtual machine",
+                "description": "This endpoint stops a specified virtual machine. \nIf the virtual machine is already stopped, the request will still be processed without any effect.",
+                "operationId": "9dd5ca4004de9e718c199d967cd902c6",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Common.Schema.ErrorResponseSchema": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Error message"
+                    },
+                    "correlation_id": {
+                        "type": "string",
+                        "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                    }
+                },
+                "type": "object",
+                "x-scalar-ignore": true
+            },
+            "Common.Schema.UnauthorizedResponseSchema": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Unauthenticated"
+                    },
+                    "correlation_id": {
+                        "type": "string",
+                        "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                    }
+                },
+                "type": "object",
+                "x-scalar-ignore": true
+            },
+            "Common.Schema.UnprocessableContentResponseSchema": {
+                "properties": {
+                    "message": {
+                        "description": "Validation error message",
+                        "type": "string",
+                        "example": "The name field is required. (and 1 more error)"
+                    },
+                    "errors": {
+                        "properties": {
+                            "field_1": {
+                                "type": "array",
+                                "items": {},
+                                "example": [
+                                    "The field_1 field is required.",
+                                    "The field_1 must be a number."
+                                ]
+                            },
+                            "field_2": {
+                                "type": "array",
+                                "items": {},
+                                "example": [
+                                    "The field_2 field is required.",
+                                    "The field_2 must be a string."
+                                ]
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "correlation_id": {
+                        "type": "string",
+                        "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                    }
+                },
+                "type": "object",
+                "x-scalar-ignore": true
+            },
+            "Billing.V1.Order.StoreRequest": {
+                "required": [
+                    "payment_method_id",
+                    "items"
+                ],
+                "properties": {
+                    "payment_method_id": {
+                        "description": "Payment method ID",
+                        "type": "integer",
+                        "example": 517244
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "item_id": {
+                                    "description": "Price Item ID",
+                                    "type": "string",
+                                    "example": "hostingercom-vps-kvm2-usd-1m"
+                                },
+                                "quantity": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "coupons": {
+                        "type": "array",
+                        "items": {
+                            "example": [
+                                "Coupon 3"
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Firewall.Rules.StoreRequest": {
+                "required": [
+                    "protocol",
+                    "port",
+                    "source",
+                    "source_detail"
+                ],
+                "properties": {
+                    "protocol": {
+                        "type": "string",
+                        "enum": [
+                            "TCP",
+                            "UDP",
+                            "ICMP",
+                            "GRE",
+                            "any",
+                            "ESP",
+                            "AH",
+                            "ICMPv6",
+                            "SSH",
+                            "HTTP",
+                            "HTTPS",
+                            "MySQL",
+                            "PostgreSQL"
+                        ],
+                        "example": "TCP"
+                    },
+                    "port": {
+                        "description": "Port or port range, ex: 1024:2048",
+                        "type": "string",
+                        "example": "443"
+                    },
+                    "source": {
+                        "type": "string",
+                        "enum": [
+                            "any",
+                            "custom"
+                        ],
+                        "example": "any"
+                    },
+                    "source_detail": {
+                        "description": "IP range, CIDR, single IP or `any`",
+                        "type": "string",
+                        "example": "351.15.24.0/24"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Firewall.StoreRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "My Firewall Group"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.PublicKey.AttachRequest": {
+                "required": [
+                    "ids"
+                ],
+                "properties": {
+                    "ids": {
+                        "description": "Public Key IDs to attach",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            18232,
+                            10230230
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.PublicKey.StoreRequest": {
+                "required": [
+                    "name",
+                    "key"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "My Public Key"
+                    },
+                    "key": {
+                        "type": "string",
+                        "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.HostnameUpdateRequest": {
+                "required": [
+                    "hostname"
+                ],
+                "properties": {
+                    "hostname": {
+                        "type": "string",
+                        "example": "my.server.tld"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.MetricGetRequest": {
+                "required": [
+                    "date_from",
+                    "date_to"
+                ],
+                "properties": {
+                    "date_from": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-01T00:00:00Z"
+                    },
+                    "date_to": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-02T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.NameserversUpdateRequest": {
+                "required": [
+                    "ns1"
+                ],
+                "properties": {
+                    "ns1": {
+                        "type": "string",
+                        "example": "4.3.2.1"
+                    },
+                    "ns2": {
+                        "type": "string",
+                        "example": "1.2.3.4"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.PanelPasswordUpdateRequest": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "password": {
+                        "description": "Panel password",
+                        "type": "string",
+                        "format": "one upper + one lower + one digit",
+                        "minLength": 8,
+                        "example": "oMeNRustosIO"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.Recovery.StartRequest": {
+                "required": [
+                    "root_password"
+                ],
+                "properties": {
+                    "root_password": {
+                        "description": "Temporary root password for recovery mode",
+                        "type": "string",
+                        "example": "oMeNRustosIO"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.ReinstallRequest": {
+                "required": [
+                    "password",
+                    "template_id"
+                ],
+                "properties": {
+                    "password": {
+                        "type": "string",
+                        "format": "one upper + one lower + one digit",
+                        "minLength": 8,
+                        "example": "oMeNRustosIO"
+                    },
+                    "template_id": {
+                        "description": "Template ID",
+                        "type": "integer",
+                        "example": 1130
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.RootPasswordUpdateRequest": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "password": {
+                        "description": "Root password",
+                        "type": "string",
+                        "format": "one upper + one lower + one digit",
+                        "minLength": 8,
+                        "example": "oMeNRustosIO"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.SetupRequest": {
+                "required": [
+                    "data_center_id",
+                    "template_id",
+                    "password"
+                ],
+                "properties": {
+                    "template_id": {
+                        "description": "Template ID",
+                        "type": "integer",
+                        "example": 1130
+                    },
+                    "data_center_id": {
+                        "description": "Data center ID",
+                        "type": "integer",
+                        "example": 1130
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "one upper + one lower + one digit",
+                        "minLength": 8,
+                        "example": "oMeNRustosIO"
+                    },
+                    "hostname": {
+                        "description": "Override default hostname of the virtual machine",
+                        "type": "string",
+                        "example": "my.server.tld"
+                    },
+                    "install_monarx": {
+                        "description": "Install Monarx malware scanner (if supported)",
+                        "type": "boolean",
+                        "default": false,
+                        "example": false
+                    },
+                    "enable_backups": {
+                        "description": "Enable weekly backup schedule",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
+                    },
+                    "ns1": {
+                        "type": "string",
+                        "example": "4.3.2.1"
+                    },
+                    "ns2": {
+                        "type": "string",
+                        "example": "1.2.3.4"
+                    },
+                    "public_key": {
+                        "properties": {
+                            "name": {
+                                "description": "Name of the SSH key",
+                                "type": "string",
+                                "example": "my-key"
+                            },
+                            "key": {
+                                "description": "SSH public key",
+                                "type": "string",
+                                "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2X..."
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Catalog.CatalogItemCollection": {
+                "description": "Array of [`Billing.V1.Catalog.CatalogItemResource`](#model/billingv1catalogcatalogitemresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Billing.V1.Catalog.CatalogItemResource"
+                }
+            },
+            "Billing.V1.Catalog.CatalogItemPriceCollection": {
+                "description": "Array of [`Billing.V1.Catalog.CatalogItemPriceResource`](#model/billingv1catalogcatalogitempriceresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Billing.V1.Catalog.CatalogItemPriceResource"
+                }
+            },
+            "Billing.V1.Catalog.CatalogItemPriceResource": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "hostingercom-vps-kvm2-usd-1m"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "KVM 2 (billed every month)"
+                    },
+                    "currency_code": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "price": {
+                        "description": "Price in cents",
+                        "type": "integer",
+                        "example": 1799
+                    },
+                    "first_period_price": {
+                        "description": "Price in cents",
+                        "type": "integer",
+                        "example": 899
+                    },
+                    "period": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "period_unit": {
+                        "type": "string",
+                        "enum": [
+                            "month",
+                            "year"
+                        ],
+                        "example": "month"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Catalog.CatalogItemResource": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "hostingercom-vps-kvm2"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "KVM 2"
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "VPS"
+                    },
+                    "prices": {
+                        "$ref": "#/components/schemas/Billing.V1.Catalog.CatalogItemPriceCollection"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Order.OrderBillingAddressResource": {
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "address_1": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "address_2": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "zip": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "NL",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john@doe.tld"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Order.OrderResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 2957086
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "completed",
+                            "pending"
+                        ],
+                        "example": "completed"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "subtotal": {
+                        "description": "Subtotal price (exc. VAT) in cents",
+                        "type": "integer",
+                        "example": 899
+                    },
+                    "total": {
+                        "description": "Total price (inc. VAT) in cents",
+                        "type": "integer",
+                        "example": 1088
+                    },
+                    "billing_address": {
+                        "$ref": "#/components/schemas/Billing.V1.Order.OrderBillingAddressResource"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Payments.PaymentMethodCollection": {
+                "description": "Array of [`Billing.V1.Payments.PaymentMethodResource`](#model/billingv1paymentspaymentmethodresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Billing.V1.Payments.PaymentMethodResource"
+                }
+            },
+            "Billing.V1.Payments.PaymentMethodResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 6523
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Credit Card"
+                    },
+                    "identifier": {
+                        "type": "string",
+                        "example": "1234*****6464"
+                    },
+                    "payment_method": {
+                        "type": "string",
+                        "enum": [
+                            "card",
+                            "paypal"
+                        ],
+                        "example": "card"
+                    },
+                    "is_default": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_expired": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_suspended": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Subscription.SubscriptionCollection": {
+                "description": "Array of [`Billing.V1.Subscription.SubscriptionResource`](#model/billingv1subscriptionsubscriptionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Billing.V1.Subscription.SubscriptionResource"
+                }
+            },
+            "Billing.V1.Subscription.SubscriptionResource": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "Azz36nUfKX1S1MSF"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "KVM 1"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "not_renewing"
+                        ],
+                        "example": "active"
+                    },
+                    "billing_period": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "billing_period_unit": {
+                        "type": "string",
+                        "enum": [
+                            "month",
+                            "year"
+                        ],
+                        "example": "month"
+                    },
+                    "currency_code": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "total_price": {
+                        "description": "Total price in cents",
+                        "type": "integer",
+                        "example": 1799
+                    },
+                    "renewal_price": {
+                        "description": "Renewal price in cents",
+                        "type": "integer",
+                        "example": 1799
+                    },
+                    "auto_renew": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z"
+                    },
+                    "next_billing_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-28T11:54:22Z",
+                        "nullable": true
+                    },
+                    "canceled_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-28T11:54:22Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Common.SuccessEmptyResource": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Request accepted"
+                    }
+                },
+                "type": "object",
+                "x-scalar-ignore": true
+            },
+            "Domains.V1.Domain.DomainCollection": {
+                "description": "Array of [`Domains.V1.Domain.DomainResource`](#model/domainsv1domaindomainresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Domains.V1.Domain.DomainResource"
+                }
+            },
+            "Domains.V1.Domain.DomainResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 13632
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "mydomain.tld",
+                        "nullable": true
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "free_domain"
+                        ],
+                        "example": "free_domain"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "pending_setup",
+                            "expired"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Action.ActionCollection": {
+                "description": "Array of [`VPS.V1.Action.ActionResource`](#model/vpsv1actionactionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                }
+            },
+            "VPS.V1.Action.ActionResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 8123712
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "action_name"
+                    },
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "success",
+                            "error",
+                            "delayed",
+                            "sent",
+                            "created"
+                        ],
+                        "example": "success",
+                        "x-enumDescriptions": {
+                            "success": "Action was successful",
+                            "error": "Action failed",
+                            "delayed": "Action is delayed",
+                            "sent": "Action was sent",
+                            "created": "Action was created"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:58:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Backup.BackupCollection": {
+                "description": "Array of [`VPS.V1.Backup.BackupResource`](#model/vpsv1backupbackupresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.Backup.BackupResource"
+                }
+            },
+            "VPS.V1.Backup.BackupResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 325
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "nl-srv-openvzbackups"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DataCenter.DataCenterCollection": {
+                "description": "Array of [`VPS.V1.DataCenter.DataCenterResource`](#model/vpsv1datacenterdatacenterresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.DataCenter.DataCenterResource"
+                }
+            },
+            "VPS.V1.DataCenter.DataCenterResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 29
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "phx",
+                        "nullable": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "us",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Phoenix",
+                        "nullable": true
+                    },
+                    "continent": {
+                        "type": "string",
+                        "example": "North America",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Firewall.FirewallCollection": {
+                "description": "Array of [`VPS.V1.Firewall.FirewallResource`](#model/vpsv1firewallfirewallresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallResource"
+                }
+            },
+            "VPS.V1.Firewall.FirewallResource": {
+                "properties": {
+                    "id": {
+                        "description": "ID of the IP address",
+                        "type": "integer",
+                        "example": 65224
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "HTTP and SSH only"
+                    },
+                    "synced": {
+                        "description": "Is current firewall synced with VPS",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "rules": {
+                        "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallRuleCollection"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-09-01T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-09-01T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Firewall.FirewallRuleCollection": {
+                "description": "Array of [`VPS.V1.Firewall.FirewallRuleResource`](#model/vpsv1firewallfirewallruleresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallRuleResource"
+                }
+            },
+            "VPS.V1.Firewall.FirewallRuleResource": {
+                "properties": {
+                    "id": {
+                        "description": "Rule ID",
+                        "type": "integer",
+                        "example": 24541
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "accept",
+                            "drop"
+                        ],
+                        "example": "accept"
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "example": "TCP"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "maximum": 65535,
+                        "minimum": 1,
+                        "example": 22
+                    },
+                    "source": {
+                        "type": "string",
+                        "example": "any"
+                    },
+                    "source_detail": {
+                        "type": "string",
+                        "example": "any"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.IPAddress.IPAddressCollection": {
+                "description": "Array of [`VPS.V1.IPAddress.IPAddressResource`](#model/vpsv1ipaddressipaddressresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.IPAddress.IPAddressResource"
+                }
+            },
+            "VPS.V1.IPAddress.IPAddressResource": {
+                "properties": {
+                    "id": {
+                        "description": "ID of the IP address",
+                        "type": "integer",
+                        "example": 52347
+                    },
+                    "address": {
+                        "description": "ID of the IP address",
+                        "type": "string",
+                        "example": "213.331.273.15"
+                    },
+                    "ptr": {
+                        "description": "PTR address",
+                        "type": "string",
+                        "example": "something.domain.tld",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Malware.MetricsResource": {
+                "properties": {
+                    "records": {
+                        "description": "Records found during last scan",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "malicious": {
+                        "description": "Malicious files found during last scan",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "compromised": {
+                        "description": "Compromised files found during last scan",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "scanned_files": {
+                        "description": "Total number of files scanned during last scan",
+                        "type": "integer",
+                        "example": 193218
+                    },
+                    "scan_started_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "scan_ended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Metrics.MetricsCollection": {
+                "properties": {
+                    "cpu_usage": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "ram_usage": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "disk_space": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "outgoing_traffic": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "incoming_traffic": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "uptime": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Metrics.MetricsResource"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Metrics.MetricsResource": {
+                "properties": {
+                    "unit": {
+                        "type": "string",
+                        "example": "measurement_unit"
+                    },
+                    "usage": {
+                        "description": "Object, containing UNIX timestamp as a key and measurement as a value.",
+                        "type": "object",
+                        "example": {
+                            "1741644917": 259657728,
+                            "1741650310": 259031040,
+                            "1741648510": 259608576
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.PublicKey.PublicKeyCollection": {
+                "description": "Array of [`VPS.V1.PublicKey.PublicKeyResource`](#model/vpsv1publickeypublickeyresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyResource"
+                }
+            },
+            "VPS.V1.PublicKey.PublicKeyResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 325
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "My public key"
+                    },
+                    "key": {
+                        "type": "string",
+                        "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Snapshot.SnapshotCollection": {
+                "description": "Array of [`VPS.V1.Snapshot.SnapshotResource`](#model/vpsv1snapshotsnapshotresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.Snapshot.SnapshotResource"
+                }
+            },
+            "VPS.V1.Snapshot.SnapshotResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 325
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-19T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Template.TemplateCollection": {
+                "description": "Array of [`VPS.V1.Template.TemplateResource`](#model/vpsv1templatetemplateresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.Template.TemplateResource"
+                }
+            },
+            "VPS.V1.Template.TemplateResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 6523
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ubuntu 20.04 LTS"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Ubuntu 20.04 LTS"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.VirtualMachineCollection": {
+                "description": "Array of [`VPS.V1.VirtualMachine.VirtualMachineResource`](#model/vpsv1virtualmachinevirtualmachineresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.VirtualMachine.VirtualMachineResource"
+                }
+            },
+            "VPS.V1.VirtualMachine.VirtualMachineResource": {
+                "properties": {
+                    "id": {
+                        "description": "ID of the virtual machine",
+                        "type": "integer",
+                        "example": 17923
+                    },
+                    "firewall_group_id": {
+                        "description": "ID of the firewall group (if enabled)",
+                        "type": "integer",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "hostname": {
+                        "type": "string",
+                        "example": "srv17923.hstgr.cloud"
+                    },
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "running",
+                            "stopped",
+                            "creating",
+                            "initial"
+                        ],
+                        "example": "running"
+                    },
+                    "actions_lock": {
+                        "type": "string",
+                        "enum": [
+                            "unlocked",
+                            "locked"
+                        ],
+                        "example": "unlocked"
+                    },
+                    "cpus": {
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "memory": {
+                        "type": "integer",
+                        "example": 8192
+                    },
+                    "disk": {
+                        "type": "integer",
+                        "example": 51200
+                    },
+                    "bandwidth": {
+                        "type": "integer",
+                        "example": 1073741824
+                    },
+                    "ns1": {
+                        "type": "string",
+                        "example": "1.1.1.1",
+                        "nullable": true
+                    },
+                    "ns2": {
+                        "type": "string",
+                        "example": "8.8.8.8",
+                        "nullable": true
+                    },
+                    "ipv4": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.IPAddress.IPAddressCollection"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "ipv6": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.IPAddress.IPAddressCollection"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "template": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.Template.TemplateResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-09-05T07:25:36.00000Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "apiToken": {
+                "type": "http",
+                "description": "API Token authentication",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiToken": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Billing: Catalog",
+            "description": "Access a comprehensive catalog of service plans and subscription options, complete with detailed pricing and features.",
+            "x-displayName": "Catalog"
+        },
+        {
+            "name": "Billing: Orders",
+            "description": "Initiate and track new service orders seamlessly. This category streamlines the process of purchasing Hostinger services, enabling efficient management of order details.",
+            "x-displayName": "Orders"
+        },
+        {
+            "name": "Billing: Payment methods",
+            "description": "Review and manage the payment methods linked to your Hostinger account. Enjoy a secure and convenient overview for handling billing and transactions.",
+            "x-displayName": "Payment methods"
+        },
+        {
+            "name": "Billing: Subscriptions",
+            "description": "Manage your account’s subscriptions by retrieving lists of active and expired plans along with details such as activation and expiration dates.",
+            "x-displayName": "Subscriptions"
+        },
+        {
+            "name": "Domains: Portfolio",
+            "description": "Retrieve and manage your domain portfolio. This category lets you list all domains linked to your account, including their creation and expiration details.",
+            "x-displayName": "Portfolio"
+        },
+        {
+            "name": "VPS: Data centers",
+            "description": "Access information on available data centers, including location details, so you can choose the optimal region for deploying your virtual machines.",
+            "x-displayName": "Data centers"
+        },
+        {
+            "name": "VPS: Firewall",
+            "description": "Enhance network security with endpoints for creating, activating, deactivating, syncing, updating, and deleting firewalls and firewall rules for your virtual machines.\nThis firewall applies rules at the network level, so it will take precedence over the virtual machine's internal firewall.\n\n**Access to firewall requires having at least one virtual machine.**",
+            "x-displayName": "Firewall"
+        },
+        {
+            "name": "VPS: Public Keys",
+            "description": "Manage SSH keys for secure access. This category covers adding new public keys, attaching them to virtual machines, retrieving key lists, and deleting keys.",
+            "x-displayName": "Public Keys"
+        },
+        {
+            "name": "VPS: OS Templates",
+            "description": "Retrieve details of operating system templates or list all available templates to choose the right configuration when deploying or recreating virtual machines.",
+            "x-displayName": "OS Templates"
+        },
+        {
+            "name": "VPS: Actions",
+            "description": "Track and review operations performed on your virtual machines. These endpoints provide details about specific actions—such as start, stop, or restart—including timestamps and statuses.",
+            "x-displayName": "Actions"
+        },
+        {
+            "name": "VPS: Backups",
+            "description": "Safeguard your data by managing backups. You can list available backups, restore a virtual machine from a backup, or delete backups as needed.",
+            "x-displayName": "Backups"
+        },
+        {
+            "name": "VPS: Virtual machine",
+            "description": "Core virtual machine management functionality. Endpoints in this category let you retrieve machine details, configure settings (hostname, nameservers, passwords), and perform operations like start, stop, restart, or reinstall.",
+            "x-displayName": "Virtual machine"
+        },
+        {
+            "name": "VPS: Malware scanner",
+            "description": "Monitor your virtual machines’ security using the Monarx malware scanner. Retrieve scan metrics or install/uninstall the scanner to help protect against malware threats.",
+            "x-displayName": "Malware scanner"
+        },
+        {
+            "name": "VPS: PTR records",
+            "description": "Manage reverse DNS settings by creating or deleting PTR records for your virtual machines, ensuring that IP addresses correctly resolve to hostnames.",
+            "x-displayName": "PTR records"
+        },
+        {
+            "name": "VPS: Recovery",
+            "description": "Initiate or stop recovery mode to perform system rescue operations. This category enables you to boot a virtual machine into a state suitable for repairing file systems or recovering data.",
+            "x-displayName": "Recovery"
+        },
+        {
+            "name": "VPS: Snapshots",
+            "description": "Create, restore, or delete snapshots that capture the state of your virtual machines at a given point, allowing you to quickly recover or test changes without affecting current operations.",
+            "x-displayName": "Snapshots"
+        }
+    ],
+    "x-tagGroups": [
+        {
+            "name": "Domains",
+            "tags": [
+                "Domains: Portfolio"
+            ]
+        },
+        {
+            "name": "Billing",
+            "tags": [
+                "Billing: Catalog",
+                "Billing: Orders",
+                "Billing: Payment methods",
+                "Billing: Subscriptions"
+            ]
+        },
+        {
+            "name": "VPS",
+            "tags": [
+                "VPS: Actions",
+                "VPS: Backups",
+                "VPS: Data centers",
+                "VPS: PTR records",
+                "VPS: Firewall",
+                "VPS: Malware scanner",
+                "VPS: OS Templates",
+                "VPS: Public Keys",
+                "VPS: Recovery",
+                "VPS: Snapshots",
+                "VPS: Virtual machine"
+            ]
+        },
+        {
+            "name": "Miscellaneous",
+            "tags": [
+                "Models"
+            ]
+        }
+    ]
+}
