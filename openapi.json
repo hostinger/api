@@ -2047,7 +2047,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-optic-ignore-example": true
             }
         },
         "/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers": {
@@ -3987,7 +3988,13 @@
                         ],
                         "nullable": true,
                         "description": "CPU usage in percentage, 0 - 100%",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "unit": "%",
+                            "usage": {
+                                "1742269632": 1.45
+                            }
+                        }
                     },
                     "ram_usage": {
                         "oneOf": [
@@ -3997,7 +4004,13 @@
                         ],
                         "nullable": true,
                         "description": "RAM usage in bytes",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "unit": "bytes",
+                            "usage": {
+                                "1742269632": 554176512
+                            }
+                        }
                     },
                     "disk_space": {
                         "oneOf": [
@@ -4007,7 +4020,13 @@
                         ],
                         "nullable": true,
                         "description": "Disk space usage in bytes",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "unit": "bytes",
+                            "usage": {
+                                "1742269632": 2620018688
+                            }
+                        }
                     },
                     "outgoing_traffic": {
                         "oneOf": [
@@ -4017,7 +4036,13 @@
                         ],
                         "nullable": true,
                         "description": "Outgoing traffic in bytes",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "unit": "bytes",
+                            "usage": {
+                                "1742269632": 784800
+                            }
+                        }
                     },
                     "incoming_traffic": {
                         "oneOf": [
@@ -4027,7 +4052,13 @@
                         ],
                         "nullable": true,
                         "description": "Incoming traffic in bytes",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "unit": "bytes",
+                            "usage": {
+                                "1742269632": 8978400
+                            }
+                        }
                     },
                     "uptime": {
                         "oneOf": [
@@ -4037,7 +4068,13 @@
                         ],
                         "nullable": true,
                         "description": "Uptime in milliseconds",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "unit": "milliseconds",
+                            "usage": {
+                                "1742269632": 455248
+                            }
+                        }
                     }
                 },
                 "type": "object"
@@ -4047,11 +4084,14 @@
                     "unit": {
                         "description": "Measurement unit",
                         "type": "string",
-                        "example": "measurement_unit"
+                        "example": "measurement-unit"
                     },
                     "usage": {
                         "description": "Object, containing UNIX timestamps as a key and measurement as a value.",
-                        "type": "object"
+                        "type": "object",
+                        "example": {
+                            "timestamp": 123
+                        }
                     }
                 },
                 "type": "object"
