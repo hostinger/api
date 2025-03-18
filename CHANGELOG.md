@@ -1,5 +1,61 @@
 # Hostinger Public API
 ### Tue Mar 18 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/start`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots/restore`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/restart`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
   - `200` response: added `uptime`.`description`
   - `200` response: added `uptime`.`type`
@@ -25,3 +81,65 @@
   - `200` response: added `cpu_usage`.`type`
   - `200` response: changed `cpu_usage`.`usage`.`description`
   - `200` response: added `cpu_usage`.`unit`.`description`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}/restore`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups`:
+  - `200` response: added `data`.`items`.`location`.`description`
+  - `200` response: added `data`.`items`.`id`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions`:
+  - `200` response: added `data`.`items`.`state`.`description`
+  - `200` response: added `data`.`items`.`name`.`description`
+  - `200` response: added `data`.`items`.`id`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions/{actionId}`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/public-keys/attach/{virtualMachineId}`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/firewall/{firewallId}/sync/{virtualMachineId}`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/firewall`:
+  - `200` response: added `name`.`description`
+  - `200` response: changed `id`.`description`
+- `GET` `/api/vps/v1/firewall`:
+  - `200` response: added `data`.`items`.`name`.`description`
+  - `200` response: changed `data`.`items`.`id`.`description`
+- `GET` `/api/vps/v1/firewall/{firewallId}`:
+  - `200` response: added `name`.`description`
+  - `200` response: changed `id`.`description`
+- `POST` `/api/vps/v1/firewall/{firewallId}/deactivate/{virtualMachineId}`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}`:
+  - `200` response: added `state`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `GET` `/api/vps/v1/data-centers`:
+  - `200` response: added `items`.`continent`.`description`
+  - `200` response: added `items`.`city`.`description`
+  - `200` response: added `items`.`location`.`description`
+  - `200` response: added `items`.`name`.`description`
+  - `200` response: added `items`.`id`.`description`

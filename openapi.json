@@ -3685,15 +3685,18 @@
             "Domains.V1.Domain.DomainResource": {
                 "properties": {
                     "id": {
+                        "description": "Domain ID",
                         "type": "integer",
                         "example": 13632
                     },
                     "name": {
+                        "description": "Domain name, `null` when not claimed free domain",
                         "type": "string",
                         "example": "mydomain.tld",
                         "nullable": true
                     },
                     "type": {
+                        "description": "Domain type",
                         "type": "string",
                         "enum": [
                             "free_domain"
@@ -3701,6 +3704,7 @@
                         "example": "free_domain"
                     },
                     "status": {
+                        "description": "Domain registration status",
                         "type": "string",
                         "enum": [
                             "active",
@@ -3892,11 +3896,12 @@
             "VPS.V1.Firewall.FirewallRuleResource": {
                 "properties": {
                     "id": {
-                        "description": "Rule ID",
+                        "description": "Firewall rule ID",
                         "type": "integer",
                         "example": 24541
                     },
                     "action": {
+                        "description": "Firewall rule action",
                         "type": "string",
                         "enum": [
                             "accept",
@@ -3905,20 +3910,37 @@
                         "example": "accept"
                     },
                     "protocol": {
+                        "description": "Firewall rule protocol",
                         "type": "string",
+                        "enum": [
+                            "TCP",
+                            "UDP",
+                            "ICMP",
+                            "GRE",
+                            "any",
+                            "ESP",
+                            "AH",
+                            "ICMPv6",
+                            "SSH",
+                            "HTTP",
+                            "HTTPS",
+                            "MySQL",
+                            "PostgreSQL"
+                        ],
                         "example": "TCP"
                     },
                     "port": {
-                        "type": "integer",
-                        "maximum": 65535,
-                        "minimum": 1,
-                        "example": 22
+                        "description": "Firewall rule destination port: single or port range",
+                        "type": "string",
+                        "example": "1024:2048"
                     },
                     "source": {
+                        "description": "Firewall rule source. Can be `any` or `custom`",
                         "type": "string",
                         "example": "any"
                     },
                     "source_detail": {
+                        "description": "Firewall rule source detail. Can be `any` or IP address, CIDR or range",
                         "type": "string",
                         "example": "any"
                     }
@@ -3935,17 +3957,17 @@
             "VPS.V1.IPAddress.IPAddressResource": {
                 "properties": {
                     "id": {
-                        "description": "ID of the IP address",
+                        "description": "IP address ID",
                         "type": "integer",
                         "example": 52347
                     },
                     "address": {
-                        "description": "ID of the IP address",
+                        "description": "IP address: IPv4 or IPv6",
                         "type": "string",
                         "example": "213.331.273.15"
                     },
                     "ptr": {
-                        "description": "PTR address",
+                        "description": "IP address PTR record",
                         "type": "string",
                         "example": "something.domain.tld",
                         "nullable": true
@@ -4117,14 +4139,17 @@
             "VPS.V1.PublicKey.PublicKeyResource": {
                 "properties": {
                     "id": {
+                        "description": "Public key ID",
                         "type": "integer",
                         "example": 325
                     },
                     "name": {
+                        "description": "Public key name",
                         "type": "string",
                         "example": "My public key"
                     },
                     "key": {
+                        "description": "Public key content",
                         "type": "string",
                         "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
                     }
@@ -4141,6 +4166,7 @@
             "VPS.V1.Snapshot.SnapshotResource": {
                 "properties": {
                     "id": {
+                        "description": "Snapshot ID",
                         "type": "integer",
                         "example": 325
                     },
@@ -4167,14 +4193,17 @@
             "VPS.V1.Template.TemplateResource": {
                 "properties": {
                     "id": {
+                        "description": "Template ID",
                         "type": "integer",
                         "example": 6523
                     },
                     "name": {
+                        "description": "Template name",
                         "type": "string",
                         "example": "Ubuntu 20.04 LTS"
                     },
                     "description": {
+                        "description": "Template description",
                         "type": "string",
                         "example": "Ubuntu 20.04 LTS"
                     }
@@ -4191,21 +4220,23 @@
             "VPS.V1.VirtualMachine.VirtualMachineResource": {
                 "properties": {
                     "id": {
-                        "description": "ID of the virtual machine",
+                        "description": "Virtual machine ID",
                         "type": "integer",
                         "example": 17923
                     },
                     "firewall_group_id": {
-                        "description": "ID of the firewall group (if enabled)",
+                        "description": "Active firewall ID, `null` if disabled",
                         "type": "integer",
                         "example": null,
                         "nullable": true
                     },
                     "hostname": {
+                        "description": "Virtual machine hostname",
                         "type": "string",
                         "example": "srv17923.hstgr.cloud"
                     },
                     "state": {
+                        "description": "Virtual machine state",
                         "type": "string",
                         "enum": [
                             "running",
@@ -4216,6 +4247,7 @@
                         "example": "running"
                     },
                     "actions_lock": {
+                        "description": "Virtual machine action lock state",
                         "type": "string",
                         "enum": [
                             "unlocked",
@@ -4224,27 +4256,33 @@
                         "example": "unlocked"
                     },
                     "cpus": {
+                        "description": "CPUs count assigned to virtual machine",
                         "type": "integer",
                         "example": 4
                     },
                     "memory": {
+                        "description": "Memory available to virtual machine (in megabytes)",
                         "type": "integer",
                         "example": 8192
                     },
                     "disk": {
+                        "description": "Virtual machine disk size (in megabytes)",
                         "type": "integer",
                         "example": 51200
                     },
                     "bandwidth": {
+                        "description": "Monthly internet traffic available to virtual machine (in megabytes)",
                         "type": "integer",
                         "example": 1073741824
                     },
                     "ns1": {
+                        "description": "Primary DNS resolver",
                         "type": "string",
                         "example": "1.1.1.1",
                         "nullable": true
                     },
                     "ns2": {
+                        "description": "Secondary DNS resolver",
                         "type": "string",
                         "example": "8.8.8.8",
                         "nullable": true
@@ -4255,7 +4293,8 @@
                                 "$ref": "#/components/schemas/VPS.V1.IPAddress.IPAddressCollection"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "IPv4 address of virtual machine"
                     },
                     "ipv6": {
                         "oneOf": [
@@ -4263,7 +4302,8 @@
                                 "$ref": "#/components/schemas/VPS.V1.IPAddress.IPAddressCollection"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "IPv6 address of virtual machine, `null` if not assigned"
                     },
                     "template": {
                         "oneOf": [
@@ -4271,7 +4311,8 @@
                                 "$ref": "#/components/schemas/VPS.V1.Template.TemplateResource"
                             }
                         ],
-                        "nullable": true
+                        "nullable": true,
+                        "description": "OS template installed in virtual machine"
                     },
                     "created_at": {
                         "type": "string",
