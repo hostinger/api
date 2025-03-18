@@ -3374,14 +3374,17 @@
             "Billing.V1.Catalog.CatalogItemPriceResource": {
                 "properties": {
                     "id": {
+                        "description": "Price item ID",
                         "type": "string",
                         "example": "hostingercom-vps-kvm2-usd-1m"
                     },
                     "name": {
+                        "description": "Price item name",
                         "type": "string",
                         "example": "KVM 2 (billed every month)"
                     },
-                    "currency_code": {
+                    "currency": {
+                        "description": "Currency code",
                         "type": "string",
                         "example": "USD"
                     },
@@ -3391,15 +3394,17 @@
                         "example": 1799
                     },
                     "first_period_price": {
-                        "description": "Price in cents",
+                        "description": "First period price in cents",
                         "type": "integer",
                         "example": 899
                     },
                     "period": {
+                        "description": "Period",
                         "type": "integer",
                         "example": 1
                     },
                     "period_unit": {
+                        "description": "Period unit",
                         "type": "string",
                         "enum": [
                             "month",
@@ -3413,6 +3418,7 @@
             "Billing.V1.Catalog.CatalogItemResource": {
                 "properties": {
                     "id": {
+                        "description": "Catalog item ID",
                         "type": "string",
                         "example": "hostingercom-vps-kvm2"
                     },
@@ -3490,6 +3496,7 @@
             "Billing.V1.Order.OrderResource": {
                 "properties": {
                     "id": {
+                        "description": "Order ID",
                         "type": "integer",
                         "example": 2957086
                     },
@@ -3502,6 +3509,7 @@
                         "example": "completed"
                     },
                     "currency": {
+                        "description": "Currency code",
                         "type": "string",
                         "example": "USD"
                     },
@@ -3541,6 +3549,7 @@
             "Billing.V1.Payments.PaymentMethodResource": {
                 "properties": {
                     "id": {
+                        "description": "Payment method ID",
                         "type": "integer",
                         "example": 6523
                     },
@@ -3595,6 +3604,7 @@
             "Billing.V1.Subscription.SubscriptionResource": {
                 "properties": {
                     "id": {
+                        "description": "Subscription ID",
                         "type": "string",
                         "example": "Azz36nUfKX1S1MSF"
                     },
@@ -3696,7 +3706,6 @@
                         "nullable": true
                     },
                     "type": {
-                        "description": "Domain type",
                         "type": "string",
                         "enum": [
                             "free_domain"
@@ -3704,7 +3713,6 @@
                         "example": "free_domain"
                     },
                     "status": {
-                        "description": "Domain registration status",
                         "type": "string",
                         "enum": [
                             "active",
@@ -4231,12 +4239,10 @@
                         "nullable": true
                     },
                     "hostname": {
-                        "description": "Virtual machine hostname",
                         "type": "string",
                         "example": "srv17923.hstgr.cloud"
                     },
                     "state": {
-                        "description": "Virtual machine state",
                         "type": "string",
                         "enum": [
                             "running",
@@ -4247,7 +4253,6 @@
                         "example": "running"
                     },
                     "actions_lock": {
-                        "description": "Virtual machine action lock state",
                         "type": "string",
                         "enum": [
                             "unlocked",

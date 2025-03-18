@@ -20,6 +20,31 @@
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
   - `200` response: added `id`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`: `200` response: added `items`.`id`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
+  - `200` response: added `template`.`description`
+  - `200` response: added `template`.`description`.`description`
+  - `200` response: added `template`.`name`.`description`
+  - `200` response: added `template`.`id`.`description`
+  - `200` response: added `ipv6`.`description`
+  - `200` response: changed `ipv6`.`items`.`ptr`.`description`
+  - `200` response: changed `ipv6`.`items`.`address`.`description`
+  - `200` response: changed `ipv6`.`items`.`id`.`description`
+  - `200` response: added `ipv4`.`description`
+  - `200` response: changed `ipv4`.`items`.`ptr`.`description`
+  - `200` response: changed `ipv4`.`items`.`address`.`description`
+  - `200` response: changed `ipv4`.`items`.`id`.`description`
+  - `200` response: added `ns2`.`description`
+  - `200` response: added `ns1`.`description`
+  - `200` response: added `bandwidth`.`description`
+  - `200` response: added `disk`.`description`
+  - `200` response: added `memory`.`description`
+  - `200` response: added `cpus`.`description`
+  - `200` response: added `actions_lock`.`description`
+  - `200` response: added `state`.`description`
+  - `200` response: added `hostname`.`description`
+  - `200` response: changed `firewall_group_id`.`description`
+  - `200` response: changed `id`.`description`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
@@ -89,6 +114,54 @@
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
   - `200` response: added `id`.`description`
+- `GET` `/api/vps/v1/virtual-machines`:
+  - `200` response: added `items`.`template`.`description`
+  - `200` response: added `items`.`template`.`description`.`description`
+  - `200` response: added `items`.`template`.`name`.`description`
+  - `200` response: added `items`.`template`.`id`.`description`
+  - `200` response: added `items`.`ipv6`.`description`
+  - `200` response: changed `items`.`ipv6`.`items`.`ptr`.`description`
+  - `200` response: changed `items`.`ipv6`.`items`.`address`.`description`
+  - `200` response: changed `items`.`ipv6`.`items`.`id`.`description`
+  - `200` response: added `items`.`ipv4`.`description`
+  - `200` response: changed `items`.`ipv4`.`items`.`ptr`.`description`
+  - `200` response: changed `items`.`ipv4`.`items`.`address`.`description`
+  - `200` response: changed `items`.`ipv4`.`items`.`id`.`description`
+  - `200` response: added `items`.`ns2`.`description`
+  - `200` response: added `items`.`ns1`.`description`
+  - `200` response: added `items`.`bandwidth`.`description`
+  - `200` response: added `items`.`disk`.`description`
+  - `200` response: added `items`.`memory`.`description`
+  - `200` response: added `items`.`cpus`.`description`
+  - `200` response: added `items`.`actions_lock`.`description`
+  - `200` response: added `items`.`state`.`description`
+  - `200` response: added `items`.`hostname`.`description`
+  - `200` response: changed `items`.`firewall_group_id`.`description`
+  - `200` response: changed `items`.`id`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`:
+  - `200` response: added `template`.`description`
+  - `200` response: added `template`.`description`.`description`
+  - `200` response: added `template`.`name`.`description`
+  - `200` response: added `template`.`id`.`description`
+  - `200` response: added `ipv6`.`description`
+  - `200` response: changed `ipv6`.`items`.`ptr`.`description`
+  - `200` response: changed `ipv6`.`items`.`address`.`description`
+  - `200` response: changed `ipv6`.`items`.`id`.`description`
+  - `200` response: added `ipv4`.`description`
+  - `200` response: changed `ipv4`.`items`.`ptr`.`description`
+  - `200` response: changed `ipv4`.`items`.`address`.`description`
+  - `200` response: changed `ipv4`.`items`.`id`.`description`
+  - `200` response: added `ns2`.`description`
+  - `200` response: added `ns1`.`description`
+  - `200` response: added `bandwidth`.`description`
+  - `200` response: added `disk`.`description`
+  - `200` response: added `memory`.`description`
+  - `200` response: added `cpus`.`description`
+  - `200` response: added `actions_lock`.`description`
+  - `200` response: added `state`.`description`
+  - `200` response: added `hostname`.`description`
+  - `200` response: changed `firewall_group_id`.`description`
+  - `200` response: changed `id`.`description`
 - `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
@@ -112,6 +185,22 @@
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
   - `200` response: added `id`.`description`
+- `GET` `/api/vps/v1/templates`:
+  - `200` response: added `items`.`description`.`description`
+  - `200` response: added `items`.`name`.`description`
+  - `200` response: added `items`.`id`.`description`
+- `GET` `/api/vps/v1/templates/{templateId}`:
+  - `200` response: added `description`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/public-keys`:
+  - `200` response: added `key`.`description`
+  - `200` response: added `name`.`description`
+  - `200` response: added `id`.`description`
+- `GET` `/api/vps/v1/public-keys`:
+  - `200` response: added `data`.`items`.`key`.`description`
+  - `200` response: added `data`.`items`.`name`.`description`
+  - `200` response: added `data`.`items`.`id`.`description`
 - `POST` `/api/vps/v1/public-keys/attach/{virtualMachineId}`:
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
@@ -120,13 +209,65 @@
   - `200` response: added `state`.`description`
   - `200` response: added `name`.`description`
   - `200` response: added `id`.`description`
+- `POST` `/api/vps/v1/firewall/{firewallId}/rules`:
+  - `200` response: added `source_detail`.`description`
+  - `200` response: added `source`.`description`
+  - `200` response: changed `port`.`type` to `string`
+  - `200` response: removed `port`.`maximum`
+  - `200` response: removed `port`.`minimum`
+  - `200` response: added `port`.`description`
+  - `200` response: added `protocol`.`description`
+  - `200` response: added `protocol`.`enum`
+  - `200` response: added `action`.`description`
+  - `200` response: changed `id`.`description`
+- `PUT` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
+  - `200` response: added `source_detail`.`description`
+  - `200` response: added `source`.`description`
+  - `200` response: changed `port`.`type` to `string`
+  - `200` response: removed `port`.`maximum`
+  - `200` response: removed `port`.`minimum`
+  - `200` response: added `port`.`description`
+  - `200` response: added `protocol`.`description`
+  - `200` response: added `protocol`.`enum`
+  - `200` response: added `action`.`description`
+  - `200` response: changed `id`.`description`
 - `POST` `/api/vps/v1/firewall`:
+  - `200` response: added `rules`.`items`.`source_detail`.`description`
+  - `200` response: added `rules`.`items`.`source`.`description`
+  - `200` response: changed `rules`.`items`.`port`.`type` to `string`
+  - `200` response: removed `rules`.`items`.`port`.`maximum`
+  - `200` response: removed `rules`.`items`.`port`.`minimum`
+  - `200` response: added `rules`.`items`.`port`.`description`
+  - `200` response: added `rules`.`items`.`protocol`.`description`
+  - `200` response: added `rules`.`items`.`protocol`.`enum`
+  - `200` response: added `rules`.`items`.`action`.`description`
+  - `200` response: changed `rules`.`items`.`id`.`description`
   - `200` response: added `name`.`description`
   - `200` response: changed `id`.`description`
 - `GET` `/api/vps/v1/firewall`:
+  - `200` response: added `data`.`items`.`rules`.`items`.`source_detail`.`description`
+  - `200` response: added `data`.`items`.`rules`.`items`.`source`.`description`
+  - `200` response: changed `data`.`items`.`rules`.`items`.`port`.`type` to `string`
+  - `200` response: removed `data`.`items`.`rules`.`items`.`port`.`maximum`
+  - `200` response: removed `data`.`items`.`rules`.`items`.`port`.`minimum`
+  - `200` response: added `data`.`items`.`rules`.`items`.`port`.`description`
+  - `200` response: added `data`.`items`.`rules`.`items`.`protocol`.`description`
+  - `200` response: added `data`.`items`.`rules`.`items`.`protocol`.`enum`
+  - `200` response: added `data`.`items`.`rules`.`items`.`action`.`description`
+  - `200` response: changed `data`.`items`.`rules`.`items`.`id`.`description`
   - `200` response: added `data`.`items`.`name`.`description`
   - `200` response: changed `data`.`items`.`id`.`description`
 - `GET` `/api/vps/v1/firewall/{firewallId}`:
+  - `200` response: added `rules`.`items`.`source_detail`.`description`
+  - `200` response: added `rules`.`items`.`source`.`description`
+  - `200` response: changed `rules`.`items`.`port`.`type` to `string`
+  - `200` response: removed `rules`.`items`.`port`.`maximum`
+  - `200` response: removed `rules`.`items`.`port`.`minimum`
+  - `200` response: added `rules`.`items`.`port`.`description`
+  - `200` response: added `rules`.`items`.`protocol`.`description`
+  - `200` response: added `rules`.`items`.`protocol`.`enum`
+  - `200` response: added `rules`.`items`.`action`.`description`
+  - `200` response: changed `rules`.`items`.`id`.`description`
   - `200` response: added `name`.`description`
   - `200` response: changed `id`.`description`
 - `POST` `/api/vps/v1/firewall/{firewallId}/deactivate/{virtualMachineId}`:
@@ -141,5 +282,10 @@
   - `200` response: added `items`.`continent`.`description`
   - `200` response: added `items`.`city`.`description`
   - `200` response: added `items`.`location`.`description`
+  - `200` response: added `items`.`name`.`description`
+  - `200` response: added `items`.`id`.`description`
+- `GET` `/api/domains/v1/portfolio`:
+  - `200` response: added `items`.`status`.`description`
+  - `200` response: added `items`.`type`.`description`
   - `200` response: added `items`.`name`.`description`
   - `200` response: added `items`.`id`.`description`
