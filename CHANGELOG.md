@@ -1,4 +1,4 @@
-# Hostinger Public API
+# Hostinger API
 ### Tue Mar 18 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - `200` response: added `state`.`description`
