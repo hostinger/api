@@ -1,4 +1,10 @@
 # Hostinger API
+### Wed Mar 19 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `200` response: added support for `template`.`documentation` property
+- `GET` `/api/vps/v1/virtual-machines`: `200` response: added support for `items`.`template`.`documentation` property
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`: `200` response: added support for `template`.`documentation` property
+- `GET` `/api/vps/v1/templates`: `200` response: added support for `items`.`documentation` property
+- `GET` `/api/vps/v1/templates/{templateId}`: `200` response: added support for `documentation` property
 ### Tue Mar 18 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - `200` response: added `state`.`description`

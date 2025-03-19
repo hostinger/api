@@ -3708,9 +3708,10 @@
                     "type": {
                         "type": "string",
                         "enum": [
+                            "domain",
                             "free_domain"
                         ],
-                        "example": "free_domain"
+                        "example": "domain"
                     },
                     "status": {
                         "type": "string",
