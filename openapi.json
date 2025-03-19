@@ -4214,6 +4214,12 @@
                         "description": "Template description",
                         "type": "string",
                         "example": "Ubuntu 20.04 LTS"
+                    },
+                    "documentation": {
+                        "description": "Link to official OS documentation",
+                        "type": "string",
+                        "example": "https://docs.ubuntu.com",
+                        "nullable": true
                     }
                 },
                 "type": "object"
