@@ -10,10 +10,10 @@ The Hostinger API allows you to interact with Hostinger's services programmatica
 You can manage your Hostinger resources through this API.
 
 ## Documentation
-For detailed information on how to use the API, please refer to the [API Documentation](https://developers.hostinger.com).
+For detailed information on how to use the API, please refer to the [API documentation](https://developers.hostinger.com).
 
 ## Change log
-For information on the latest changes to the API, please refer to the [Change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).
+For information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).
 
 ## Getting Started
 To get started with the Hostinger API, follow these steps:
@@ -23,7 +23,7 @@ To get started with the Hostinger API, follow these steps:
 - Refer to the [API Documentation](https://developers.hostinger.com) for usage instructions.
 
 ## Issues
-If you encounter any issues or have any questions, please check our [Issues Page](https://github.com/hostinger/api/issues) to see if it has already been reported. If not, feel free to open a new issue.
+If you encounter any issues or have any questions, please check our [issues page](https://github.com/hostinger/api/issues) to see if it has already been reported. If not, feel free to open a new issue.
 
 ## Discussions
-Join the conversation and share your thoughts on the Hostinger API in our [Discussions Page](https://github.com/hostinger/api/discussions).
+Join the conversation and share your thoughts on the Hostinger API in our [discussions page](https://github.com/hostinger/api/discussions).
