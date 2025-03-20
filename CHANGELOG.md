@@ -1,4 +1,8 @@
 # Hostinger API
+### Thu Mar 20 2025
+- `GET` `/api/billing/v1/payment-methods`: `200` response: changed `description`
+- added `POST` `/api/billing/v1/payment-methods/{paymentMethodId}`
+- added `DELETE` `/api/billing/v1/payment-methods/{paymentMethodId}`
 ### Wed Mar 19 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `200` response: added support for `template`.`documentation` property
 - `GET` `/api/vps/v1/virtual-machines`: `200` response: added support for `items`.`template`.`documentation` property
