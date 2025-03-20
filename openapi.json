@@ -115,6 +115,106 @@
                 }
             }
         },
+        "/api/billing/v1/payment-methods/{paymentMethodId}": {
+            "post": {
+                "tags": [
+                    "Billing: Payment methods"
+                ],
+                "summary": "Set default payment method",
+                "description": "This endpoint sets default payment method for your account.",
+                "operationId": "d98793be49485b2e81418acee876a2b2",
+                "parameters": [
+                    {
+                        "name": "paymentMethodId",
+                        "in": "path",
+                        "description": "Payment method ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Billing: Payment methods"
+                ],
+                "summary": "Delete payment method",
+                "description": "This endpoint deletes a payment method from your account.",
+                "operationId": "adee2ce68c65ffee19f18512d6b3ffec",
+                "parameters": [
+                    {
+                        "name": "paymentMethodId",
+                        "in": "path",
+                        "description": "Payment method ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/billing/v1/payment-methods": {
             "get": {
                 "tags": [
@@ -122,14 +222,14 @@
                 ],
                 "summary": "Get payment method list",
                 "description": "This endpoint retrieves a list of available payment methods that can be used for placing new orders.\n\nIf you want to add new payment method, please use [hPanel](https://hpanel.hostinger.com/billing/payment-methods).",
-                "operationId": "88c9df324b2eb8118680f2ea8953648e",
+                "operationId": "60e0599ec592cb9562478e6aa686a131",
                 "responses": {
                     "200": {
                         "description": "Success response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Billing.V1.Payments.PaymentMethodCollection"
+                                    "$ref": "#/components/schemas/Billing.V1.PaymentMethod.PaymentMethodCollection"
                                 }
                             }
                         }
@@ -3539,14 +3639,14 @@
                 },
                 "type": "object"
             },
-            "Billing.V1.Payments.PaymentMethodCollection": {
-                "description": "Array of [`Billing.V1.Payments.PaymentMethodResource`](#model/billingv1paymentspaymentmethodresource)",
+            "Billing.V1.PaymentMethod.PaymentMethodCollection": {
+                "description": "Array of [`Billing.V1.PaymentMethod.PaymentMethodResource`](#model/billingv1paymentmethodpaymentmethodresource)",
                 "type": "array",
                 "items": {
-                    "$ref": "#/components/schemas/Billing.V1.Payments.PaymentMethodResource"
+                    "$ref": "#/components/schemas/Billing.V1.PaymentMethod.PaymentMethodResource"
                 }
             },
-            "Billing.V1.Payments.PaymentMethodResource": {
+            "Billing.V1.PaymentMethod.PaymentMethodResource": {
                 "properties": {
                     "id": {
                         "description": "Payment method ID",
