@@ -2782,7 +2782,7 @@
                 "tags": [
                     "VPS: Snapshots"
                 ],
-                "summary": "Get snapshots list",
+                "summary": "Get snapshot",
                 "description": "This endpoint retrieves a snapshot for a specified virtual machine.",
                 "operationId": "4f2f01fad531507b29d327f9487593ae",
                 "parameters": [
