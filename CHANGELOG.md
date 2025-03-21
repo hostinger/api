@@ -1,4 +1,13 @@
 # Hostinger API
+### Fri Mar 21 2025
+- removed `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`
+- removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`
+- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`
+- removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots/restore`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`
+- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot/restore`
 ### Thu Mar 20 2025
 - `GET` `/api/billing/v1/payment-methods`: `200` response: changed `description`
 - added `POST` `/api/billing/v1/payment-methods/{paymentMethodId}`
