@@ -10,6 +10,12 @@
         },
         "version": "0.0.1-beta"
     },
+    "servers": [
+        {
+            "url": "https://developers.hostinger.com",
+            "description": "Production API Server"
+        }
+    ],
     "paths": {
         "/api/billing/v1/catalog": {
             "get": {
