@@ -2777,14 +2777,14 @@
                 }
             }
         },
-        "/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots": {
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot": {
             "get": {
                 "tags": [
                     "VPS: Snapshots"
                 ],
                 "summary": "Get snapshots list",
-                "description": "This endpoint retrieves a list of snapshots for a specified virtual machine.\nCurrently, only one snapshot can be created per virtual machine.",
-                "operationId": "2e5405f47949cebd2eff107ea64729a5",
+                "description": "This endpoint retrieves a snapshot for a specified virtual machine.",
+                "operationId": "4f2f01fad531507b29d327f9487593ae",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2800,7 +2800,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/VPS.V1.Snapshot.SnapshotCollection"
+                                    "$ref": "#/components/schemas/VPS.V1.Snapshot.SnapshotResource"
                                 }
                             }
                         }
@@ -2833,7 +2833,7 @@
                 ],
                 "summary": "Create snapshot",
                 "description": "This endpoint creates a snapshot of a specified virtual machine. \nA snapshot captures the state and data of the virtual machine at a specific point in time, \nallowing users to restore the virtual machine to that state if needed. \nThis operation is useful for backup purposes, system recovery, \nand testing changes without affecting the current state of the virtual machine.\n\n**Creating new snapshot will overwrite the existing snapshot!**",
-                "operationId": "846ef15651b599892511d8ff4506bcc4",
+                "operationId": "9640c22fcf9d2f13c1abfbebfa4af8a8",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2882,7 +2882,7 @@
                 ],
                 "summary": "Delete snapshot",
                 "description": "This endpoint deletes a snapshot of a specified virtual machine.",
-                "operationId": "f2f3505fb6d0a52b5631edec240d6a3f",
+                "operationId": "74183499214c1c2d38ab92c438a02bc9",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2926,14 +2926,14 @@
                 }
             }
         },
-        "/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots/restore": {
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot/restore": {
             "post": {
                 "tags": [
                     "VPS: Snapshots"
                 ],
                 "summary": "Restore snapshot",
                 "description": "This endpoint restores a specified virtual machine to a previous state using a snapshot. \nRestoring from a snapshot allows users to revert the virtual machine to that state, which is useful for system recovery, undoing changes, or testing.",
-                "operationId": "77b51a3d8bc015f4f79745d582fbbe28",
+                "operationId": "5a32cde972132b2300fe6083fa6a84d7",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -4264,13 +4264,6 @@
                     }
                 },
                 "type": "object"
-            },
-            "VPS.V1.Snapshot.SnapshotCollection": {
-                "description": "Array of [`VPS.V1.Snapshot.SnapshotResource`](#model/vpsv1snapshotsnapshotresource)",
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/VPS.V1.Snapshot.SnapshotResource"
-                }
             },
             "VPS.V1.Snapshot.SnapshotResource": {
                 "properties": {
