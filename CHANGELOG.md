@@ -1,5 +1,146 @@
 # Hostinger API
 ### Fri Mar 21 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/start`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
+  - `requestBody`: changed `password`.`format` to `password`
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
+  - `requestBody`: changed `password`.`format` to `password`
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/restart`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall`:
+  - `requestBody`: changed `password`.`format` to `password`
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password`:
+  - `requestBody`: changed `password`.`format` to `password`
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}/restore`:
+  - removed `backupId` path parameter
+  - added `backupId` path parameter
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+  - removed `page` query parameter
+  - added `page` query parameter
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}`:
+  - removed `backupId` path parameter
+  - added `backupId` path parameter
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions`:
+  - removed `page` query parameter
+  - added `page` query parameter
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions/{actionId}`:
+  - removed `actionId` path parameter
+  - added `actionId` path parameter
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `GET` `/api/vps/v1/templates/{templateId}`:
+  - removed `templateId` path parameter
+  - added `templateId` path parameter
+- `GET` `/api/vps/v1/public-keys`:
+  - removed `page` query parameter
+  - added `page` query parameter
+- `DELETE` `/api/vps/v1/public-keys/{publicKeyId}`:
+  - removed `publicKeyId` path parameter
+  - added `publicKeyId` path parameter
+- `POST` `/api/vps/v1/public-keys/attach/{virtualMachineId}`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+- `POST` `/api/vps/v1/firewall/{firewallId}/sync/{virtualMachineId}`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `POST` `/api/vps/v1/firewall/{firewallId}/rules`:
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `DELETE` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
+  - removed `firewallRuleId` path parameter
+  - added `firewallRuleId` path parameter
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `PUT` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
+  - removed `firewallRuleId` path parameter
+  - added `firewallRuleId` path parameter
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `GET` `/api/vps/v1/firewall`:
+  - removed `page` query parameter
+  - added `page` query parameter
+- `DELETE` `/api/vps/v1/firewall/{firewallId}`:
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `GET` `/api/vps/v1/firewall/{firewallId}`:
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `POST` `/api/vps/v1/firewall/{firewallId}/deactivate/{virtualMachineId}`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `POST` `/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}`:
+  - removed `virtualMachineId` path parameter
+  - added `virtualMachineId` path parameter
+  - removed `firewallId` path parameter
+  - added `firewallId` path parameter
+- `DELETE` `/api/billing/v1/payment-methods/{paymentMethodId}`:
+  - removed `paymentMethodId` path parameter
+  - added `paymentMethodId` path parameter
+- `POST` `/api/billing/v1/payment-methods/{paymentMethodId}`:
+  - removed `paymentMethodId` path parameter
+  - added `paymentMethodId` path parameter
 - removed `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`
 - removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`
 - removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshots`
