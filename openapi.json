@@ -129,7 +129,10 @@
                         "in": "path",
                         "description": "Payment method ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 9693613
+                        }
                     }
                 ],
                 "responses": {
@@ -178,7 +181,10 @@
                         "in": "path",
                         "description": "Payment method ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 9693613
+                        }
                     }
                 ],
                 "responses": {
@@ -397,14 +403,20 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     },
                     {
                         "name": "virtualMachineId",
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -465,14 +477,20 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     },
                     {
                         "name": "virtualMachineId",
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -533,7 +551,10 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     }
                 ],
                 "responses": {
@@ -582,7 +603,10 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     }
                 ],
                 "responses": {
@@ -633,7 +657,10 @@
                         "in": "query",
                         "description": "Page number",
                         "required": false,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -766,14 +793,20 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     },
                     {
                         "name": "firewallRuleId",
                         "in": "path",
                         "description": "Firewall Rule ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 8941182
+                        }
                     }
                 ],
                 "responses": {
@@ -822,14 +855,20 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     },
                     {
                         "name": "firewallRuleId",
                         "in": "path",
                         "description": "Firewall Rule ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 8941182
+                        }
                     }
                 ],
                 "responses": {
@@ -880,7 +919,10 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     }
                 ],
                 "requestBody": {
@@ -951,14 +993,20 @@
                         "in": "path",
                         "description": "Firewall ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 9449049
+                        }
                     },
                     {
                         "name": "virtualMachineId",
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -1019,7 +1067,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -1090,7 +1141,10 @@
                         "in": "path",
                         "description": "Public Key ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 6672861
+                        }
                     }
                 ],
                 "responses": {
@@ -1141,7 +1195,10 @@
                         "in": "query",
                         "description": "Page number",
                         "required": false,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -1274,7 +1331,10 @@
                         "in": "path",
                         "description": "Template ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 2868928
+                        }
                     }
                 ],
                 "responses": {
@@ -1367,14 +1427,20 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     },
                     {
                         "name": "actionId",
                         "in": "path",
                         "description": "Action ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 8123712
+                        }
                     }
                 ],
                 "responses": {
@@ -1425,14 +1491,20 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     },
                     {
                         "name": "page",
                         "in": "query",
                         "description": "Page number",
                         "required": false,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -1505,14 +1577,20 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     },
                     {
                         "name": "backupId",
                         "in": "path",
                         "description": "Backup ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 8676502
+                        }
                     }
                 ],
                 "responses": {
@@ -1563,14 +1641,20 @@
                         "in": "query",
                         "description": "Page number",
                         "required": false,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     },
                     {
                         "name": "virtualMachineId",
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -1643,14 +1727,20 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     },
                     {
                         "name": "backupId",
                         "in": "path",
                         "description": "Backup ID",
                         "required": true,
-                        "example": 428
+                        "schema": {
+                            "type": "integer",
+                            "example": 8676502
+                        }
                     }
                 ],
                 "responses": {
@@ -1701,7 +1791,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -1770,7 +1863,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -1821,7 +1917,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -1914,7 +2013,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -1973,7 +2075,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2032,7 +2137,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2093,7 +2201,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2165,7 +2276,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2236,7 +2350,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2285,7 +2402,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2336,7 +2456,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2407,7 +2530,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2476,7 +2602,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2527,7 +2656,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2598,7 +2730,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2649,7 +2784,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2720,7 +2858,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "requestBody": {
@@ -2791,7 +2932,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2840,7 +2984,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2889,7 +3036,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2940,7 +3090,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -2991,7 +3144,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -3042,7 +3198,10 @@
                         "in": "path",
                         "description": "Virtual Machine ID",
                         "required": true,
-                        "example": 1
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
                     }
                 ],
                 "responses": {
@@ -3336,7 +3495,7 @@
                     "password": {
                         "description": "Panel password",
                         "type": "string",
-                        "format": "one upper + one lower + one digit",
+                        "format": "password",
                         "minLength": 8,
                         "example": "oMeNRustosIO"
                     }
@@ -3364,7 +3523,7 @@
                 "properties": {
                     "password": {
                         "type": "string",
-                        "format": "one upper + one lower + one digit",
+                        "format": "password",
                         "minLength": 8,
                         "example": "oMeNRustosIO"
                     },
@@ -3384,7 +3543,7 @@
                     "password": {
                         "description": "Root password",
                         "type": "string",
-                        "format": "one upper + one lower + one digit",
+                        "format": "password",
                         "minLength": 8,
                         "example": "oMeNRustosIO"
                     }
@@ -3410,7 +3569,7 @@
                     },
                     "password": {
                         "type": "string",
-                        "format": "one upper + one lower + one digit",
+                        "format": "password",
                         "minLength": 8,
                         "example": "oMeNRustosIO"
                     },
