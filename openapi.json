@@ -3692,10 +3692,13 @@
                         "description": "Period unit",
                         "type": "string",
                         "enum": [
+                            "day",
+                            "week",
                             "month",
-                            "year"
+                            "year",
+                            "none"
                         ],
-                        "example": "month"
+                        "example": "day"
                     }
                 },
                 "type": "object"
@@ -3789,7 +3792,14 @@
                         "type": "string",
                         "enum": [
                             "completed",
-                            "pending"
+                            "pending",
+                            "processing",
+                            "failed",
+                            "refunded",
+                            "cancelled",
+                            "awaiting_payment",
+                            "payment_initiated",
+                            "fraud_refund"
                         ],
                         "example": "completed"
                     },
@@ -3850,7 +3860,8 @@
                         "type": "string",
                         "enum": [
                             "card",
-                            "paypal"
+                            "paypal",
+                            "googlepay"
                         ],
                         "example": "card"
                     },
@@ -3901,7 +3912,12 @@
                         "type": "string",
                         "enum": [
                             "active",
-                            "not_renewing"
+                            "paused",
+                            "cancelled",
+                            "not_renewing",
+                            "transferred",
+                            "in_trial",
+                            "future"
                         ],
                         "example": "active"
                     },
@@ -3911,11 +3927,7 @@
                     },
                     "billing_period_unit": {
                         "type": "string",
-                        "enum": [
-                            "month",
-                            "year"
-                        ],
-                        "example": "month"
+                        "example": "day"
                     },
                     "currency_code": {
                         "type": "string",
