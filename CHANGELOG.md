@@ -10,7 +10,7 @@
   - `200` response: added support for new value `transferred` on enum `items`.`status`
   - `200` response: added support for new value `in_trial` on enum `items`.`status`
   - `200` response: added support for new value `future` on enum `items`.`status`
-- `GET` `/api/billing/v1/payment-methods`: `200` response: added support for new value `googlepay` on enum `items`.`payment_method`
+- `GET` `/api/billing/v1/payment-methods`: `200` response: removed `items`.`payment_method`.`enum`
 - `POST` `/api/billing/v1/orders`:
   - `200` response: added support for new value `processing` on enum `status`
   - `200` response: added support for new value `failed` on enum `status`
