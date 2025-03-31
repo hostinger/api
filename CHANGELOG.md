@@ -3,6 +3,26 @@
 - `PUT` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
   - `requestBody`: added 
   - `422` response: added 
+- `GET` `/api/billing/v1/subscriptions`:
+  - `200` response: removed `items`.`billing_period_unit`.`enum`
+  - `200` response: added support for new value `paused` on enum `items`.`status`
+  - `200` response: added support for new value `cancelled` on enum `items`.`status`
+  - `200` response: added support for new value `transferred` on enum `items`.`status`
+  - `200` response: added support for new value `in_trial` on enum `items`.`status`
+  - `200` response: added support for new value `future` on enum `items`.`status`
+- `GET` `/api/billing/v1/payment-methods`: `200` response: added support for new value `googlepay` on enum `items`.`payment_method`
+- `POST` `/api/billing/v1/orders`:
+  - `200` response: added support for new value `processing` on enum `status`
+  - `200` response: added support for new value `failed` on enum `status`
+  - `200` response: added support for new value `refunded` on enum `status`
+  - `200` response: added support for new value `cancelled` on enum `status`
+  - `200` response: added support for new value `awaiting_payment` on enum `status`
+  - `200` response: added support for new value `payment_initiated` on enum `status`
+  - `200` response: added support for new value `fraud_refund` on enum `status`
+- `GET` `/api/billing/v1/catalog`:
+  - `200` response: added support for new value `day` on enum `items`.`prices`.`items`.`period_unit`
+  - `200` response: added support for new value `week` on enum `items`.`prices`.`items`.`period_unit`
+  - `200` response: added support for new value `none` on enum `items`.`prices`.`items`.`period_unit`
 ### Fri Mar 21 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - removed `virtualMachineId` path parameter
