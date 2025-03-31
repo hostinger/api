@@ -815,6 +815,16 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.Firewall.Rules.StoreRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -822,6 +832,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallRuleResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
                                 }
                             }
                         }
