@@ -1,4 +1,8 @@
 # Hostinger API
+### Mon Mar 31 2025
+- `PUT` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
+  - `requestBody`: added 
+  - `422` response: added 
 ### Fri Mar 21 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - removed `virtualMachineId` path parameter
