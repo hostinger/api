@@ -3858,11 +3858,6 @@
                     },
                     "payment_method": {
                         "type": "string",
-                        "enum": [
-                            "card",
-                            "paypal",
-                            "googlepay"
-                        ],
                         "example": "card"
                     },
                     "is_default": {
