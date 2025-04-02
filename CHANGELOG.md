@@ -1,4 +1,12 @@
 # Hostinger API
+### Wed Apr 02 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: added support for `post_install_script_id` property
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall`: `requestBody`: added support for `post_install_script_id` property
+- added `GET` `/api/vps/v1/post-install-scripts/{postInstallScriptId}`
+- added `PUT` `/api/vps/v1/post-install-scripts/{postInstallScriptId}`
+- added `DELETE` `/api/vps/v1/post-install-scripts/{postInstallScriptId}`
+- added `GET` `/api/vps/v1/post-install-scripts`
+- added `POST` `/api/vps/v1/post-install-scripts`
 ### Mon Mar 31 2025
 - `PUT` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
   - `requestBody`: added 
