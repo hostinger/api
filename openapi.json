@@ -1079,6 +1079,320 @@
                 }
             }
         },
+        "/api/vps/v1/post-install-scripts/{postInstallScriptId}": {
+            "get": {
+                "tags": [
+                    "VPS: Post-install scripts"
+                ],
+                "summary": "Get post-install script",
+                "description": "This endpoint retrieves post-install script by its ID.",
+                "operationId": "eec9411b2a39f7d1c3ca0c2a43470fa6",
+                "parameters": [
+                    {
+                        "name": "postInstallScriptId",
+                        "in": "path",
+                        "description": "Post-install script ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 9568314
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.PostInstallScript.PostInstallScriptResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "VPS: Post-install scripts"
+                ],
+                "summary": "Update post-install script",
+                "description": "This endpoint updates a specific post-install script.",
+                "operationId": "bd5a9ef34deabf1b0461b51e87969bda",
+                "parameters": [
+                    {
+                        "name": "postInstallScriptId",
+                        "in": "path",
+                        "description": "Post-install script ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 9568314
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.PostInstallScript.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.PostInstallScript.PostInstallScriptResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: Post-install scripts"
+                ],
+                "summary": "Delete a post-install script",
+                "description": "This endpoint deletes a post-install script from your account. ",
+                "operationId": "d0781dbc1cb9f83e145ed3464782ccf8",
+                "parameters": [
+                    {
+                        "name": "postInstallScriptId",
+                        "in": "path",
+                        "description": "Post-install script ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 9568314
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/post-install-scripts": {
+            "get": {
+                "tags": [
+                    "VPS: Post-install scripts"
+                ],
+                "summary": "Get post-install script list",
+                "description": "This endpoint retrieves a list of post-install scripts associated with your account.",
+                "operationId": "30ec3b2bceaedd5302e45980d14c0c51",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/VPS.V1.PostInstallScript.PostInstallScriptCollection"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VPS: Post-install scripts"
+                ],
+                "summary": "Create post-install script",
+                "description": "This endpoint allows you to add a new post-install script to your account, \nwhich can then be used run after the installation of a virtual machine instance.\n\nThe script contents will be saved to file `/root/post_install` with executable attribute set and will be executed once virtual machine is installed.\nThe output of the script will be redirected to `/root/post_install.log`. Maximum script size is 48KB. ",
+                "operationId": "079013cf3e5c086f6858df6062474af7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.PostInstallScript.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.PostInstallScript.PostInstallScriptResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/vps/v1/public-keys/attach/{virtualMachineId}": {
             "post": {
                 "tags": [
@@ -3430,6 +3744,25 @@
                 },
                 "type": "object"
             },
+            "VPS.V1.PostInstallScript.StoreRequest": {
+                "required": [
+                    "name",
+                    "content"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Name of the script",
+                        "type": "string",
+                        "example": "My Script"
+                    },
+                    "content": {
+                        "description": "Content of the script",
+                        "type": "string",
+                        "example": "#!/bin/bash\n\necho 'Hello, World!'"
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.PublicKey.AttachRequest": {
                 "required": [
                     "ids"
@@ -3553,6 +3886,11 @@
                         "minLength": 8,
                         "example": "oMeNRustosIO"
                     },
+                    "post_install_script_id": {
+                        "description": "Post-install script ID",
+                        "type": "integer",
+                        "example": 6324
+                    },
                     "template_id": {
                         "description": "Template ID",
                         "type": "integer",
@@ -3591,7 +3929,12 @@
                     "data_center_id": {
                         "description": "Data center ID",
                         "type": "integer",
-                        "example": 1130
+                        "example": 19
+                    },
+                    "post_install_script_id": {
+                        "description": "Post-install script ID",
+                        "type": "integer",
+                        "example": 6324
                     },
                     "password": {
                         "type": "string",
@@ -4430,6 +4773,43 @@
                 },
                 "type": "object"
             },
+            "VPS.V1.PostInstallScript.PostInstallScriptCollection": {
+                "description": "Array of [`VPS.V1.PostInstallScript.PostInstallScriptResource`](#model/vpsv1postinstallscriptpostinstallscriptresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.PostInstallScript.PostInstallScriptResource"
+                }
+            },
+            "VPS.V1.PostInstallScript.PostInstallScriptResource": {
+                "properties": {
+                    "id": {
+                        "description": "Post-install script ID",
+                        "type": "integer",
+                        "example": 325
+                    },
+                    "name": {
+                        "description": "Name of the script",
+                        "type": "string",
+                        "example": "My Setup Script"
+                    },
+                    "content": {
+                        "description": "Content of the script",
+                        "type": "string",
+                        "example": "#!/bin/bash\\napt-get update\\napt-get install -y nginx"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-19T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.PublicKey.PublicKeyCollection": {
                 "description": "Array of [`VPS.V1.PublicKey.PublicKeyResource`](#model/vpsv1publickeypublickeyresource)",
                 "type": "array",
@@ -4670,6 +5050,11 @@
             "x-displayName": "Firewall"
         },
         {
+            "name": "VPS: Post-install scripts",
+            "description": "This category allows you to create, update, delete, and retrieve scripts that can be used for automated tasks after the operating system installation. Use case includes setting up software, configuring settings, or running custom commands.",
+            "x-displayName": "Post-install scripts"
+        },
+        {
             "name": "VPS: Public Keys",
             "description": "Manage SSH keys for secure access. This category covers adding new public keys, attaching them to virtual machines, retrieving key lists, and deleting keys.",
             "x-displayName": "Public Keys"
@@ -4741,6 +5126,7 @@
                 "VPS: Firewall",
                 "VPS: Malware scanner",
                 "VPS: OS Templates",
+                "VPS: Post-install scripts",
                 "VPS: Public Keys",
                 "VPS: Recovery",
                 "VPS: Snapshots",
