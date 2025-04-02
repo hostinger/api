@@ -1337,7 +1337,7 @@
                     "VPS: Post-install scripts"
                 ],
                 "summary": "Create post-install script",
-                "description": "This endpoint allows you to add a new post-install script to your account, \nwhich can then be used run after the installation of a virtual machine instance.\n\nThe script contents will be saved to file `/root/post_install` with executable attribute set and will be executed once virtual machine is installed.\nThe output of the script will be redirected to `/root/post_install.log`. Maximum script size is 48KB. ",
+                "description": "This endpoint allows you to add a new post-install script to your account, \nwhich can then be used run after the installation of a virtual machine instance.\n\nThe script contents will be saved to the file `/post_install` with executable attribute set and will be executed once virtual machine is installed.\nThe output of the script will be redirected to `/post_install.log`. Maximum script size is 48KB. ",
                 "operationId": "079013cf3e5c086f6858df6062474af7",
                 "requestBody": {
                     "required": true,
