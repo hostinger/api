@@ -805,7 +805,7 @@
                         }
                     },
                     {
-                        "name": "firewallRuleId",
+                        "name": "ruleId",
                         "in": "path",
                         "description": "Firewall Rule ID",
                         "required": true,
@@ -887,7 +887,7 @@
                         }
                     },
                     {
-                        "name": "firewallRuleId",
+                        "name": "ruleId",
                         "in": "path",
                         "description": "Firewall Rule ID",
                         "required": true,
