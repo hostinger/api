@@ -1,4 +1,11 @@
 # Hostinger API
+### Mon Apr 07 2025
+- `DELETE` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
+  - removed `firewallRuleId` path parameter
+  - added `ruleId` path parameter
+- `PUT` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
+  - removed `firewallRuleId` path parameter
+  - added `ruleId` path parameter
 ### Wed Apr 02 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: added support for `post_install_script_id` property
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall`: `requestBody`: added support for `post_install_script_id` property
