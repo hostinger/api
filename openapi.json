@@ -2787,7 +2787,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Set panel password",
-                "description": "This endpoint sets the panel password for a specified virtual machine. \nIf virtual machine does not use panel OS, the request will still be processed without any effect.\nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall).",
+                "description": "This endpoint sets the panel password for a specified virtual machine. \nIf virtual machine does not use panel OS, the request will still be processed without any effect.\nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).",
                 "operationId": "VPS_setPanelPasswordV1",
                 "parameters": [
                     {
@@ -2981,7 +2981,7 @@
                 }
             }
         },
-        "/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall": {
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/recreate": {
             "post": {
                 "tags": [
                     "VPS: Virtual machine"
@@ -3006,7 +3006,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.ReinstallRequest"
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.RecreateRequest"
                             }
                         }
                     }
@@ -3115,7 +3115,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Set root password",
-                "description": "This endpoint sets the root password for a specified virtual machine. \nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall).",
+                "description": "This endpoint sets the root password for a specified virtual machine. \nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).",
                 "operationId": "VPS_setRootPasswordV1",
                 "parameters": [
                     {
@@ -3873,7 +3873,7 @@
                 },
                 "type": "object"
             },
-            "VPS.V1.VirtualMachine.ReinstallRequest": {
+            "VPS.V1.VirtualMachine.RecreateRequest": {
                 "required": [
                     "password",
                     "template_id"
@@ -5075,7 +5075,7 @@
         },
         {
             "name": "VPS: Virtual machine",
-            "description": "Core virtual machine management functionality. Endpoints in this category let you retrieve machine details, configure settings (hostname, nameservers, passwords), and perform operations like start, stop, restart, or reinstall.",
+            "description": "Core virtual machine management functionality. Endpoints in this category let you retrieve machine details, configure settings (hostname, nameservers, passwords), and perform operations like start, stop, restart, or recreate.",
             "x-displayName": "Virtual machine"
         },
         {
