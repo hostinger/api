@@ -1,4 +1,7 @@
 # Hostinger API
+### Tue Apr 08 2025
+- removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`
 ### Mon Apr 07 2025
 - `DELETE` `/api/vps/v1/firewall/{firewallId}/rules/{ruleId}`:
   - removed `firewallRuleId` path parameter
