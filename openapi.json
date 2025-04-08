@@ -4130,6 +4130,11 @@
                         "type": "integer",
                         "example": 2957086
                     },
+                    "subscription_id": {
+                        "description": "Subscription ID",
+                        "type": "string",
+                        "example": "Azz353Uhl1xC54pR0"
+                    },
                     "status": {
                         "type": "string",
                         "enum": [
@@ -4907,6 +4912,18 @@
                         "description": "Active firewall ID, `null` if disabled",
                         "type": "integer",
                         "example": null,
+                        "nullable": true
+                    },
+                    "subscription_id": {
+                        "description": "Subscription ID",
+                        "type": "string",
+                        "example": "Azz353Uhl1xC54pR0",
+                        "nullable": true
+                    },
+                    "plan": {
+                        "description": "VPS plan name",
+                        "type": "string",
+                        "example": "KVM 4",
                         "nullable": true
                     },
                     "hostname": {
