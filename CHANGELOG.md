@@ -1,5 +1,15 @@
 # Hostinger API
 ### Tue Apr 08 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
+  - `200` response: added support for `subscription_id` property
+  - `200` response: added support for `plan` property
+- `GET` `/api/vps/v1/virtual-machines`:
+  - `200` response: added support for `items`.`subscription_id` property
+  - `200` response: added support for `items`.`plan` property
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`:
+  - `200` response: added support for `subscription_id` property
+  - `200` response: added support for `plan` property
+- `POST` `/api/billing/v1/orders`: `200` response: added support for `subscription_id` property
 - removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall`
 - added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`
 ### Mon Apr 07 2025
