@@ -5,8 +5,7 @@
         "description": "> [!caution]\n> Currently, this API is in beta stage, meaning that breaking changes, while unlikely, might be introduced.\n> If you encounter any issues or have any feedback, please create an issue on the [Github Repository](https://github.com/hostinger/api/issues).\n# Overview\nThe Hostinger API provides a comprehensive set of endpoints that allow developers to interact with Hostinger's services programmatically. \nThis API enables you to manage various aspects of your Hostinger account.\n\nThe Hostinger API is a (mostly) RESTful API that uses standard HTTP methods and status codes.\n# Authentication\nThe Hostinger API uses tokens for authentication. To authenticate your requests, you need to include a valid bearer token in the Authorization header of your HTTP requests:\n```yaml\nAuthorization: Bearer YOUR_API_TOKEN\n```\nAPI tokens for individual users can be created and managed from the [VPS page](https://hpanel.hostinger.com/vps) of the Hostinger Panel.\nTokens will have same permissions as the owning user. Optionally, tokens can be set to expire after a certain period of time.\n# Rate Limiting\nTo ensure fair usage and prevent abuse, the API enforces rate limits on the number of requests that can be made within a certain time period. \nIf you exceed the rate limit, you will receive a 429 Too Many Requests response. Rate limit headers are included in the response to help you manage your requests.\nYour IP address might get temporarily blocked if you exceed the rate limit multiple times.\n# Parameters\nAll requests sent to API must have the content type `application/json`. `POST`, `PUT`, `PATCH` methods may include a JSON object in the request body. Documentation provides required structure and examples of the object.\nSome endpoints require path parameters. These parameters are included in the URL path and are marked with curly braces.\n# Pagination\nSome endpoints return a large number of items. To make these responses more manageable, the API uses pagination.\nBy default, the API returns 50 items per page. \n \n The page number can be specified using the `page` query parameter, for example: `/api/vps/v1/public-keys?page=2`\n# Errors\nThe Hostinger API uses standard HTTP status codes to indicate the success or failure of a request.\nIn case of an error, the API will return a JSON response with an `error` field, containing a human-readable error message.\nError responses also contain a `correlation_id` field which can be used to identify the request in case you need to contact support.\n# Change log\nFor information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).\n# Support            \nIf you have any questions, feedback or feature requests, please create an [issue](https://github.com/hostinger/api/issues) or [discussion](https://github.com/hostinger/api/discussions) on the repository.\n\nFor any support take a look at our [Github Repository](https://github.com/hostinger/api/), dedicated to the Hostinger API.",
         "contact": {
             "name": "Hostinger",
-            "url": "https://www.hostinger.com",
-            "email": ""
+            "url": "https://www.hostinger.com"
         },
         "version": "0.0.1-beta"
     },
@@ -24,7 +23,7 @@
                 ],
                 "summary": "Get catalog item list",
                 "description": "This endpoint retrieves a list of catalog items available for order. \n\nPrices in catalog items is displayed as cents (without floating point), e.g: float `17.99` is displayed as integer `1799`.",
-                "operationId": "getBillingV1CatalogItemList",
+                "operationId": "billing_getCatalogItemListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -66,7 +65,7 @@
                 ],
                 "summary": "Create new service order",
                 "description": "This endpoint creates a new service order. \n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatically renewal.",
-                "operationId": "createBillingV1NewServiceOrder",
+                "operationId": "billing_createNewServiceOrderV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -128,7 +127,7 @@
                 ],
                 "summary": "Set default payment method",
                 "description": "This endpoint sets default payment method for your account.",
-                "operationId": "setBillingV1DefaultPaymentMethod",
+                "operationId": "billing_setDefaultPaymentMethodV1",
                 "parameters": [
                     {
                         "name": "paymentMethodId",
@@ -180,7 +179,7 @@
                 ],
                 "summary": "Delete payment method",
                 "description": "This endpoint deletes a payment method from your account.",
-                "operationId": "deleteBillingV1PaymentMethod",
+                "operationId": "billing_deletePaymentMethodV1",
                 "parameters": [
                     {
                         "name": "paymentMethodId",
@@ -234,7 +233,7 @@
                 ],
                 "summary": "Get payment method list",
                 "description": "This endpoint retrieves a list of available payment methods that can be used for placing new orders.\n\nIf you want to add new payment method, please use [hPanel](https://hpanel.hostinger.com/billing/payment-methods).",
-                "operationId": "getBillingV1PaymentMethodList",
+                "operationId": "billing_getPaymentMethodListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -276,7 +275,7 @@
                 ],
                 "summary": "Get subscription list",
                 "description": "This endpoint retrieves a list of all subscriptions associated with your account.",
-                "operationId": "getBillingV1SubscriptionList",
+                "operationId": "billing_getSubscriptionListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -318,7 +317,7 @@
                 ],
                 "summary": "Get domain list",
                 "description": "This endpoint retrieves a list of all domains associated with your account.",
-                "operationId": "getDomainsV1DomainList",
+                "operationId": "domains_getDomainListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -360,7 +359,7 @@
                 ],
                 "summary": "Get data centers list",
                 "description": "This endpoint retrieves a list of all data centers available.",
-                "operationId": "getVPSV1DataCentersList",
+                "operationId": "VPS_getDataCentersListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -402,7 +401,7 @@
                 ],
                 "summary": "Activate firewall",
                 "description": "This endpoint activates a firewall for a specified virtual machine. \n\nOnly one firewall can be active for a virtual machine at a time.",
-                "operationId": "activateVPSV1Firewall",
+                "operationId": "VPS_activateFirewallV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -476,7 +475,7 @@
                 ],
                 "summary": "Deactivate firewall",
                 "description": "This endpoint deactivates a firewall for a specified virtual machine.",
-                "operationId": "deactivateVPSV1Firewall",
+                "operationId": "VPS_deactivateFirewallV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -550,7 +549,7 @@
                 ],
                 "summary": "Get firewall",
                 "description": "This endpoint retrieves firewall by its ID and rules associated with it.",
-                "operationId": "getVPSV1Firewall",
+                "operationId": "VPS_getFirewallV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -602,7 +601,7 @@
                 ],
                 "summary": "Delete firewall",
                 "description": "This endpoint deletes a specified firewall. \n\nAny virtual machine that has this firewall activated will automatically have it deactivated.",
-                "operationId": "deleteVPSV1Firewall",
+                "operationId": "VPS_deleteFirewallV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -656,7 +655,7 @@
                 ],
                 "summary": "Get firewall list",
                 "description": "This endpoint retrieves a list of all firewalls available.",
-                "operationId": "getVPSV1FirewallList",
+                "operationId": "VPS_getFirewallListV1",
                 "parameters": [
                     {
                         "name": "page",
@@ -730,7 +729,7 @@
                 ],
                 "summary": "Create new firewall",
                 "description": "This endpoint creates a new firewall.",
-                "operationId": "createVPSV1NewFirewall",
+                "operationId": "VPS_createNewFirewallV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -792,7 +791,7 @@
                 ],
                 "summary": "Update firewall rule",
                 "description": "This endpoint updates a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
-                "operationId": "updateVPSV1FirewallRule",
+                "operationId": "VPS_updateFirewallRuleV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -874,7 +873,7 @@
                 ],
                 "summary": "Delete firewall rule",
                 "description": "This endpoint deletes a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
-                "operationId": "deleteVPSV1FirewallRule",
+                "operationId": "VPS_deleteFirewallRuleV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -938,7 +937,7 @@
                 ],
                 "summary": "Create firewall rule",
                 "description": "This endpoint creates new firewall rule from a specified firewall. \nBy default, the firewall drops all incoming traffic, which means you must add accept rules for all ports you want to use.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
-                "operationId": "createVPSV1FirewallRule",
+                "operationId": "VPS_createFirewallRuleV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -1012,7 +1011,7 @@
                 ],
                 "summary": "Sync firewall",
                 "description": "This endpoint syncs a firewall for a specified virtual machine.\n\nFirewall can loose sync with virtual machine if the firewall has new rules added, removed or updated.",
-                "operationId": "syncVPSV1Firewall",
+                "operationId": "VPS_syncFirewallV1",
                 "parameters": [
                     {
                         "name": "firewallId",
@@ -1086,7 +1085,7 @@
                 ],
                 "summary": "Get post-install script",
                 "description": "This endpoint retrieves post-install script by its ID.",
-                "operationId": "getVPSV1PostInstallScript",
+                "operationId": "VPS_getPostInstallScriptV1",
                 "parameters": [
                     {
                         "name": "postInstallScriptId",
@@ -1138,7 +1137,7 @@
                 ],
                 "summary": "Update post-install script",
                 "description": "This endpoint updates a specific post-install script.",
-                "operationId": "updateVPSV1PostInstallScript",
+                "operationId": "VPS_updatePostInstallScriptV1",
                 "parameters": [
                     {
                         "name": "postInstallScriptId",
@@ -1210,7 +1209,7 @@
                 ],
                 "summary": "Delete a post-install script",
                 "description": "This endpoint deletes a post-install script from your account. ",
-                "operationId": "deleteVPSV1APostInstallScript",
+                "operationId": "VPS_deleteAPostInstallScriptV1",
                 "parameters": [
                     {
                         "name": "postInstallScriptId",
@@ -1264,7 +1263,7 @@
                 ],
                 "summary": "Get post-install script list",
                 "description": "This endpoint retrieves a list of post-install scripts associated with your account.",
-                "operationId": "getVPSV1PostInstallScriptList",
+                "operationId": "VPS_getPostInstallScriptListV1",
                 "parameters": [
                     {
                         "name": "page",
@@ -1338,7 +1337,7 @@
                 ],
                 "summary": "Create post-install script",
                 "description": "This endpoint allows you to add a new post-install script to your account, \nwhich can then be used run after the installation of a virtual machine instance.\n\nThe script contents will be saved to the file `/post_install` with executable attribute set and will be executed once virtual machine is installed.\nThe output of the script will be redirected to `/post_install.log`. Maximum script size is 48KB. ",
-                "operationId": "createVPSV1PostInstallScript",
+                "operationId": "VPS_createPostInstallScriptV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1400,7 +1399,7 @@
                 ],
                 "summary": "Attach public key",
                 "description": "This endpoint attaches an existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.",
-                "operationId": "attachVPSV1PublicKey",
+                "operationId": "VPS_attachPublicKeyV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -1474,7 +1473,7 @@
                 ],
                 "summary": "Delete a public key",
                 "description": "This endpoint deletes a public key from your account. \n\n**Deleting public key from account does not remove it from virtual machine** ",
-                "operationId": "deleteVPSV1APublicKey",
+                "operationId": "VPS_deleteAPublicKeyV1",
                 "parameters": [
                     {
                         "name": "publicKeyId",
@@ -1528,7 +1527,7 @@
                 ],
                 "summary": "Get public key list",
                 "description": "This endpoint retrieves a list of public keys associated with your account.",
-                "operationId": "getVPSV1PublicKeyList",
+                "operationId": "VPS_getPublicKeyListV1",
                 "parameters": [
                     {
                         "name": "page",
@@ -1602,7 +1601,7 @@
                 ],
                 "summary": "Create new public key",
                 "description": "This endpoint allows you to add a new public key to your account, \nwhich can then be attached to virtual machine instances for secure access.",
-                "operationId": "createVPSV1NewPublicKey",
+                "operationId": "VPS_createNewPublicKeyV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1664,7 +1663,7 @@
                 ],
                 "summary": "Get template",
                 "description": "This endpoint retrieves details of a specific OS template for virtual machines.",
-                "operationId": "getVPSV1Template",
+                "operationId": "VPS_getTemplateV1",
                 "parameters": [
                     {
                         "name": "templateId",
@@ -1718,7 +1717,7 @@
                 ],
                 "summary": "Get template list",
                 "description": "This endpoint retrieves a list of available OS templates for virtual machines.",
-                "operationId": "getVPSV1TemplateList",
+                "operationId": "VPS_getTemplateListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -1760,7 +1759,7 @@
                 ],
                 "summary": "Get action",
                 "description": "This endpoint retrieves details of a specific action performed on a specified virtual machine. \n\nThis endpoint allows you to view detailed information about a particular action, including the action name, timestamp, and status.",
-                "operationId": "getVPSV1Action",
+                "operationId": "VPS_getActionV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -1824,7 +1823,7 @@
                 ],
                 "summary": "Get action list",
                 "description": "This endpoint retrieves a list of actions performed on a specified virtual machine.\n\nActions are operations or events that have been executed on the virtual machine, such as starting, stopping, or modifying \nthe machine. This endpoint allows you to view the history of these actions, providing details about each action, \nsuch as the action name, timestamp, and status.",
-                "operationId": "getVPSV1ActionList",
+                "operationId": "VPS_getActionListV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -1910,7 +1909,7 @@
                 ],
                 "summary": "Delete backup",
                 "description": "This endpoint deletes a specified backup for a virtual machine.",
-                "operationId": "deleteVPSV1Backup",
+                "operationId": "VPS_deleteBackupV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -1974,7 +1973,7 @@
                 ],
                 "summary": "Get backup list",
                 "description": "This endpoint retrieves a list of backups for a specified virtual machine.",
-                "operationId": "getVPSV1BackupList",
+                "operationId": "VPS_getBackupListV1",
                 "parameters": [
                     {
                         "name": "page",
@@ -2060,7 +2059,7 @@
                 ],
                 "summary": "Restore backup",
                 "description": "This endpoint restores a backup for a specified virtual machine.\n\nThe system will then initiate the restore process, which may take some time depending on the size of the backup.\n\n**All data on the virtual machine will be overwritten with the data from the backup.**",
-                "operationId": "restoreVPSV1Backup",
+                "operationId": "VPS_restoreBackupV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2124,7 +2123,7 @@
                 ],
                 "summary": "Set hostname",
                 "description": "This endpoint sets the hostname for a specified virtual machine. \nChanging hostname does not update PTR record automatically.\nIf you want your virtual machine to be reachable by a hostname, \nyou need to point your domain A/AAAA records to virtual machine IP as well.",
-                "operationId": "setVPSV1Hostname",
+                "operationId": "VPS_setHostnameV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2196,7 +2195,7 @@
                 ],
                 "summary": "Reset hostname",
                 "description": "This endpoint resets the hostname and PTR record of a specified virtual machine to the default value.",
-                "operationId": "resetVPSV1Hostname",
+                "operationId": "VPS_resetHostnameV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2250,7 +2249,7 @@
                 ],
                 "summary": "Get virtual machine",
                 "description": "This endpoint retrieves detailed information about a specified virtual machine.",
-                "operationId": "getVPSV1VirtualMachine",
+                "operationId": "VPS_getVirtualMachineV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2304,7 +2303,7 @@
                 ],
                 "summary": "Get virtual machine list",
                 "description": "This endpoint retrieves a list of all available virtual machines.",
-                "operationId": "getVPSV1VirtualMachineList",
+                "operationId": "VPS_getVirtualMachineListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -2346,7 +2345,7 @@
                 ],
                 "summary": "Get scan metrics",
                 "description": "This endpoint retrieves the scan metrics for the [Monarx](https://www.monarx.com/) malware scanner installed on a specified virtual machine.\nThe scan metrics provide detailed information about the malware scans performed by Monarx, including the number of scans, \ndetected threats, and other relevant statistics. This information is useful for monitoring the security status of the \nvirtual machine and assessing the effectiveness of the malware scanner.",
-                "operationId": "getVPSV1ScanMetrics",
+                "operationId": "VPS_getScanMetricsV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2408,7 +2407,7 @@
                 ],
                 "summary": "Install Monarx",
                 "description": "This endpoint installs the Monarx malware scanner on a specified virtual machine. \n\n[Monarx](https://www.monarx.com/) is a security tool designed to detect and prevent malware infections on virtual machines. \nBy installing Monarx, users can enhance the security of their virtual machines, ensuring that they are protected against malicious software.",
-                "operationId": "installVPSV1Monarx",
+                "operationId": "VPS_installMonarxV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2470,7 +2469,7 @@
                 ],
                 "summary": "Uninstall Monarx",
                 "description": "This endpoint uninstalls the Monarx malware scanner on a specified virtual machine.\nIf Monarx is not installed, the request will still be processed without any effect.",
-                "operationId": "uninstallVPSV1Monarx",
+                "operationId": "VPS_uninstallMonarxV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2534,7 +2533,7 @@
                 ],
                 "summary": "Get metrics",
                 "description": "This endpoint retrieves the historical metrics for a specified virtual machine.\nIt includes the following metrics: \n- CPU usage\n- Memory usage\n- Disk usage\n- Network usage\n- Uptime",
-                "operationId": "getVPSV1Metrics",
+                "operationId": "VPS_getMetricsV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2609,7 +2608,7 @@
                 ],
                 "summary": "Set nameservers",
                 "description": "This endpoint sets the nameservers for a specified virtual machine.\nBe aware, that improper nameserver configuration can lead to the virtual machine being unable to resolve domain names.",
-                "operationId": "setVPSV1Nameservers",
+                "operationId": "VPS_setNameserversV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2683,7 +2682,7 @@
                 ],
                 "summary": "Create PTR record",
                 "description": "This endpoint creates or updates a PTR (Pointer) record for a specified virtual machine.",
-                "operationId": "createVPSV1PTRRecord",
+                "operationId": "VPS_createPTRRecordV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2735,7 +2734,7 @@
                 ],
                 "summary": "Delete PTR record",
                 "description": "This endpoint deletes a PTR (Pointer) record for a specified virtual machine. \n\nOnce deleted, reverse DNS lookups to the virtual machine's IP address will no longer return the previously configured hostname.",
-                "operationId": "deleteVPSV1PTRRecord",
+                "operationId": "VPS_deletePTRRecordV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2789,7 +2788,7 @@
                 ],
                 "summary": "Set panel password",
                 "description": "This endpoint sets the panel password for a specified virtual machine. \nIf virtual machine does not use panel OS, the request will still be processed without any effect.\nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall).",
-                "operationId": "setVPSV1PanelPassword",
+                "operationId": "VPS_setPanelPasswordV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2863,7 +2862,7 @@
                 ],
                 "summary": "Start recovery mode",
                 "description": "This endpoint initiates the recovery mode for a specified virtual machine. \nRecovery mode is a special state that allows users to perform system rescue operations, \nsuch as repairing file systems, recovering data, or troubleshooting issues that prevent the virtual machine \nfrom booting normally. \n\nVirtual machine will boot recovery disk image and original disk image will be mounted in `/mnt` directory.",
-                "operationId": "startVPSV1RecoveryMode",
+                "operationId": "VPS_startRecoveryModeV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2935,7 +2934,7 @@
                 ],
                 "summary": "Stop recovery mode",
                 "description": "This endpoint stops the recovery mode for a specified virtual machine. \nIf virtual machine is not in recovery mode, this operation will fail.",
-                "operationId": "stopVPSV1RecoveryMode",
+                "operationId": "VPS_stopRecoveryModeV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -2989,7 +2988,7 @@
                 ],
                 "summary": "Recreate virtual machine",
                 "description": "This endpoint will recreate a virtual machine from scratch. \nThe recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state.\nSnapshots, if there are any, will be deleted.\n\n## Password Requirements\nPassword will be checked against leaked password databases. \nRequirements for the password are:\n- At least 8 characters long\n- At least one uppercase letter\n- At least one lowercase letter\n- At least one number\n- Is not leaked publicly\n\n**This operation is irreversible and will result in the loss of all data stored on the virtual machine!**",
-                "operationId": "recreateVPSV1VirtualMachine",
+                "operationId": "VPS_recreateVirtualMachineV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3063,7 +3062,7 @@
                 ],
                 "summary": "Restart virtual machine",
                 "description": "This endpoint restarts a specified virtual machine. This is equivalent to fully stopping and starting the virtual machine.\nIf the virtual machine was stopped, it will be started.",
-                "operationId": "restartVPSV1VirtualMachine",
+                "operationId": "VPS_restartVirtualMachineV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3117,7 +3116,7 @@
                 ],
                 "summary": "Set root password",
                 "description": "This endpoint sets the root password for a specified virtual machine. \nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/reinstall).",
-                "operationId": "setVPSV1RootPassword",
+                "operationId": "VPS_setRootPasswordV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3191,7 +3190,7 @@
                 ],
                 "summary": "Setup new virtual machine",
                 "description": "This endpoint will setup newly purchased virtual machine. Such virtual machines has `initial` state. \nNew virtual machine can be purchased using [`/api/billing/v1/orders`](/#tag/billing-orders/POST/api/billing/v1/orders) endpoint.                        ",
-                "operationId": "setupVPSV1NewVirtualMachine",
+                "operationId": "VPS_setupNewVirtualMachineV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3265,7 +3264,7 @@
                 ],
                 "summary": "Get snapshot",
                 "description": "This endpoint retrieves a snapshot for a specified virtual machine.",
-                "operationId": "getVPSV1Snapshot",
+                "operationId": "VPS_getSnapshotV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3317,7 +3316,7 @@
                 ],
                 "summary": "Create snapshot",
                 "description": "This endpoint creates a snapshot of a specified virtual machine. \nA snapshot captures the state and data of the virtual machine at a specific point in time, \nallowing users to restore the virtual machine to that state if needed. \nThis operation is useful for backup purposes, system recovery, \nand testing changes without affecting the current state of the virtual machine.\n\n**Creating new snapshot will overwrite the existing snapshot!**",
-                "operationId": "createVPSV1Snapshot",
+                "operationId": "VPS_createSnapshotV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3369,7 +3368,7 @@
                 ],
                 "summary": "Delete snapshot",
                 "description": "This endpoint deletes a snapshot of a specified virtual machine.",
-                "operationId": "deleteVPSV1Snapshot",
+                "operationId": "VPS_deleteSnapshotV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3423,7 +3422,7 @@
                 ],
                 "summary": "Restore snapshot",
                 "description": "This endpoint restores a specified virtual machine to a previous state using a snapshot. \nRestoring from a snapshot allows users to revert the virtual machine to that state, which is useful for system recovery, undoing changes, or testing.",
-                "operationId": "restoreVPSV1Snapshot",
+                "operationId": "VPS_restoreSnapshotV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3477,7 +3476,7 @@
                 ],
                 "summary": "Start virtual machine",
                 "description": "This endpoint starts a specified virtual machine. \nIf the virtual machine is already running, the request will still be processed without any effect.",
-                "operationId": "startVPSV1VirtualMachine",
+                "operationId": "VPS_startVirtualMachineV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
@@ -3531,7 +3530,7 @@
                 ],
                 "summary": "Stop virtual machine",
                 "description": "This endpoint stops a specified virtual machine. \nIf the virtual machine is already stopped, the request will still be processed without any effect.",
-                "operationId": "stopVPSV1VirtualMachine",
+                "operationId": "VPS_stopVirtualMachineV1",
                 "parameters": [
                     {
                         "name": "virtualMachineId",
