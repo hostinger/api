@@ -268,6 +268,80 @@
                 }
             }
         },
+        "/api/billing/v1/subscriptions/{subscriptionId}": {
+            "delete": {
+                "tags": [
+                    "Billing: Subscriptions"
+                ],
+                "summary": "Cancel subscription",
+                "description": "This endpoint cancels a subscription and stops any further billing.",
+                "operationId": "billing_cancelSubscriptionV1",
+                "parameters": [
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "description": "Subscription ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Cxy353Uhl1xC54pG6"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Billing.V1.Subscription.CancelRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/billing/v1/subscriptions": {
             "get": {
                 "tags": [
@@ -3679,6 +3753,21 @@
                                 "Coupon 3"
                             ]
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Subscription.CancelRequest": {
+                "properties": {
+                    "reason_code": {
+                        "description": "Cancellation reason code",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "cancel_option": {
+                        "description": "Cancellation option",
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "type": "object"
