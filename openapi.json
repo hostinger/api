@@ -753,21 +753,7 @@
                                             "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallCollection"
                                         },
                                         "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 15
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
                                         }
                                     },
                                     "type": "object"
@@ -1361,21 +1347,7 @@
                                             "$ref": "#/components/schemas/VPS.V1.PostInstallScript.PostInstallScriptCollection"
                                         },
                                         "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 15
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
                                         }
                                     },
                                     "type": "object"
@@ -1625,21 +1597,7 @@
                                             "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyCollection"
                                         },
                                         "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 15
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
                                         }
                                     },
                                     "type": "object"
@@ -1931,21 +1889,7 @@
                                             "$ref": "#/components/schemas/VPS.V1.Action.ActionCollection"
                                         },
                                         "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 15
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
                                         }
                                     },
                                     "type": "object"
@@ -2081,21 +2025,7 @@
                                             "$ref": "#/components/schemas/VPS.V1.Backup.BackupCollection"
                                         },
                                         "meta": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 15
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
                                         }
                                     },
                                     "type": "object"
@@ -3668,6 +3598,24 @@
                 "type": "object",
                 "x-scalar-ignore": true
             },
+            "Common.Schema.PaginationMetaSchema": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object",
+                "x-scalar-ignore": true
+            },
             "Common.Schema.UnauthorizedResponseSchema": {
                 "properties": {
                     "message": {
@@ -3762,11 +3710,13 @@
                     "reason_code": {
                         "description": "Cancellation reason code",
                         "type": "string",
+                        "example": "fraud",
                         "nullable": true
                     },
                     "cancel_option": {
                         "description": "Cancellation option",
                         "type": "string",
+                        "example": "immediately",
                         "nullable": true
                     }
                 },
