@@ -1,4 +1,6 @@
 # Hostinger API
+### Wed Apr 09 2025
+- added `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
 ### Tue Apr 08 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
   - `200` response: added support for `subscription_id` property
