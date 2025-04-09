@@ -24,8 +24,8 @@ To get started with the Hostinger API, follow these steps:
 
 ## SDKs & Tools
 
-The Hostinger API SDKs and tools are available in multiple programming languages. 
-Here you can find them at the following links:
+To help you get started with the Hostinger API, we provide SDKs and tools in various programming languages.
+The usage & documentation for each SDK can be found in the respective repositories:
 
 - PHP - https://github.com/hostinger/api-php-sdk
 - Python - https://github.com/hostinger/api-python-sdk
