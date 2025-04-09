@@ -22,6 +22,15 @@ To get started with the Hostinger API, follow these steps:
 - Obtain your API key from the Hostinger dashboard.
 - Refer to the [API Documentation](https://developers.hostinger.com) for usage instructions.
 
+## SDKs & Tools
+
+The Hostinger API SDKs and tools are available in multiple programming languages. 
+Here you can find them at the following links:
+
+- PHP - https://github.com/hostinger/api-php-sdk
+- Python - https://github.com/hostinger/api-python-sdk
+- TypeScript - https://github.com/hostinger/api-typescript-sdk
+
 ## Issues
 If you encounter any issues or have any questions, please check our [issues page](https://github.com/hostinger/api/issues) to see if it has already been reported. If not, feel free to open a new issue.
 
