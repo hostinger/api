@@ -3711,27 +3711,16 @@
                         "description": "Cancellation reason code",
                         "type": "string",
                         "enum": [
-                            "fraud",
-                            "other",
-                            "abuse",
-                            "refund",
-                            "transfer",
-                            "gdpr",
-                            "wrong_product",
-                            "not_paid",
-                            "suspicious"
+                            "other"
                         ],
-                        "example": "fraud",
+                        "example": "other",
                         "nullable": true
                     },
                     "cancel_option": {
                         "description": "Cancellation option",
                         "type": "string",
                         "enum": [
-                            "immediately",
-                            "specific_date",
-                            "end_of_term",
-                            "end_of_billing_term"
+                            "immediately"
                         ],
                         "example": "immediately",
                         "nullable": true
