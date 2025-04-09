@@ -1,6 +1,8 @@
 # Hostinger API
 ### Wed Apr 09 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: added `password`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
+  - `requestBody`: added `password`.`description`
+  - `requestBody`: `password` is no longer required
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`: `requestBody`: changed `password`.`description`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
   - `requestBody`: added `password`.`description`
