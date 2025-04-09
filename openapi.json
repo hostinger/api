@@ -3940,7 +3940,7 @@
                 ],
                 "properties": {
                     "password": {
-                        "description": "Panel password",
+                        "description": "Panel password for the virtual machine",
                         "type": "string",
                         "format": "password",
                         "minLength": 8,
@@ -3964,11 +3964,16 @@
             },
             "VPS.V1.VirtualMachine.RecreateRequest": {
                 "required": [
-                    "password",
                     "template_id"
                 ],
                 "properties": {
+                    "template_id": {
+                        "description": "Template ID",
+                        "type": "integer",
+                        "example": 1130
+                    },
                     "password": {
+                        "description": "Password for the virtual machine. If not provided, random password will be generated. Password will not be shown in the response.",
                         "type": "string",
                         "format": "password",
                         "minLength": 8,
@@ -3978,11 +3983,6 @@
                         "description": "Post-install script ID",
                         "type": "integer",
                         "example": 6324
-                    },
-                    "template_id": {
-                        "description": "Template ID",
-                        "type": "integer",
-                        "example": 1130
                     }
                 },
                 "type": "object"
@@ -3993,7 +3993,7 @@
                 ],
                 "properties": {
                     "password": {
-                        "description": "Root password",
+                        "description": "Root password for the virtual machine",
                         "type": "string",
                         "format": "password",
                         "minLength": 8,
@@ -4025,6 +4025,7 @@
                         "example": 6324
                     },
                     "password": {
+                        "description": "Password for the virtual machine. If not provided, random password will be generated. Password will not be shown in the response.",
                         "type": "string",
                         "format": "password",
                         "minLength": 8,
