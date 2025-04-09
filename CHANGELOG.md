@@ -8,6 +8,11 @@
   - `requestBody`: added `password`.`description`
   - `requestBody`: `password` is no longer required
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password`: `requestBody`: changed `password`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups`: `200` response: added `meta`.`x-scalar-ignore`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions`: `200` response: added `meta`.`x-scalar-ignore`
+- `GET` `/api/vps/v1/public-keys`: `200` response: added `meta`.`x-scalar-ignore`
+- `GET` `/api/vps/v1/post-install-scripts`: `200` response: added `meta`.`x-scalar-ignore`
+- `GET` `/api/vps/v1/firewall`: `200` response: added `meta`.`x-scalar-ignore`
 - added `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
 ### Tue Apr 08 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
