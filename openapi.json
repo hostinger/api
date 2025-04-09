@@ -3710,12 +3710,29 @@
                     "reason_code": {
                         "description": "Cancellation reason code",
                         "type": "string",
+                        "enum": [
+                            "fraud",
+                            "other",
+                            "abuse",
+                            "refund",
+                            "transfer",
+                            "gdpr",
+                            "wrong_product",
+                            "not_paid",
+                            "suspicious"
+                        ],
                         "example": "fraud",
                         "nullable": true
                     },
                     "cancel_option": {
                         "description": "Cancellation option",
                         "type": "string",
+                        "enum": [
+                            "immediately",
+                            "specific_date",
+                            "end_of_term",
+                            "end_of_billing_term"
+                        ],
                         "example": "immediately",
                         "nullable": true
                     }
