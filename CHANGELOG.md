@@ -1,4 +1,6 @@
 # Hostinger API
+### Thu Apr 10 2025
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/public-keys`
 ### Wed Apr 09 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
   - `requestBody`: added `password`.`description`
