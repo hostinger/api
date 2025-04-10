@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.5"
+        "version": "0.0.6"
     },
     "servers": [
         {
@@ -1888,6 +1888,78 @@
                                     "properties": {
                                         "data": {
                                             "$ref": "#/components/schemas/VPS.V1.Action.ActionCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/public-keys": {
+            "get": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Get attached public keys",
+                "description": "This endpoint retrieves a list of public keys attached to a specified virtual machine.",
+                "operationId": "VPS_getAttachedPublicKeysV1",
+                "parameters": [
+                    {
+                        "name": "virtualMachineId",
+                        "in": "path",
+                        "description": "Virtual Machine ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1268054
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyCollection"
                                         },
                                         "meta": {
                                             "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
@@ -5132,14 +5204,14 @@
             "x-displayName": "Actions"
         },
         {
-            "name": "VPS: Backups",
-            "description": "Safeguard your data by managing backups. You can list available backups, restore a virtual machine from a backup, or delete backups as needed.",
-            "x-displayName": "Backups"
-        },
-        {
             "name": "VPS: Virtual machine",
             "description": "Core virtual machine management functionality. Endpoints in this category let you retrieve machine details, configure settings (hostname, nameservers, passwords), and perform operations like start, stop, restart, or recreate.",
             "x-displayName": "Virtual machine"
+        },
+        {
+            "name": "VPS: Backups",
+            "description": "Safeguard your data by managing backups. You can list available backups, restore a virtual machine from a backup, or delete backups as needed.",
+            "x-displayName": "Backups"
         },
         {
             "name": "VPS: Malware scanner",
