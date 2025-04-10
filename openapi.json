@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.6"
+        "version": "0.0.7"
     },
     "servers": [
         {
@@ -2621,18 +2621,28 @@
                             "type": "integer",
                             "example": 1268054
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.MetricGetRequest"
-                            }
+                    },
+                    {
+                        "name": "date_from",
+                        "in": "query",
+                        "description": "the date-time notation as defined by RFC 3339, section 5.6",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "2025-05-01T00:00:00Z"
+                        }
+                    },
+                    {
+                        "name": "date_to",
+                        "in": "query",
+                        "description": "the date-time notation as defined by RFC 3339, section 5.6",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "2025-06-01T00:00:00Z"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -3924,25 +3934,6 @@
                     "hostname": {
                         "type": "string",
                         "example": "my.server.tld"
-                    }
-                },
-                "type": "object"
-            },
-            "VPS.V1.VirtualMachine.MetricGetRequest": {
-                "required": [
-                    "date_from",
-                    "date_to"
-                ],
-                "properties": {
-                    "date_from": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-01-01T00:00:00Z"
-                    },
-                    "date_to": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-01-02T00:00:00Z"
                     }
                 },
                 "type": "object"
