@@ -29,6 +29,7 @@ The usage & documentation for each SDK can be found in the respective repositori
 
 - PHP - https://github.com/hostinger/api-php-sdk
 - Python - https://github.com/hostinger/api-python-sdk
+- Terraform - https://github.com/hostinger/terraform-provider-hostinger
 - TypeScript - https://github.com/hostinger/api-typescript-sdk
 
 ## Issues
