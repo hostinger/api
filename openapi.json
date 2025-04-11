@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.9"
+        "version": "0.0.10"
     },
     "servers": [
         {
@@ -358,6 +358,114 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Billing.V1.Subscription.SubscriptionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dns/v1/snapshots/{domain}": {
+            "get": {
+                "tags": [
+                    "DNS: Snapshot"
+                ],
+                "summary": "Get snapshot list",
+                "description": "This endpoint retrieves list of DNS snapshots",
+                "operationId": "DNS_getSnapshotListV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DNS.V1.Snapshot.SnapshotCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dns/v1/zones/{domain}": {
+            "get": {
+                "tags": [
+                    "DNS: Zone"
+                ],
+                "summary": "Get records",
+                "description": "This endpoint retrieves DNS zone records for a specific domain.",
+                "operationId": "DNS_getRecordsV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DNS.V1.Zone.NameCollection"
                                 }
                             }
                         }
@@ -4433,6 +4541,98 @@
                 "type": "object",
                 "x-scalar-ignore": true
             },
+            "DNS.V1.Snapshot.SnapshotCollection": {
+                "description": "Array of [`DNS.V1.Snapshot.SnapshotResource`](#model/dnsv1snapshotsnapshotresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/DNS.V1.Snapshot.SnapshotResource"
+                }
+            },
+            "DNS.V1.Snapshot.SnapshotResource": {
+                "properties": {
+                    "id": {
+                        "description": "Snapshot ID",
+                        "type": "integer",
+                        "example": 5341
+                    },
+                    "reason": {
+                        "description": "Reason of the update",
+                        "type": "string",
+                        "example": "Zone records update request"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Zone.NameCollection": {
+                "description": "Array of [`DNS.V1.Zone.NameResource`](#model/dnsv1zonenameresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/DNS.V1.Zone.NameResource"
+                }
+            },
+            "DNS.V1.Zone.NameRecordCollection": {
+                "description": "Array of [`DNS.V1.Zone.NameRecordResource`](#model/dnsv1zonenamerecordresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/DNS.V1.Zone.NameRecordResource"
+                }
+            },
+            "DNS.V1.Zone.NameRecordResource": {
+                "properties": {
+                    "content": {
+                        "description": "Content of the name record",
+                        "type": "string",
+                        "example": "mydomain.tld."
+                    },
+                    "disabled": {
+                        "description": "Flag to mark name record as disabled",
+                        "type": "boolean",
+                        "default": false,
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Zone.NameResource": {
+                "properties": {
+                    "name": {
+                        "description": "Name of the record (use `@` for wildcard name)",
+                        "type": "string",
+                        "example": "www"
+                    },
+                    "records": {
+                        "$ref": "#/components/schemas/DNS.V1.Zone.NameRecordCollection"
+                    },
+                    "ttl": {
+                        "description": "TTL (Time-To-Live) of the record",
+                        "type": "integer",
+                        "example": 14400
+                    },
+                    "type": {
+                        "description": "Type of the record",
+                        "type": "string",
+                        "enum": [
+                            "A",
+                            "AAAA",
+                            "CNAME",
+                            "ALIAS",
+                            "MX",
+                            "TXT",
+                            "NS",
+                            "SOA",
+                            "SRV",
+                            "CAA"
+                        ],
+                        "example": "A"
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Domain.DomainCollection": {
                 "description": "Array of [`Domains.V1.Domain.DomainResource`](#model/domainsv1domaindomainresource)",
                 "type": "array",
@@ -5160,6 +5360,16 @@
             "x-displayName": "Subscriptions"
         },
         {
+            "name": "DNS: Snapshot",
+            "description": "Manage DNS snapshots for your domains. This category includes endpoints for viewing and restoring snapshots of your domain DNS zone.",
+            "x-displayName": "Snapshot"
+        },
+        {
+            "name": "DNS: Zone",
+            "description": "Manage DNS zones and records for your domains. This category includes endpoints for creating, updating, deleting, and retrieving DNS zones and their associated records.",
+            "x-displayName": "Zone"
+        },
+        {
             "name": "Domains: Portfolio",
             "description": "Retrieve and manage your domain portfolio. This category lets you list all domains linked to your account, including their creation and expiration details.",
             "x-displayName": "Portfolio"
@@ -5230,6 +5440,13 @@
             "name": "Domains",
             "tags": [
                 "Domains: Portfolio"
+            ]
+        },
+        {
+            "name": "DNS",
+            "tags": [
+                "DNS: Snapshot",
+                "DNS: Zone"
             ]
         },
         {
