@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.10"
+        "version": "0.0.11"
     },
     "servers": [
         {
@@ -385,13 +385,139 @@
                 }
             }
         },
+        "/api/dns/v1/snapshots/{domain}/{snapshotId}": {
+            "get": {
+                "tags": [
+                    "DNS: Snapshot"
+                ],
+                "summary": "Get snapshot",
+                "description": "This endpoint retrieves particular DNS snapshot with the contents of DNS zone records.",
+                "operationId": "DNS_getSnapshotV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    },
+                    {
+                        "name": "snapshotId",
+                        "in": "path",
+                        "description": "Snapshot ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 53513053
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DNS.V1.Snapshot.SnapshotCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "DNS: Snapshot"
+                ],
+                "summary": "Restore snapshot",
+                "description": "This endpoint restores DNS zone to the selected snapshot.",
+                "operationId": "DNS_restoreSnapshotV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    },
+                    {
+                        "name": "snapshotId",
+                        "in": "path",
+                        "description": "Snapshot ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 53513053
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/dns/v1/snapshots/{domain}": {
             "get": {
                 "tags": [
                     "DNS: Snapshot"
                 ],
                 "summary": "Get snapshot list",
-                "description": "This endpoint retrieves list of DNS snapshots",
+                "description": "This endpoint retrieves list of DNS snapshots.",
                 "operationId": "DNS_getSnapshotListV1",
                 "parameters": [
                     {
@@ -4568,6 +4694,31 @@
                 },
                 "type": "object"
             },
+            "DNS.V1.Snapshot.SnapshotWithContentResource": {
+                "properties": {
+                    "id": {
+                        "description": "Snapshot ID",
+                        "type": "integer",
+                        "example": 5341
+                    },
+                    "reason": {
+                        "description": "Reason of the update",
+                        "type": "string",
+                        "example": "Zone records update request"
+                    },
+                    "snapshot": {
+                        "description": "Contents of the DNS zone",
+                        "type": "string",
+                        "example": "{}"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
             "DNS.V1.Zone.NameCollection": {
                 "description": "Array of [`DNS.V1.Zone.NameResource`](#model/dnsv1zonenameresource)",
                 "type": "array",
@@ -5361,12 +5512,12 @@
         },
         {
             "name": "DNS: Snapshot",
-            "description": "Manage DNS snapshots for your domains. This category includes endpoints for viewing and restoring snapshots of your domain DNS zone.",
+            "description": "Manage DNS snapshots for your domains.\nThis category includes endpoints for viewing and restoring snapshots of your domain DNS zone.\nSnapshot is a point-in-time copy of your DNS zone, allowing you to restore your domain's DNS settings to a previous state.",
             "x-displayName": "Snapshot"
         },
         {
             "name": "DNS: Zone",
-            "description": "Manage DNS zones and records for your domains. This category includes endpoints for creating, updating, deleting, and retrieving DNS zones and their associated records.",
+            "description": "Manage DNS zones and records for your domains. This category includes endpoints for creating, updating, deleting, and retrieving DNS zone and it's associated records.",
             "x-displayName": "Zone"
         },
         {
