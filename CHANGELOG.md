@@ -1,5 +1,7 @@
 # Hostinger API
 ### Fri Apr 11 2025
+- added `GET` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
+- added `POST` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
 - added `GET` `/api/dns/v1/snapshots/{domain}`
 - added `GET` `/api/dns/v1/zones/{domain}`
 ### Thu Apr 10 2025
