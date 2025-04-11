@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.13"
+        "version": "0.0.14"
     },
     "servers": [
         {
@@ -592,6 +592,80 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/DNS.V1.Zone.NameCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dns/v1/zones/{domain}/reset": {
+            "post": {
+                "tags": [
+                    "DNS: Zone"
+                ],
+                "summary": "Reset zone records",
+                "description": "This endpoint resets DNS zone to the default records.",
+                "operationId": "DNS_resetZoneRecordsV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DNS.V1.Zone.ResetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
                                 }
                             }
                         }
@@ -4041,6 +4115,34 @@
                         ],
                         "example": "immediately",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Zone.ResetRequest": {
+                "properties": {
+                    "sync": {
+                        "description": "Determines if operation should be run synchronously",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
+                    },
+                    "reset_email_records": {
+                        "description": "Determines if email records should be reset",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
+                    },
+                    "whitelisted_record_types": {
+                        "description": "Specifies which record types to not reset",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "MX",
+                            "TXT"
+                        ]
                     }
                 },
                 "type": "object"
