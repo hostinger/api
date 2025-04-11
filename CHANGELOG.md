@@ -4,6 +4,7 @@
 - added `POST` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
 - added `GET` `/api/dns/v1/snapshots/{domain}`
 - added `GET` `/api/dns/v1/zones/{domain}`
+- added `POST` `/api/dns/v1/zones/{domain}/reset`
 ### Thu Apr 10 2025
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
   - `requestBody`: removed 
