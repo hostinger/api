@@ -19,7 +19,7 @@ For information on the latest changes to the API, please refer to the [change lo
 To get started with the Hostinger API, follow these steps:
 
 - Sign up for a [Hostinger account](https://hpanel.hostinger.com/).
-- Obtain your API key from the Hostinger dashboard.
+- Obtain your API token from the [Hostinger dashboard](https://hpanel.hostinger.com/profile/api).
 - Refer to the [API Documentation](https://developers.hostinger.com) for usage instructions.
 
 ## SDKs & Tools
