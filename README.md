@@ -1,5 +1,5 @@
 # Hostinger API
-Welcome to the Hostinger API repository. 
+Welcome to the Hostinger API main repository. 
 
 **This API is currently in beta and is subject to change.** 
 
@@ -9,18 +9,12 @@ We appreciate your feedback and contributions to help us improve.
 The Hostinger API allows you to interact with Hostinger's services programmatically. 
 You can manage your Hostinger resources through this API.
 
-## Documentation
-For detailed information on how to use the API, please refer to the [API documentation](https://developers.hostinger.com).
-
-## Change log
-For information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).
-
 ## Getting Started
 To get started with the Hostinger API, follow these steps:
 
 - Sign up for a [Hostinger account](https://hpanel.hostinger.com/).
 - Obtain your API token from the [Hostinger dashboard](https://hpanel.hostinger.com/profile/api).
-- Refer to the [API Documentation](https://developers.hostinger.com) for usage instructions.
+- Refer to the [Hostinger API documentation](https://developers.hostinger.com) for usage instructions.
 
 ## SDKs & Tools
 
@@ -31,6 +25,10 @@ The usage & documentation for each SDK can be found in the respective repositori
 - Python - https://github.com/hostinger/api-python-sdk
 - Terraform - https://github.com/hostinger/terraform-provider-hostinger
 - TypeScript - https://github.com/hostinger/api-typescript-sdk
+- MCP Server - https://github.com/hostinger/api-mcp-server
+
+## Change log
+For information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).
 
 ## Issues
 If you encounter any issues or have any questions, please check our [issues page](https://github.com/hostinger/api/issues) to see if it has already been reported. If not, feel free to open a new issue.
