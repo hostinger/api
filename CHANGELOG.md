@@ -44,10 +44,12 @@
 - `GET` `/api/dns/v1/zones/{domain}`:
   - `200` response: changed `description`
   - `200` response: removed `items`.`records`.`items`.`disabled`.`default`
+- removed `POST` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
 - `GET` `/api/dns/v1/snapshots/{domain}/{snapshotId}`:
   - `200` response: changed `snapshot`.`description`
   - `200` response: changed `snapshot`.`type` to `array`
   - `200` response: added `snapshot`.`items`
+- added `POST` `/api/dns/v1/snapshots/{domain}/{snapshotId}/restore`
 - added `POST` `/api/dns/v1/zones/{domain}/validate`
 ### Fri Apr 11 2025
 - added `GET` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
