@@ -49,6 +49,9 @@
   - `200` response: changed `snapshot`.`description`
   - `200` response: changed `snapshot`.`type` to `array`
   - `200` response: added `snapshot`.`items`
+- `GET` `/api/billing/v1/subscriptions`:
+  - `200` response: removed support for `items`.`canceled_at` property
+  - `200` response: added `items`.`expires_at`.`nullable`
 - added `POST` `/api/dns/v1/snapshots/{domain}/{snapshotId}/restore`
 - added `POST` `/api/dns/v1/zones/{domain}/validate`
 ### Fri Apr 11 2025
