@@ -2,7 +2,10 @@
 ### Mon Apr 14 2025
 - added `PUT` `/api/dns/v1/zones/{domain}`
 - added `DELETE` `/api/dns/v1/zones/{domain}`
-- `GET` `/api/dns/v1/zones/{domain}`: `200` response: changed `description`
+- `GET` `/api/dns/v1/zones/{domain}`:
+  - `200` response: changed `description`
+  - `200` response: removed `items`.`records`.`items`.`disabled`.`default`
+- added `POST` `/api/dns/v1/zones/{domain}/validate`
 ### Fri Apr 11 2025
 - added `GET` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
 - added `POST` `/api/dns/v1/snapshots/{domain}/{snapshotId}`
