@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.20"
+        "version": "0.0.21"
     },
     "servers": [
         {
@@ -5076,15 +5076,10 @@
                     "expires_at": {
                         "type": "string",
                         "format": "date-time",
-                        "example": "2025-03-27T11:54:22Z"
-                    },
-                    "next_billing_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-02-28T11:54:22Z",
+                        "example": "2025-03-27T11:54:22Z",
                         "nullable": true
                     },
-                    "canceled_at": {
+                    "next_billing_at": {
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-02-28T11:54:22Z",
