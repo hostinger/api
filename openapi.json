@@ -2,13 +2,13 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Hostinger API",
-        "description": "> [!caution]\n> Currently, this API is in beta stage, meaning that breaking changes, while unlikely, might be introduced.\n> If you encounter any issues or have any feedback, please create an issue on the [Github Repository](https://github.com/hostinger/api/issues).\n# Overview\nThe Hostinger API provides a comprehensive set of endpoints that allow developers to interact with Hostinger's services programmatically.\nThis API enables you to manage various aspects of your Hostinger account.\n\nThe Hostinger API is a (mostly) RESTful API that uses standard HTTP methods and status codes.\n# Authentication\nThe Hostinger API uses tokens for authentication. To authenticate your requests, you need to include a valid bearer token in the Authorization header of your HTTP requests:\n```yaml\nAuthorization: Bearer YOUR_API_TOKEN\n```\nAPI tokens for individual users can be created and managed from the [Account page](https://hpanel.hostinger.com/profile/api) of the Hostinger Panel.\nTokens will have same permissions as the owning user. Optionally, tokens can be set to expire after a certain period of time.\n# Rate Limiting\nTo ensure fair usage and prevent abuse, the API enforces rate limits on the number of requests that can be made within a certain time period.\nIf you exceed the rate limit, you will receive a 429 Too Many Requests response. Rate limit headers are included in the response to help you manage your requests.\nYour IP address might get temporarily blocked if you exceed the rate limit multiple times.\n# Parameters\nAll requests sent to API must have the content type `application/json`. `POST`, `PUT`, `PATCH` methods may include a JSON object in the request body. Documentation provides required structure and examples of the object.\nSome endpoints require path parameters. These parameters are included in the URL path and are marked with curly braces.\n# Pagination\nSome endpoints return a large number of items. To make these responses more manageable, the API uses pagination.\nBy default, the API returns50 items per page.\n\n The page number can be specified using the `page` query parameter, for example: `/api/vps/v1/public-keys?page=2`\n# Errors\nThe Hostinger API uses standard HTTP status codes to indicate the success or failure of a request.\nIn case of an error, the API will return a JSON response with an `error` field, containing a human-readable error message.\nError responses also contain a `correlation_id` field which can be used to identify the request in case you need to contact support.\n# SDKs & Tools\nTo help you get started with the Hostinger API, we provide SDKs and tools in various programming languages.\nThe usage & documentation for each SDK can be found in the respective repositories:\n- PHP - https://github.com/hostinger/api-php-sdk\n- Python - https://github.com/hostinger/api-python-sdk\n- Terraform - https://github.com/hostinger/terraform-provider-hostinger\n- TypeScript - https://github.com/hostinger/api-typescript-sdk\n# Change log\nFor information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).\n# Support\nIf you have any questions, feedback or feature requests, please create an [issue](https://github.com/hostinger/api/issues) or [discussion](https://github.com/hostinger/api/discussions) on the repository.\n\nFor any support take a look at our [Github Repository](https://github.com/hostinger/api/), dedicated to the Hostinger API.",
+        "description": "> [!caution]\n> Currently, this API is in beta stage, meaning that breaking changes, while unlikely, might be introduced.\n> If you encounter any issues or have any feedback, please create an issue on the [Github Repository](https://github.com/hostinger/api/issues).\n# Overview\nThe Hostinger API provides a comprehensive set of endpoints that allow developers to interact with Hostinger's services programmatically.\nThis API enables you to manage various aspects of your Hostinger account.\n\nThe Hostinger API is a (mostly) RESTful API that uses standard HTTP methods and status codes.\n# Authentication\nThe Hostinger API uses tokens for authentication. To authenticate your requests, you need to include a valid bearer token in the Authorization header of your HTTP requests:\n```yaml\nAuthorization: Bearer YOUR_API_TOKEN\n```\nAPI tokens for individual users can be created and managed from the [Account page](https://hpanel.hostinger.com/profile/api) of the Hostinger Panel.\nTokens will have same permissions as the owning user. Optionally, tokens can be set to expire after a certain period of time.\n# Rate Limiting\nTo ensure fair usage and prevent abuse, the API enforces rate limits on the number of requests that can be made within a certain time period.\nIf you exceed the rate limit, you will receive a 429 Too Many Requests response. Rate limit headers are included in the response to help you manage your requests.\nYour IP address might get temporarily blocked if you exceed the rate limit multiple times.\n# Parameters\nAll requests sent to API must have the content type `application/json`. `POST`, `PUT`, `PATCH` methods may include a JSON object in the request body. Documentation provides required structure and examples of the object.\nSome endpoints require path parameters. These parameters are included in the URL path and are marked with curly braces.\n# Pagination\nSome endpoints return a large number of items. To make these responses more manageable, the API uses pagination.\nBy default, the API returns50 items per page.\n\n The page number can be specified using the `page` query parameter, for example: `/api/vps/v1/public-keys?page=2`\n# Errors\nThe Hostinger API uses standard HTTP status codes to indicate the success or failure of a request.\nIn case of an error, the API will return a JSON response with an `error` field, containing a human-readable error message.\nError responses also contain a `correlation_id` field which can be used to identify the request in case you need to contact support.\n# SDKs & Tools\nTo help you get started with the Hostinger API, we provide SDKs and tools in various programming languages.\nThe usage & documentation for each SDK can be found in the respective repositories:\n[<img src=\"https://run.pstmn.io/button.svg\" alt=\"Run In Postman\" style=\"width: 128px; height: 32px;\">](https://app.getpostman.com/run-collection/36145449-4a733c4f-6704-49f6-832a-0ccd28c37021?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D36145449-4a733c4f-6704-49f6-832a-0ccd28c37021%26entityType%3Dcollection%26workspaceId%3D8efd6e6d-8f1e-413b-820f-6e40c0836d79)\n\n- MCP Server - https://github.com/hostinger/api-mcp-server\n- PHP - https://github.com/hostinger/api-php-sdk\n- Python - https://github.com/hostinger/api-python-sdk\n- Terraform - https://github.com/hostinger/terraform-provider-hostinger\n- TypeScript - https://github.com/hostinger/api-typescript-sdk\n# Change log\nFor information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).\n# Support\nIf you have any questions, feedback or feature requests, please create an [issue](https://github.com/hostinger/api/issues) or [discussion](https://github.com/hostinger/api/discussions) on the repository.\n\nFor any support take a look at our [Github Repository](https://github.com/hostinger/api/), dedicated to the Hostinger API.",
         "contact": {
             "name": "Hostinger",
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.14"
+        "version": "0.0.15"
     },
     "servers": [
         {
@@ -591,7 +591,151 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/DNS.V1.Zone.NameCollection"
+                                    "$ref": "#/components/schemas/DNS.V1.Zone.RecordCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "DNS: Zone"
+                ],
+                "summary": "Update zone records",
+                "description": "This endpoint updates DNS records for the selected domain.",
+                "operationId": "DNS_updateZoneRecordsV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DNS.V1.Zone.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DNS.V1.Zone.RecordCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "DNS: Zone"
+                ],
+                "summary": "Delete zone records",
+                "description": "This endpoint deletes selected DNS records for the selected domain.",
+                "operationId": "DNS_deleteZoneRecordsV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DNS.V1.Zone.DestroyRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
                                 }
                             }
                         }
@@ -4119,6 +4263,45 @@
                 },
                 "type": "object"
             },
+            "DNS.V1.Zone.DestroyRequest": {
+                "required": [
+                    "filters"
+                ],
+                "properties": {
+                    "filters": {
+                        "description": "Filter records for deletion",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "name": {
+                                    "description": "Name of the record",
+                                    "type": "string",
+                                    "example": "@"
+                                },
+                                "type": {
+                                    "description": "Type of the record",
+                                    "type": "string",
+                                    "enum": [
+                                        "A",
+                                        "AAAA",
+                                        "CNAME",
+                                        "ALIAS",
+                                        "MX",
+                                        "TXT",
+                                        "NS",
+                                        "SOA",
+                                        "SRV",
+                                        "CAA"
+                                    ],
+                                    "example": "A"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "DNS.V1.Zone.ResetRequest": {
                 "properties": {
                     "sync": {
@@ -4143,6 +4326,25 @@
                             "MX",
                             "TXT"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Zone.UpdateRequest": {
+                "required": [
+                    "records"
+                ],
+                "properties": {
+                    "overwrite": {
+                        "description": "If `true`, resource records (RRs) matching name and type will be deleted and new RRs will be created, otherwise resource records' ttl's are updated and new records are appended. If no matching RRs are found, they are created.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "records": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DNS.V1.Zone.RecordResource"
+                        }
                     }
                 },
                 "type": "object"
@@ -4821,13 +5023,6 @@
                 },
                 "type": "object"
             },
-            "DNS.V1.Zone.NameCollection": {
-                "description": "Array of [`DNS.V1.Zone.NameResource`](#model/dnsv1zonenameresource)",
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/DNS.V1.Zone.NameResource"
-                }
-            },
             "DNS.V1.Zone.NameRecordCollection": {
                 "description": "Array of [`DNS.V1.Zone.NameRecordResource`](#model/dnsv1zonenamerecordresource)",
                 "type": "array",
@@ -4851,7 +5046,14 @@
                 },
                 "type": "object"
             },
-            "DNS.V1.Zone.NameResource": {
+            "DNS.V1.Zone.RecordCollection": {
+                "description": "Array of [`DNS.V1.Zone.RecordResource`](#model/dnsv1zonerecordresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/DNS.V1.Zone.RecordResource"
+                }
+            },
+            "DNS.V1.Zone.RecordResource": {
                 "properties": {
                     "name": {
                         "description": "Name of the record (use `@` for wildcard name)",
@@ -5619,7 +5821,7 @@
         },
         {
             "name": "DNS: Zone",
-            "description": "Manage DNS zones and records for your domains. This category includes endpoints for creating, updating, deleting, and retrieving DNS zone and it's associated records.",
+            "description": "Manage DNS zones and records for your domains. This category includes endpoints for retrieving, updating, deleting DNS zone and it's associated records.\nThe DNS zone will be created once you purchase new domain at Hostinger. ",
             "x-displayName": "Zone"
         },
         {
