@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.15"
+        "version": "0.0.16"
     },
     "servers": [
         {
@@ -623,7 +623,7 @@
                     "DNS: Zone"
                 ],
                 "summary": "Update zone records",
-                "description": "This endpoint updates DNS records for the selected domain.",
+                "description": "This endpoint updates DNS records for the selected domain. This endpoint could also be used\nto delete single record when multiple records exist under same name. In that case use `overwrite` flag\nand provide records which should remain. All other records under same name will be deleted.",
                 "operationId": "DNS_updateZoneRecordsV1",
                 "parameters": [
                     {
@@ -653,7 +653,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/DNS.V1.Zone.RecordCollection"
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -789,6 +789,80 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/DNS.V1.Zone.ResetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dns/v1/zones/{domain}/validate": {
+            "post": {
+                "tags": [
+                    "DNS: Zone"
+                ],
+                "summary": "Validate zone records",
+                "description": "This endpoint used to validate DNS records prior update for the selected domain. \n\nIf the validation is successful, the response will contain `200 Success` code.\nIf there is validation error, the response will fail with `422 Validation error` code.",
+                "operationId": "DNS_validateZoneRecordsV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DNS.V1.Zone.UpdateRequest"
                             }
                         }
                     }
@@ -4332,18 +4406,70 @@
             },
             "DNS.V1.Zone.UpdateRequest": {
                 "required": [
-                    "records"
+                    "zone"
                 ],
                 "properties": {
                     "overwrite": {
                         "description": "If `true`, resource records (RRs) matching name and type will be deleted and new RRs will be created, otherwise resource records' ttl's are updated and new records are appended. If no matching RRs are found, they are created.",
                         "type": "boolean",
+                        "default": true,
                         "example": true
                     },
-                    "records": {
+                    "zone": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/DNS.V1.Zone.RecordResource"
+                            "required": [
+                                "name",
+                                "record",
+                                "type"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "description": "Name of the record (use `@` for wildcard name)",
+                                    "type": "string",
+                                    "example": "www"
+                                },
+                                "records": {
+                                    "description": "Records assigned to the name",
+                                    "type": "array",
+                                    "items": {
+                                        "required": [
+                                            "content"
+                                        ],
+                                        "properties": {
+                                            "content": {
+                                                "description": "Content of the name record",
+                                                "type": "string",
+                                                "example": "mydomain.tld."
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "ttl": {
+                                    "description": "TTL (Time-To-Live) of the record",
+                                    "type": "integer",
+                                    "example": 14400
+                                },
+                                "type": {
+                                    "description": "Type of the record",
+                                    "type": "string",
+                                    "enum": [
+                                        "A",
+                                        "AAAA",
+                                        "CNAME",
+                                        "ALIAS",
+                                        "MX",
+                                        "TXT",
+                                        "NS",
+                                        "SOA",
+                                        "SRV",
+                                        "CAA"
+                                    ],
+                                    "example": "A"
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 },
@@ -5040,7 +5166,6 @@
                     "disabled": {
                         "description": "Flag to mark name record as disabled",
                         "type": "boolean",
-                        "default": false,
                         "example": false
                     }
                 },
