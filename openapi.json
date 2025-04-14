@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.19"
+        "version": "0.0.20"
     },
     "servers": [
         {
@@ -447,7 +447,63 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/dns/v1/snapshots/{domain}": {
+            "get": {
+                "tags": [
+                    "DNS: Snapshot"
+                ],
+                "summary": "Get snapshot list",
+                "description": "This endpoint retrieves list of DNS snapshots.",
+                "operationId": "DNS_getSnapshotListV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DNS.V1.Snapshot.SnapshotCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dns/v1/snapshots/{domain}/{snapshotId}/restore": {
             "post": {
                 "tags": [
                     "DNS: Snapshot"
@@ -484,60 +540,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/dns/v1/snapshots/{domain}": {
-            "get": {
-                "tags": [
-                    "DNS: Snapshot"
-                ],
-                "summary": "Get snapshot list",
-                "description": "This endpoint retrieves list of DNS snapshots.",
-                "operationId": "DNS_getSnapshotListV1",
-                "parameters": [
-                    {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/DNS.V1.Snapshot.SnapshotCollection"
                                 }
                             }
                         }
