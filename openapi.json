@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.16"
+        "version": "0.0.17"
     },
     "servers": [
         {
@@ -5823,9 +5823,21 @@
                         "type": "string",
                         "enum": [
                             "running",
+                            "starting",
+                            "stopping",
                             "stopped",
                             "creating",
-                            "initial"
+                            "initial",
+                            "error",
+                            "suspending",
+                            "unsuspending",
+                            "suspended",
+                            "destroying",
+                            "destroyed",
+                            "recreating",
+                            "restoring",
+                            "recovery",
+                            "stopping_recovery"
                         ],
                         "example": "running"
                     },
