@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.18"
+        "version": "0.0.19"
     },
     "servers": [
         {
@@ -695,7 +695,7 @@
                     "DNS: Zone"
                 ],
                 "summary": "Delete zone records",
-                "description": "This endpoint deletes selected DNS records for the selected domain.",
+                "description": "This endpoint deletes DNS records for the selected domain. \nTo filter which records to delete, add the `name` of the record and `type` to the filter. \nMultiple filters can be provided with single request.\n\nIf you have multiple records with the same name and type, and you want to delete only part of them,\nrefer to the `Update zone records` endpoint.",
                 "operationId": "DNS_deleteZoneRecordsV1",
                 "parameters": [
                     {
@@ -4346,6 +4346,10 @@
                         "description": "Filter records for deletion",
                         "type": "array",
                         "items": {
+                            "required": [
+                                "name",
+                                "type"
+                            ],
                             "properties": {
                                 "name": {
                                     "description": "Name of the record",
@@ -5137,9 +5141,7 @@
                         "example": "Zone records update request"
                     },
                     "snapshot": {
-                        "description": "Contents of the DNS zone",
-                        "type": "string",
-                        "example": "{}"
+                        "$ref": "#/components/schemas/DNS.V1.Zone.RecordCollection"
                     },
                     "created_at": {
                         "type": "string",
