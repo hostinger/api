@@ -1,5 +1,44 @@
 # Hostinger API
 ### Mon Apr 14 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
+  - `200` response: added support for new value `starting` on enum `state`
+  - `200` response: added support for new value `stopping` on enum `state`
+  - `200` response: added support for new value `error` on enum `state`
+  - `200` response: added support for new value `suspending` on enum `state`
+  - `200` response: added support for new value `unsuspending` on enum `state`
+  - `200` response: added support for new value `suspended` on enum `state`
+  - `200` response: added support for new value `destroying` on enum `state`
+  - `200` response: added support for new value `destroyed` on enum `state`
+  - `200` response: added support for new value `recreating` on enum `state`
+  - `200` response: added support for new value `restoring` on enum `state`
+  - `200` response: added support for new value `recovery` on enum `state`
+  - `200` response: added support for new value `stopping_recovery` on enum `state`
+- `GET` `/api/vps/v1/virtual-machines`:
+  - `200` response: added support for new value `starting` on enum `items`.`state`
+  - `200` response: added support for new value `stopping` on enum `items`.`state`
+  - `200` response: added support for new value `error` on enum `items`.`state`
+  - `200` response: added support for new value `suspending` on enum `items`.`state`
+  - `200` response: added support for new value `unsuspending` on enum `items`.`state`
+  - `200` response: added support for new value `suspended` on enum `items`.`state`
+  - `200` response: added support for new value `destroying` on enum `items`.`state`
+  - `200` response: added support for new value `destroyed` on enum `items`.`state`
+  - `200` response: added support for new value `recreating` on enum `items`.`state`
+  - `200` response: added support for new value `restoring` on enum `items`.`state`
+  - `200` response: added support for new value `recovery` on enum `items`.`state`
+  - `200` response: added support for new value `stopping_recovery` on enum `items`.`state`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`:
+  - `200` response: added support for new value `starting` on enum `state`
+  - `200` response: added support for new value `stopping` on enum `state`
+  - `200` response: added support for new value `error` on enum `state`
+  - `200` response: added support for new value `suspending` on enum `state`
+  - `200` response: added support for new value `unsuspending` on enum `state`
+  - `200` response: added support for new value `suspended` on enum `state`
+  - `200` response: added support for new value `destroying` on enum `state`
+  - `200` response: added support for new value `destroyed` on enum `state`
+  - `200` response: added support for new value `recreating` on enum `state`
+  - `200` response: added support for new value `restoring` on enum `state`
+  - `200` response: added support for new value `recovery` on enum `state`
+  - `200` response: added support for new value `stopping_recovery` on enum `state`
 - added `PUT` `/api/dns/v1/zones/{domain}`
 - added `DELETE` `/api/dns/v1/zones/{domain}`
 - `GET` `/api/dns/v1/zones/{domain}`:
