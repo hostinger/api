@@ -21,6 +21,7 @@ To get started with the Hostinger API, follow these steps:
 To help you get started with the Hostinger API, we provide SDKs and tools in various programming languages.
 The usage & documentation for each SDK can be found in the respective repositories:
 
+- Ansible - https://github.com/hostinger/ansible-collection-hostinger
 - PHP - https://github.com/hostinger/api-php-sdk
 - Python - https://github.com/hostinger/api-python-sdk
 - Terraform - https://github.com/hostinger/terraform-provider-hostinger
