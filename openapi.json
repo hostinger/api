@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.26"
+        "version": "0.0.27"
     },
     "servers": [
         {
@@ -5319,14 +5319,17 @@
                         "nullable": true
                     },
                     "is_available": {
+                        "description": "`true` if domain is available for registration",
                         "type": "boolean",
                         "example": true
                     },
                     "is_alternative": {
+                        "description": "`true` if domain is provided as an alternative",
                         "type": "boolean",
                         "example": false
                     },
                     "restriction": {
+                        "description": "Special rules and/or restrictions applied for registering TLD",
                         "type": "string",
                         "nullable": true
                     }
