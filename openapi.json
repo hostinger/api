@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.24"
+        "version": "0.0.25"
     },
     "servers": [
         {
@@ -876,6 +876,68 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/availability": {
+            "post": {
+                "tags": [
+                    "Domains: Availability"
+                ],
+                "summary": "Check domain availability",
+                "description": "This endpoint checks the availability of a domain name. Multiple TLDs can be checked at once.\n\nEndpoint has rate limit of 10 requests per minute.",
+                "operationId": "domains_checkDomainAvailabilityV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Availability.AvailabilityRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Availability.AvailabilityCollection"
                                 }
                             }
                         }
@@ -4481,6 +4543,35 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.Availability.AvailabilityRequest": {
+                "required": [
+                    "domain",
+                    "tlds"
+                ],
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "example": "mydomain"
+                    },
+                    "tlds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "com",
+                            "net",
+                            "org"
+                        ]
+                    },
+                    "with_alternatives": {
+                        "type": "boolean",
+                        "default": false,
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.Firewall.Rules.StoreRequest": {
                 "required": [
                     "protocol",
@@ -5064,7 +5155,7 @@
                         "type": "integer",
                         "example": 1799
                     },
-                    "auto_renew": {
+                    "is_auto_renewed": {
                         "type": "boolean",
                         "example": true
                     },
@@ -5162,7 +5253,7 @@
                         "type": "string",
                         "example": "mydomain.tld."
                     },
-                    "disabled": {
+                    "is_disabled": {
                         "description": "Flag to mark name record as disabled",
                         "type": "boolean",
                         "example": false
@@ -5208,6 +5299,36 @@
                             "CAA"
                         ],
                         "example": "A"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Availability.AvailabilityCollection": {
+                "description": "Array of [`Domains.V1.Availability.AvailabilityResource`](#model/domainsv1availabilityavailabilityresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Domains.V1.Availability.AvailabilityResource"
+                }
+            },
+            "Domains.V1.Availability.AvailabilityResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name, `null` when not claimed free domain",
+                        "type": "string",
+                        "example": "mydomain.tld",
+                        "nullable": true
+                    },
+                    "is_available": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_alternative": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "restriction": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -5401,7 +5522,7 @@
                         "type": "string",
                         "example": "HTTP and SSH only"
                     },
-                    "synced": {
+                    "is_synced": {
                         "description": "Is current firewall synced with VPS",
                         "type": "boolean",
                         "example": false
@@ -5961,6 +6082,11 @@
             "x-displayName": "Zone"
         },
         {
+            "name": "Domains: Availability",
+            "description": "Check the availability of domain names across multiple TLDs. This category allows you to verify if a specific domain name is available for registration.",
+            "x-displayName": "Availability"
+        },
+        {
             "name": "Domains: Portfolio",
             "description": "Retrieve and manage your domain portfolio. This category lets you list all domains linked to your account, including their creation and expiration details.",
             "x-displayName": "Portfolio"
@@ -6030,6 +6156,7 @@
         {
             "name": "Domains",
             "tags": [
+                "Domains: Availability",
                 "Domains: Portfolio"
             ]
         },
