@@ -1,4 +1,24 @@
 # Hostinger API
+### Tue Apr 22 2025
+- `POST` `/api/vps/v1/firewall`:
+  - `200` response: removed support for `synced` property
+  - `200` response: added support for `is_synced` property
+- `GET` `/api/vps/v1/firewall`:
+  - `200` response: removed support for `data`.`items`.`synced` property
+  - `200` response: added support for `data`.`items`.`is_synced` property
+- `GET` `/api/vps/v1/firewall/{firewallId}`:
+  - `200` response: removed support for `synced` property
+  - `200` response: added support for `is_synced` property
+- `GET` `/api/dns/v1/zones/{domain}`:
+  - `200` response: removed support for `items`.`records`.`items`.`disabled` property
+  - `200` response: added support for `items`.`records`.`items`.`is_disabled` property
+- `GET` `/api/dns/v1/snapshots/{domain}/{snapshotId}`:
+  - `200` response: removed support for `snapshot`.`items`.`records`.`items`.`disabled` property
+  - `200` response: added support for `snapshot`.`items`.`records`.`items`.`is_disabled` property
+- `GET` `/api/billing/v1/subscriptions`:
+  - `200` response: removed support for `items`.`auto_renew` property
+  - `200` response: added support for `items`.`is_auto_renewed` property
+- added `POST` `/api/domains/v1/availability`
 ### Mon Apr 14 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
   - `200` response: added support for new value `starting` on enum `state`
