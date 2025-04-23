@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.27"
+        "version": "0.0.28"
     },
     "servers": [
         {
@@ -975,6 +975,280 @@
                 }
             }
         },
+        "/api/domains/v1/forwarding/{domain}": {
+            "get": {
+                "tags": [
+                    "Domains: Forwarding"
+                ],
+                "summary": "Get forwarding data",
+                "description": "This endpoint retrieves domain forwarding data.",
+                "operationId": "domains_getForwardingDataV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Forwarding.ForwardingResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: Forwarding"
+                ],
+                "summary": "Delete forwarding data",
+                "description": "This endpoint deletes domain forwarding data.",
+                "operationId": "domains_deleteForwardingDataV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/forwarding": {
+            "post": {
+                "tags": [
+                    "Domains: Forwarding"
+                ],
+                "summary": "Create forwarding data",
+                "description": "This endpoint creates domain forwarding data.",
+                "operationId": "domains_createForwardingDataV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Forwarding.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Forwarding.ForwardingResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/portfolio/{domain}/domain-lock": {
+            "post": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Enable domain lock",
+                "description": "This endpoint enables domain lock for the domain. When domain lock is enabled, \nthe domain cannot be transferred to another registrar without first disabling the lock.",
+                "operationId": "domains_enableDomainLockV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Disable domain lock",
+                "description": "This endpoint disables domain lock for the domain. Domain lock needs to be disabled \nbefore transferring the domain to another registrar.",
+                "operationId": "domains_disableDomainLockV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/domains/v1/portfolio": {
             "get": {
                 "tags": [
@@ -990,6 +1264,186 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Domains.V1.Domain.DomainCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/portfolio/{domain}/privacy-protection": {
+            "post": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Enable privacy protection",
+                "description": "This endpoint enables privacy protection for the domain.\nWhen privacy protection is enabled, the domain owner's personal information is hidden from the public WHOIS database.",
+                "operationId": "domains_enablePrivacyProtectionV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Disable privacy protection",
+                "description": "This endpoint disables privacy protection for the domain.\nWhen privacy protection is disabled, the domain owner's personal information is visible in the public WHOIS database.",
+                "operationId": "domains_disablePrivacyProtectionV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/portfolio/{domain}/nameservers": {
+            "put": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Update nameservers",
+                "description": "This endpoint updates nameservers for ",
+                "operationId": "domains_updateNameserversV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Portfolio.UpdateNameserversRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
                                 }
                             }
                         }
@@ -4572,6 +5026,69 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.Forwarding.StoreRequest": {
+                "required": [
+                    "domain",
+                    "redirect_type",
+                    "redirect_url"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld",
+                        "nullable": true
+                    },
+                    "redirect_type": {
+                        "description": "Redirect type",
+                        "type": "string",
+                        "enum": [
+                            "301",
+                            "302"
+                        ],
+                        "example": "301",
+                        "x-enumDescriptions": {
+                            "301": "Permanent",
+                            "302": "Temporary"
+                        }
+                    },
+                    "redirect_url": {
+                        "description": "URL to forward domain to",
+                        "type": "string",
+                        "example": "https://forward.to.my.url"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Portfolio.UpdateNameserversRequest": {
+                "required": [
+                    "ns1",
+                    "ns2"
+                ],
+                "properties": {
+                    "ns1": {
+                        "description": "First name server",
+                        "type": "string",
+                        "example": "ns1.some-nameserver.tld"
+                    },
+                    "ns2": {
+                        "description": "Second name server",
+                        "type": "string",
+                        "example": "ns2.some-nameserver.tld"
+                    },
+                    "ns3": {
+                        "description": "Third name server",
+                        "type": "string",
+                        "example": "ns3.some-nameserver.tld"
+                    },
+                    "ns4": {
+                        "description": "Fourth name server",
+                        "type": "string",
+                        "example": "ns4.some-nameserver.tld"
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.Firewall.Rules.StoreRequest": {
                 "required": [
                     "protocol",
@@ -5350,7 +5867,7 @@
                         "type": "integer",
                         "example": 13632
                     },
-                    "name": {
+                    "domain": {
                         "description": "Domain name, `null` when not claimed free domain",
                         "type": "string",
                         "example": "mydomain.tld",
@@ -5379,6 +5896,46 @@
                         "example": "2025-02-27T11:54:22Z"
                     },
                     "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Forwarding.ForwardingResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld",
+                        "nullable": true
+                    },
+                    "redirect_type": {
+                        "description": "Redirect type",
+                        "type": "string",
+                        "enum": [
+                            "301",
+                            "302"
+                        ],
+                        "example": "301",
+                        "x-enumDescriptions": {
+                            "301": "Permanent",
+                            "302": "Temporary"
+                        }
+                    },
+                    "redirect_url": {
+                        "description": "URL domain is forwarded to",
+                        "type": "string",
+                        "example": "https://forward.to.my.url"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z",
@@ -6090,6 +6647,11 @@
             "x-displayName": "Availability"
         },
         {
+            "name": "Domains: Forwarding",
+            "description": "Domain forwarding or redirect is an easy way to direct your website visitors to another site or page, making it simple to maintain your brand and keep your visitors engaged.",
+            "x-displayName": "Forwarding"
+        },
+        {
             "name": "Domains: Portfolio",
             "description": "Retrieve and manage your domain portfolio. This category lets you list all domains linked to your account, including their creation and expiration details.",
             "x-displayName": "Portfolio"
@@ -6160,6 +6722,7 @@
             "name": "Domains",
             "tags": [
                 "Domains: Availability",
+                "Domains: Forwarding",
                 "Domains: Portfolio"
             ]
         },
