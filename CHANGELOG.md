@@ -6,9 +6,9 @@
 - added `GET` `/api/domains/v1/forwarding/{domain}`
 - added `DELETE` `/api/domains/v1/forwarding/{domain}`
 - added `POST` `/api/domains/v1/forwarding`
-- added `POST` `/api/domains/v1/portfolio/{domain}/domain-lock`
+- added `PUT` `/api/domains/v1/portfolio/{domain}/domain-lock`
 - added `DELETE` `/api/domains/v1/portfolio/{domain}/domain-lock`
-- added `POST` `/api/domains/v1/portfolio/{domain}/privacy-protection`
+- added `PUT` `/api/domains/v1/portfolio/{domain}/privacy-protection`
 - added `DELETE` `/api/domains/v1/portfolio/{domain}/privacy-protection`
 - added `PUT` `/api/domains/v1/portfolio/{domain}/nameservers`
 ### Tue Apr 22 2025
