@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.28"
+        "version": "0.0.29"
     },
     "servers": [
         {
@@ -1144,7 +1144,7 @@
             }
         },
         "/api/domains/v1/portfolio/{domain}/domain-lock": {
-            "post": {
+            "put": {
                 "tags": [
                     "Domains: Portfolio"
                 ],
@@ -1292,7 +1292,7 @@
             }
         },
         "/api/domains/v1/portfolio/{domain}/privacy-protection": {
-            "post": {
+            "put": {
                 "tags": [
                     "Domains: Portfolio"
                 ],
