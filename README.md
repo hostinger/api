@@ -26,7 +26,9 @@ The usage & documentation for each SDK can be found in the respective repositori
 - Python - https://github.com/hostinger/api-python-sdk
 - Terraform - https://github.com/hostinger/terraform-provider-hostinger
 - TypeScript - https://github.com/hostinger/api-typescript-sdk
+- n8n Node - https://github.com/hostinger/api-n8n-node
 - MCP Server - https://github.com/hostinger/api-mcp-server
+- Postman Collection - https://www.postman.com/hostinger-api
 
 ## Change log
 For information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).
