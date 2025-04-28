@@ -1,11 +1,15 @@
 # Hostinger API
 ### Mon Apr 28 2025
+- `GET` `/api/domains/v1/portfolio`:
+  - `200` response: added support for new value `requested` on enum `items`.`status`
+  - `200` response: added support for new value `pending_verification` on enum `items`.`status`
 - `POST` `/api/domains/v1/forwarding`: `requestBody`: removed `domain`.`nullable`
 - `POST` `/api/domains/v1/availability`:
   - `requestBody`: added `with_alternatives`.`description`
   - `requestBody`: added `tlds`.`description`
   - `requestBody`: added `domain`.`description`
 - `POST` `/api/billing/v1/orders`: `requestBody`: added `items`.`items`.`required`
+- added `GET` `/api/domains/v1/portfolio/{domain}`
 - added `GET` `/api/domains/v1/whois/{whoisId}`
 - added `DELETE` `/api/domains/v1/whois/{whoisId}`
 - added `GET` `/api/domains/v1/whois`
