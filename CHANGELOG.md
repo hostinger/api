@@ -1,4 +1,16 @@
 # Hostinger API
+### Mon Apr 28 2025
+- `POST` `/api/domains/v1/forwarding`: `requestBody`: removed `domain`.`nullable`
+- `POST` `/api/domains/v1/availability`:
+  - `requestBody`: added `with_alternatives`.`description`
+  - `requestBody`: added `tlds`.`description`
+  - `requestBody`: added `domain`.`description`
+- `POST` `/api/billing/v1/orders`: `requestBody`: added `items`.`items`.`required`
+- added `GET` `/api/domains/v1/whois/{whoisId}`
+- added `DELETE` `/api/domains/v1/whois/{whoisId}`
+- added `GET` `/api/domains/v1/whois`
+- added `POST` `/api/domains/v1/whois`
+- added `GET` `/api/domains/v1/whois/{whoisId}/usage`
 ### Wed Apr 23 2025
 - `GET` `/api/domains/v1/portfolio`:
   - `200` response: removed support for `items`.`name` property
