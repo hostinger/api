@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.34"
+        "version": "0.0.35"
     },
     "servers": [
         {
@@ -1255,7 +1255,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Get domain",
-                "description": "This endpoint retrieves domain .",
+                "description": "This endpoint retrieves details for specified domain.",
                 "operationId": "domains_getDomainV1",
                 "parameters": [
                     {
@@ -1457,7 +1457,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Update nameservers",
-                "description": "This endpoint updates nameservers for ",
+                "description": "This endpoint sets the nameservers for a specified domain.\n\nBe aware, that improper nameserver configuration can lead to the domain being unresolvable or unavailable. ",
                 "operationId": "domains_updateNameserversV1",
                 "parameters": [
                     {
