@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.32"
+        "version": "0.0.33"
     },
     "servers": [
         {
@@ -1222,6 +1222,60 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/portfolio/{domain}": {
+            "get": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Get domain",
+                "description": "This endpoint retrieves domain .",
+                "operationId": "domains_getDomainV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "path",
+                        "description": "Domain name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "mydomain.tld"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Domain.DomainExtendedResource"
                                 }
                             }
                         }
@@ -6177,6 +6231,142 @@
                     "$ref": "#/components/schemas/Domains.V1.Domain.DomainResource"
                 }
             },
+            "Domains.V1.Domain.DomainExtendedResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "status": {
+                        "description": "Status of the domain",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "pending_setup",
+                            "expired",
+                            "requested",
+                            "pending_verification"
+                        ],
+                        "example": "active"
+                    },
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "is_privacy_protection_allowed": {
+                        "description": "Is privacy protection allowed for the domain",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_privacy_protected": {
+                        "description": "Is privacy protection enabled for the domain",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_lockable": {
+                        "description": "Is domain allowed to be locked",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_locked": {
+                        "description": "Is domain locked",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "name_servers": {
+                        "description": "Name servers",
+                        "properties": {
+                            "ns1": {
+                                "description": "Name server 1",
+                                "type": "string",
+                                "example": "ns1.example.tld"
+                            },
+                            "ns2": {
+                                "description": "Name server 2",
+                                "type": "string",
+                                "example": "ns2.example.tld"
+                            }
+                        },
+                        "type": "object",
+                        "example": {
+                            "ns1": "ns1.example.tld",
+                            "ns2": "ns2.example.tld"
+                        }
+                    },
+                    "child_name_servers": {
+                        "description": "Child name servers",
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "example": {
+                            "ns1.example.tld": [
+                                "258.231.55.321",
+                                "258.231.55.322"
+                            ]
+                        }
+                    },
+                    "domain_contacts": {
+                        "description": "WHOIS profiles",
+                        "properties": {
+                            "admin_id": {
+                                "description": "Admin WHOIS profile ID",
+                                "type": "integer",
+                                "example": 114698
+                            },
+                            "owner_id": {
+                                "description": "Owner WHOIS profile ID",
+                                "type": "integer",
+                                "example": 614698
+                            },
+                            "billing_id": {
+                                "description": "Billing WHOIS profile ID",
+                                "type": "integer",
+                                "example": 154698
+                            },
+                            "tech_id": {
+                                "description": "Technician WHOIS profile ID",
+                                "type": "integer",
+                                "example": 524248
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "60_days_lock_expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-04-27T11:54:22Z",
+                        "nullable": true
+                    },
+                    "registered_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T12:54:22Z",
+                        "nullable": true
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-27T11:54:22Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Domain.DomainResource": {
                 "properties": {
                     "id": {
@@ -6203,7 +6393,9 @@
                         "enum": [
                             "active",
                             "pending_setup",
-                            "expired"
+                            "expired",
+                            "requested",
+                            "pending_verification"
                         ],
                         "example": "active"
                     },
