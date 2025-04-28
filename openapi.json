@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.31"
+        "version": "0.0.32"
     },
     "servers": [
         {
@@ -1444,6 +1444,279 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/whois/{whoisId}": {
+            "get": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Get WHOIS profile",
+                "description": "This endpoint retrieves a WHOIS contact profile.",
+                "operationId": "domains_getWHOISProfileV1",
+                "parameters": [
+                    {
+                        "name": "whoisId",
+                        "in": "path",
+                        "description": "WHOIS ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 564651
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.WHOIS.ProfileResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Delete WHOIS profile",
+                "description": "This endpoint deletes WHOIS contact profile.",
+                "operationId": "domains_deleteWHOISProfileV1",
+                "parameters": [
+                    {
+                        "name": "whoisId",
+                        "in": "path",
+                        "description": "WHOIS ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 564651
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/whois": {
+            "get": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Get WHOIS profile list",
+                "description": "This endpoint retrieves a list of WHOIS contact profiles.",
+                "operationId": "domains_getWHOISProfileListV1",
+                "parameters": [
+                    {
+                        "name": "tld",
+                        "in": "query",
+                        "description": "Filter by TLD (without trailing dot)",
+                        "schema": {
+                            "type": "string",
+                            "example": "com"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.WHOIS.ProfileCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Create WHOIS profile",
+                "description": "This endpoint creates WHOIS contact profile.",
+                "operationId": "domains_createWHOISProfileV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.WHOIS.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.WHOIS.ProfileResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/whois/{whoisId}/usage": {
+            "get": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Get WHOIS profile usage",
+                "description": "This endpoint retrieves a domain list where provided WHOIS contact profile is used.",
+                "operationId": "domains_getWHOISProfileUsageV1",
+                "parameters": [
+                    {
+                        "name": "whoisId",
+                        "in": "path",
+                        "description": "WHOIS ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 564651
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.WHOIS.ProfileUsageResource"
                                 }
                             }
                         }
@@ -4807,6 +5080,10 @@
                     "items": {
                         "type": "array",
                         "items": {
+                            "required": [
+                                "item_id",
+                                "quantity"
+                            ],
                             "properties": {
                                 "item_id": {
                                     "description": "Price Item ID",
@@ -5004,10 +5281,12 @@
                 ],
                 "properties": {
                     "domain": {
+                        "description": "Domain name without TLD",
                         "type": "string",
                         "example": "mydomain"
                     },
                     "tlds": {
+                        "description": "TLDs to check (without trailing dot)",
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -5019,6 +5298,7 @@
                         ]
                     },
                     "with_alternatives": {
+                        "description": "Should response include alternatives",
                         "type": "boolean",
                         "default": false,
                         "example": true
@@ -5036,8 +5316,7 @@
                     "domain": {
                         "description": "Domain name",
                         "type": "string",
-                        "example": "mydomain.tld",
-                        "nullable": true
+                        "example": "mydomain.tld"
                     },
                     "redirect_type": {
                         "description": "Redirect type",
@@ -5085,6 +5364,44 @@
                         "description": "Fourth name server",
                         "type": "string",
                         "example": "ns4.some-nameserver.tld"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.WHOIS.StoreRequest": {
+                "required": [
+                    "tld",
+                    "entity_type",
+                    "country",
+                    "whois_details"
+                ],
+                "properties": {
+                    "tld": {
+                        "description": "TLD of the domain (without trailing dot)",
+                        "type": "string",
+                        "example": "com"
+                    },
+                    "country": {
+                        "description": "ISO 3166 2-letter country code",
+                        "type": "string",
+                        "example": "NL"
+                    },
+                    "entity_type": {
+                        "description": "Legal entity type",
+                        "type": "string",
+                        "enum": [
+                            "individual",
+                            "organization"
+                        ],
+                        "example": "individual"
+                    },
+                    "tld_details": {
+                        "description": "TLD details",
+                        "type": "object"
+                    },
+                    "whois_details": {
+                        "description": "WHOIS details",
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -5944,6 +6261,76 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.WHOIS.ProfileCollection": {
+                "description": "Array of [`Domains.V1.WHOIS.ProfileResource`](#model/domainsv1whoisprofileresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Domains.V1.WHOIS.ProfileResource"
+                }
+            },
+            "Domains.V1.WHOIS.ProfileResource": {
+                "properties": {
+                    "id": {
+                        "description": "WHOIS Profile ID",
+                        "type": "integer",
+                        "example": 746263
+                    },
+                    "tld": {
+                        "description": "TLD to which contact profile can be applied to",
+                        "type": "string",
+                        "example": "com"
+                    },
+                    "country": {
+                        "description": "ISO 3166 2-letter country code",
+                        "type": "string",
+                        "example": "NL"
+                    },
+                    "entity_type": {
+                        "description": "WHOIS profile entity type",
+                        "type": "string",
+                        "enum": [
+                            "individual",
+                            "organization"
+                        ],
+                        "example": "individual"
+                    },
+                    "whois_details": {
+                        "description": "WHOIS profile details",
+                        "type": "object",
+                        "example": {
+                            "first_name": "John",
+                            "last_name": "Doe",
+                            "email": "john@doe.tld"
+                        }
+                    },
+                    "tld_details": {
+                        "description": "TLD details",
+                        "type": "object"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-19T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.WHOIS.ProfileUsageResource": {
+                "description": "Array of domains",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "example": [
+                    "mydomain1.tld",
+                    "mydomain2.tld"
+                ]
+            },
             "VPS.V1.Action.ActionCollection": {
                 "description": "Array of [`VPS.V1.Action.ActionResource`](#model/vpsv1actionactionresource)",
                 "type": "array",
@@ -6657,6 +7044,11 @@
             "x-displayName": "Portfolio"
         },
         {
+            "name": "Domains: WHOIS",
+            "description": "Manage WHOIS contact profiles for your domains. This category includes endpoints for creating, updating, deleting, and retrieving WHOIS profiles.\nWHOIS profile stores registration data for domain names and is required for domain registration.",
+            "x-displayName": "WHOIS"
+        },
+        {
             "name": "VPS: Data centers",
             "description": "Access information on available data centers, including location details, so you can choose the optimal region for deploying your virtual machines.",
             "x-displayName": "Data centers"
@@ -6723,7 +7115,7 @@
             "tags": [
                 "Domains: Availability",
                 "Domains: Forwarding",
-                "Domains: Portfolio"
+                "Domains: WHOIS"
             ]
         },
         {
