@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.33"
+        "version": "0.0.34"
     },
     "servers": [
         {
@@ -7307,6 +7307,7 @@
             "tags": [
                 "Domains: Availability",
                 "Domains: Forwarding",
+                "Domains: Portfolio",
                 "Domains: WHOIS"
             ]
         },
