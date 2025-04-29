@@ -1,4 +1,7 @@
 # Hostinger API
+### Tue Apr 29 2025
+- added `POST` `/api/domains/v1/portfolio`
+- `POST` `/api/billing/v1/orders`: `requestBody`: added `coupons`.`description`
 ### Mon Apr 28 2025
 - `GET` `/api/domains/v1/portfolio`:
   - `200` response: added support for new value `requested` on enum `items`.`status`
