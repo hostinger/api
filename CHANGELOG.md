@@ -1,6 +1,11 @@
 # Hostinger API
 ### Tue Apr 29 2025
+- `POST` `/api/domains/v1/whois`: `requestBody`: changed `tld`.`description`
+- `GET` `/api/domains/v1/whois`: `tld` query parameter: changed `description`
 - added `POST` `/api/domains/v1/portfolio`
+- `POST` `/api/domains/v1/availability`:
+  - `requestBody`: changed `tlds`.`description`
+  - `requestBody`: changed `domain`.`description`
 - `POST` `/api/billing/v1/orders`: `requestBody`: added `coupons`.`description`
 ### Mon Apr 28 2025
 - `GET` `/api/domains/v1/portfolio`:
