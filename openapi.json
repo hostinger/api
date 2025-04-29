@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.36"
+        "version": "0.0.37"
     },
     "servers": [
         {
@@ -1192,6 +1192,66 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Domains.V1.Domain.DomainCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Purchase new domain",
+                "description": "This endpoint purchases and registers new domain. If registration fails, login to hPanel and check the domain registration status.\n\nIf no payment method is provided, default will be used.\n\nIf no WHOIS information is provided, default for that TLD will be used. \nBefore making request make sure that WHOIS information for TLD exists.\n\nSome TLDs require `additional_details` to be provided and will be validated before making purchase.",
+                "operationId": "domains_purchaseNewDomainV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Portfolio.PurchaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
                                 }
                             }
                         }
@@ -4580,6 +4640,7 @@
                         }
                     },
                     "coupons": {
+                        "description": "Discount coupon codes",
                         "type": "array",
                         "items": {
                             "example": [
@@ -4816,6 +4877,69 @@
                         "description": "URL to forward domain to",
                         "type": "string",
                         "example": "https://forward.to.my.url"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Portfolio.PurchaseRequest": {
+                "required": [
+                    "domain",
+                    "item_id"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "my-new-domain.tld"
+                    },
+                    "item_id": {
+                        "description": "Catalog price item ID",
+                        "type": "string",
+                        "example": "hostingercom-domain-com-usd-1y"
+                    },
+                    "payment_method_id": {
+                        "description": "Payment method ID",
+                        "type": "integer",
+                        "example": 1327362
+                    },
+                    "domain_contacts": {
+                        "description": "Domain contact information",
+                        "properties": {
+                            "owner_id": {
+                                "description": "Owner contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "admin_id": {
+                                "description": "Administrative contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 546123
+                            },
+                            "billing_id": {
+                                "description": "Billing contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "tech_id": {
+                                "description": "Technical contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "additional_details": {
+                        "description": "Additional registration data, possible values depends on TLD",
+                        "type": "object"
+                    },
+                    "coupons": {
+                        "description": "Discount coupon codes",
+                        "type": "array",
+                        "items": {
+                            "example": [
+                                "Coupon 3"
+                            ]
+                        }
                     }
                 },
                 "type": "object"
