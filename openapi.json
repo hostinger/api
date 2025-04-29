@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.35"
+        "version": "0.0.36"
     },
     "servers": [
         {
@@ -131,14 +131,7 @@
                 "operationId": "billing_setDefaultPaymentMethodV1",
                 "parameters": [
                     {
-                        "name": "paymentMethodId",
-                        "in": "path",
-                        "description": "Payment method ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9693613
-                        }
+                        "$ref": "#/components/parameters/paymentMethodId"
                     }
                 ],
                 "responses": {
@@ -183,14 +176,7 @@
                 "operationId": "billing_deletePaymentMethodV1",
                 "parameters": [
                     {
-                        "name": "paymentMethodId",
-                        "in": "path",
-                        "description": "Payment method ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9693613
-                        }
+                        "$ref": "#/components/parameters/paymentMethodId"
                     }
                 ],
                 "responses": {
@@ -279,14 +265,7 @@
                 "operationId": "billing_cancelSubscriptionV1",
                 "parameters": [
                     {
-                        "name": "subscriptionId",
-                        "in": "path",
-                        "description": "Subscription ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "Cxy353Uhl1xC54pG6"
-                        }
+                        "$ref": "#/components/parameters/subscriptionId"
                     }
                 ],
                 "requestBody": {
@@ -395,24 +374,10 @@
                 "operationId": "DNS_getSnapshotV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     },
                     {
-                        "name": "snapshotId",
-                        "in": "path",
-                        "description": "Snapshot ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 53513053
-                        }
+                        "$ref": "#/components/parameters/snapshotId"
                     }
                 ],
                 "responses": {
@@ -459,14 +424,7 @@
                 "operationId": "DNS_getSnapshotListV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -513,24 +471,10 @@
                 "operationId": "DNS_restoreSnapshotV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     },
                     {
-                        "name": "snapshotId",
-                        "in": "path",
-                        "description": "Snapshot ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 53513053
-                        }
+                        "$ref": "#/components/parameters/snapshotId"
                     }
                 ],
                 "responses": {
@@ -577,14 +521,7 @@
                 "operationId": "DNS_getRecordsV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -629,14 +566,7 @@
                 "operationId": "DNS_updateZoneRecordsV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "requestBody": {
@@ -701,14 +631,7 @@
                 "operationId": "DNS_deleteZoneRecordsV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "requestBody": {
@@ -775,14 +698,7 @@
                 "operationId": "DNS_resetZoneRecordsV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "requestBody": {
@@ -849,14 +765,7 @@
                 "operationId": "DNS_validateZoneRecordsV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "requestBody": {
@@ -985,14 +894,7 @@
                 "operationId": "domains_getForwardingDataV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1037,14 +939,7 @@
                 "operationId": "domains_deleteForwardingDataV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1153,14 +1048,7 @@
                 "operationId": "domains_enableDomainLockV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1205,14 +1093,7 @@
                 "operationId": "domains_disableDomainLockV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1259,14 +1140,7 @@
                 "operationId": "domains_getDomainV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1355,14 +1229,7 @@
                 "operationId": "domains_enablePrivacyProtectionV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1407,14 +1274,7 @@
                 "operationId": "domains_disablePrivacyProtectionV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -1461,14 +1321,7 @@
                 "operationId": "domains_updateNameserversV1",
                 "parameters": [
                     {
-                        "name": "domain",
-                        "in": "path",
-                        "description": "Domain name",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "mydomain.tld"
-                        }
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "requestBody": {
@@ -1535,14 +1388,7 @@
                 "operationId": "domains_getWHOISProfileV1",
                 "parameters": [
                     {
-                        "name": "whoisId",
-                        "in": "path",
-                        "description": "WHOIS ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 564651
-                        }
+                        "$ref": "#/components/parameters/whoisId"
                     }
                 ],
                 "responses": {
@@ -1587,14 +1433,7 @@
                 "operationId": "domains_deleteWHOISProfileV1",
                 "parameters": [
                     {
-                        "name": "whoisId",
-                        "in": "path",
-                        "description": "WHOIS ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 564651
-                        }
+                        "$ref": "#/components/parameters/whoisId"
                     }
                 ],
                 "responses": {
@@ -1641,13 +1480,7 @@
                 "operationId": "domains_getWHOISProfileListV1",
                 "parameters": [
                     {
-                        "name": "tld",
-                        "in": "query",
-                        "description": "Filter by TLD (without trailing dot)",
-                        "schema": {
-                            "type": "string",
-                            "example": "com"
-                        }
+                        "$ref": "#/components/parameters/tld"
                     }
                 ],
                 "responses": {
@@ -1754,14 +1587,7 @@
                 "operationId": "domains_getWHOISProfileUsageV1",
                 "parameters": [
                     {
-                        "name": "whoisId",
-                        "in": "path",
-                        "description": "WHOIS ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 564651
-                        }
+                        "$ref": "#/components/parameters/whoisId"
                     }
                 ],
                 "responses": {
@@ -1850,24 +1676,10 @@
                 "operationId": "VPS_activateFirewallV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     },
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -1924,24 +1736,10 @@
                 "operationId": "VPS_deactivateFirewallV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     },
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -1998,14 +1796,7 @@
                 "operationId": "VPS_getFirewallV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     }
                 ],
                 "responses": {
@@ -2050,14 +1841,7 @@
                 "operationId": "VPS_deleteFirewallV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     }
                 ],
                 "responses": {
@@ -2104,14 +1888,7 @@
                 "operationId": "VPS_getFirewallListV1",
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "$ref": "#/components/parameters/page"
                     }
                 ],
                 "responses": {
@@ -2226,24 +2003,10 @@
                 "operationId": "VPS_updateFirewallRuleV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     },
                     {
-                        "name": "ruleId",
-                        "in": "path",
-                        "description": "Firewall Rule ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 8941182
-                        }
+                        "$ref": "#/components/parameters/ruleId"
                     }
                 ],
                 "requestBody": {
@@ -2308,24 +2071,10 @@
                 "operationId": "VPS_deleteFirewallRuleV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     },
                     {
-                        "name": "ruleId",
-                        "in": "path",
-                        "description": "Firewall Rule ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 8941182
-                        }
+                        "$ref": "#/components/parameters/ruleId"
                     }
                 ],
                 "responses": {
@@ -2372,14 +2121,7 @@
                 "operationId": "VPS_createFirewallRuleV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     }
                 ],
                 "requestBody": {
@@ -2446,24 +2188,10 @@
                 "operationId": "VPS_syncFirewallV1",
                 "parameters": [
                     {
-                        "name": "firewallId",
-                        "in": "path",
-                        "description": "Firewall ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9449049
-                        }
+                        "$ref": "#/components/parameters/firewallId"
                     },
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -2520,14 +2248,7 @@
                 "operationId": "VPS_getPostInstallScriptV1",
                 "parameters": [
                     {
-                        "name": "postInstallScriptId",
-                        "in": "path",
-                        "description": "Post-install script ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9568314
-                        }
+                        "$ref": "#/components/parameters/postInstallScriptId"
                     }
                 ],
                 "responses": {
@@ -2572,14 +2293,7 @@
                 "operationId": "VPS_updatePostInstallScriptV1",
                 "parameters": [
                     {
-                        "name": "postInstallScriptId",
-                        "in": "path",
-                        "description": "Post-install script ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9568314
-                        }
+                        "$ref": "#/components/parameters/postInstallScriptId"
                     }
                 ],
                 "requestBody": {
@@ -2644,14 +2358,7 @@
                 "operationId": "VPS_deleteAPostInstallScriptV1",
                 "parameters": [
                     {
-                        "name": "postInstallScriptId",
-                        "in": "path",
-                        "description": "Post-install script ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 9568314
-                        }
+                        "$ref": "#/components/parameters/postInstallScriptId"
                     }
                 ],
                 "responses": {
@@ -2698,14 +2405,7 @@
                 "operationId": "VPS_getPostInstallScriptListV1",
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "$ref": "#/components/parameters/page"
                     }
                 ],
                 "responses": {
@@ -2820,14 +2520,7 @@
                 "operationId": "VPS_attachPublicKeyV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -2894,14 +2587,7 @@
                 "operationId": "VPS_deleteAPublicKeyV1",
                 "parameters": [
                     {
-                        "name": "publicKeyId",
-                        "in": "path",
-                        "description": "Public Key ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 6672861
-                        }
+                        "$ref": "#/components/parameters/publicKeyId"
                     }
                 ],
                 "responses": {
@@ -2948,14 +2634,7 @@
                 "operationId": "VPS_getPublicKeyListV1",
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "$ref": "#/components/parameters/page"
                     }
                 ],
                 "responses": {
@@ -3070,14 +2749,7 @@
                 "operationId": "VPS_getTemplateV1",
                 "parameters": [
                     {
-                        "name": "templateId",
-                        "in": "path",
-                        "description": "Template ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 2868928
-                        }
+                        "$ref": "#/components/parameters/templateId"
                     }
                 ],
                 "responses": {
@@ -3166,24 +2838,10 @@
                 "operationId": "VPS_getActionV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
-                        "name": "actionId",
-                        "in": "path",
-                        "description": "Action ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 8123712
-                        }
+                        "$ref": "#/components/parameters/actionId"
                     }
                 ],
                 "responses": {
@@ -3230,24 +2888,10 @@
                 "operationId": "VPS_getActionListV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "$ref": "#/components/parameters/page"
                     }
                 ],
                 "responses": {
@@ -3302,24 +2946,10 @@
                 "operationId": "VPS_getAttachedPublicKeysV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "$ref": "#/components/parameters/page"
                     }
                 ],
                 "responses": {
@@ -3374,24 +3004,10 @@
                 "operationId": "VPS_deleteBackupV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
-                        "name": "backupId",
-                        "in": "path",
-                        "description": "Backup ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 8676502
-                        }
+                        "$ref": "#/components/parameters/backupId"
                     }
                 ],
                 "responses": {
@@ -3438,24 +3054,10 @@
                 "operationId": "VPS_getBackupListV1",
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/page"
                     }
                 ],
                 "responses": {
@@ -3510,24 +3112,10 @@
                 "operationId": "VPS_restoreBackupV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
-                        "name": "backupId",
-                        "in": "path",
-                        "description": "Backup ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 8676502
-                        }
+                        "$ref": "#/components/parameters/backupId"
                     }
                 ],
                 "responses": {
@@ -3574,14 +3162,7 @@
                 "operationId": "VPS_setHostnameV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -3646,14 +3227,7 @@
                 "operationId": "VPS_resetHostnameV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -3700,14 +3274,7 @@
                 "operationId": "VPS_getVirtualMachineV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -3796,14 +3363,7 @@
                 "operationId": "VPS_getScanMetricsV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -3858,14 +3418,7 @@
                 "operationId": "VPS_installMonarxV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -3920,14 +3473,7 @@
                 "operationId": "VPS_uninstallMonarxV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -3984,14 +3530,7 @@
                 "operationId": "VPS_getMetricsV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     },
                     {
                         "name": "date_from",
@@ -4069,14 +3608,7 @@
                 "operationId": "VPS_setNameserversV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -4143,14 +3675,7 @@
                 "operationId": "VPS_createPTRRecordV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4195,14 +3720,7 @@
                 "operationId": "VPS_deletePTRRecordV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4249,14 +3767,7 @@
                 "operationId": "VPS_setPanelPasswordV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -4323,14 +3834,7 @@
                 "operationId": "VPS_startRecoveryModeV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -4395,14 +3899,7 @@
                 "operationId": "VPS_stopRecoveryModeV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4449,14 +3946,7 @@
                 "operationId": "VPS_recreateVirtualMachineV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -4523,14 +4013,7 @@
                 "operationId": "VPS_restartVirtualMachineV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4577,14 +4060,7 @@
                 "operationId": "VPS_setRootPasswordV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -4651,14 +4127,7 @@
                 "operationId": "VPS_setupNewVirtualMachineV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "requestBody": {
@@ -4725,14 +4194,7 @@
                 "operationId": "VPS_getSnapshotV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4777,14 +4239,7 @@
                 "operationId": "VPS_createSnapshotV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4829,14 +4284,7 @@
                 "operationId": "VPS_deleteSnapshotV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4883,14 +4331,7 @@
                 "operationId": "VPS_restoreSnapshotV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4937,14 +4378,7 @@
                 "operationId": "VPS_startVirtualMachineV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -4991,14 +4425,7 @@
                 "operationId": "VPS_stopVirtualMachineV1",
                 "parameters": [
                     {
-                        "name": "virtualMachineId",
-                        "in": "path",
-                        "description": "Virtual Machine ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1268054
-                        }
+                        "$ref": "#/components/parameters/virtualMachineId"
                     }
                 ],
                 "responses": {
@@ -7174,6 +6601,167 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "parameters": {
+            "paymentMethodId": {
+                "name": "paymentMethodId",
+                "in": "path",
+                "description": "Payment method ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 9693613
+                }
+            },
+            "subscriptionId": {
+                "name": "subscriptionId",
+                "in": "path",
+                "description": "Subscription ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "Cxy353Uhl1xC54pG6"
+                }
+            },
+            "domain": {
+                "name": "domain",
+                "in": "path",
+                "description": "Domain name",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "mydomain.tld"
+                }
+            },
+            "page": {
+                "name": "page",
+                "in": "query",
+                "description": "Page number",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "snapshotId": {
+                "name": "snapshotId",
+                "in": "path",
+                "description": "Snapshot ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 53513053
+                }
+            },
+            "tld": {
+                "name": "tld",
+                "in": "query",
+                "description": "Filter by TLD (without trailing dot)",
+                "schema": {
+                    "type": "string",
+                    "example": "com"
+                }
+            },
+            "whoisId": {
+                "name": "whoisId",
+                "in": "path",
+                "description": "WHOIS ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 564651
+                }
+            },
+            "tokenId": {
+                "name": "tokenId",
+                "in": "path",
+                "description": "Token ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 6409747
+                }
+            },
+            "actionId": {
+                "name": "actionId",
+                "in": "path",
+                "description": "Action ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 8123712
+                }
+            },
+            "backupId": {
+                "name": "backupId",
+                "in": "path",
+                "description": "Backup ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 8676502
+                }
+            },
+            "firewallId": {
+                "name": "firewallId",
+                "in": "path",
+                "description": "Firewall ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 9449049
+                }
+            },
+            "ruleId": {
+                "name": "ruleId",
+                "in": "path",
+                "description": "Firewall Rule ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 8941182
+                }
+            },
+            "postInstallScriptId": {
+                "name": "postInstallScriptId",
+                "in": "path",
+                "description": "Post-install script ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 9568314
+                }
+            },
+            "publicKeyId": {
+                "name": "publicKeyId",
+                "in": "path",
+                "description": "Public Key ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 6672861
+                }
+            },
+            "templateId": {
+                "name": "templateId",
+                "in": "path",
+                "description": "Template ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 2868928
+                }
+            },
+            "virtualMachineId": {
+                "name": "virtualMachineId",
+                "in": "path",
+                "description": "Virtual Machine ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 1268054
+                }
             }
         },
         "securitySchemes": {
