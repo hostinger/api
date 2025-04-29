@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.37"
+        "version": "0.0.38"
     },
     "servers": [
         {
@@ -828,7 +828,7 @@
                     "Domains: Availability"
                 ],
                 "summary": "Check domain availability",
-                "description": "This endpoint checks the availability of a domain name. Multiple TLDs can be checked at once.\n\nEndpoint has rate limit of 10 requests per minute.",
+                "description": "This endpoint checks the availability of a domain name. Multiple TLDs can be checked at once.\nIf you want to get alternative domains with response, provide only one TLD in the request and set `with_alternatives` to `true`.\nTLDs should be provided without the leading dot (e.g. `com`, `net`, `org`).\n\nEndpoint has rate limit of 10 requests per minute.",
                 "operationId": "domains_checkDomainAvailabilityV1",
                 "requestBody": {
                     "required": true,
@@ -4823,12 +4823,12 @@
                 ],
                 "properties": {
                     "domain": {
-                        "description": "Domain name without TLD",
+                        "description": "Domain name (without TLD)",
                         "type": "string",
                         "example": "mydomain"
                     },
                     "tlds": {
-                        "description": "TLDs to check (without trailing dot)",
+                        "description": "TLDs to check (without leading dot)",
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -4982,7 +4982,7 @@
                 ],
                 "properties": {
                     "tld": {
-                        "description": "TLD of the domain (without trailing dot)",
+                        "description": "TLD of the domain (without leading dot)",
                         "type": "string",
                         "example": "com"
                     },
@@ -6781,7 +6781,7 @@
             "tld": {
                 "name": "tld",
                 "in": "query",
-                "description": "Filter by TLD (without trailing dot)",
+                "description": "Filter by TLD (without leading dot)",
                 "schema": {
                     "type": "string",
                     "example": "com"
