@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.39"
+        "version": "0.0.40"
     },
     "servers": [
         {
@@ -4761,7 +4761,7 @@
                         "items": {
                             "required": [
                                 "name",
-                                "record",
+                                "records",
                                 "type"
                             ],
                             "properties": {
@@ -4828,9 +4828,10 @@
                         "example": "mydomain"
                     },
                     "tlds": {
-                        "description": "TLDs to check (without leading dot)",
+                        "description": "TLDs list",
                         "type": "array",
                         "items": {
+                            "description": "TLD without leading dot",
                             "type": "string"
                         },
                         "example": [
