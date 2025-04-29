@@ -5,7 +5,14 @@
 - added `POST` `/api/domains/v1/portfolio`
 - `POST` `/api/domains/v1/availability`:
   - `requestBody`: changed `tlds`.`description`
+  - `requestBody`: added `tlds`.`items`.`description`
   - `requestBody`: changed `domain`.`description`
+- `POST` `/api/dns/v1/zones/{domain}/validate`:
+  - `requestBody`: `zone`.`items`.`record` is no longer required
+  - `requestBody`: `zone`.`items`.`records` is now required
+- `PUT` `/api/dns/v1/zones/{domain}`:
+  - `requestBody`: `zone`.`items`.`record` is no longer required
+  - `requestBody`: `zone`.`items`.`records` is now required
 - `POST` `/api/billing/v1/orders`: `requestBody`: added `coupons`.`description`
 ### Mon Apr 28 2025
 - `GET` `/api/domains/v1/portfolio`:
