@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.43"
+        "version": "0.0.44"
     },
     "servers": [
         {
@@ -25,6 +25,14 @@
                 "summary": "Get catalog item list",
                 "description": "This endpoint retrieves a list of catalog items available for order. \n\nPrices in catalog items is displayed as cents (without floating point), e.g: float `17.99` is displayed as integer `1799`.",
                 "operationId": "billing_getCatalogItemListV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/category"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -5358,6 +5366,28 @@
             }
         },
         "parameters": {
+            "category": {
+                "name": "category",
+                "in": "query",
+                "description": "Filter catalog items by category",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "DOMAIN",
+                        "VPS"
+                    ],
+                    "example": "VPS"
+                }
+            },
+            "name": {
+                "name": "name",
+                "in": "query",
+                "description": "Filter catalog items by name. Use `*` for wildcard search.",
+                "schema": {
+                    "type": "string",
+                    "example": ".COM*"
+                }
+            },
             "paymentMethodId": {
                 "name": "paymentMethodId",
                 "in": "path",
