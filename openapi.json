@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.42"
+        "version": "0.0.43"
     },
     "servers": [
         {
@@ -37,24 +37,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -89,34 +75,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -146,24 +111,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -191,24 +142,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -233,24 +170,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -290,34 +213,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -342,24 +244,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -392,24 +280,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -439,24 +313,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -489,24 +349,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -536,24 +382,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -591,34 +423,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -656,34 +467,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -723,34 +513,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -790,34 +559,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -852,34 +600,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -909,24 +636,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -954,24 +667,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1006,34 +705,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1063,24 +741,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -1108,24 +772,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1155,24 +805,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1197,24 +833,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -1247,34 +869,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1304,24 +905,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -1349,24 +936,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1406,34 +979,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1463,24 +1015,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -1508,24 +1046,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1555,24 +1079,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -1605,34 +1115,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1662,24 +1151,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1704,24 +1179,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1754,34 +1215,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1814,34 +1254,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1871,24 +1290,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -1916,24 +1321,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -1971,24 +1362,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -2021,34 +1398,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2091,34 +1447,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -2149,24 +1484,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2206,34 +1527,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2266,34 +1566,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2323,24 +1602,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -2378,34 +1643,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -2433,24 +1677,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2488,24 +1718,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -2538,34 +1754,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2605,34 +1800,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2662,24 +1836,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2717,24 +1877,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -2767,34 +1913,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2824,24 +1949,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2866,24 +1977,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2916,24 +2013,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -2974,24 +2057,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3032,24 +2101,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3082,24 +2137,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3140,24 +2181,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3190,24 +2217,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3247,34 +2260,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -3302,24 +2294,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3349,24 +2327,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3391,24 +2355,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3438,34 +2388,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -3493,34 +2422,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -3548,34 +2456,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3625,34 +2512,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 },
                 "x-optic-ignore-example": true
@@ -3693,34 +2559,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3750,24 +2595,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -3795,24 +2626,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3852,34 +2669,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -3919,34 +2715,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -3974,24 +2749,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4031,34 +2792,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4088,24 +2828,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4145,34 +2871,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4212,34 +2917,13 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnprocessableContentResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4269,24 +2953,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -4314,24 +2984,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             },
@@ -4359,24 +3015,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4406,24 +3048,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4453,24 +3081,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4500,24 +3114,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.UnauthorizedResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
-                        "description": "Error response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.Schema.ErrorResponseSchema"
-                                }
-                            }
-                        }
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
             }
@@ -4525,20 +3125,6 @@
     },
     "components": {
         "schemas": {
-            "Common.Schema.ErrorResponseSchema": {
-                "properties": {
-                    "message": {
-                        "type": "string",
-                        "example": "Error message"
-                    },
-                    "correlation_id": {
-                        "type": "string",
-                        "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
-                    }
-                },
-                "type": "object",
-                "x-scalar-ignore": true
-            },
             "Common.Schema.PaginationMetaSchema": {
                 "properties": {
                     "current_page": {
@@ -4552,56 +3138,6 @@
                     "total": {
                         "type": "integer",
                         "example": 100
-                    }
-                },
-                "type": "object",
-                "x-scalar-ignore": true
-            },
-            "Common.Schema.UnauthorizedResponseSchema": {
-                "properties": {
-                    "message": {
-                        "type": "string",
-                        "example": "Unauthenticated"
-                    },
-                    "correlation_id": {
-                        "type": "string",
-                        "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
-                    }
-                },
-                "type": "object",
-                "x-scalar-ignore": true
-            },
-            "Common.Schema.UnprocessableContentResponseSchema": {
-                "properties": {
-                    "message": {
-                        "description": "Validation error message",
-                        "type": "string",
-                        "example": "The name field is required. (and 1 more error)"
-                    },
-                    "errors": {
-                        "properties": {
-                            "field_1": {
-                                "type": "array",
-                                "items": {},
-                                "example": [
-                                    "The field_1 field is required.",
-                                    "The field_1 must be a number."
-                                ]
-                            },
-                            "field_2": {
-                                "type": "array",
-                                "items": {},
-                                "example": [
-                                    "The field_2 field is required.",
-                                    "The field_2 must be a string."
-                                ]
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "correlation_id": {
-                        "type": "string",
-                        "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
                     }
                 },
                 "type": "object",
@@ -6726,6 +5262,99 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "responses": {
+            "Common.Response.ErrorResponse": {
+                "description": "Error response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Message of the error",
+                                    "type": "string",
+                                    "example": "Error message"
+                                },
+                                "correlation_id": {
+                                    "description": "Request correlation ID",
+                                    "type": "string",
+                                    "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "x-scalar-ignore": true
+            },
+            "Common.Response.UnauthorizedResponse": {
+                "description": "Unauthenticated response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Message of the error",
+                                    "type": "string",
+                                    "example": "Unauthenticated"
+                                },
+                                "correlation_id": {
+                                    "description": "Request correlation ID",
+                                    "type": "string",
+                                    "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "x-scalar-ignore": true
+            },
+            "Common.Response.UnprocessableContentResponse": {
+                "description": "Validation error response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Validation error message",
+                                    "type": "string",
+                                    "example": "The name field is required. (and 1 more error)"
+                                },
+                                "errors": {
+                                    "description": "Object of detailed errors for each field",
+                                    "properties": {
+                                        "field_1": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": [
+                                                "The field_1 field is required.",
+                                                "The field_1 must be a number."
+                                            ]
+                                        },
+                                        "field_2": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": [
+                                                "The field_2 field is required.",
+                                                "The field_2 must be a string."
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "correlation_id": {
+                                    "description": "Request correlation ID",
+                                    "type": "string",
+                                    "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "x-scalar-ignore": true
             }
         },
         "parameters": {
