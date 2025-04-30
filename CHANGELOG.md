@@ -959,6 +959,8 @@
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
 - `GET` `/api/billing/v1/catalog`:
+  - added `category` query parameter
+  - added `name` query parameter
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
   - `500` response: added `correlation_id`.`description`
