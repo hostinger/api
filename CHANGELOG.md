@@ -1,4 +1,10 @@
 # Hostinger API
+### Fri May 16 2025
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
+  - removed `date_to` query parameter
+  - added `date_to` query parameter
+  - removed `date_from` query parameter
+  - added `date_from` query parameter
 ### Wed Apr 30 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - `500` response: added `x-scalar-ignore`
