@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.53"
+        "version": "0.0.54"
     },
     "servers": [
         {
@@ -2490,20 +2490,22 @@
                     {
                         "name": "date_from",
                         "in": "query",
-                        "description": "the date-time notation as defined by RFC 3339, section 5.6",
                         "required": true,
                         "schema": {
                             "type": "string",
+                            "format": "date-time",
+                            "default": null,
                             "example": "2025-05-01T00:00:00Z"
                         }
                     },
                     {
                         "name": "date_to",
                         "in": "query",
-                        "description": "the date-time notation as defined by RFC 3339, section 5.6",
                         "required": true,
                         "schema": {
                             "type": "string",
+                            "format": "date-time",
+                            "default": null,
                             "example": "2025-06-01T00:00:00Z"
                         }
                     }
@@ -3679,6 +3681,25 @@
                     "hostname": {
                         "type": "string",
                         "example": "my.server.tld"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.MetricGetRequest": {
+                "required": [
+                    "date_from",
+                    "date_to"
+                ],
+                "properties": {
+                    "date_from": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-05-01T00:00:00Z"
+                    },
+                    "date_to": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-01T00:00:00Z"
                     }
                 },
                 "type": "object"
