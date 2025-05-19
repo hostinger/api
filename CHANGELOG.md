@@ -1,4 +1,12 @@
 # Hostinger API
+### Mon May 19 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
+  - `requestBody`: added `public_key`.`description`
+  - `requestBody`: changed `public_key`.`key`.`description`
+  - `requestBody`: added `ns2`.`description`
+  - `requestBody`: added `ns1`.`description`
+- added `POST` `/api/vps/v1/virtual-machines`
+- `POST` `/api/domains/v1/portfolio`: `requestBody`: changed `payment_method_id`.`description`
 ### Fri May 16 2025
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
   - removed `date_to` query parameter
