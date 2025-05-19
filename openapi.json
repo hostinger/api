@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.55"
+        "version": "0.0.56"
     },
     "servers": [
         {
@@ -2369,6 +2369,45 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "VPS: Virtual machine"
+                ],
+                "summary": "Purchase new virtual machine",
+                "description": "This endpoint purchases a new virtual machine.",
+                "operationId": "VPS_purchaseNewVirtualMachineV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.PurchaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/vps/v1/virtual-machines/{virtualMachineId}/monarx": {
@@ -3445,7 +3484,7 @@
                         "example": "hostingercom-domain-com-usd-1y"
                     },
                     "payment_method_id": {
-                        "description": "Payment method ID",
+                        "description": "Payment method ID, default will be used if not provided",
                         "type": "integer",
                         "example": 1327362
                     },
@@ -3735,6 +3774,37 @@
                 },
                 "type": "object"
             },
+            "VPS.V1.VirtualMachine.PurchaseRequest": {
+                "required": [
+                    "item_id",
+                    "setup"
+                ],
+                "properties": {
+                    "item_id": {
+                        "description": "Catalog price item ID",
+                        "type": "string",
+                        "example": "hostingercom-vps-kvm2-usd-1m"
+                    },
+                    "payment_method_id": {
+                        "description": "Payment method ID, default will be used if not provided",
+                        "type": "integer",
+                        "example": 1327362
+                    },
+                    "setup": {
+                        "$ref": "#/components/schemas/VPS.V1.VirtualMachine.SetupRequest"
+                    },
+                    "coupons": {
+                        "description": "Discount coupon codes",
+                        "type": "array",
+                        "items": {
+                            "example": [
+                                "Coupon 3"
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.VirtualMachine.Recovery.StartRequest": {
                 "required": [
                     "root_password"
@@ -3834,14 +3904,17 @@
                         "example": true
                     },
                     "ns1": {
+                        "description": "Name server 1",
                         "type": "string",
                         "example": "4.3.2.1"
                     },
                     "ns2": {
+                        "description": "Name server 2",
                         "type": "string",
                         "example": "1.2.3.4"
                     },
                     "public_key": {
+                        "description": "Use SSH key",
                         "properties": {
                             "name": {
                                 "description": "Name of the SSH key",
@@ -3849,7 +3922,7 @@
                                 "example": "my-key"
                             },
                             "key": {
-                                "description": "SSH public key",
+                                "description": "Contents of the SSH key",
                                 "type": "string",
                                 "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2X..."
                             }
@@ -4052,6 +4125,17 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Order.VirtualMachineOrderResource": {
+                "properties": {
+                    "order": {
+                        "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                    },
+                    "virtual_machine": {
+                        "$ref": "#/components/schemas/VPS.V1.VirtualMachine.VirtualMachineResource"
                     }
                 },
                 "type": "object"
