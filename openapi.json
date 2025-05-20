@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.56"
+        "version": "0.0.57"
     },
     "servers": [
         {
@@ -59,7 +59,7 @@
                     "Billing: Orders"
                 ],
                 "summary": "Create new service order",
-                "description": "This endpoint creates a new service order. \n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatic renewal.\n\nSome `credit_card` payments might need additional verification, rendering purchase unprocessed.\nWe recommend use other payment methods than `credit_card` if you encounter this issue.",
+                "description": "This endpoint creates a new service order. \n\n**DEPRECATED**\n\nTo purchase a domain, use [`POST /api/domains/v1/portfolio`](/#tag/domains-portfolio/POST/api/domains/v1/portfolio) instead.\n\nTo purchase a VPS, use [`POST /api/vps/v1/virtual-machines`](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines) instead.\n\n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatic renewal.\n\nSome `credit_card` payments might need additional verification, rendering purchase unprocessed.\nWe recommend use other payment methods than `credit_card` if you encounter this issue.",
                 "operationId": "billing_createNewServiceOrderV1",
                 "requestBody": {
                     "required": true,
@@ -91,7 +91,8 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true
             }
         },
         "/api/billing/v1/payment-methods/{paymentMethodId}": {
@@ -853,7 +854,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Purchase new domain",
-                "description": "This endpoint allows you to buy (purchase) and register a new domain name. If registration fails, login to hPanel and check the domain registration status.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nIf no WHOIS information is provided, the default contact information for that TLD (Top-Level Domain) will be used. \nBefore making a request, ensure that WHOIS information for the desired TLD exists in your account.\n\nSome TLDs require `additional_details` to be provided and these will be validated before completing the purchase. The required additional details vary by TLD.",
+                "description": "This endpoint allows you to buy (purchase) and register a new domain name. \n\nIf registration fails, login to [hPanel](https://hpanel.hostinger.com/) and check the domain registration status.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nIf no WHOIS information is provided, the default contact information for that TLD (Top-Level Domain) will be used. \nBefore making a request, ensure that WHOIS information for the desired TLD exists in your account.\n\nSome TLDs require `additional_details` to be provided and these will be validated before completing the purchase. The required additional details vary by TLD.",
                 "operationId": "domains_purchaseNewDomainV1",
                 "requestBody": {
                     "required": true,
@@ -2375,7 +2376,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Purchase new virtual machine",
-                "description": "This endpoint purchases a new virtual machine.",
+                "description": "This endpoint allows you to buy (purchase) and setup a new virtual machine.\n\nIf virtual machine setup fails for any reason, login to [hPanel](https://hpanel.hostinger.com/) and complete the setup manually.\n\nIf no payment method is provided, your default payment method will be used automatically.                        ",
                 "operationId": "VPS_purchaseNewVirtualMachineV1",
                 "requestBody": {
                     "required": true,
@@ -2937,7 +2938,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Setup new virtual machine",
-                "description": "This endpoint will setup newly purchased virtual machine. Such virtual machines has `initial` state. \nNew virtual machine can be purchased using [`/api/billing/v1/orders`](/#tag/billing-orders/POST/api/billing/v1/orders) endpoint.                        ",
+                "description": "This endpoint will setup newly purchased virtual machine with `initial` state. ",
                 "operationId": "VPS_setupNewVirtualMachineV1",
                 "parameters": [
                     {
