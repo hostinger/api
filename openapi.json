@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.72"
+        "version": "0.0.73"
     },
     "servers": [
         {
@@ -92,7 +92,8 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 },
-                "deprecated": true
+                "deprecated": true,
+                "x-scalar-ignore": true
             }
         },
         "/api/billing/v1/payment-methods/{paymentMethodId}": {
@@ -2394,7 +2395,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                                    "$ref": "#/components/schemas/Billing.V1.Order.VirtualMachineOrderResource"
                                 }
                             }
                         }
