@@ -1,4 +1,17 @@
 # Hostinger API
+### Wed Jun 18 2025
+- `POST` `/api/vps/v1/virtual-machines`:
+  - `200` response: removed support for `id` property
+  - `200` response: removed support for `subscription_id` property
+  - `200` response: removed support for `status` property
+  - `200` response: removed support for `currency` property
+  - `200` response: removed support for `subtotal` property
+  - `200` response: removed support for `total` property
+  - `200` response: removed support for `billing_address` property
+  - `200` response: removed support for `created_at` property
+  - `200` response: removed support for `updated_at` property
+  - `200` response: added support for `order` property
+  - `200` response: added support for `virtual_machine` property
 ### Mon May 19 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
   - `requestBody`: added `public_key`.`description`
