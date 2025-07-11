@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.76",
+        "version": "0.0.77",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
