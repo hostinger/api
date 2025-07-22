@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.80",
+        "version": "0.0.81",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4031,6 +4031,14 @@
                     "category": {
                         "type": "string",
                         "example": "VPS"
+                    },
+                    "metadata": {
+                        "description": "Flexible key-value storage containing category-specific metadata for the catalog item. The structure and available fields vary depending on the item category.",
+                        "type": "object",
+                        "example": {
+                            "field": "value"
+                        },
+                        "nullable": true
                     },
                     "prices": {
                         "$ref": "#/components/schemas/Billing.V1.Catalog.CatalogItemPriceCollection"
