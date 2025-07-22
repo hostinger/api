@@ -1,4 +1,6 @@
 # Hostinger API
+### Tue Jul 22 2025
+- `GET` `/api/billing/v1/catalog`: `200` response: added support for `items`.`metadata` property
 ### Wed Jun 18 2025
 - `POST` `/api/vps/v1/virtual-machines`:
   - `200` response: removed support for `id` property
