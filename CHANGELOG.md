@@ -1,4 +1,6 @@
 # Hostinger API
+### Wed Jul 30 2025
+- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}`
 ### Tue Jul 22 2025
 - `GET` `/api/billing/v1/catalog`: `200` response: added support for `items`.`metadata` property
 ### Wed Jun 18 2025
