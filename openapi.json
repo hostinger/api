@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.84",
+        "version": "0.0.85",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2128,42 +2128,6 @@
                                         }
                                     },
                                     "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}": {
-            "delete": {
-                "tags": [
-                    "VPS: Backups"
-                ],
-                "summary": "Delete backup",
-                "description": "This endpoint deletes a specified backup for a virtual machine.",
-                "operationId": "VPS_deleteBackupV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/virtualMachineId"
-                    },
-                    {
-                        "$ref": "#/components/parameters/backupId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success empty response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
