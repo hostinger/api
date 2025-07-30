@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.85",
+        "version": "0.0.86",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3742,7 +3742,13 @@
                     },
                     "ns2": {
                         "type": "string",
-                        "example": "1.2.3.4"
+                        "example": "1.2.3.4",
+                        "nullable": true
+                    },
+                    "ns3": {
+                        "type": "string",
+                        "example": "5.2.3.4",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -3840,7 +3846,7 @@
                         "description": "Root password for the virtual machine",
                         "type": "string",
                         "format": "password",
-                        "minLength": 8,
+                        "minLength": 12,
                         "example": "oMeNRustosIO"
                     }
                 },
@@ -3871,7 +3877,7 @@
                         "description": "Password for the virtual machine. If not provided, random password will be generated. Password will not be shown in the response.",
                         "type": "string",
                         "format": "password",
-                        "minLength": 8,
+                        "minLength": 12,
                         "example": "oMeNRustosIO"
                     },
                     "hostname": {
