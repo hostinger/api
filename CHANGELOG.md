@@ -1,5 +1,11 @@
 # Hostinger API
 ### Wed Jul 30 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: changed `password`.`minLength`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`: `requestBody`: changed `password`.`minLength`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
+  - `requestBody`: added support for `ns3` property
+  - `requestBody`: added `ns2`.`nullable`
+- `POST` `/api/vps/v1/virtual-machines`: `requestBody`: changed `setup`.`password`.`minLength`
 - removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}`
 ### Tue Jul 22 2025
 - `GET` `/api/billing/v1/catalog`: `200` response: added support for `items`.`metadata` property
