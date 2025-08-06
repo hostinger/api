@@ -8,26 +8,26 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.87",
+        "version": "0.0.88",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
-                "description": "Install official CLI tool. Examples and usage is in our [Github repository](https://github.com/hostinger/api-cli).",
+                "description": "Install official CLI tool. Examples and usage instructions can be found in our [Github repository](https://github.com/hostinger/api-cli).",
                 "source": "hapi vps vm list"
             },
             {
                 "lang": "PHP",
-                "description": "Install official PHP SDK. Examples and usage is in our [Github repository](https://github.com/hostinger/api-php-sdk).",
+                "description": "Install official PHP SDK. Examples and usage instructions can be found in our [Github repository](https://github.com/hostinger/api-php-sdk).",
                 "source": "composer require hostinger/api-php-sdk"
             },
             {
                 "lang": "Python",
-                "description": "Install official Python SDK. Examples and usage is in our [Github repository](https://github.com/hostinger/api-python-sdk).",
+                "description": "Install official Python SDK. Examples and usage instructions can be found in our [Github repository](https://github.com/hostinger/api-python-sdk).",
                 "source": "pip install hostinger_api"
             },
             {
                 "lang": "Node",
-                "description": "Install official Node / Typescript SDK. Examples and usage is in our [Github repository](https://github.com/hostinger/api-typescript-sdk).",
+                "description": "Install official Node / Typescript SDK. Examples and usage instructions can be found in our [Github repository](https://github.com/hostinger/api-typescript-sdk).",
                 "source": "npm install hostinger-api-sdk"
             }
         ]
