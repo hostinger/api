@@ -1219,6 +1219,408 @@
                 }
             }
         },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers": {
+            "get": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Get project containers",
+                "description": "Retrieves a list of all containers belonging to a specific Docker Compose project on the virtual machine. \n\nThis endpoint returns detailed information about each container including their current status, port mappings, and runtime configuration. \n\nUse this to monitor the health and state of all services within your Docker Compose project.",
+                "operationId": "VPS_getProjectContainersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}": {
+            "get": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Get project contents",
+                "description": "Retrieves the complete project information including the docker-compose.yml file contents, project metadata, and current deployment status. \n\nThis endpoint provides the full configuration and state details of a specific Docker Compose project. \n\nUse this to inspect project settings, review the compose file, or check the overall project health.",
+                "operationId": "VPS_getProjectContentsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.DockerManager.ContentResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/down": {
+            "delete": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Delete a project",
+                "description": "Completely removes a Docker Compose project from the virtual machine, stopping all containers and cleaning up \nassociated resources including networks, volumes, and images. \n\nThis operation is irreversible and will delete all project data. \n\nUse this when you want to permanently remove a project and free up system resources.",
+                "operationId": "VPS_deleteAProjectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker": {
+            "get": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Get project list",
+                "description": "Retrieves a list of all Docker Compose projects currently deployed on the virtual machine. \n\nThis endpoint returns basic information about each project including name, status, and file path. \n\nUse this to get an overview of all Docker projects on your VPS instance.",
+                "operationId": "VPS_getProjectListV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.DockerManager.ProjectCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            },
+            "post": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Create a project",
+                "description": "Deploy new project from docker-compose.yaml contents or download contents from URL. \n\nURL can be Github repository url in format https://github.com/[user]/[repo] and it will be automatically resolved to \ndocker-compose.yaml file in master branch. Any other URL provided must return docker-compose.yaml file contents.\n\nIf project already exists, it will be replaced.",
+                "operationId": "VPS_createAProjectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.DockerManager.UpRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/logs": {
+            "get": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Get project logs",
+                "description": "Retrieves aggregated log entries from all services within a Docker Compose project. \n\nThis endpoint returns recent log output from each container, organized by service name with timestamps. \nThe response contains the last 300 log entries across all services. \n\nUse this for debugging, monitoring application behavior, and troubleshooting issues across your entire project stack.",
+                "operationId": "VPS_getProjectLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.DockerManager.LogsCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/restart": {
+            "post": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Restart a project",
+                "description": "Restarts all services in a Docker Compose project by stopping and starting containers in the correct dependency order. \n\nThis operation preserves data volumes and network configurations while refreshing the running containers. \n\nUse this to apply configuration changes or recover from service failures.",
+                "operationId": "VPS_restartAProjectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/start": {
+            "post": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Start a project",
+                "description": "Starts all services in a Docker Compose project that are currently stopped. \n\nThis operation brings up containers in the correct dependency order as defined in the compose file. \n\nUse this to resume a project that was previously stopped or to start services after a system reboot.",
+                "operationId": "VPS_startAProjectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/stop": {
+            "post": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Stop a project",
+                "description": "Stops all running services in a Docker Compose project while preserving container configurations and data volumes. \n\nThis operation gracefully shuts down containers in reverse dependency order. \n\nUse this to temporarily halt a project without removing data or configurations.",
+                "operationId": "VPS_stopAProjectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/update": {
+            "post": {
+                "tags": [
+                    "VPS: Docker Manager"
+                ],
+                "summary": "Update a project",
+                "description": "Updates a Docker Compose project by pulling the latest image versions and recreating containers with new configurations. \n\nThis operation preserves data volumes while applying changes from the compose file. \n\nUse this to deploy application updates, apply configuration changes, or refresh container images to their latest versions.",
+                "operationId": "VPS_updateAProjectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/projectName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "x-scalar-stability": "experimental"
+            }
+        },
         "/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}": {
             "post": {
                 "tags": [
@@ -3442,7 +3844,7 @@
                             "302"
                         ],
                         "example": "301",
-                        "x-enumDescriptions": {
+                        "x-enum-descriptions": {
                             "301": "Permanent",
                             "302": "Temporary"
                         }
@@ -3696,6 +4098,27 @@
                     "key": {
                         "type": "string",
                         "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.DockerManager.UpRequest": {
+                "required": [
+                    "project_name",
+                    "content"
+                ],
+                "properties": {
+                    "project_name": {
+                        "description": "Docker Compose project name using alphanumeric characters, dashes, and underscores only",
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "example": "my-project-1"
+                    },
+                    "content": {
+                        "description": "URL pointing to docker-compose.yaml file, Github repository or raw YAML content of the compose file",
+                        "type": "string",
+                        "maxLength": 8192
                     }
                 },
                 "type": "object"
@@ -4632,7 +5055,7 @@
                             "302"
                         ],
                         "example": "301",
-                        "x-enumDescriptions": {
+                        "x-enum-descriptions": {
                             "301": "Permanent",
                             "302": "Temporary"
                         }
@@ -4756,7 +5179,7 @@
                             "created"
                         ],
                         "example": "success",
-                        "x-enumDescriptions": {
+                        "x-enum-descriptions": {
                             "success": "Action was successful",
                             "error": "Action failed",
                             "delayed": "Action is delayed",
@@ -4841,6 +5264,291 @@
                         "type": "string",
                         "example": "North America",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.ContainerCollection": {
+                "description": "Array of [`VPS.V1.DockerManager.ContainerResource`](#model/vpsv1dockermanagercontainerresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerResource"
+                }
+            },
+            "VPS.V1.DockerManager.ContainerPortCollection": {
+                "description": "Array of [`VPS.V1.DockerManager.ContainerPortResource`](#model/vpsv1dockermanagercontainerportresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerPortResource"
+                }
+            },
+            "VPS.V1.DockerManager.ContainerPortResource": {
+                "properties": {
+                    "type": {
+                        "description": "Port mapping type - published (accessible from host), exposed (only internal), or range variants",
+                        "type": "string",
+                        "enum": [
+                            "published",
+                            "published_range",
+                            "exposed",
+                            "exposed_range"
+                        ],
+                        "example": "published",
+                        "x-enum-descriptions": {
+                            "published": "A single port mapped from the host to the container (e.g., host:8080 -> container:80)",
+                            "published_range": "A range of ports mapped from the host to the container (e.g., host:8000-8010 -> container:3000-3010)",
+                            "exposed": "A single port made available for inter-container communication within Docker networks",
+                            "exposed_range": "A range of ports made available for inter-container communication within Docker networks"
+                        }
+                    },
+                    "protocol": {
+                        "description": "Network protocol used for communication",
+                        "type": "string",
+                        "enum": [
+                            "tcp",
+                            "udp"
+                        ],
+                        "example": "tcp"
+                    },
+                    "host_ip": {
+                        "description": "IP address on host where port is bound (null for exposed-only ports)",
+                        "type": "string",
+                        "example": "0.0.0.0",
+                        "nullable": true
+                    },
+                    "host_port": {
+                        "description": "Port number on host machine (null for exposed-only or range ports)",
+                        "type": "integer",
+                        "example": 8080,
+                        "nullable": true
+                    },
+                    "container_port": {
+                        "description": "Port number inside container (null for range ports)",
+                        "type": "integer",
+                        "example": 80,
+                        "nullable": true
+                    },
+                    "host_port_start": {
+                        "description": "Starting port number in host port range (null for single ports)",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "host_port_end": {
+                        "description": "Ending port number in host port range (null for single ports)",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "container_port_start": {
+                        "description": "Starting port number in container port range (null for single ports)",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "container_port_end": {
+                        "description": "Ending port number in container port range (null for single ports)",
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.ContainerResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique container identifier (short form of Docker container ID)",
+                        "type": "string",
+                        "example": "bbd4c89e850d"
+                    },
+                    "name": {
+                        "description": "Container name as defined in docker-compose or assigned by Docker",
+                        "type": "string",
+                        "example": "nginx"
+                    },
+                    "image": {
+                        "description": "Docker image name and tag used to create this container",
+                        "type": "string",
+                        "example": "nginx:latest"
+                    },
+                    "command": {
+                        "description": "Command being executed inside the container (may be truncated with ...)",
+                        "type": "string",
+                        "example": "/docker-entrypoint.sh nginx -g daemon off;"
+                    },
+                    "status": {
+                        "description": "Human-readable container status including uptime, exit codes, or error information",
+                        "type": "string",
+                        "example": "Up 4 hours"
+                    },
+                    "state": {
+                        "description": "Programmatic container lifecycle state for automated processing",
+                        "type": "string",
+                        "enum": [
+                            "created",
+                            "running",
+                            "restarting",
+                            "exited",
+                            "paused",
+                            "dead",
+                            "stopping"
+                        ],
+                        "example": "running",
+                        "x-enum-descriptions": {
+                            "created": "Container has been created but never started",
+                            "running": "Container is actively running and performing its tasks",
+                            "restarting": "Container is in the process of being restarted",
+                            "exited": "Container ran and completed/stopped",
+                            "paused": "Container's processes have been paused, but container is still allocated",
+                            "dead": "Container that the daemon tried and failed to stop (usually due to the busy device or resource used by the container)",
+                            "stopping": "Container is in the process of being stopped"
+                        }
+                    },
+                    "ports": {
+                        "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerPortCollection"
+                    },
+                    "stats": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerStatsResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Real-time resource usage statistics (only available for running containers)"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.ContainerStatsResource": {
+                "properties": {
+                    "cpu_percentage": {
+                        "description": "CPU usage in percentage",
+                        "type": "number",
+                        "format": "float",
+                        "example": 15.4
+                    },
+                    "memory_percentage": {
+                        "description": "Memory usage in percentage",
+                        "type": "number",
+                        "format": "float",
+                        "example": 0.4
+                    },
+                    "memory_used": {
+                        "description": "Used memory in bytes",
+                        "type": "number",
+                        "format": "float",
+                        "example": 66532147.2
+                    },
+                    "memory_total": {
+                        "description": "Total available memory in bytes",
+                        "type": "number",
+                        "format": "float",
+                        "example": 16771847290.88
+                    },
+                    "net_in": {
+                        "description": "Inbound network traffic in bytes",
+                        "type": "integer",
+                        "example": 2110000
+                    },
+                    "net_out": {
+                        "description": "Outbound network traffic in bytes",
+                        "type": "integer",
+                        "example": 30100
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.ContentResource": {
+                "properties": {
+                    "content": {
+                        "description": "Contents of docker-compose file",
+                        "type": "string",
+                        "example": "services:\n    my-app:\n        image: nginx\n        ports:\n            - \"80:80\"\n    my-db:\n        image: mysql"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.LogEntryCollection": {
+                "description": "Array of [`VPS.V1.DockerManager.LogEntryResource`](#model/vpsv1dockermanagerlogentryresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.DockerManager.LogEntryResource"
+                }
+            },
+            "VPS.V1.DockerManager.LogEntryResource": {
+                "properties": {
+                    "timestamp": {
+                        "description": "ISO 8601 formatted timestamp when the log entry was generated by the container",
+                        "type": "string",
+                        "example": "2024-01-15T10:30:45.123456Z"
+                    },
+                    "line": {
+                        "description": "Raw log message content as output by the application inside the container",
+                        "type": "string",
+                        "example": "127.0.0.1 - - [15/Jan/2024:10:30:45 +0000] \"GET / HTTP/1.1\" 200 612"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.LogsCollection": {
+                "description": "Array of [`VPS.V1.DockerManager.LogsResource`](#model/vpsv1dockermanagerlogsresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.DockerManager.LogsResource"
+                }
+            },
+            "VPS.V1.DockerManager.LogsResource": {
+                "properties": {
+                    "service": {
+                        "description": "Name of the Docker Compose service that generated these log entries",
+                        "type": "string",
+                        "example": "web"
+                    },
+                    "entries": {
+                        "$ref": "#/components/schemas/VPS.V1.DockerManager.LogEntryCollection"
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.DockerManager.ProjectCollection": {
+                "description": "Array of [`VPS.V1.DockerManager.ProjectResource`](#model/vpsv1dockermanagerprojectresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.DockerManager.ProjectResource"
+                }
+            },
+            "VPS.V1.DockerManager.ProjectResource": {
+                "properties": {
+                    "name": {
+                        "description": "Docker Compose project name (derived from directory name or compose file)",
+                        "type": "string",
+                        "example": "my-project"
+                    },
+                    "status": {
+                        "description": "Raw output from docker compose ps command showing service count and states",
+                        "type": "string",
+                        "example": "running(2)"
+                    },
+                    "state": {
+                        "description": "Derived project state parsed from the raw docker compose status",
+                        "type": "string",
+                        "enum": [
+                            "running",
+                            "stopped",
+                            "created",
+                            "mixed",
+                            "unknown"
+                        ],
+                        "example": "running",
+                        "x-enum-descriptions": {
+                            "running": "Project is running and all services are healthy",
+                            "stopped": "Project is not running and all services are stopped",
+                            "created": "Project is created and not built yet, services are not running",
+                            "mixed": "Project is running with some services not healthy or not running",
+                            "unknown": "Could not determine the state of the project"
+                        }
+                    },
+                    "path": {
+                        "description": "Full filesystem path to the docker-compose.yml file",
+                        "type": "string",
+                        "example": "/docker/my-project/docker-compose.yaml"
                     }
                 },
                 "type": "object"
@@ -5594,6 +6302,18 @@
                     "example": 8676502
                 }
             },
+            "projectName": {
+                "name": "projectName",
+                "in": "path",
+                "description": "Docker Compose project name using alphanumeric characters, dashes, and underscores only",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 3,
+                    "example": "my-docker-project"
+                }
+            },
             "firewallId": {
                 "name": "firewallId",
                 "in": "path",
@@ -5725,6 +6445,11 @@
             "x-displayName": "Data centers"
         },
         {
+            "name": "VPS: Docker Manager",
+            "description": "Manage Docker Compose projects directly on your VPS instances. This feature is only available for VPS instances using Docker OS templates and is currently experimental - breaking changes may occur in future updates. \nIt enables you to programmatically deploy projects from docker-compose.yml files by providing either a URL (including GitHub repositories) or the compose file contents directly. \nControl project lifecycle (start/stop/restart/update/delete) and retrieve runtime information including container lists, project details, and aggregated logs.\nAll operations are scoped to a specific virtual machine for multi-tenant management.",
+            "x-displayName": "Docker Manager"
+        },
+        {
             "name": "VPS: Firewall",
             "description": "Enhance network security with endpoints for creating, activating, deactivating, syncing, updating, and deleting firewalls and firewall rules for your virtual machines.\nThis firewall applies rules at the network level, so it will take precedence over the virtual machine's internal firewall.\n\n**Access to firewall requires having at least one virtual machine.**",
             "x-displayName": "Firewall"
@@ -5812,6 +6537,7 @@
                 "VPS: Actions",
                 "VPS: Backups",
                 "VPS: Data centers",
+                "VPS: Docker Manager",
                 "VPS: PTR records",
                 "VPS: Firewall",
                 "VPS: Malware scanner",
