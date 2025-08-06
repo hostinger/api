@@ -1,4 +1,98 @@
 # Hostinger API
+### Wed Aug 06 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/start`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot/restore`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/restart`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}/restore`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions`:
+  - `200` response: removed `data`.`items`.`state`.`x-enumDescriptions`
+  - `200` response: added `data`.`items`.`state`.`x-enum-descriptions`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions/{actionId}`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/public-keys/attach/{virtualMachineId}`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/firewall/{firewallId}/sync/{virtualMachineId}`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/firewall/{firewallId}/deactivate/{virtualMachineId}`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}`:
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+- `POST` `/api/domains/v1/forwarding`:
+  - `200` response: removed `redirect_type`.`x-enumDescriptions`
+  - `200` response: added `redirect_type`.`x-enum-descriptions`
+  - `requestBody`: removed `redirect_type`.`x-enumDescriptions`
+  - `requestBody`: added `redirect_type`.`x-enum-descriptions`
+- `GET` `/api/domains/v1/forwarding/{domain}`:
+  - `200` response: removed `redirect_type`.`x-enumDescriptions`
+  - `200` response: added `redirect_type`.`x-enum-descriptions`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}`
+- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/down`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/logs`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/restart`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/start`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/stop`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/update`
 ### Wed Jul 30 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: changed `password`.`minLength`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`: `requestBody`: changed `password`.`minLength`
