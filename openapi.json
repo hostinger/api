@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.92",
+        "version": "0.0.93",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -45,7 +45,7 @@
                     "Billing: Catalog"
                 ],
                 "summary": "Get catalog item list",
-                "description": "This endpoint retrieves a list of catalog items available for order. \n\nPrices in catalog items is displayed as cents (without floating point), e.g: float `17.99` is displayed as integer `1799`.",
+                "description": "Retrieve catalog items available for order.\n\nPrices in catalog items is displayed as cents (without floating point), e.g: float `17.99` is displayed as integer `1799`.\n\nUse this endpoint to view available services and pricing before placing orders.",
                 "operationId": "billing_getCatalogItemListV1",
                 "parameters": [
                     {
@@ -80,9 +80,9 @@
                 "tags": [
                     "Billing: Orders"
                 ],
-                "summary": "Create new service order",
-                "description": "This endpoint creates a new service order. \n\n**DEPRECATED**\n\nTo purchase a domain, use [`POST /api/domains/v1/portfolio`](/#tag/domains-portfolio/POST/api/domains/v1/portfolio) instead.\n\nTo purchase a VPS, use [`POST /api/vps/v1/virtual-machines`](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines) instead.\n\n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatic renewal.\n\nSome `credit_card` payments might need additional verification, rendering purchase unprocessed.\nWe recommend use other payment methods than `credit_card` if you encounter this issue.",
-                "operationId": "billing_createNewServiceOrderV1",
+                "summary": "Create service order",
+                "description": "Create a new service order. \n\n**DEPRECATED**\n\nTo purchase a domain, use [`POST /api/domains/v1/portfolio`](/#tag/domains-portfolio/POST/api/domains/v1/portfolio) instead.\n\nTo purchase a VPS, use [`POST /api/vps/v1/virtual-machines`](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines) instead.\n\n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatic renewal.\n\nSome `credit_card` payments might need additional verification, rendering purchase unprocessed.\nWe recommend use other payment methods than `credit_card` if you encounter this issue.",
+                "operationId": "billing_createServiceOrderV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -124,7 +124,7 @@
                     "Billing: Payment methods"
                 ],
                 "summary": "Set default payment method",
-                "description": "This endpoint sets default payment method for your account.",
+                "description": "Set the default payment method for your account.\n\nUse this endpoint to configure the primary payment method for future orders.",
                 "operationId": "billing_setDefaultPaymentMethodV1",
                 "parameters": [
                     {
@@ -155,7 +155,7 @@
                     "Billing: Payment methods"
                 ],
                 "summary": "Delete payment method",
-                "description": "This endpoint deletes a payment method from your account.",
+                "description": "Delete a payment method from your account.\n\nUse this endpoint to remove unused payment methods from user accounts.",
                 "operationId": "billing_deletePaymentMethodV1",
                 "parameters": [
                     {
@@ -188,7 +188,7 @@
                     "Billing: Payment methods"
                 ],
                 "summary": "Get payment method list",
-                "description": "This endpoint retrieves a list of available payment methods that can be used for placing new orders.\n\nIf you want to add new payment method, please use [hPanel](https://hpanel.hostinger.com/billing/payment-methods).",
+                "description": "Retrieve available payment methods that can be used for placing new orders.\n\nIf you want to add new payment method, please use [hPanel](https://hpanel.hostinger.com/billing/payment-methods).\n\nUse this endpoint to view available payment options before creating orders.",
                 "operationId": "billing_getPaymentMethodListV1",
                 "responses": {
                     "200": {
@@ -216,7 +216,7 @@
                     "Billing: Subscriptions"
                 ],
                 "summary": "Cancel subscription",
-                "description": "This endpoint cancels a subscription and stops any further billing.",
+                "description": "Cancel a subscription and stop any further billing.\n\nUse this endpoint when users want to terminate active services.",
                 "operationId": "billing_cancelSubscriptionV1",
                 "parameters": [
                     {
@@ -262,7 +262,7 @@
                     "Billing: Subscriptions"
                 ],
                 "summary": "Get subscription list",
-                "description": "This endpoint retrieves a list of all subscriptions associated with your account.",
+                "description": "Retrieve a list of all subscriptions associated with your account.\n\nUse this endpoint to monitor active services and billing status.",
                 "operationId": "billing_getSubscriptionListV1",
                 "responses": {
                     "200": {
@@ -289,9 +289,9 @@
                 "tags": [
                     "DNS: Snapshot"
                 ],
-                "summary": "Get snapshot",
-                "description": "This endpoint retrieves particular DNS snapshot with the contents of DNS zone records.",
-                "operationId": "DNS_getSnapshotV1",
+                "summary": "Get DNS snapshot",
+                "description": "Retrieve particular DNS snapshot with contents of DNS zone records.\n\nUse this endpoint to view historical DNS configurations for domains.",
+                "operationId": "DNS_getDNSSnapshotV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -325,9 +325,9 @@
                 "tags": [
                     "DNS: Snapshot"
                 ],
-                "summary": "Get snapshot list",
-                "description": "This endpoint retrieves list of DNS snapshots.",
-                "operationId": "DNS_getSnapshotListV1",
+                "summary": "Get DNS snapshot list",
+                "description": "Retrieve DNS snapshots for a domain.\n\nUse this endpoint to view available DNS backup points for restoration.",
+                "operationId": "DNS_getDNSSnapshotListV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -358,9 +358,9 @@
                 "tags": [
                     "DNS: Snapshot"
                 ],
-                "summary": "Restore snapshot",
-                "description": "This endpoint restores DNS zone to the selected snapshot.",
-                "operationId": "DNS_restoreSnapshotV1",
+                "summary": "Restore DNS snapshot",
+                "description": "Restore DNS zone to the selected snapshot.\n\nUse this endpoint to revert domain DNS to a previous configuration.",
+                "operationId": "DNS_restoreDNSSnapshotV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -394,9 +394,9 @@
                 "tags": [
                     "DNS: Zone"
                 ],
-                "summary": "Get records",
-                "description": "This endpoint retrieves DNS zone records for a specific domain.",
-                "operationId": "DNS_getRecordsV1",
+                "summary": "Get DNS records",
+                "description": "Retrieve DNS zone records for a specific domain.\n\nUse this endpoint to view current DNS configuration for domain management.",
+                "operationId": "DNS_getDNSRecordsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -425,9 +425,9 @@
                 "tags": [
                     "DNS: Zone"
                 ],
-                "summary": "Update zone records",
-                "description": "This endpoint updates DNS records for the selected domain. \n\nUsing `overwrite = true` will replace existing records with the provided ones. \nOtherwise existing records will be updated and new records will be added.",
-                "operationId": "DNS_updateZoneRecordsV1",
+                "summary": "Update DNS records",
+                "description": "Update DNS records for the selected domain.\n\nUsing `overwrite = true` will replace existing records with the provided ones. \nOtherwise existing records will be updated and new records will be added.\n\nUse this endpoint to modify domain DNS configuration.",
+                "operationId": "DNS_updateDNSRecordsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -469,9 +469,9 @@
                 "tags": [
                     "DNS: Zone"
                 ],
-                "summary": "Delete zone records",
-                "description": "This endpoint deletes DNS records for the selected domain. \nTo filter which records to delete, add the `name` of the record and `type` to the filter. \nMultiple filters can be provided with single request.\n\nIf you have multiple records with the same name and type, and you want to delete only part of them,\nrefer to the `Update zone records` endpoint.",
-                "operationId": "DNS_deleteZoneRecordsV1",
+                "summary": "Delete DNS records",
+                "description": "Delete DNS records for the selected domain.\n\nTo filter which records to delete, add the `name` of the record and `type` to the filter. \nMultiple filters can be provided with single request.\n\nIf you have multiple records with the same name and type, and you want to delete only part of them,\nrefer to the `Update zone records` endpoint.\n\nUse this endpoint to remove specific DNS records from domains.",
+                "operationId": "DNS_deleteDNSRecordsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -515,9 +515,9 @@
                 "tags": [
                     "DNS: Zone"
                 ],
-                "summary": "Reset zone records",
-                "description": "This endpoint resets DNS zone to the default records.",
-                "operationId": "DNS_resetZoneRecordsV1",
+                "summary": "Reset DNS records",
+                "description": "Reset DNS zone to the default records.\n\nUse this endpoint to restore domain DNS to original configuration.",
+                "operationId": "DNS_resetDNSRecordsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -561,9 +561,9 @@
                 "tags": [
                     "DNS: Zone"
                 ],
-                "summary": "Validate zone records",
-                "description": "This endpoint used to validate DNS records prior update for the selected domain. \n\nIf the validation is successful, the response will contain `200 Success` code.\nIf there is validation error, the response will fail with `422 Validation error` code.",
-                "operationId": "DNS_validateZoneRecordsV1",
+                "summary": "Validate DNS records",
+                "description": "Validate DNS records prior to update for the selected domain.\n\nIf the validation is successful, the response will contain `200 Success` code.\nIf there is validation error, the response will fail with `422 Validation error` code.\n\nUse this endpoint to verify DNS record validity before applying changes.",
+                "operationId": "DNS_validateDNSRecordsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -608,7 +608,7 @@
                     "Domains: Availability"
                 ],
                 "summary": "Check domain availability",
-                "description": "This endpoint checks the availability of a domain name. Multiple TLDs can be checked at once.\nIf you want to get alternative domains with response, provide only one TLD in the request and set `with_alternatives` to `true`.\nTLDs should be provided without the leading dot (e.g. `com`, `net`, `org`).\n\nEndpoint has rate limit of 10 requests per minute.",
+                "description": "Check availability of domain names across multiple TLDs.\n\nMultiple TLDs can be checked at once.\nIf you want alternative domains with response, provide only one TLD and set `with_alternatives` to `true`.\nTLDs should be provided without leading dot (e.g. `com`, `net`, `org`).\n\nEndpoint has rate limit of 10 requests per minute.\n\nUse this endpoint to verify domain availability before purchase.",
                 "operationId": "domains_checkDomainAvailabilityV1",
                 "requestBody": {
                     "required": true,
@@ -648,9 +648,9 @@
                 "tags": [
                     "Domains: Forwarding"
                 ],
-                "summary": "Get forwarding data",
-                "description": "This endpoint retrieves domain forwarding data.",
-                "operationId": "domains_getForwardingDataV1",
+                "summary": "Get domain forwarding",
+                "description": "Retrieve domain forwarding data.\n\nUse this endpoint to view current redirect configuration for domains.",
+                "operationId": "domains_getDomainForwardingV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -679,9 +679,9 @@
                 "tags": [
                     "Domains: Forwarding"
                 ],
-                "summary": "Delete forwarding data",
-                "description": "This endpoint deletes domain forwarding data.",
-                "operationId": "domains_deleteForwardingDataV1",
+                "summary": "Delete domain forwarding",
+                "description": "Delete domain forwarding data.\n\nUse this endpoint to remove redirect configuration from domains.",
+                "operationId": "domains_deleteDomainForwardingV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -712,9 +712,9 @@
                 "tags": [
                     "Domains: Forwarding"
                 ],
-                "summary": "Create forwarding data",
-                "description": "This endpoint creates domain forwarding data.",
-                "operationId": "domains_createForwardingDataV1",
+                "summary": "Create domain forwarding",
+                "description": "Create domain forwarding configuration.\n\nUse this endpoint to set up domain redirects to other URLs.",
+                "operationId": "domains_createDomainForwardingV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -754,7 +754,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Enable domain lock",
-                "description": "This endpoint enables domain lock for the domain. When domain lock is enabled, \nthe domain cannot be transferred to another registrar without first disabling the lock.",
+                "description": "Enable domain lock for the domain.\n\nWhen domain lock is enabled, the domain cannot be transferred to another registrar without first disabling the lock.\n\nUse this endpoint to secure domains against unauthorized transfers.",
                 "operationId": "domains_enableDomainLockV1",
                 "parameters": [
                     {
@@ -785,7 +785,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Disable domain lock",
-                "description": "This endpoint disables domain lock for the domain. Domain lock needs to be disabled \nbefore transferring the domain to another registrar.",
+                "description": "Disable domain lock for the domain.\n\nDomain lock needs to be disabled before transferring the domain to another registrar.\n\nUse this endpoint to prepare domains for transfer to other registrars.",
                 "operationId": "domains_disableDomainLockV1",
                 "parameters": [
                     {
@@ -817,9 +817,9 @@
                 "tags": [
                     "Domains: Portfolio"
                 ],
-                "summary": "Get domain",
-                "description": "This endpoint retrieves details for specified domain.",
-                "operationId": "domains_getDomainV1",
+                "summary": "Get domain details",
+                "description": "Retrieve detailed information for specified domain.\n\nUse this endpoint to view comprehensive domain configuration and status.",
+                "operationId": "domains_getDomainDetailsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -851,7 +851,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Get domain list",
-                "description": "This endpoint retrieves a list of all domains associated with your account.",
+                "description": "Retrieve all domains associated with your account.\n\nUse this endpoint to view user's domain portfolio.",
                 "operationId": "domains_getDomainListV1",
                 "responses": {
                     "200": {
@@ -877,7 +877,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Purchase new domain",
-                "description": "This endpoint allows you to buy (purchase) and register a new domain name. \n\nIf registration fails, login to [hPanel](https://hpanel.hostinger.com/) and check the domain registration status.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nIf no WHOIS information is provided, the default contact information for that TLD (Top-Level Domain) will be used. \nBefore making a request, ensure that WHOIS information for the desired TLD exists in your account.\n\nSome TLDs require `additional_details` to be provided and these will be validated before completing the purchase. The required additional details vary by TLD.",
+                "description": "Purchase and register a new domain name.\n\nIf registration fails, login to [hPanel](https://hpanel.hostinger.com/) and check domain registration status.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nIf no WHOIS information is provided, default contact information for that TLD will be used. \nBefore making request, ensure WHOIS information for desired TLD exists in your account.\n\nSome TLDs require `additional_details` to be provided and these will be validated before completing purchase.\n\nUse this endpoint to register new domains for users.",
                 "operationId": "domains_purchaseNewDomainV1",
                 "requestBody": {
                     "required": true,
@@ -918,7 +918,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Enable privacy protection",
-                "description": "This endpoint enables privacy protection for the domain.\nWhen privacy protection is enabled, the domain owner's personal information is hidden from the public WHOIS database.",
+                "description": "Enable privacy protection for the domain.\n\nWhen privacy protection is enabled, domain owner's personal information is hidden from public WHOIS database.\n\nUse this endpoint to protect domain owner's personal information from public view.",
                 "operationId": "domains_enablePrivacyProtectionV1",
                 "parameters": [
                     {
@@ -949,7 +949,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Disable privacy protection",
-                "description": "This endpoint disables privacy protection for the domain.\nWhen privacy protection is disabled, the domain owner's personal information is visible in the public WHOIS database.",
+                "description": "Disable privacy protection for the domain.\n\nWhen privacy protection is disabled, domain owner's personal information is visible in public WHOIS database.\n\nUse this endpoint to make domain owner's information publicly visible.",
                 "operationId": "domains_disablePrivacyProtectionV1",
                 "parameters": [
                     {
@@ -981,9 +981,9 @@
                 "tags": [
                     "Domains: Portfolio"
                 ],
-                "summary": "Update nameservers",
-                "description": "This endpoint sets the nameservers for a specified domain.\n\nBe aware, that improper nameserver configuration can lead to the domain being unresolvable or unavailable. ",
-                "operationId": "domains_updateNameserversV1",
+                "summary": "Update domain nameservers",
+                "description": "Set nameservers for a specified domain.\n\nBe aware, that improper nameserver configuration can lead to the domain being unresolvable or unavailable.\n\nUse this endpoint to configure custom DNS hosting for domains.",
+                "operationId": "domains_updateDomainNameserversV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/domain"
@@ -1028,7 +1028,7 @@
                     "Domains: WHOIS"
                 ],
                 "summary": "Get WHOIS profile",
-                "description": "This endpoint retrieves a WHOIS contact profile.",
+                "description": "Retrieve a WHOIS contact profile.\n\nUse this endpoint to view domain registration contact information.",
                 "operationId": "domains_getWHOISProfileV1",
                 "parameters": [
                     {
@@ -1059,7 +1059,7 @@
                     "Domains: WHOIS"
                 ],
                 "summary": "Delete WHOIS profile",
-                "description": "This endpoint deletes WHOIS contact profile.",
+                "description": "Delete WHOIS contact profile.\n\nUse this endpoint to remove unused contact profiles from account.",
                 "operationId": "domains_deleteWHOISProfileV1",
                 "parameters": [
                     {
@@ -1092,7 +1092,7 @@
                     "Domains: WHOIS"
                 ],
                 "summary": "Get WHOIS profile list",
-                "description": "This endpoint retrieves a list of WHOIS contact profiles.",
+                "description": "Retrieve WHOIS contact profiles.\n\nUse this endpoint to view available contact profiles for domain registration.",
                 "operationId": "domains_getWHOISProfileListV1",
                 "parameters": [
                     {
@@ -1123,7 +1123,7 @@
                     "Domains: WHOIS"
                 ],
                 "summary": "Create WHOIS profile",
-                "description": "This endpoint creates WHOIS contact profile.",
+                "description": "Create WHOIS contact profile.\n\nUse this endpoint to add new contact information for domain registration.",
                 "operationId": "domains_createWHOISProfileV1",
                 "requestBody": {
                     "required": true,
@@ -1164,7 +1164,7 @@
                     "Domains: WHOIS"
                 ],
                 "summary": "Get WHOIS profile usage",
-                "description": "This endpoint retrieves a domain list where provided WHOIS contact profile is used.",
+                "description": "Retrieve domain list where provided WHOIS contact profile is used.\n\nUse this endpoint to view which domains use specific contact profiles.",
                 "operationId": "domains_getWHOISProfileUsageV1",
                 "parameters": [
                     {
@@ -1196,9 +1196,9 @@
                 "tags": [
                     "VPS: Data centers"
                 ],
-                "summary": "Get data centers list",
-                "description": "This endpoint retrieves a list of all data centers available.",
-                "operationId": "VPS_getDataCentersListV1",
+                "summary": "Get data center list",
+                "description": "Retrieve all available data centers.\n\nUse this endpoint to view location options before deploying VPS instances.",
+                "operationId": "VPS_getDataCenterListV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -1627,7 +1627,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Activate firewall",
-                "description": "This endpoint activates a firewall for a specified virtual machine. \n\nOnly one firewall can be active for a virtual machine at a time.",
+                "description": "Activate a firewall for a specified virtual machine.\n\nOnly one firewall can be active for a virtual machine at a time.\n\nUse this endpoint to apply firewall rules to VPS instances.",
                 "operationId": "VPS_activateFirewallV1",
                 "parameters": [
                     {
@@ -1666,7 +1666,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Deactivate firewall",
-                "description": "This endpoint deactivates a firewall for a specified virtual machine.",
+                "description": "Deactivate a firewall for a specified virtual machine.\n\nUse this endpoint to remove firewall protection from VPS instances.",
                 "operationId": "VPS_deactivateFirewallV1",
                 "parameters": [
                     {
@@ -1704,9 +1704,9 @@
                 "tags": [
                     "VPS: Firewall"
                 ],
-                "summary": "Get firewall",
-                "description": "This endpoint retrieves firewall by its ID and rules associated with it.",
-                "operationId": "VPS_getFirewallV1",
+                "summary": "Get firewall details",
+                "description": "Retrieve firewall by its ID and rules associated with it.\n\nUse this endpoint to view specific firewall configuration and rules.",
+                "operationId": "VPS_getFirewallDetailsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/firewallId"
@@ -1736,7 +1736,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Delete firewall",
-                "description": "This endpoint deletes a specified firewall. \n\nAny virtual machine that has this firewall activated will automatically have it deactivated.",
+                "description": "Delete a specified firewall.\n\nAny virtual machine that has this firewall activated will automatically have it deactivated.\n\nUse this endpoint to remove unused firewall configurations.",
                 "operationId": "VPS_deleteFirewallV1",
                 "parameters": [
                     {
@@ -1769,7 +1769,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Get firewall list",
-                "description": "This endpoint retrieves a list of all firewalls available.",
+                "description": "Retrieve all available firewalls.\n\nUse this endpoint to view existing firewall configurations.",
                 "operationId": "VPS_getFirewallListV1",
                 "parameters": [
                     {
@@ -1808,7 +1808,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Create new firewall",
-                "description": "This endpoint creates a new firewall.",
+                "description": "Create a new firewall.\n\nUse this endpoint to set up new firewall configurations for VPS security.",
                 "operationId": "VPS_createNewFirewallV1",
                 "requestBody": {
                     "required": true,
@@ -1849,7 +1849,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Update firewall rule",
-                "description": "This endpoint updates a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
+                "description": "Update a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will lose sync with the firewall and will have to be synced again manually.\n\nUse this endpoint to modify existing firewall rules.",
                 "operationId": "VPS_updateFirewallRuleV1",
                 "parameters": [
                     {
@@ -1896,7 +1896,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Delete firewall rule",
-                "description": "This endpoint deletes a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
+                "description": "Delete a specific firewall rule from a specified firewall.\n\nAny virtual machine that has this firewall activated will lose sync with the firewall and will have to be synced again manually.\n       \nUse this endpoint to remove specific firewall rules.",
                 "operationId": "VPS_deleteFirewallRuleV1",
                 "parameters": [
                     {
@@ -1932,7 +1932,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Create firewall rule",
-                "description": "This endpoint creates new firewall rule from a specified firewall. \nBy default, the firewall drops all incoming traffic, which means you must add accept rules for all ports you want to use.\n\nAny virtual machine that has this firewall activated will loose sync with the firewall and will have to be synced again manually.",
+                "description": "Create new firewall rule for a specified firewall.\n\nBy default, the firewall drops all incoming traffic, which means you must add accept rules for all ports you want to use.\n\nAny virtual machine that has this firewall activated will lose sync with the firewall and will have to be synced again manually.\n\nUse this endpoint to add new security rules to firewalls.",
                 "operationId": "VPS_createFirewallRuleV1",
                 "parameters": [
                     {
@@ -1978,7 +1978,7 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Sync firewall",
-                "description": "This endpoint syncs a firewall for a specified virtual machine.\n\nFirewall can loose sync with virtual machine if the firewall has new rules added, removed or updated.",
+                "description": "Sync a firewall for a specified virtual machine.\n\nFirewall can lose sync with virtual machine if the firewall has new rules added, removed or updated.\n\nUse this endpoint to apply updated firewall rules to VPS instances.",
                 "operationId": "VPS_syncFirewallV1",
                 "parameters": [
                     {
@@ -2017,7 +2017,7 @@
                     "VPS: Post-install scripts"
                 ],
                 "summary": "Get post-install script",
-                "description": "This endpoint retrieves post-install script by its ID.",
+                "description": "Retrieve post-install script by its ID.\n\nUse this endpoint to view specific automation script details.",
                 "operationId": "VPS_getPostInstallScriptV1",
                 "parameters": [
                     {
@@ -2048,7 +2048,7 @@
                     "VPS: Post-install scripts"
                 ],
                 "summary": "Update post-install script",
-                "description": "This endpoint updates a specific post-install script.",
+                "description": "Update a specific post-install script.\n\nUse this endpoint to modify existing automation scripts.",
                 "operationId": "VPS_updatePostInstallScriptV1",
                 "parameters": [
                     {
@@ -2091,9 +2091,9 @@
                 "tags": [
                     "VPS: Post-install scripts"
                 ],
-                "summary": "Delete a post-install script",
-                "description": "This endpoint deletes a post-install script from your account. ",
-                "operationId": "VPS_deleteAPostInstallScriptV1",
+                "summary": "Delete post-install script",
+                "description": "Delete a post-install script from your account.\n       \nUse this endpoint to remove unused automation scripts.",
+                "operationId": "VPS_deletePostInstallScriptV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/postInstallScriptId"
@@ -2124,9 +2124,9 @@
                 "tags": [
                     "VPS: Post-install scripts"
                 ],
-                "summary": "Get post-install script list",
-                "description": "This endpoint retrieves a list of post-install scripts associated with your account.",
-                "operationId": "VPS_getPostInstallScriptListV1",
+                "summary": "Get post-install scripts",
+                "description": "Retrieve post-install scripts associated with your account.\n\nUse this endpoint to view available automation scripts for VPS deployment.",
+                "operationId": "VPS_getPostInstallScriptsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/page"
@@ -2164,7 +2164,7 @@
                     "VPS: Post-install scripts"
                 ],
                 "summary": "Create post-install script",
-                "description": "This endpoint allows you to add a new post-install script to your account, \nwhich can then be used run after the installation of a virtual machine instance.\n\nThe script contents will be saved to the file `/post_install` with executable attribute set and will be executed once virtual machine is installed.\nThe output of the script will be redirected to `/post_install.log`. Maximum script size is 48KB. ",
+                "description": "Add a new post-install script to your account, which can then be used after virtual machine installation.\n\nThe script contents will be saved to the file `/post_install` with executable attribute set and will be executed once virtual machine is installed.\nThe output of the script will be redirected to `/post_install.log`. Maximum script size is 48KB.\n\nUse this endpoint to create automation scripts for VPS setup tasks.",
                 "operationId": "VPS_createPostInstallScriptV1",
                 "requestBody": {
                     "required": true,
@@ -2205,7 +2205,7 @@
                     "VPS: Public Keys"
                 ],
                 "summary": "Attach public key",
-                "description": "This endpoint attaches an existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.",
+                "description": "Attach existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.\n\nUse this endpoint to enable SSH key authentication for VPS instances.",
                 "operationId": "VPS_attachPublicKeyV1",
                 "parameters": [
                     {
@@ -2250,9 +2250,9 @@
                 "tags": [
                     "VPS: Public Keys"
                 ],
-                "summary": "Delete a public key",
-                "description": "This endpoint deletes a public key from your account. \n\n**Deleting public key from account does not remove it from virtual machine** ",
-                "operationId": "VPS_deleteAPublicKeyV1",
+                "summary": "Delete public key",
+                "description": "Delete a public key from your account. \n\n**Deleting public key from account does not remove it from virtual machine** \n       \nUse this endpoint to remove unused SSH keys from account.",
+                "operationId": "VPS_deletePublicKeyV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/publicKeyId"
@@ -2283,9 +2283,9 @@
                 "tags": [
                     "VPS: Public Keys"
                 ],
-                "summary": "Get public key list",
-                "description": "This endpoint retrieves a list of public keys associated with your account.",
-                "operationId": "VPS_getPublicKeyListV1",
+                "summary": "Get public keys",
+                "description": "Retrieve public keys associated with your account.\n\nUse this endpoint to view available SSH keys for VPS authentication.",
+                "operationId": "VPS_getPublicKeysV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/page"
@@ -2322,9 +2322,9 @@
                 "tags": [
                     "VPS: Public Keys"
                 ],
-                "summary": "Create new public key",
-                "description": "This endpoint allows you to add a new public key to your account, \nwhich can then be attached to virtual machine instances for secure access.",
-                "operationId": "VPS_createNewPublicKeyV1",
+                "summary": "Create public key",
+                "description": "Add a new public key to your account.\n\nUse this endpoint to register SSH keys for VPS authentication.",
+                "operationId": "VPS_createPublicKeyV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2363,9 +2363,9 @@
                 "tags": [
                     "VPS: OS Templates"
                 ],
-                "summary": "Get template",
-                "description": "This endpoint retrieves details of a specific OS template for virtual machines.",
-                "operationId": "VPS_getTemplateV1",
+                "summary": "Get template details",
+                "description": "Retrieve detailed information about a specific OS template for virtual machines.\n\nUse this endpoint to view specific template specifications before deployment.",
+                "operationId": "VPS_getTemplateDetailsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/templateId"
@@ -2396,9 +2396,9 @@
                 "tags": [
                     "VPS: OS Templates"
                 ],
-                "summary": "Get template list",
-                "description": "This endpoint retrieves a list of available OS templates for virtual machines.",
-                "operationId": "VPS_getTemplateListV1",
+                "summary": "Get templates",
+                "description": "Retrieve available OS templates for virtual machines.\n\nUse this endpoint to view operating system options before creating or recreating VPS instances.",
+                "operationId": "VPS_getTemplatesV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -2424,9 +2424,9 @@
                 "tags": [
                     "VPS: Actions"
                 ],
-                "summary": "Get action",
-                "description": "This endpoint retrieves details of a specific action performed on a specified virtual machine. \n\nThis endpoint allows you to view detailed information about a particular action, including the action name, timestamp, and status.",
-                "operationId": "VPS_getActionV1",
+                "summary": "Get action details",
+                "description": "Retrieve detailed information about a specific action performed on a specified virtual machine.\n\nUse this endpoint to monitor specific VPS operation status and details.",
+                "operationId": "VPS_getActionDetailsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -2460,9 +2460,9 @@
                 "tags": [
                     "VPS: Actions"
                 ],
-                "summary": "Get action list",
-                "description": "This endpoint retrieves a list of actions performed on a specified virtual machine.\n\nActions are operations or events that have been executed on the virtual machine, such as starting, stopping, or modifying \nthe machine. This endpoint allows you to view the history of these actions, providing details about each action, \nsuch as the action name, timestamp, and status.",
-                "operationId": "VPS_getActionListV1",
+                "summary": "Get actions",
+                "description": "Retrieve actions performed on a specified virtual machine.\n\nActions are operations or events that have been executed on the virtual machine, such as starting, stopping, or modifying \nthe machine. This endpoint allows you to view the history of these actions, providing details about each action, \nsuch as the action name, timestamp, and status.\n\nUse this endpoint to view VPS operation history and troubleshoot issues.",
+                "operationId": "VPS_getActionsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -2505,7 +2505,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Get attached public keys",
-                "description": "This endpoint retrieves a list of public keys attached to a specified virtual machine.",
+                "description": "Retrieve public keys attached to a specified virtual machine.\n\nUse this endpoint to view SSH keys configured for specific VPS instances.",
                 "operationId": "VPS_getAttachedPublicKeysV1",
                 "parameters": [
                     {
@@ -2548,9 +2548,9 @@
                 "tags": [
                     "VPS: Backups"
                 ],
-                "summary": "Get backup list",
-                "description": "This endpoint retrieves a list of backups for a specified virtual machine.",
-                "operationId": "VPS_getBackupListV1",
+                "summary": "Get backups",
+                "description": "Retrieve backups for a specified virtual machine.\n\nUse this endpoint to view available backup points for VPS data recovery.",
+                "operationId": "VPS_getBackupsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -2593,7 +2593,7 @@
                     "VPS: Backups"
                 ],
                 "summary": "Restore backup",
-                "description": "This endpoint restores a backup for a specified virtual machine.\n\nThe system will then initiate the restore process, which may take some time depending on the size of the backup.\n\n**All data on the virtual machine will be overwritten with the data from the backup.**",
+                "description": "Restore a backup for a specified virtual machine.\n\nThe system will then initiate the restore process, which may take some time depending on the size of the backup.\n\n**All data on the virtual machine will be overwritten with the data from the backup.**\n\nUse this endpoint to recover VPS data from backup points.",
                 "operationId": "VPS_restoreBackupV1",
                 "parameters": [
                     {
@@ -2629,7 +2629,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Set hostname",
-                "description": "This endpoint sets the hostname for a specified virtual machine. \nChanging hostname does not update PTR record automatically.\nIf you want your virtual machine to be reachable by a hostname, \nyou need to point your domain A/AAAA records to virtual machine IP as well.",
+                "description": "Set hostname for a specified virtual machine.\n\nChanging hostname does not update PTR record automatically.\nIf you want your virtual machine to be reachable by a hostname, \nyou need to point your domain A/AAAA records to virtual machine IP as well.\n\nUse this endpoint to configure custom hostnames for VPS instances.",
                 "operationId": "VPS_setHostnameV1",
                 "parameters": [
                     {
@@ -2673,7 +2673,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Reset hostname",
-                "description": "This endpoint resets the hostname and PTR record of a specified virtual machine to the default value.",
+                "description": "Reset hostname and PTR record of a specified virtual machine to default value.\n\nUse this endpoint to restore default hostname configuration for VPS instances.",
                 "operationId": "VPS_resetHostnameV1",
                 "parameters": [
                     {
@@ -2705,9 +2705,9 @@
                 "tags": [
                     "VPS: Virtual machine"
                 ],
-                "summary": "Get virtual machine",
-                "description": "This endpoint retrieves detailed information about a specified virtual machine.",
-                "operationId": "VPS_getVirtualMachineV1",
+                "summary": "Get virtual machine details",
+                "description": "Retrieve detailed information about a specified virtual machine.\n\nUse this endpoint to view comprehensive VPS configuration and status.",
+                "operationId": "VPS_getVirtualMachineDetailsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -2738,9 +2738,9 @@
                 "tags": [
                     "VPS: Virtual machine"
                 ],
-                "summary": "Get virtual machine list",
-                "description": "This endpoint retrieves a list of all available virtual machines.",
-                "operationId": "VPS_getVirtualMachineListV1",
+                "summary": "Get virtual machines",
+                "description": "Retrieve all available virtual machines.\n\nUse this endpoint to view available VPS instances.",
+                "operationId": "VPS_getVirtualMachinesV1",
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -2765,7 +2765,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Purchase new virtual machine",
-                "description": "This endpoint allows you to buy (purchase) and setup a new virtual machine.\n\nIf virtual machine setup fails for any reason, login to [hPanel](https://hpanel.hostinger.com/) and complete the setup manually.\n\nIf no payment method is provided, your default payment method will be used automatically.                        ",
+                "description": "Purchase and setup a new virtual machine.\n\nIf virtual machine setup fails for any reason, login to [hPanel](https://hpanel.hostinger.com/) and complete the setup manually.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nUse this endpoint to create new VPS instances.                        ",
                 "operationId": "VPS_purchaseNewVirtualMachineV1",
                 "requestBody": {
                     "required": true,
@@ -2806,7 +2806,7 @@
                     "VPS: Malware scanner"
                 ],
                 "summary": "Get scan metrics",
-                "description": "This endpoint retrieves the scan metrics for the [Monarx](https://www.monarx.com/) malware scanner installed on a specified virtual machine.\nThe scan metrics provide detailed information about the malware scans performed by Monarx, including the number of scans, \ndetected threats, and other relevant statistics. This information is useful for monitoring the security status of the \nvirtual machine and assessing the effectiveness of the malware scanner.",
+                "description": "Retrieve scan metrics for the [Monarx](https://www.monarx.com/) malware scanner installed on a specified virtual machine.\n\nThe scan metrics provide detailed information about malware scans performed by Monarx, including number of scans, \ndetected threats, and other relevant statistics. This information is useful for monitoring security status of the \nvirtual machine and assessing effectiveness of the malware scanner.\n\nUse this endpoint to monitor VPS security scan results and threat detection.",
                 "operationId": "VPS_getScanMetricsV1",
                 "parameters": [
                     {
@@ -2840,7 +2840,7 @@
                     "VPS: Malware scanner"
                 ],
                 "summary": "Install Monarx",
-                "description": "This endpoint installs the Monarx malware scanner on a specified virtual machine. \n\n[Monarx](https://www.monarx.com/) is a security tool designed to detect and prevent malware infections on virtual machines. \nBy installing Monarx, users can enhance the security of their virtual machines, ensuring that they are protected against malicious software.",
+                "description": "Install the Monarx malware scanner on a specified virtual machine.\n\n[Monarx](https://www.monarx.com/) is a security tool designed to detect and prevent malware infections on virtual machines. \nBy installing Monarx, users can enhance the security of their virtual machines, ensuring that they are protected against malicious software.\n\nUse this endpoint to enable malware protection on VPS instances.",
                 "operationId": "VPS_installMonarxV1",
                 "parameters": [
                     {
@@ -2874,7 +2874,7 @@
                     "VPS: Malware scanner"
                 ],
                 "summary": "Uninstall Monarx",
-                "description": "This endpoint uninstalls the Monarx malware scanner on a specified virtual machine.\nIf Monarx is not installed, the request will still be processed without any effect.",
+                "description": "Uninstall the Monarx malware scanner on a specified virtual machine.\n\nIf Monarx is not installed, the request will still be processed without any effect.\n\nUse this endpoint to remove malware scanner from VPS instances.",
                 "operationId": "VPS_uninstallMonarxV1",
                 "parameters": [
                     {
@@ -2910,7 +2910,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Get metrics",
-                "description": "This endpoint retrieves the historical metrics for a specified virtual machine.\nIt includes the following metrics: \n- CPU usage\n- Memory usage\n- Disk usage\n- Network usage\n- Uptime",
+                "description": "Retrieve historical metrics for a specified virtual machine.\n\nIt includes the following metrics: \n- CPU usage\n- Memory usage\n- Disk usage\n- Network usage\n- Uptime\n\nUse this endpoint to monitor VPS performance and resource utilization over time.",
                 "operationId": "VPS_getMetricsV1",
                 "parameters": [
                     {
@@ -2969,7 +2969,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Set nameservers",
-                "description": "This endpoint sets the nameservers for a specified virtual machine.\nBe aware, that improper nameserver configuration can lead to the virtual machine being unable to resolve domain names.",
+                "description": "Set nameservers for a specified virtual machine.\n\nBe aware, that improper nameserver configuration can lead to the virtual machine being unable to resolve domain names.\n\nUse this endpoint to configure custom DNS resolvers for VPS instances.",
                 "operationId": "VPS_setNameserversV1",
                 "parameters": [
                     {
@@ -3015,7 +3015,7 @@
                     "VPS: PTR records"
                 ],
                 "summary": "Create PTR record",
-                "description": "This endpoint creates or updates a PTR (Pointer) record for a specified virtual machine.",
+                "description": "Create or update a PTR (Pointer) record for a specified virtual machine.\n\nUse this endpoint to configure reverse DNS lookup for VPS IP addresses.",
                 "operationId": "VPS_createPTRRecordV1",
                 "parameters": [
                     {
@@ -3046,7 +3046,7 @@
                     "VPS: PTR records"
                 ],
                 "summary": "Delete PTR record",
-                "description": "This endpoint deletes a PTR (Pointer) record for a specified virtual machine. \n\nOnce deleted, reverse DNS lookups to the virtual machine's IP address will no longer return the previously configured hostname.",
+                "description": "Delete a PTR (Pointer) record for a specified virtual machine.\n\nOnce deleted, reverse DNS lookups to the virtual machine's IP address will no longer return the previously configured hostname.\n\nUse this endpoint to remove reverse DNS configuration from VPS instances.",
                 "operationId": "VPS_deletePTRRecordV1",
                 "parameters": [
                     {
@@ -3079,7 +3079,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Set panel password",
-                "description": "This endpoint sets the panel password for a specified virtual machine. \nIf virtual machine does not use panel OS, the request will still be processed without any effect.\nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).",
+                "description": "Set panel password for a specified virtual machine.\n\nIf virtual machine does not use panel OS, the request will still be processed without any effect.\nRequirements for password are same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).\n\nUse this endpoint to configure control panel access credentials for VPS instances.",
                 "operationId": "VPS_setPanelPasswordV1",
                 "parameters": [
                     {
@@ -3125,7 +3125,7 @@
                     "VPS: Recovery"
                 ],
                 "summary": "Start recovery mode",
-                "description": "This endpoint initiates the recovery mode for a specified virtual machine. \nRecovery mode is a special state that allows users to perform system rescue operations, \nsuch as repairing file systems, recovering data, or troubleshooting issues that prevent the virtual machine \nfrom booting normally. \n\nVirtual machine will boot recovery disk image and original disk image will be mounted in `/mnt` directory.",
+                "description": "Initiate recovery mode for a specified virtual machine.\n\nRecovery mode is a special state that allows users to perform system rescue operations, \nsuch as repairing file systems, recovering data, or troubleshooting issues that prevent the virtual machine \nfrom booting normally. \n\nVirtual machine will boot recovery disk image and original disk image will be mounted in `/mnt` directory.\n\nUse this endpoint to enable system rescue operations on VPS instances.",
                 "operationId": "VPS_startRecoveryModeV1",
                 "parameters": [
                     {
@@ -3169,7 +3169,7 @@
                     "VPS: Recovery"
                 ],
                 "summary": "Stop recovery mode",
-                "description": "This endpoint stops the recovery mode for a specified virtual machine. \nIf virtual machine is not in recovery mode, this operation will fail.",
+                "description": "Stop recovery mode for a specified virtual machine.\n\nIf virtual machine is not in recovery mode, this operation will fail.\n\nUse this endpoint to exit system rescue mode and return VPS to normal operation.",
                 "operationId": "VPS_stopRecoveryModeV1",
                 "parameters": [
                     {
@@ -3202,7 +3202,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Recreate virtual machine",
-                "description": "This endpoint will recreate a virtual machine from scratch. \nThe recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state.\nSnapshots, if there are any, will be deleted.\n\n## Password Requirements\nPassword will be checked against leaked password databases. \nRequirements for the password are:\n- At least 8 characters long\n- At least one uppercase letter\n- At least one lowercase letter\n- At least one number\n- Is not leaked publicly\n\n**This operation is irreversible and will result in the loss of all data stored on the virtual machine!**",
+                "description": "Recreate a virtual machine from scratch.\n\nThe recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state.\nSnapshots, if there are any, will be deleted.\n\n## Password Requirements\nPassword will be checked against leaked password databases. \nRequirements for the password are:\n- At least 8 characters long\n- At least one uppercase letter\n- At least one lowercase letter\n- At least one number\n- Is not leaked publicly\n\n**This operation is irreversible and will result in the loss of all data stored on the virtual machine!**\n\nUse this endpoint to completely rebuild VPS instances with fresh OS installation.",
                 "operationId": "VPS_recreateVirtualMachineV1",
                 "parameters": [
                     {
@@ -3248,7 +3248,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Restart virtual machine",
-                "description": "This endpoint restarts a specified virtual machine. This is equivalent to fully stopping and starting the virtual machine.\nIf the virtual machine was stopped, it will be started.",
+                "description": "Restart a specified virtual machine by fully stopping and starting it.\n\nIf the virtual machine was stopped, it will be started.\n\nUse this endpoint to reboot VPS instances.",
                 "operationId": "VPS_restartVirtualMachineV1",
                 "parameters": [
                     {
@@ -3281,7 +3281,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Set root password",
-                "description": "This endpoint sets the root password for a specified virtual machine. \nRequirements for the password is the same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).",
+                "description": "Set root password for a specified virtual machine.\n\nRequirements for password are same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).\n\nUse this endpoint to update administrator credentials for VPS instances.",
                 "operationId": "VPS_setRootPasswordV1",
                 "parameters": [
                     {
@@ -3326,9 +3326,9 @@
                 "tags": [
                     "VPS: Virtual machine"
                 ],
-                "summary": "Setup new virtual machine",
-                "description": "This endpoint will setup newly purchased virtual machine with `initial` state. ",
-                "operationId": "VPS_setupNewVirtualMachineV1",
+                "summary": "Setup purchased virtual machine",
+                "description": "Setup newly purchased virtual machine with `initial` state.\n\nUse this endpoint to configure and initialize purchased VPS instances.",
+                "operationId": "VPS_setupPurchasedVirtualMachineV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -3373,7 +3373,7 @@
                     "VPS: Snapshots"
                 ],
                 "summary": "Get snapshot",
-                "description": "This endpoint retrieves a snapshot for a specified virtual machine.",
+                "description": "Retrieve snapshot for a specified virtual machine.\n\nUse this endpoint to view current VPS snapshot information.",
                 "operationId": "VPS_getSnapshotV1",
                 "parameters": [
                     {
@@ -3404,7 +3404,7 @@
                     "VPS: Snapshots"
                 ],
                 "summary": "Create snapshot",
-                "description": "This endpoint creates a snapshot of a specified virtual machine. \nA snapshot captures the state and data of the virtual machine at a specific point in time, \nallowing users to restore the virtual machine to that state if needed. \nThis operation is useful for backup purposes, system recovery, \nand testing changes without affecting the current state of the virtual machine.\n\n**Creating new snapshot will overwrite the existing snapshot!**",
+                "description": "Create a snapshot of a specified virtual machine.\n\nA snapshot captures the state and data of the virtual machine at a specific point in time, \nallowing users to restore the virtual machine to that state if needed. \nThis operation is useful for backup purposes, system recovery, \nand testing changes without affecting the current state of the virtual machine.\n\n**Creating new snapshot will overwrite the existing snapshot!**\n\nUse this endpoint to capture VPS state for backup and recovery purposes.",
                 "operationId": "VPS_createSnapshotV1",
                 "parameters": [
                     {
@@ -3435,7 +3435,7 @@
                     "VPS: Snapshots"
                 ],
                 "summary": "Delete snapshot",
-                "description": "This endpoint deletes a snapshot of a specified virtual machine.",
+                "description": "Delete a snapshot of a specified virtual machine.\n\nUse this endpoint to remove VPS snapshots.",
                 "operationId": "VPS_deleteSnapshotV1",
                 "parameters": [
                     {
@@ -3468,7 +3468,7 @@
                     "VPS: Snapshots"
                 ],
                 "summary": "Restore snapshot",
-                "description": "This endpoint restores a specified virtual machine to a previous state using a snapshot. \nRestoring from a snapshot allows users to revert the virtual machine to that state, which is useful for system recovery, undoing changes, or testing.",
+                "description": "Restore a specified virtual machine to a previous state using a snapshot.\n\nRestoring from a snapshot allows users to revert the virtual machine to that state, which is useful for system recovery, undoing changes, or testing.\n\nUse this endpoint to revert VPS instances to previous saved states.",
                 "operationId": "VPS_restoreSnapshotV1",
                 "parameters": [
                     {
@@ -3501,7 +3501,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Start virtual machine",
-                "description": "This endpoint starts a specified virtual machine. \nIf the virtual machine is already running, the request will still be processed without any effect.",
+                "description": "Start a specified virtual machine.\n\nIf the virtual machine is already running, the request will still be processed without any effect.\n\nUse this endpoint to power on stopped VPS instances.",
                 "operationId": "VPS_startVirtualMachineV1",
                 "parameters": [
                     {
@@ -3534,7 +3534,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Stop virtual machine",
-                "description": "This endpoint stops a specified virtual machine. \nIf the virtual machine is already stopped, the request will still be processed without any effect.",
+                "description": "Stop a specified virtual machine.\n\nIf the virtual machine is already stopped, the request will still be processed without any effect.\n\nUse this endpoint to power off running VPS instances.",
                 "operationId": "VPS_stopVirtualMachineV1",
                 "parameters": [
                     {
@@ -6481,7 +6481,7 @@
         },
         {
             "name": "VPS: Backups",
-            "description": "Safeguard your data by managing backups. You can list available backups, restore a virtual machine from a backup, or delete backups as needed.",
+            "description": "Safeguard your data by managing backups. You can list available backups or restore a virtual machine from a backup.",
             "x-displayName": "Backups"
         },
         {
