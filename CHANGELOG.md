@@ -1,4 +1,15 @@
 # Hostinger API
+### Tue Aug 12 2025
+- `GET` `/api/domains/v1/portfolio`:
+  - `200` response: added support for new value `deleted` on enum `items`.`status`
+  - `200` response: added support for new value `suspended` on enum `items`.`status`
+  - `200` response: added support for new value `failed` on enum `items`.`status`
+  - `200` response: added support for new value `domain_transfer` on enum `items`.`type`
+  - `200` response: added support for new value `free_domain_transfer` on enum `items`.`type`
+- `GET` `/api/domains/v1/portfolio/{domain}`:
+  - `200` response: added support for new value `deleted` on enum `status`
+  - `200` response: added support for new value `suspended` on enum `status`
+  - `200` response: added support for new value `failed` on enum `status`
 ### Wed Aug 06 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - `200` response: removed `state`.`x-enumDescriptions`
