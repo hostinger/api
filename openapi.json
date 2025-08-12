@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.94",
+        "version": "0.0.95",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1466,9 +1466,9 @@
                 "tags": [
                     "VPS: Docker Manager"
                 ],
-                "summary": "Restart a project",
+                "summary": "Restart project",
                 "description": "Restarts all services in a Docker Compose project by stopping and starting containers in the correct dependency order. \n\nThis operation preserves data volumes and network configurations while refreshing the running containers. \n\nUse this to apply configuration changes or recover from service failures.",
-                "operationId": "VPS_restartAProjectV1",
+                "operationId": "VPS_restartProjectV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -1506,9 +1506,9 @@
                 "tags": [
                     "VPS: Docker Manager"
                 ],
-                "summary": "Start a project",
+                "summary": "Start project",
                 "description": "Starts all services in a Docker Compose project that are currently stopped. \n\nThis operation brings up containers in the correct dependency order as defined in the compose file. \n\nUse this to resume a project that was previously stopped or to start services after a system reboot.",
-                "operationId": "VPS_startAProjectV1",
+                "operationId": "VPS_startProjectV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -1546,9 +1546,9 @@
                 "tags": [
                     "VPS: Docker Manager"
                 ],
-                "summary": "Stop a project",
+                "summary": "Stop project",
                 "description": "Stops all running services in a Docker Compose project while preserving container configurations and data volumes. \n\nThis operation gracefully shuts down containers in reverse dependency order. \n\nUse this to temporarily halt a project without removing data or configurations.",
-                "operationId": "VPS_stopAProjectV1",
+                "operationId": "VPS_stopProjectV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -1586,9 +1586,9 @@
                 "tags": [
                     "VPS: Docker Manager"
                 ],
-                "summary": "Update a project",
+                "summary": "Update project",
                 "description": "Updates a Docker Compose project by pulling the latest image versions and recreating containers with new configurations. \n\nThis operation preserves data volumes while applying changes from the compose file. \n\nUse this to deploy application updates, apply configuration changes, or refresh container images to their latest versions.",
-                "operationId": "VPS_updateAProjectV1",
+                "operationId": "VPS_updateProjectV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
@@ -4872,7 +4872,10 @@
                             "pending_setup",
                             "expired",
                             "requested",
-                            "pending_verification"
+                            "pending_verification",
+                            "deleted",
+                            "suspended",
+                            "failed"
                         ],
                         "example": "active"
                     },
@@ -5010,7 +5013,9 @@
                         "type": "string",
                         "enum": [
                             "domain",
-                            "free_domain"
+                            "free_domain",
+                            "domain_transfer",
+                            "free_domain_transfer"
                         ],
                         "example": "domain"
                     },
@@ -5021,7 +5026,10 @@
                             "pending_setup",
                             "expired",
                             "requested",
-                            "pending_verification"
+                            "pending_verification",
+                            "deleted",
+                            "suspended",
+                            "failed"
                         ],
                         "example": "active"
                     },
