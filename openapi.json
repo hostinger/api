@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.96",
+        "version": "0.0.97",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3009,7 +3009,7 @@
                 }
             }
         },
-        "/api/vps/v1/virtual-machines/{virtualMachineId}/ptr": {
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}": {
             "post": {
                 "tags": [
                     "VPS: PTR records"
@@ -3020,8 +3020,21 @@
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/ipAddressId"
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.VirtualMachine.PTR.StoreRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -3032,6 +3045,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -3051,6 +3067,9 @@
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/virtualMachineId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/ipAddressId"
                     }
                 ],
                 "responses": {
@@ -4172,6 +4191,19 @@
                         "type": "string",
                         "example": "5.2.3.4",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.VirtualMachine.PTR.StoreRequest": {
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Pointer record domain",
+                        "type": "string",
+                        "example": "example.tld"
                     }
                 },
                 "type": "object"
@@ -6347,6 +6379,16 @@
                 "schema": {
                     "type": "integer",
                     "example": 8941182
+                }
+            },
+            "ipAddressId": {
+                "name": "ipAddressId",
+                "in": "path",
+                "description": "IP Address ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 246547
                 }
             },
             "postInstallScriptId": {
