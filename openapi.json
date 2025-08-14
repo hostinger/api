@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.95",
+        "version": "0.0.96",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4246,14 +4246,21 @@
                         "example": 1130
                     },
                     "password": {
-                        "description": "Password for the virtual machine. If not provided, random password will be generated. Password will not be shown in the response.",
+                        "description": "Root password for the virtual machine. If not provided, random password will be generated. Password will not be shown in the response.",
                         "type": "string",
                         "format": "password",
-                        "minLength": 8,
+                        "minLength": 12,
                         "example": "oMeNRustosIO"
                     },
+                    "panel_password": {
+                        "description": "Panel password for the panel-based OS template. If not provided, random password will be generated. If OS does not support panel_password this field will be ignored. Password will not be shown in the response.",
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 12,
+                        "example": "Mna58c17a4d"
+                    },
                     "post_install_script_id": {
-                        "description": "Post-install script ID",
+                        "description": "Post-install script to execute after virtual machine was recreated",
                         "type": "integer",
                         "example": 6324
                     }
