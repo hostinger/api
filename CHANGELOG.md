@@ -5,6 +5,10 @@
   - `requestBody`: changed `post_install_script_id`.`description`
   - `requestBody`: changed `password`.`description`
   - `requestBody`: changed `password`.`minLength`
+- removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`
+- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}`
+- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}`
 ### Tue Aug 12 2025
 - `GET` `/api/domains/v1/portfolio`:
   - `200` response: added support for new value `deleted` on enum `items`.`status`
