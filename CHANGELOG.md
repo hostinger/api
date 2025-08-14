@@ -1,4 +1,10 @@
 # Hostinger API
+### Thu Aug 14 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
+  - `requestBody`: added support for `panel_password` property
+  - `requestBody`: changed `post_install_script_id`.`description`
+  - `requestBody`: changed `password`.`description`
+  - `requestBody`: changed `password`.`minLength`
 ### Tue Aug 12 2025
 - `GET` `/api/domains/v1/portfolio`:
   - `200` response: added support for new value `deleted` on enum `items`.`status`
