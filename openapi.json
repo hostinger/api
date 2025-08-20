@@ -1345,7 +1345,7 @@
                     "VPS: Docker Manager"
                 ],
                 "summary": "Get project list",
-                "description": "Retrieves a list of all Docker Compose projects currently deployed on the virtual machine. \n\nThis endpoint returns basic information about each project including name, status, and file path. \n\nUse this to get an overview of all Docker projects on your VPS instance.",
+                "description": "Retrieves a list of all Docker Compose projects currently deployed on the virtual machine. \n\nThis endpoint returns basic information about each project including name, status, file path and list of containers with \ndetails about their names, image, status, health and ports. Container stats are omitted in this endpoint.\nIf you need to get detailed information about container with stats included, use the `Get project containers` endpoint. \n\nUse this to get an overview of all Docker projects on your VPS instance.",
                 "operationId": "VPS_getProjectListV1",
                 "parameters": [
                     {
@@ -1380,7 +1380,7 @@
                     "VPS: Docker Manager"
                 ],
                 "summary": "Create new project",
-                "description": "Deploy new project from docker-compose.yaml contents or download contents from URL. \n\nURL can be Github repository url in format https://github.com/[user]/[repo] and it will be automatically resolved to \ndocker-compose.yaml file in master branch. Any other URL provided must return docker-compose.yaml file contents.\n\nIf project already exists, it will be replaced.",
+                "description": "Deploy new project from docker-compose.yaml contents or download contents from URL. \n\nURL can be Github repository url in format https://github.com/[user]/[repo] and it will be automatically resolved to \ndocker-compose.yaml file in master branch. Any other URL provided must return docker-compose.yaml file contents.\n\nIf project with the same name already exists, existing project will be replaced.",
                 "operationId": "VPS_createNewProjectV1",
                 "parameters": [
                     {
@@ -4138,6 +4138,12 @@
                         "description": "URL pointing to docker-compose.yaml file, Github repository or raw YAML content of the compose file",
                         "type": "string",
                         "maxLength": 8192
+                    },
+                    "environment": {
+                        "description": "Project environment variables",
+                        "type": "string",
+                        "maxLength": 8192,
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -5448,6 +5454,23 @@
                             "stopping": "Container is in the process of being stopped"
                         }
                     },
+                    "health": {
+                        "description": "Container health status",
+                        "type": "string",
+                        "enum": [
+                            "starting",
+                            "healthy",
+                            "unhealthy",
+                            ""
+                        ],
+                        "example": "healthy",
+                        "x-enum-descriptions": {
+                            "": "No health check is configured for the container (this is the default when no HEALTHCHECK is defined)",
+                            "healthy": "The container has passed its health checks and is operating normally",
+                            "unhealthy": "The container has failed its health checks (exceeded the failure threshold)",
+                            "starting": "The container is still within its startup period (health checks are running but haven't passed the required number of consecutive checks yet)"
+                        }
+                    },
                     "ports": {
                         "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerPortCollection"
                     },
@@ -5508,6 +5531,12 @@
                         "description": "Contents of docker-compose file",
                         "type": "string",
                         "example": "services:\n    my-app:\n        image: nginx\n        ports:\n            - \"80:80\"\n    my-db:\n        image: mysql"
+                    },
+                    "environment": {
+                        "description": "Project environment variables",
+                        "type": "string",
+                        "example": "VARIABLE1=value1\nVARIABLE2=value2",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -5596,6 +5625,9 @@
                         "description": "Full filesystem path to the docker-compose.yml file",
                         "type": "string",
                         "example": "/docker/my-project/docker-compose.yaml"
+                    },
+                    "containers": {
+                        "$ref": "#/components/schemas/VPS.V1.DockerManager.ContainerCollection"
                     }
                 },
                 "type": "object"
