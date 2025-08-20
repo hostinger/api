@@ -1,4 +1,9 @@
 # Hostinger API
+### Wed Aug 20 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`: `requestBody`: added support for `environment` property
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`: `200` response: added support for `items`.`containers` property
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}`: `200` response: added support for `environment` property
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers`: `200` response: added support for `items`.`health` property
 ### Thu Aug 14 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
   - `requestBody`: added support for `panel_password` property
