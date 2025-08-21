@@ -1,4 +1,9 @@
 # Hostinger API
+### Thu Aug 21 2025
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `200` response: added support for `data_center_id` property
+- `POST` `/api/vps/v1/virtual-machines`: `200` response: added support for `virtual_machine`.`data_center_id` property
+- `GET` `/api/vps/v1/virtual-machines`: `200` response: added support for `items`.`data_center_id` property
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`: `200` response: added support for `data_center_id` property
 ### Wed Aug 20 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`: `requestBody`: added support for `environment` property
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`: `200` response: added support for `items`.`containers` property
