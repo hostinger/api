@@ -1,5 +1,8 @@
 # Hostinger API
 ### Tue Aug 26 2025
+- added `DELETE` `/api/reach/v1/contacts/{uuid}`
+- added `GET` `/api/reach/v1/contacts/groups`
+- added `GET` `/api/reach/v1/contacts`
 - added `POST` `/api/reach/v1/contacts`
 ### Thu Aug 21 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `200` response: added support for `data_center_id` property
