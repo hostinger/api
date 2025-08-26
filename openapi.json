@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.0.101",
+        "version": "0.0.102",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1181,6 +1181,47 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/contacts": {
+            "post": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Create a new contact",
+                "description": "Create a new contact in the email marketing system.\n\nThis endpoint allows you to create a new contact with basic information like name, email, and surname.\nYou can optionally assign the contact to specific groups and add notes.\n\nThe contact will be automatically subscribed to email communications.",
+                "operationId": "reach_createANewContactV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.ContactResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -4006,6 +4047,43 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.StoreRequest": {
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John",
+                        "nullable": true
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "group_uuids": {
+                        "type": "array",
+                        "items": {
+                            "description": "Group UUID",
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "nullable": true
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "VIP customer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.Firewall.Rules.StoreRequest": {
                 "required": [
                     "protocol",
@@ -5201,6 +5279,56 @@
                     "mydomain1.tld",
                     "mydomain2.tld"
                 ]
+            },
+            "Reach.V1.Contacts.ContactResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "subscription_status": {
+                        "type": "string",
+                        "enum": [
+                            "subscribed",
+                            "unsubscribed"
+                        ],
+                        "example": "subscribed"
+                    },
+                    "subscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "source": {
+                        "type": "string",
+                        "enum": [
+                            "sync",
+                            "import",
+                            "manual"
+                        ],
+                        "example": "sync",
+                        "nullable": true
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "VIP customer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
             },
             "VPS.V1.Action.ActionCollection": {
                 "description": "Array of [`VPS.V1.Action.ActionResource`](#model/vpsv1actionactionresource)",
@@ -6535,6 +6663,11 @@
             "x-displayName": "WHOIS"
         },
         {
+            "name": "Reach: Contacts",
+            "description": "Manage your email contacts and contact groups. This category includes endpoints for creating, deleting, and listing contacts, as well as managing contact groups.",
+            "x-displayName": "Contacts"
+        },
+        {
             "name": "VPS: Data centers",
             "description": "Access information on available data centers, including location details, so you can choose the optimal region for deploying your virtual machines.",
             "x-displayName": "Data centers"
@@ -6642,6 +6775,12 @@
                 "VPS: Recovery",
                 "VPS: Snapshots",
                 "VPS: Virtual machine"
+            ]
+        },
+        {
+            "name": "Reach",
+            "tags": [
+                "Reach: Contacts"
             ]
         },
         {
