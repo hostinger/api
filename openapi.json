@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.1.1",
+        "version": "0.1.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1191,7 +1191,113 @@
                 }
             }
         },
+        "/api/reach/v1/contacts/{uuid}": {
+            "delete": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Delete a contact",
+                "description": "Delete a contact with the specified UUID.\n\nThis endpoint permanently removes a contact from the email marketing system.",
+                "operationId": "reach_deleteAContactV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/contacts/groups": {
+            "get": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "List contact groups",
+                "description": "Get a list of all contact groups.\n\nThis endpoint returns a list of contact groups that can be used to organize contacts.",
+                "operationId": "reach_listContactGroupsV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Groups.ContactGroupCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/reach/v1/contacts": {
+            "get": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "List contacts",
+                "description": "Get a list of contacts, optionally filtered by group and subscription status.\n\nThis endpoint returns a paginated list of contacts with their basic information.\nYou can filter contacts by group UUID and subscription status.",
+                "operationId": "reach_listContactsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/group_uuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/subscription_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Contacts.ContactCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Reach: Contacts"
@@ -5280,6 +5386,13 @@
                     "mydomain2.tld"
                 ]
             },
+            "Reach.V1.Contacts.ContactCollection": {
+                "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.ContactResource"
+                }
+            },
             "Reach.V1.Contacts.ContactResource": {
                 "properties": {
                     "uuid": {
@@ -5326,6 +5439,26 @@
                         "maxLength": 75,
                         "example": "VIP customer",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Groups.ContactGroupCollection": {
+                "description": "Array of [`Reach.V1.Contacts.Groups.ContactGroupResource`](#model/reachv1contactsgroupscontactgroupresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.Groups.ContactGroupResource"
+                }
+            },
+            "Reach.V1.Contacts.Groups.ContactGroupResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Newsletter Subscribers"
                     }
                 },
                 "type": "object"
@@ -6485,6 +6618,40 @@
                     "example": 564651
                 }
             },
+            "uuid": {
+                "name": "uuid",
+                "in": "path",
+                "description": "UUID of the contact to delete",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            },
+            "group_uuid": {
+                "name": "group_uuid",
+                "in": "query",
+                "description": "Filter contacts by group UUID",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+            },
+            "subscription_status": {
+                "name": "subscription_status",
+                "in": "query",
+                "description": "Filter contacts by subscription status",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "subscribed",
+                        "unsubscribed"
+                    ],
+                    "example": "subscribed"
+                }
+            },
             "tokenId": {
                 "name": "tokenId",
                 "in": "path",
@@ -6735,6 +6902,15 @@
     ],
     "x-tagGroups": [
         {
+            "name": "Billing",
+            "tags": [
+                "Billing: Catalog",
+                "Billing: Orders",
+                "Billing: Payment methods",
+                "Billing: Subscriptions"
+            ]
+        },
+        {
             "name": "Domains",
             "tags": [
                 "Domains: Availability",
@@ -6751,12 +6927,9 @@
             ]
         },
         {
-            "name": "Billing",
+            "name": "Reach",
             "tags": [
-                "Billing: Catalog",
-                "Billing: Orders",
-                "Billing: Payment methods",
-                "Billing: Subscriptions"
+                "Reach: Contacts"
             ]
         },
         {
@@ -6775,12 +6948,6 @@
                 "VPS: Recovery",
                 "VPS: Snapshots",
                 "VPS: Virtual machine"
-            ]
-        },
-        {
-            "name": "Reach",
-            "tags": [
-                "Reach: Contacts"
             ]
         },
         {
