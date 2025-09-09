@@ -1,172 +1,5 @@
 # Hostinger API
-### Tue Aug 26 2025
-- added `DELETE` `/api/reach/v1/contacts/{uuid}`
-- added `GET` `/api/reach/v1/contacts/groups`
-- added `GET` `/api/reach/v1/contacts`
-- added `POST` `/api/reach/v1/contacts`
-### Thu Aug 21 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `200` response: added support for `data_center_id` property
-- `POST` `/api/vps/v1/virtual-machines`: `200` response: added support for `virtual_machine`.`data_center_id` property
-- `GET` `/api/vps/v1/virtual-machines`: `200` response: added support for `items`.`data_center_id` property
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`: `200` response: added support for `data_center_id` property
-### Wed Aug 20 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`: `requestBody`: added support for `environment` property
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`: `200` response: added support for `items`.`containers` property
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}`: `200` response: added support for `environment` property
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers`: `200` response: added support for `items`.`health` property
-### Thu Aug 14 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
-  - `requestBody`: added support for `panel_password` property
-  - `requestBody`: changed `post_install_script_id`.`description`
-  - `requestBody`: changed `password`.`description`
-  - `requestBody`: changed `password`.`minLength`
-- removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`
-- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`
-- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}`
-- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}`
-### Tue Aug 12 2025
-- `GET` `/api/domains/v1/portfolio`:
-  - `200` response: added support for new value `deleted` on enum `items`.`status`
-  - `200` response: added support for new value `suspended` on enum `items`.`status`
-  - `200` response: added support for new value `failed` on enum `items`.`status`
-  - `200` response: added support for new value `domain_transfer` on enum `items`.`type`
-  - `200` response: added support for new value `free_domain_transfer` on enum `items`.`type`
-- `GET` `/api/domains/v1/portfolio/{domain}`:
-  - `200` response: added support for new value `deleted` on enum `status`
-  - `200` response: added support for new value `suspended` on enum `status`
-  - `200` response: added support for new value `failed` on enum `status`
-### Wed Aug 06 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/start`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot/restore`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/restart`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}/restore`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions`:
-  - `200` response: removed `data`.`items`.`state`.`x-enumDescriptions`
-  - `200` response: added `data`.`items`.`state`.`x-enum-descriptions`
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions/{actionId}`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/public-keys/attach/{virtualMachineId}`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/firewall/{firewallId}/sync/{virtualMachineId}`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/firewall/{firewallId}/deactivate/{virtualMachineId}`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}`:
-  - `200` response: removed `state`.`x-enumDescriptions`
-  - `200` response: added `state`.`x-enum-descriptions`
-- `POST` `/api/domains/v1/forwarding`:
-  - `200` response: removed `redirect_type`.`x-enumDescriptions`
-  - `200` response: added `redirect_type`.`x-enum-descriptions`
-  - `requestBody`: removed `redirect_type`.`x-enumDescriptions`
-  - `requestBody`: added `redirect_type`.`x-enum-descriptions`
-- `GET` `/api/domains/v1/forwarding/{domain}`:
-  - `200` response: removed `redirect_type`.`x-enumDescriptions`
-  - `200` response: added `redirect_type`.`x-enum-descriptions`
-- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers`
-- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}`
-- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/down`
-- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`
-- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`
-- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/logs`
-- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/restart`
-- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/start`
-- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/stop`
-- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/update`
-### Wed Jul 30 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: changed `password`.`minLength`
-- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`: `requestBody`: changed `password`.`minLength`
-- `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
-  - `requestBody`: added support for `ns3` property
-  - `requestBody`: added `ns2`.`nullable`
-- `POST` `/api/vps/v1/virtual-machines`: `requestBody`: changed `setup`.`password`.`minLength`
-- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}`
-### Tue Jul 22 2025
-- `GET` `/api/billing/v1/catalog`: `200` response: added support for `items`.`metadata` property
-### Wed Jun 18 2025
-- `POST` `/api/vps/v1/virtual-machines`:
-  - `200` response: removed support for `id` property
-  - `200` response: removed support for `subscription_id` property
-  - `200` response: removed support for `status` property
-  - `200` response: removed support for `currency` property
-  - `200` response: removed support for `subtotal` property
-  - `200` response: removed support for `total` property
-  - `200` response: removed support for `billing_address` property
-  - `200` response: removed support for `created_at` property
-  - `200` response: removed support for `updated_at` property
-  - `200` response: added support for `order` property
-  - `200` response: added support for `virtual_machine` property
-### Mon May 19 2025
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`:
-  - `requestBody`: added `public_key`.`description`
-  - `requestBody`: changed `public_key`.`key`.`description`
-  - `requestBody`: added `ns2`.`description`
-  - `requestBody`: added `ns1`.`description`
-- added `POST` `/api/vps/v1/virtual-machines`
-- `POST` `/api/domains/v1/portfolio`: `requestBody`: changed `payment_method_id`.`description`
-### Fri May 16 2025
-- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
-  - removed `date_to` query parameter
-  - added `date_to` query parameter
-  - removed `date_from` query parameter
-  - added `date_from` query parameter
-### Wed Apr 30 2025
+### Wed Sep 03 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -177,6 +10,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/start`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -187,6 +22,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot/restore`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -197,6 +34,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -207,6 +46,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -217,6 +58,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -241,6 +84,12 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: added support for `data_center_id` property
+  - `requestBody`: added `public_key`.`description`
+  - `requestBody`: changed `public_key`.`key`.`description`
+  - `requestBody`: added `ns2`.`description`
+  - `requestBody`: added `ns1`.`description`
+  - `requestBody`: changed `password`.`minLength`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/root-password`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -255,6 +104,9 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+  - `requestBody`: changed `password`.`minLength`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/restart`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -265,6 +117,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -279,6 +133,12 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+  - `requestBody`: added support for `panel_password` property
+  - `requestBody`: changed `post_install_script_id`.`description`
+  - `requestBody`: changed `password`.`description`
+  - `requestBody`: changed `password`.`minLength`
 - `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -289,6 +149,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recovery`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -303,6 +165,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/panel-password`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -317,26 +181,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
-  - `500` response: added `x-scalar-ignore`
-  - `500` response: removed `x-scalar-ignore`
-  - `500` response: added `correlation_id`.`description`
-  - `500` response: added `message`.`description`
-  - `401` response: changed `description`
-  - `401` response: added `x-scalar-ignore`
-  - `401` response: removed `x-scalar-ignore`
-  - `401` response: added `correlation_id`.`description`
-  - `401` response: added `message`.`description`
-- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`:
-  - `500` response: added `x-scalar-ignore`
-  - `500` response: removed `x-scalar-ignore`
-  - `500` response: added `correlation_id`.`description`
-  - `500` response: added `message`.`description`
-  - `401` response: changed `description`
-  - `401` response: added `x-scalar-ignore`
-  - `401` response: removed `x-scalar-ignore`
-  - `401` response: added `correlation_id`.`description`
-  - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/nameservers`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -351,6 +197,10 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
+  - `requestBody`: added support for `ns3` property
+  - `requestBody`: added `ns2`.`nullable`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/metrics`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -365,6 +215,10 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - removed `date_to` query parameter
+  - added `date_to` query parameter
+  - removed `date_from` query parameter
+  - added `date_from` query parameter
 - `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -379,6 +233,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -393,6 +249,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/monarx`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -407,6 +265,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+- added `POST` `/api/vps/v1/virtual-machines`
 - `GET` `/api/vps/v1/virtual-machines`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -417,6 +276,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: added support for `items`.`data_center_id` property
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -427,6 +287,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: added support for `data_center_id` property
 - `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -437,6 +298,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `PUT` `/api/vps/v1/virtual-machines/{virtualMachineId}/hostname`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -451,6 +314,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}/restore`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -461,17 +326,9 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups`:
-  - `500` response: added `x-scalar-ignore`
-  - `500` response: removed `x-scalar-ignore`
-  - `500` response: added `correlation_id`.`description`
-  - `500` response: added `message`.`description`
-  - `401` response: changed `description`
-  - `401` response: added `x-scalar-ignore`
-  - `401` response: removed `x-scalar-ignore`
-  - `401` response: added `correlation_id`.`description`
-  - `401` response: added `message`.`description`
-- `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
   - `500` response: added `correlation_id`.`description`
@@ -501,6 +358,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `data`.`items`.`state`.`x-enumDescriptions`
+  - `200` response: added `data`.`items`.`state`.`x-enum-descriptions`
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/actions/{actionId}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -511,6 +370,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `GET` `/api/vps/v1/templates`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -579,6 +440,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/post-install-scripts`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -651,6 +514,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/firewall/{firewallId}/rules`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -747,6 +612,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `POST` `/api/vps/v1/firewall/{firewallId}/activate/{virtualMachineId}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -761,6 +628,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `state`.`x-enumDescriptions`
+  - `200` response: added `state`.`x-enum-descriptions`
 - `GET` `/api/vps/v1/data-centers`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -795,6 +664,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `requestBody`: changed `tld`.`description`
 - `GET` `/api/domains/v1/whois`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -805,6 +675,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `tld` query parameter: changed `description`
 - `DELETE` `/api/domains/v1/whois/{whoisId}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -859,20 +730,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
-- `POST` `/api/domains/v1/portfolio`:
-  - `500` response: added `x-scalar-ignore`
-  - `500` response: removed `x-scalar-ignore`
-  - `500` response: added `correlation_id`.`description`
-  - `500` response: added `message`.`description`
-  - `422` response: added `x-scalar-ignore`
-  - `422` response: removed `x-scalar-ignore`
-  - `422` response: added `correlation_id`.`description`
-  - `422` response: added `errors`.`description`
-  - `401` response: changed `description`
-  - `401` response: added `x-scalar-ignore`
-  - `401` response: removed `x-scalar-ignore`
-  - `401` response: added `correlation_id`.`description`
-  - `401` response: added `message`.`description`
+- added `POST` `/api/domains/v1/portfolio`
 - `GET` `/api/domains/v1/portfolio`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -883,6 +741,11 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: added support for new value `deleted` on enum `items`.`status`
+  - `200` response: added support for new value `suspended` on enum `items`.`status`
+  - `200` response: added support for new value `failed` on enum `items`.`status`
+  - `200` response: added support for new value `domain_transfer` on enum `items`.`type`
+  - `200` response: added support for new value `free_domain_transfer` on enum `items`.`type`
 - `GET` `/api/domains/v1/portfolio/{domain}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -893,6 +756,9 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: added support for new value `deleted` on enum `status`
+  - `200` response: added support for new value `suspended` on enum `status`
+  - `200` response: added support for new value `failed` on enum `status`
 - `DELETE` `/api/domains/v1/portfolio/{domain}/domain-lock`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -927,6 +793,10 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `redirect_type`.`x-enumDescriptions`
+  - `200` response: added `redirect_type`.`x-enum-descriptions`
+  - `requestBody`: removed `redirect_type`.`x-enumDescriptions`
+  - `requestBody`: added `redirect_type`.`x-enum-descriptions`
 - `DELETE` `/api/domains/v1/forwarding/{domain}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -947,6 +817,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `200` response: removed `redirect_type`.`x-enumDescriptions`
+  - `200` response: added `redirect_type`.`x-enum-descriptions`
 - `POST` `/api/domains/v1/availability`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -961,6 +833,9 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `requestBody`: changed `tlds`.`description`
+  - `requestBody`: added `tlds`.`items`.`description`
+  - `requestBody`: changed `domain`.`description`
 - `POST` `/api/dns/v1/zones/{domain}/validate`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -975,6 +850,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `requestBody`: `zone`.`items`.`record` is no longer required
+  - `requestBody`: `zone`.`items`.`records` is now required
 - `POST` `/api/dns/v1/zones/{domain}/reset`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -1017,6 +894,8 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `requestBody`: `zone`.`items`.`record` is no longer required
+  - `requestBody`: `zone`.`items`.`records` is now required
 - `GET` `/api/dns/v1/zones/{domain}`:
   - `500` response: added `x-scalar-ignore`
   - `500` response: removed `x-scalar-ignore`
@@ -1125,6 +1004,7 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
+  - `requestBody`: added `coupons`.`description`
 - `GET` `/api/billing/v1/catalog`:
   - added `category` query parameter
   - added `name` query parameter
@@ -1137,21 +1017,26 @@
   - `401` response: removed `x-scalar-ignore`
   - `401` response: added `correlation_id`.`description`
   - `401` response: added `message`.`description`
-### Tue Apr 29 2025
-- `POST` `/api/domains/v1/whois`: `requestBody`: changed `tld`.`description`
-- `GET` `/api/domains/v1/whois`: `tld` query parameter: changed `description`
-- added `POST` `/api/domains/v1/portfolio`
-- `POST` `/api/domains/v1/availability`:
-  - `requestBody`: changed `tlds`.`description`
-  - `requestBody`: added `tlds`.`items`.`description`
-  - `requestBody`: changed `domain`.`description`
-- `POST` `/api/dns/v1/zones/{domain}/validate`:
-  - `requestBody`: `zone`.`items`.`record` is no longer required
-  - `requestBody`: `zone`.`items`.`records` is now required
-- `PUT` `/api/dns/v1/zones/{domain}`:
-  - `requestBody`: `zone`.`items`.`record` is no longer required
-  - `requestBody`: `zone`.`items`.`records` is now required
-- `POST` `/api/billing/v1/orders`: `requestBody`: added `coupons`.`description`
+  - `200` response: added support for `items`.`metadata` property
+- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups/{backupId}`
+- removed `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`
+- removed `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr`
+- added `DELETE` `/api/reach/v1/contacts/{uuid}`
+- added `GET` `/api/reach/v1/contacts/groups`
+- added `GET` `/api/reach/v1/contacts`
+- added `POST` `/api/reach/v1/contacts`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}`
+- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/down`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`
+- added `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/logs`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/restart`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/start`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/stop`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/update`
+- added `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}`
+- added `DELETE` `/api/vps/v1/virtual-machines/{virtualMachineId}/ptr/{ipAddressId}`
 ### Mon Apr 28 2025
 - `GET` `/api/domains/v1/portfolio`:
   - `200` response: added support for new value `requested` on enum `items`.`status`
