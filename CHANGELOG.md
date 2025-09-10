@@ -1,4 +1,8 @@
 # Hostinger API
+### Wed Sep 10 2025
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups`:
+  - `200` response: added support for `data`.`items`.`size` property
+  - `200` response: added support for `data`.`items`.`restore_time` property
 ### Wed Sep 03 2025
 - `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/stop`:
   - `500` response: added `x-scalar-ignore`
