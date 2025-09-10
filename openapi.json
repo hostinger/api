@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.1.5",
+        "version": "0.1.6",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5528,10 +5528,20 @@
                         "type": "integer",
                         "example": 325
                     },
+                    "size": {
+                        "description": "Backup size in kilobytes",
+                        "type": "integer",
+                        "example": 15240192
+                    },
+                    "restore_time": {
+                        "description": "Estimated backup restore time in seconds",
+                        "type": "integer",
+                        "example": 3600
+                    },
                     "location": {
                         "description": "Location of the backup",
                         "type": "string",
-                        "example": "nl-srv-openvzbackups"
+                        "example": "nl-srv-nodebackups"
                     },
                     "created_at": {
                         "type": "string",
