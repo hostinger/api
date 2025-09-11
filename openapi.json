@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.1.6",
+        "version": "0.1.7",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6256,6 +6256,11 @@
                         "description": "Snapshot ID",
                         "type": "integer",
                         "example": 325
+                    },
+                    "restore_time": {
+                        "description": "Estimated snapshot restore time in seconds",
+                        "type": "integer",
+                        "example": 1800
                     },
                     "created_at": {
                         "type": "string",
