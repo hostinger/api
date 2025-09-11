@@ -1,4 +1,6 @@
 # Hostinger API
+### Thu Sep 11 2025
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`: `200` response: added support for `restore_time` property
 ### Wed Sep 10 2025
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/backups`:
   - `200` response: added support for `data`.`items`.`size` property
