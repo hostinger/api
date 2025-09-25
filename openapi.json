@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.1.12",
+        "version": "0.1.13",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -271,6 +271,72 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Billing.V1.Subscription.SubscriptionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/subscriptions/{subscriptionId}/auto-renewal/disable": {
+            "delete": {
+                "tags": [
+                    "Billing: Subscriptions"
+                ],
+                "summary": "Disable auto-renewal",
+                "description": "Disable auto-renewal for a subscription.\n\nUse this endpoint when disable auto-renewal for a subscription.",
+                "operationId": "billing_disableAutoRenewalV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/subscriptionId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Subscription.SubscriptionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/subscriptions/{subscriptionId}/auto-renewal/enable": {
+            "patch": {
+                "tags": [
+                    "Billing: Subscriptions"
+                ],
+                "summary": "Enable auto-renewal",
+                "description": "Enable auto-renewal for a subscription.\n\nUse this endpoint when enable auto-renewal for a subscription.",
+                "operationId": "billing_enableAutoRenewalV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/subscriptionId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Subscription.SubscriptionResource"
                                 }
                             }
                         }
