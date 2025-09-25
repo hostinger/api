@@ -1,4 +1,7 @@
 # Hostinger API
+### Thu Sep 25 2025
+- added `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}/auto-renewal/disable`
+- added `PATCH` `/api/billing/v1/subscriptions/{subscriptionId}/auto-renewal/enable`
 ### Thu Sep 11 2025
 - `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/snapshot`: `200` response: added support for `restore_time` property
 ### Wed Sep 10 2025
