@@ -2,13 +2,13 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Hostinger API",
-        "description": "# Overview\nThe Hostinger API provides a comprehensive set of endpoints that allow developers to interact with Hostinger's services programmatically.\nThis API enables you to manage various aspects of your Hostinger account.\n\nThe Hostinger API is a (mostly) RESTful API that uses standard HTTP methods and status codes.\n# Authentication\nThe Hostinger API uses tokens for authentication. To authenticate your requests, you need to include a valid bearer token in the Authorization header of your HTTP requests:\n```yaml\nAuthorization: Bearer YOUR_API_TOKEN\n```\nAPI tokens for individual users can be created and managed from the [Account page](https://hpanel.hostinger.com/profile/api) of the Hostinger Panel.\nTokens will have same permissions as the owning user. Optionally, tokens can be set to expire after a certain period of time.\n# Rate Limiting\nTo ensure fair usage and prevent abuse, the API enforces rate limits on the number of requests that can be made within a certain time period.\nIf you exceed the rate limit, you will receive a 429 Too Many Requests response. Rate limit headers are included in the response to help you manage your requests.\nYour IP address might get temporarily blocked if you exceed the rate limit multiple times.\n# Parameters\nAll requests sent to API must have the content type `application/json`. `POST`, `PUT`, `PATCH` methods may include a JSON object in the request body. Documentation provides required structure and examples of the object.\nSome endpoints require path parameters. These parameters are included in the URL path and are marked with curly braces.\n# Pagination\nSome endpoints return a large number of items. To make these responses more manageable, the API uses pagination.\nBy default, the API returns50 items per page.\n\n The page number can be specified using the `page` query parameter, for example: `/api/vps/v1/public-keys?page=2`\n# Errors\nThe Hostinger API uses standard HTTP status codes to indicate the success or failure of a request.\nIn case of an error, the API will return a JSON response with an `error` field, containing a human-readable error message.\nError responses also contain a `correlation_id` field which can be used to identify the request in case you need to contact support.\n# SDKs & Tools\nTo help you get started with the Hostinger API, we provide SDKs and tools in various programming languages.\nThe usage & documentation for each SDK can be found in the respective repositories:            \n- Ansible - https://github.com/hostinger/ansible-collection-hostinger\n- CLI - https://github.com/hostinger/api-cli\n- n8n node - https://github.com/hostinger/api-n8n-node\n- MCP server - https://github.com/hostinger/api-mcp-server\n- PHP - https://github.com/hostinger/api-php-sdk\n- Python - https://github.com/hostinger/api-python-sdk\n- Terraform - https://github.com/hostinger/terraform-provider-hostinger\n- Node / TypeScript - https://github.com/hostinger/api-typescript-sdk\n- Postman collection - https://www.postman.com/hostinger-api\n- WHMCS module - https://github.com/hostinger/api-whmcs-plugin\n# Change log\nFor information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).\n# Support\nIf you have any questions, feedback or feature requests, please create an [issue](https://github.com/hostinger/api/issues) or [discussion](https://github.com/hostinger/api/discussions) on the repository.\n\nFor any support take a look at our [Github Repository](https://github.com/hostinger/api/), dedicated to the Hostinger API.",
+        "description": "# Overview\nThe Hostinger API provides a comprehensive set of endpoints that allow developers to interact with Hostinger's services programmatically.\nThis API enables you to manage various aspects of your Hostinger account.\n\nThe Hostinger API is a (mostly) RESTful API that uses standard HTTP methods and status codes.\n# Authentication\nThe Hostinger API uses tokens for authentication. To authenticate your requests, you need to include a valid bearer token in the Authorization header of your HTTP requests:\n```yaml\nAuthorization: Bearer YOUR_API_TOKEN\n```\nAPI tokens for individual users can be created and managed from the [Account page](https://hpanel.hostinger.com/profile/api) of the Hostinger Panel.\nTokens will have same permissions as the owning user. Optionally, tokens can be set to expire after a certain period of time.\n# Rate Limiting\nTo ensure fair usage and prevent abuse, the API enforces rate limits on the number of requests that can be made within a certain time period.\nIf you exceed the rate limit, you will receive a 429 Too Many Requests response. Rate limit headers are included in the response to help you manage your requests.\nYour IP address might get temporarily blocked if you exceed the rate limit multiple times.\n# Parameters\nAll requests sent to API must have the content type `application/json`. `POST`, `PUT`, `PATCH` methods may include a JSON object in the request body. Documentation provides required structure and examples of the object.\nSome endpoints require path parameters. These parameters are included in the URL path and are marked with curly braces.\n# Pagination\nSome endpoints return a large number of items. To make these responses more manageable, the API uses pagination.\nBy default, the API returns50 items per page.\n\n The page number can be specified using the `page` query parameter, for example: `/api/vps/v1/public-keys?page=2`\n# Errors\nThe Hostinger API uses standard HTTP status codes to indicate the success or failure of a request.\nIn case of an error, the API will return a JSON response with an `error` field, containing a human-readable error message.\nError responses also contain a `correlation_id` field which can be used to identify the request in case you need to contact support.\n# SDKs & Tools\nTo help you get started with the Hostinger API, we provide SDKs and tools in various programming languages.\nThe usage & documentation for each SDK can be found in the respective repositories:\n- Ansible - https://github.com/hostinger/ansible-collection-hostinger\n- CLI - https://github.com/hostinger/api-cli\n- n8n node - https://github.com/hostinger/api-n8n-node\n- MCP server - https://github.com/hostinger/api-mcp-server\n- PHP - https://github.com/hostinger/api-php-sdk\n- Python - https://github.com/hostinger/api-python-sdk\n- Terraform - https://github.com/hostinger/terraform-provider-hostinger\n- Node / TypeScript - https://github.com/hostinger/api-typescript-sdk\n- Postman collection - https://www.postman.com/hostinger-api\n- WHMCS module - https://github.com/hostinger/api-whmcs-plugin\n# Change log\nFor information on the latest changes to the API, please refer to the [change log](https://github.com/hostinger/api/blob/main/CHANGELOG.md).\n# Support\nIf you have any questions, feedback or feature requests, please create an [issue](https://github.com/hostinger/api/issues) or [discussion](https://github.com/hostinger/api/discussions) on the repository.\n\nFor any support take a look at our [Github Repository](https://github.com/hostinger/api/), dedicated to the Hostinger API.",
         "contact": {
             "name": "Hostinger",
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.1.16",
+        "version": "0.3.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1247,6 +1247,250 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/datacenters": {
+            "get": {
+                "tags": [
+                    "Hosting: Datacenters"
+                ],
+                "summary": "List available datacenters",
+                "description": "Retrieve a list of datacenters available for setting up hosting plans based on available datacenter capacity and hosting plan of your order.\nThe first item in the list is the best match for your specific order requirements.",
+                "operationId": "hosting_listAvailableDatacentersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_required"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Datacenter.DatacenterCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/domains/free-subdomains": {
+            "post": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "Generate a free subdomain",
+                "description": "Generate a unique free subdomain that can be used for hosting services without purchasing custom domains.\nFree subdomains allow you to start using hosting services immediately and you can always connect a custom domain to your site later.",
+                "operationId": "hosting_generateAFreeSubdomainV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Domains.FreeSubdomainResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/domains/verify-ownership": {
+            "post": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "Verify domain ownership",
+                "description": "Verify ownership of a single domain and return the verification status.\n\nUse this endpoint to check if a domain is accessible for you before using it for new websites.\nIf the domain is accessible, the response will have `is_accessible: true`.\nIf not, add the given TXT record to your domain's DNS records and try verifying again.\nKeep in mind that it may take up to 10 minutes for new TXT DNS records to propagate.\n\nSkip this verification when using Hostinger's free subdomains (*.hostingersite.com).",
+                "operationId": "hosting_verifyDomainOwnershipV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Domains.VerifyOwnershipRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Domains.DomainAccessResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/orders": {
+            "get": {
+                "tags": [
+                    "Hosting: Orders"
+                ],
+                "summary": "List orders",
+                "description": "Retrieve a paginated list of orders accessible to the authenticated client.\n\nThis endpoint returns orders of your hosting accounts as well as orders of other client hosting accounts that have shared access with you.\n\nUse the available query parameters to filter results by order statuses or specific order IDs for more targeted results.",
+                "operationId": "hosting_listOrdersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/statuses"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order_ids"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Hosting.V1.Orders.OrderCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/websites": {
+            "get": {
+                "tags": [
+                    "Hosting: Websites"
+                ],
+                "summary": "List websites",
+                "description": "Retrieve a paginated list of websites (main and addon types) accessible to the authenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as websites from other client hosting accounts that have shared access with you.\n\nUse the available query parameters to filter results by username, order ID, or enabled status for more targeted results.",
+                "operationId": "hosting_listWebsitesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/username"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order_id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/is_enabled"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Hosting.V1.Websites.WebsiteCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Websites"
+                ],
+                "summary": "Create website",
+                "description": "Create a new website for the authenticated client.\n\nProvide the domain name and associated order ID to create a new website. The datacenter_code parameter is required when creating the first website on a new hosting plan - this will set up and configure new hosting account in the selected datacenter.\n\nSubsequent websites will be hosted on the same datacenter automatically.\n\nWebsite creation takes up to a few minutes to complete. Check the websites list endpoint to see when your new website becomes available.",
+                "operationId": "hosting_createWebsiteV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Websites.CreateWebsiteRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -4219,6 +4463,56 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Datacenters.ListRequest": {
+                "required": [
+                    "order_id"
+                ],
+                "properties": {
+                    "order_id": {
+                        "type": "integer",
+                        "example": 12345
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Domains.VerifyOwnershipRequest": {
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain to verify ownership for",
+                        "type": "string",
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Websites.CreateWebsiteRequest": {
+                "required": [
+                    "domain",
+                    "order_id"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name for the website. Cannot start with \"www.\"",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "order_id": {
+                        "description": "ID of the associated order",
+                        "type": "integer",
+                        "example": 12345
+                    },
+                    "datacenter_code": {
+                        "description": "Datacenter code. This parameter is required when creating the first website on a new hosting plan.",
+                        "type": "string",
+                        "example": "us-east-1",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.StoreRequest": {
                 "required": [
                     "email"
@@ -5452,6 +5746,184 @@
                     "mydomain2.tld"
                 ]
             },
+            "Hosting.V1.Datacenter.CoordinatesResource": {
+                "properties": {
+                    "latitude": {
+                        "description": "Latitude coordinate",
+                        "type": "number",
+                        "format": "float",
+                        "example": 51.5074
+                    },
+                    "longitude": {
+                        "description": "Longitude coordinate",
+                        "type": "number",
+                        "format": "float",
+                        "example": 0.1278
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Datacenter.DatacenterCollection": {
+                "description": "Array of [`Hosting.V1.Datacenter.DatacenterResource`](#model/hostingv1datacenterdatacenterresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Datacenter.DatacenterResource"
+                }
+            },
+            "Hosting.V1.Datacenter.DatacenterResource": {
+                "properties": {
+                    "title": {
+                        "description": "Data center title",
+                        "type": "string",
+                        "example": "Europe (UK)"
+                    },
+                    "code": {
+                        "description": "Data center code",
+                        "type": "string",
+                        "example": "uk-fast"
+                    },
+                    "coordinates": {
+                        "$ref": "#/components/schemas/Hosting.V1.Datacenter.CoordinatesResource"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Domains.DomainAccessResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "is_accessible": {
+                        "description": "Whether domain is accessible",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "txt_to_verify": {
+                        "description": "TXT record for verification",
+                        "type": "string",
+                        "example": "example.com=example-verification-code"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Domains.FreeSubdomainResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Generated free subdomain",
+                        "type": "string",
+                        "example": "palegreen-fox-548498.hostingersite.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Orders.OrderCollection": {
+                "description": "Array of [`Hosting.V1.Orders.OrderResource`](#model/hostingv1ordersorderresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Orders.OrderResource"
+                }
+            },
+            "Hosting.V1.Orders.OrderResource": {
+                "properties": {
+                    "id": {
+                        "description": "Order ID",
+                        "type": "integer",
+                        "example": 12345
+                    },
+                    "client_id": {
+                        "description": "Client ID",
+                        "type": "integer",
+                        "example": 67890
+                    },
+                    "subscription_id": {
+                        "description": "Subscription ID",
+                        "type": "string",
+                        "example": "sub_abc123",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-10-08T12:00:00+00:00"
+                    },
+                    "plan": {
+                        "$ref": "#/components/schemas/Hosting.V1.Orders.PlanResource"
+                    },
+                    "status": {
+                        "description": "Order status",
+                        "type": "string",
+                        "example": "active"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Orders.PlanResource": {
+                "properties": {
+                    "name": {
+                        "description": "Plan name",
+                        "type": "string",
+                        "example": "hostinger_business"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Websites.WebsiteCollection": {
+                "description": "Array of [`Hosting.V1.Websites.WebsiteResource`](#model/hostingv1websiteswebsiteresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Websites.WebsiteResource"
+                }
+            },
+            "Hosting.V1.Websites.WebsiteResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Website domain",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "vhost_type": {
+                        "description": "Virtual host type",
+                        "type": "string",
+                        "enum": [
+                            "main",
+                            "addon",
+                            "parked",
+                            "subdomain"
+                        ],
+                        "example": "main"
+                    },
+                    "is_enabled": {
+                        "description": "Whether website is enabled",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "username": {
+                        "description": "Username",
+                        "type": "string",
+                        "example": "cl_user123"
+                    },
+                    "client_id": {
+                        "description": "Client ID",
+                        "type": "integer",
+                        "example": 67890
+                    },
+                    "order_id": {
+                        "description": "Order ID",
+                        "type": "integer",
+                        "example": 12345
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15T10:30:00+00:00"
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -6670,6 +7142,18 @@
                     "example": 1
                 }
             },
+            "per_page": {
+                "name": "per_page",
+                "in": "query",
+                "description": "Number of items per page",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "default": 25,
+                    "maximum": 100,
+                    "example": 25
+                }
+            },
             "snapshotId": {
                 "name": "snapshotId",
                 "in": "path",
@@ -6697,6 +7181,110 @@
                 "schema": {
                     "type": "integer",
                     "example": 564651
+                }
+            },
+            "directory": {
+                "name": "directory",
+                "in": "query",
+                "description": "Directory path to check",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "default": "",
+                    "example": "blog"
+                }
+            },
+            "is_enabled": {
+                "name": "is_enabled",
+                "in": "query",
+                "description": "Filter by enabled status",
+                "required": false,
+                "schema": {
+                    "type": "boolean",
+                    "example": true,
+                    "nullable": true
+                }
+            },
+            "order_id": {
+                "name": "order_id",
+                "in": "query",
+                "description": "Order ID",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 123,
+                    "nullable": true
+                }
+            },
+            "order_ids": {
+                "name": "order_ids",
+                "in": "query",
+                "description": "Filter by specific order IDs",
+                "required": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        12345,
+                        67890
+                    ],
+                    "nullable": true
+                }
+            },
+            "statuses": {
+                "name": "statuses",
+                "in": "query",
+                "description": "Filter by order statuses",
+                "required": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "deleting",
+                            "deleted",
+                            "suspended"
+                        ]
+                    },
+                    "example": [
+                        "active",
+                        "suspended"
+                    ],
+                    "nullable": true
+                }
+            },
+            "order_id_required": {
+                "name": "order_id",
+                "in": "query",
+                "description": "Order ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 123,
+                    "nullable": false
+                }
+            },
+            "username": {
+                "name": "username",
+                "in": "query",
+                "description": "Filter by specific username",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "cl_user123",
+                    "nullable": true
+                }
+            },
+            "username_path": {
+                "name": "username",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "u123456789"
                 }
             },
             "uuid": {
@@ -6911,6 +7499,31 @@
             "x-displayName": "WHOIS"
         },
         {
+            "name": "Hosting: Datacenters",
+            "description": "Access information about available datacenters for hosting services. This category provides details about data center locations and capabilities to help you choose the optimal region for your hosting needs.",
+            "x-displayName": "Datacenters"
+        },
+        {
+            "name": "Hosting: Domains",
+            "description": "Manage domain-related hosting services and configurations. This category includes endpoints for domain management, verification, and domain-specific hosting features.",
+            "x-displayName": "Domains"
+        },
+        {
+            "name": "Hosting: Files",
+            "description": "Hosting: Files",
+            "x-displayName": "Files"
+        },
+        {
+            "name": "Hosting: Orders",
+            "description": "Manage hosting service orders and subscriptions. This category provides access to order information, status tracking, and order management capabilities for hosting services.",
+            "x-displayName": "Orders"
+        },
+        {
+            "name": "Hosting: Websites",
+            "description": "Manage hosted websites and web applications. This category includes endpoints for website deployment, configuration, monitoring, and management of hosting resources.",
+            "x-displayName": "Websites"
+        },
+        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category includes endpoints for creating, deleting, and listing contacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -7005,6 +7618,16 @@
             "tags": [
                 "DNS: Snapshot",
                 "DNS: Zone"
+            ]
+        },
+        {
+            "name": "Hosting",
+            "tags": [
+                "Hosting: Datacenters",
+                "Hosting: Domains",
+                "Hosting: Files",
+                "Hosting: Orders",
+                "Hosting: Websites"
             ]
         },
         {
