@@ -1,5 +1,6 @@
 # Hostinger API
 ### Tue Oct 21 2025
+- added `GET` `/api/v2/direct/verifications/active`
 - added `GET` `/api/hosting/v1/datacenters`
 - added `POST` `/api/hosting/v1/domains/free-subdomains`
 - added `POST` `/api/hosting/v1/domains/verify-ownership`
