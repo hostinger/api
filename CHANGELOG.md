@@ -1,4 +1,11 @@
 # Hostinger API
+### Tue Oct 21 2025
+- added `GET` `/api/hosting/v1/datacenters`
+- added `POST` `/api/hosting/v1/domains/free-subdomains`
+- added `POST` `/api/hosting/v1/domains/verify-ownership`
+- added `GET` `/api/hosting/v1/orders`
+- added `GET` `/api/hosting/v1/websites`
+- added `POST` `/api/hosting/v1/websites`
 ### Thu Sep 25 2025
 - added `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}/auto-renewal/disable`
 - added `PATCH` `/api/billing/v1/subscriptions/{subscriptionId}/auto-renewal/enable`
