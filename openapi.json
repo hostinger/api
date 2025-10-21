@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.3.0",
+        "version": "0.4.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -661,6 +661,47 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/v2/direct/verifications/active": {
+            "get": {
+                "tags": [
+                    "Domain Access Verifier: Verifications"
+                ],
+                "summary": "Get domain verifications",
+                "description": "Retrieve a list of pending and completed domain verifications.",
+                "operationId": "v2_getDomainVerificationsDIRECT",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DomainAccessVerifier.V2.Verifications.ListRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DomainAccessVerifier.V2.Verifications.ActiveVerificationsCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -4267,6 +4308,22 @@
                 },
                 "type": "object"
             },
+            "DomainAccessVerifier.V2.Verifications.ListRequest": {
+                "required": [
+                    "domains"
+                ],
+                "properties": {
+                    "domains": {
+                        "description": "The list of domains for which to get verification details for.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "example.com"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Availability.AvailabilityRequest": {
                 "required": [
                     "domain",
@@ -5405,6 +5462,117 @@
                     }
                 },
                 "type": "object"
+            },
+            "DomainAccessVerifier.V2.Verifications.ActiveVerificationsCollection": {
+                "description": "Returns active verifications (PENDING and VERIFIED) grouped by status and domain. Includes last and next verification attempt dates and expiration for PENDING verifications.",
+                "properties": {
+                    "data": {
+                        "description": "List of active verifications by status. If no verifications are found, this will return an empty array.",
+                        "properties": {
+                            "PENDING": {
+                                "description": "Pending verifications grouped by domain. Keys are domain names (e.g., \"pixel.tld\"). This property will not be returned if no pending verifications are found.",
+                                "properties": {
+                                    "DOMAIN.TLD": {
+                                        "description": "Domain name (example). Contains verification types as properties.",
+                                        "properties": {
+                                            "VERIFICATION_TYPE": {
+                                                "description": "Verification type (\"NAMESERVERS\" or \"TXT\"). Only verification types that exist for this domain will be present.",
+                                                "properties": {
+                                                    "records": {
+                                                        "description": "Verification records",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "last_verification_attempt": {
+                                                        "description": "Datetime when last verification attempt occurred",
+                                                        "type": "string",
+                                                        "example": "2025-08-05 13:15:00"
+                                                    },
+                                                    "next_verification_attempt": {
+                                                        "description": "Datetime when next verification attempt will occur",
+                                                        "type": "string",
+                                                        "example": "2025-08-05 14:30:00"
+                                                    },
+                                                    "verification_expiration": {
+                                                        "description": "Datetime when verification expires",
+                                                        "type": "string",
+                                                        "example": "2025-08-12 13:15:00"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "VERIFIED": {
+                                "description": "Verified verifications grouped by domain. Keys are domain names (e.g., \"byte.tld\"). This property will not be returned if no verified verifications are found.",
+                                "properties": {
+                                    "DOMAIN.TLD": {
+                                        "description": "Domain name (example). Contains verification types as properties.",
+                                        "properties": {
+                                            "VERIFICATION_TYPE": {
+                                                "description": "Verification type (e.g., \"NAMESERVERS\", \"TXT\"). Only verification types that exist for this domain will be present.",
+                                                "properties": {
+                                                    "records": {
+                                                        "description": "Verification records",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "data": {
+                        "PENDING": {
+                            "pixel.tld": {
+                                "NAMESERVERS": {
+                                    "records": [
+                                        "ns1.nameserver.com",
+                                        "ns2.nameserver.com"
+                                    ],
+                                    "last_verification_attempt": "2025-08-05 13:15:00",
+                                    "next_verification_attempt": "2025-08-05 14:30:00",
+                                    "verification_expiration": "2025-08-12 13:15:00"
+                                },
+                                "TXT": {
+                                    "records": [
+                                        "txt-verification-hash"
+                                    ],
+                                    "last_verification_attempt": "2025-08-05 14:45:00",
+                                    "next_verification_attempt": "2025-08-05 15:00:00",
+                                    "verification_expiration": "2025-08-12 14:45:00"
+                                }
+                            }
+                        },
+                        "VERIFIED": {
+                            "byte.tld": {
+                                "TXT": {
+                                    "records": [
+                                        "other-txt-verification-hash"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "Domains.V1.Availability.AvailabilityCollection": {
                 "description": "Array of [`Domains.V1.Availability.AvailabilityResource`](#model/domainsv1availabilityavailabilityresource)",
@@ -7475,8 +7643,13 @@
         },
         {
             "name": "DNS: Zone",
-            "description": "Manage DNS zones and records for your domains. This category includes endpoints for retrieving, updating, deleting DNS zone and it's associated records.\nThe DNS zone will be created once you purchase new domain at Hostinger. ",
+            "description": "Manage DNS zones and records for your domains. This category includes endpoints for retrieving, updating, deleting DNS zone and it's associated records.\nThe DNS zone will be created once you purchase new domain at Hostinger.",
             "x-displayName": "Zone"
+        },
+        {
+            "name": "Domain Access Verifier: Verifications",
+            "description": "Manage domain verifications.\nThis category includes endpoints for retrieving active domain verifications, including verification status, records, and attempt dates.\nDomain verification allows you to prove ownership of domains through nameserver or TXT record verification methods.",
+            "x-displayName": "Verifications"
         },
         {
             "name": "Domains: Availability",
@@ -7535,7 +7708,7 @@
         },
         {
             "name": "VPS: Docker Manager",
-            "description": "Manage Docker Compose projects directly on your VPS instances. This feature is only available for VPS instances using Docker OS templates and is currently experimental - breaking changes may occur in future updates. \nIt enables you to programmatically deploy projects from docker-compose.yml files by providing either a URL (including GitHub repositories) or the compose file contents directly. \nControl project lifecycle (start/stop/restart/update/delete) and retrieve runtime information including container lists, project details, and aggregated logs.\nAll operations are scoped to a specific virtual machine for multi-tenant management.",
+            "description": "Manage Docker Compose projects directly on your VPS instances. This feature is only available for VPS instances using Docker OS templates and is currently experimental - breaking changes may occur in future updates.\nIt enables you to programmatically deploy projects from docker-compose.yml files by providing either a URL (including GitHub repositories) or the compose file contents directly.\nControl project lifecycle (start/stop/restart/update/delete) and retrieve runtime information including container lists, project details, and aggregated logs.\nAll operations are scoped to a specific virtual machine for multi-tenant management.",
             "x-displayName": "Docker Manager"
         },
         {
@@ -7618,6 +7791,12 @@
             "tags": [
                 "DNS: Snapshot",
                 "DNS: Zone"
+            ]
+        },
+        {
+            "name": "Domain Access Verifier",
+            "tags": [
+                "Domain Access Verifier: Verifications"
             ]
         },
         {
