@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.4.0",
+        "version": "0.5.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6088,6 +6088,17 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-01-15T10:30:00+00:00"
+                    },
+                    "root_directory": {
+                        "description": "Root directory path",
+                        "type": "string",
+                        "example": "/home/u123456798/domains/example.com/public_html"
+                    },
+                    "parent_domain": {
+                        "description": "Parent domain",
+                        "type": "string",
+                        "example": "parent.com",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -7697,6 +7708,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Hosting: Wordpress",
+            "description": "Hosting: Wordpress",
+            "x-displayName": "Wordpress"
+        },
+        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category includes endpoints for creating, deleting, and listing contacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -7806,7 +7822,8 @@
                 "Hosting: Domains",
                 "Hosting: Files",
                 "Hosting: Orders",
-                "Hosting: Websites"
+                "Hosting: Websites",
+                "Hosting: Wordpress"
             ]
         },
         {
