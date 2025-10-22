@@ -1,4 +1,8 @@
 # Hostinger API
+### Wed Oct 22 2025
+- `GET` `/api/hosting/v1/websites`:
+  - `200` response: added support for `data`.`items`.`root_directory` property
+  - `200` response: added support for `data`.`items`.`parent_domain` property
 ### Tue Oct 21 2025
 - added `GET` `/api/v2/direct/verifications/active`
 - added `GET` `/api/hosting/v1/datacenters`
