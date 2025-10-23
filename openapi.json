@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.5.0",
+        "version": "0.6.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1456,7 +1456,7 @@
                     "Hosting: Websites"
                 ],
                 "summary": "List websites",
-                "description": "Retrieve a paginated list of websites (main and addon types) accessible to the authenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as websites from other client hosting accounts that have shared access with you.\n\nUse the available query parameters to filter results by username, order ID, or enabled status for more targeted results.",
+                "description": "Retrieve a paginated list of websites (main and addon types) accessible to the authenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as websites from other client hosting accounts that have shared access with you.\n\nUse the available query parameters to filter results by username, order ID, enabled status, or domain name for more targeted results.",
                 "operationId": "hosting_listWebsitesV1",
                 "parameters": [
                     {
@@ -1473,6 +1473,9 @@
                     },
                     {
                         "$ref": "#/components/parameters/is_enabled"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain_filter"
                     }
                 ],
                 "responses": {
@@ -7371,6 +7374,17 @@
                     "type": "string",
                     "default": "",
                     "example": "blog"
+                }
+            },
+            "domain_filter": {
+                "name": "domain",
+                "in": "query",
+                "description": "Filter by domain name (exact match)",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "example.com",
+                    "nullable": true
                 }
             },
             "is_enabled": {
