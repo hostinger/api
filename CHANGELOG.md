@@ -1,4 +1,6 @@
 # Hostinger API
+### Thu Oct 23 2025
+- `GET` `/api/hosting/v1/websites`: added `domain` query parameter
 ### Wed Oct 22 2025
 - `GET` `/api/hosting/v1/websites`:
   - `200` response: added support for `data`.`items`.`root_directory` property
