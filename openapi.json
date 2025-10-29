@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.6.0",
+        "version": "0.7.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5989,6 +5989,84 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.BuildOptionsResource": {
+                "required": [
+                    "node_version",
+                    "app_type",
+                    "root_directory",
+                    "output_directory",
+                    "build_script",
+                    "source_type",
+                    "source_options"
+                ],
+                "properties": {
+                    "node_version": {
+                        "description": "Node.js version",
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "app_type": {
+                        "description": "Node.js application type",
+                        "type": "string",
+                        "enum": [
+                            "create-react-app",
+                            "vite",
+                            "angular",
+                            "react",
+                            "vue",
+                            "parcel"
+                        ],
+                        "example": "vite",
+                        "nullable": true
+                    },
+                    "root_directory": {
+                        "description": "Application root directory",
+                        "type": "string",
+                        "example": "src",
+                        "nullable": true
+                    },
+                    "output_directory": {
+                        "description": "Build output directory",
+                        "type": "string",
+                        "example": "dist"
+                    },
+                    "build_script": {
+                        "description": "The npm script to run to build the application",
+                        "type": "string",
+                        "example": "build"
+                    },
+                    "source_type": {
+                        "description": "Source type for the build",
+                        "type": "string",
+                        "enum": [
+                            "archive"
+                        ],
+                        "example": "archive",
+                        "nullable": true
+                    },
+                    "source_options": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.SourceOptionsResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Source options, varies based on sourceType"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.SourceOptionsResource": {
+                "properties": {
+                    "archive_path": {
+                        "description": "Present if sourceType is \"archive\"",
+                        "type": "string",
+                        "example": "archive.zip",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Orders.OrderCollection": {
                 "description": "Array of [`Hosting.V1.Orders.OrderResource`](#model/hostingv1ordersorderresource)",
                 "type": "array",
@@ -7712,6 +7790,11 @@
             "x-displayName": "Files"
         },
         {
+            "name": "Hosting: NodeJS",
+            "description": "Hosting: NodeJS",
+            "x-displayName": "NodeJS"
+        },
+        {
             "name": "Hosting: Orders",
             "description": "Manage hosting service orders and subscriptions. This category provides access to order information, status tracking, and order management capabilities for hosting services.",
             "x-displayName": "Orders"
@@ -7835,6 +7918,7 @@
                 "Hosting: Datacenters",
                 "Hosting: Domains",
                 "Hosting: Files",
+                "Hosting: NodeJS",
                 "Hosting: Orders",
                 "Hosting: Websites",
                 "Hosting: Wordpress"
