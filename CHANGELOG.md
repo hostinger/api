@@ -1,4 +1,16 @@
 # Hostinger API
+### Thu Dec 04 2025
+- `POST` `/api/reach/v1/contacts`:
+  - `200` response: added `surname`.`nullable`
+  - `200` response: added `name`.`nullable`
+  - `requestBody`: removed support for `group_uuids` property
+- `GET` `/api/reach/v1/contacts`:
+  - `200` response: added `data`.`items`.`surname`.`nullable`
+  - `200` response: added `data`.`items`.`name`.`nullable`
+- added `GET` `/api/reach/v1/segmentation/segments`
+- added `POST` `/api/reach/v1/segmentation/segments`
+- added `GET` `/api/reach/v1/segmentation/segments/{segmentUuid}/contacts`
+- added `GET` `/api/reach/v1/segmentation/segments/{segmentUuid}`
 ### Thu Oct 23 2025
 - `GET` `/api/hosting/v1/websites`: added `domain` query parameter
 ### Wed Oct 22 2025
