@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.9.0",
+        "version": "0.10.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1603,7 +1603,9 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
             }
         },
         "/api/reach/v1/contacts": {
@@ -1682,6 +1684,153 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/segmentation/segments": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "List segments",
+                "description": "Get a list of all contact segments.\n\nThis endpoint returns a list of contact segments that can be used to organize contacts.",
+                "operationId": "reach_listSegmentsV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.ContactSegmentCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Create a new contact segment",
+                "description": "Create a new contact segment.\n\nThis endpoint allows creating a new contact segment that can be used to organize contacts.\nThe segment can be configured with specific criteria like email, name, subscription status, etc.",
+                "operationId": "reach_createANewContactSegmentV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/segmentation/segments/{segmentUuid}/contacts": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "List segment contacts",
+                "description": "Retrieve contacts associated with a specific segment.\n\nThis endpoint allows you to fetch and filter contacts that belong to a particular segment,\nidentified by its UUID.",
+                "operationId": "reach_listSegmentContactsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/segmentUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentationContactCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/segmentation/segments/{segmentUuid}": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Get segment details",
+                "description": "Get details of a specific segment.\n\nThis endpoint retrieves information about a single segment identified by UUID.\nSegments are used to organize and group contacts based on specific criteria.",
+                "operationId": "reach_getSegmentDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/segmentUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -3722,7 +3871,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Recreate virtual machine",
-                "description": "Recreate a virtual machine from scratch.\n\nThe recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state.\nSnapshots, if there are any, will be deleted.\n\n## Password Requirements\nPassword will be checked against leaked password databases. \nRequirements for the password are:\n- At least 8 characters long\n- At least one uppercase letter\n- At least one lowercase letter\n- At least one number\n- Is not leaked publicly\n\n**This operation is irreversible and will result in the loss of all data stored on the virtual machine!**\n\nUse this endpoint to completely rebuild VPS instances with fresh OS installation.",
+                "description": "Recreate a virtual machine from scratch.\n\nThe recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state.\nSnapshots, if there are any, will be deleted.\n\n## Password Requirements\nPassword will be checked against leaked password databases. \nRequirements for the password are:\n- At least 12 characters long\n- At least one uppercase letter\n- At least one lowercase letter\n- At least one number\n- Is not leaked publicly\n\n**This operation is irreversible and will result in the loss of all data stored on the virtual machine!**\n\nUse this endpoint to completely rebuild VPS instances with fresh OS installation.",
                 "operationId": "VPS_recreateVirtualMachineV1",
                 "parameters": [
                     {
@@ -4573,6 +4722,106 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.Segments.StoreRequest": {
+                "required": [
+                    "name",
+                    "conditions",
+                    "logic"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "New segment name"
+                    },
+                    "conditions": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "operator": {
+                                    "type": "string",
+                                    "enum": [
+                                        "equals",
+                                        "not_equals",
+                                        "contains",
+                                        "not_contains",
+                                        "gte",
+                                        "lte",
+                                        "exists",
+                                        "within_last_days",
+                                        "not_within_last_days",
+                                        "older_than_days",
+                                        "processed",
+                                        "not_processed",
+                                        "delivered",
+                                        "not_delivered",
+                                        "dropped",
+                                        "not_dropped",
+                                        "bounced",
+                                        "not_bounced",
+                                        "opened",
+                                        "not_opened",
+                                        "clicked",
+                                        "not_clicked",
+                                        "unsubscribed",
+                                        "not_unsubscribed"
+                                    ],
+                                    "example": "equals"
+                                },
+                                "value": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string",
+                                            "example": "example@example.com"
+                                        },
+                                        {
+                                            "type": "integer",
+                                            "example": 10
+                                        }
+                                    ]
+                                },
+                                "attribute": {
+                                    "type": "string",
+                                    "enum": [
+                                        "note",
+                                        "comment",
+                                        "domain",
+                                        "integration",
+                                        "source",
+                                        "name",
+                                        "surname",
+                                        "email",
+                                        "subscribed_at",
+                                        "unsubscribed_at",
+                                        "subscription_status",
+                                        "processed",
+                                        "opened",
+                                        "clicked",
+                                        "delivered",
+                                        "bounced",
+                                        "unsubscribed",
+                                        "dropped",
+                                        "tag",
+                                        "campaigns"
+                                    ],
+                                    "example": "note"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 5,
+                        "minItems": 1
+                    },
+                    "logic": {
+                        "type": "string",
+                        "enum": [
+                            "AND",
+                            "OR"
+                        ],
+                        "example": "AND"
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.StoreRequest": {
                 "required": [
                     "email"
@@ -4590,15 +4839,6 @@
                     "surname": {
                         "type": "string",
                         "example": "Doe",
-                        "nullable": true
-                    },
-                    "group_uuids": {
-                        "type": "array",
-                        "items": {
-                            "description": "Group UUID",
-                            "type": "string",
-                            "format": "uuid"
-                        },
                         "nullable": true
                     },
                     "note": {
@@ -5996,6 +6236,7 @@
                     "root_directory",
                     "output_directory",
                     "build_script",
+                    "entry_file",
                     "source_type",
                     "source_options"
                 ],
@@ -6028,12 +6269,20 @@
                     "output_directory": {
                         "description": "Build output directory",
                         "type": "string",
-                        "example": "dist"
+                        "example": "dist",
+                        "nullable": true
                     },
                     "build_script": {
                         "description": "The npm script to run to build the application",
                         "type": "string",
-                        "example": "build"
+                        "example": "build",
+                        "nullable": true
+                    },
+                    "entry_file": {
+                        "description": "The main entry point file for the application",
+                        "type": "string",
+                        "example": "server.js",
+                        "nullable": true
                     },
                     "source_type": {
                         "description": "Source type for the build",
@@ -6199,11 +6448,13 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "John"
+                        "example": "John",
+                        "nullable": true
                     },
                     "surname": {
                         "type": "string",
-                        "example": "Doe"
+                        "example": "Doe",
+                        "nullable": true
                     },
                     "email": {
                         "type": "string",
@@ -6257,6 +6508,132 @@
                     "title": {
                         "type": "string",
                         "example": "Newsletter Subscribers"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.ContactSegmentCollection": {
+                "description": "Array of [`Reach.V1.Contacts.Segments.ContactSegmentResource`](#model/reachv1contactssegmentscontactsegmentresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.ContactSegmentResource"
+                }
+            },
+            "Reach.V1.Contacts.Segments.ContactSegmentResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Newsletter Subscribers"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.SegmentResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Segment name"
+                    },
+                    "query": {
+                        "type": "array",
+                        "items": {},
+                        "example": {
+                            "conditions": [
+                                {
+                                    "attribute": "email",
+                                    "operator": "contains",
+                                    "value": "example.com"
+                                }
+                            ],
+                            "logic": "and"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.SegmentationContactCollection": {
+                "description": "Array of [`Reach.V1.Contacts.Segments.SegmentationContactResource`](#model/reachv1contactssegmentssegmentationcontactresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentationContactResource"
+                }
+            },
+            "Reach.V1.Contacts.Segments.SegmentationContactResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John",
+                        "nullable": true
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "subscription_status": {
+                        "type": "string",
+                        "enum": [
+                            "subscribed",
+                            "unsubscribed"
+                        ],
+                        "example": "subscribed"
+                    },
+                    "subscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "source": {
+                        "type": "string",
+                        "enum": [
+                            "sync",
+                            "import",
+                            "manual"
+                        ],
+                        "example": "sync",
+                        "nullable": true
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "VIP customer",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -7589,6 +7966,16 @@
                     "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
             },
+            "segmentUuid": {
+                "name": "segmentUuid",
+                "in": "path",
+                "description": "Segment uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "550e8400-e09b-41d4-a716-400055000000"
+                }
+            },
             "subscription_status": {
                 "name": "subscription_status",
                 "in": "query",
@@ -7826,6 +8213,11 @@
             "x-displayName": "Contacts"
         },
         {
+            "name": "Reach: Segments",
+            "description": "Filter and segment your email contacts using various criteria. This category includes endpoints for filtering contacts by attributes, tags, and email addresses, as well as listing all available segments and retrieving contacts that match specific attribute conditions.",
+            "x-displayName": "Segments"
+        },
+        {
             "name": "VPS: Data centers",
             "description": "Access information on available data centers, including location details, so you can choose the optimal region for deploying your virtual machines.",
             "x-displayName": "Data centers"
@@ -7938,7 +8330,8 @@
         {
             "name": "Reach",
             "tags": [
-                "Reach: Contacts"
+                "Reach: Contacts",
+                "Reach: Segments"
             ]
         },
         {
