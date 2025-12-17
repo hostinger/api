@@ -210,52 +210,6 @@
                 }
             }
         },
-        "/api/billing/v1/subscriptions/{subscriptionId}": {
-            "delete": {
-                "tags": [
-                    "Billing: Subscriptions"
-                ],
-                "summary": "Cancel subscription",
-                "description": "Cancel a subscription and stop any further billing.\n\nUse this endpoint when users want to terminate active services.",
-                "operationId": "billing_cancelSubscriptionV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/subscriptionId"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Billing.V1.Subscription.CancelRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success empty response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
         "/api/billing/v1/subscriptions": {
             "get": {
                 "tags": [
