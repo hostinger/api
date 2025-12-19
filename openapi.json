@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.10.1",
+        "version": "0.10.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -200,6 +200,52 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/subscriptions/{subscriptionId}": {
+            "delete": {
+                "tags": [
+                    "Billing: Subscriptions"
+                ],
+                "summary": "Cancel subscription",
+                "description": "Cancel a subscription and stop any further billing.\n\nUse this endpoint when users want to terminate active services.",
+                "operationId": "billing_cancelSubscriptionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/subscriptionId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Billing.V1.Subscription.CancelRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -6191,6 +6237,7 @@
                     "output_directory",
                     "build_script",
                     "entry_file",
+                    "package_manager",
                     "source_type",
                     "source_options"
                 ],
@@ -6236,6 +6283,17 @@
                         "description": "The main entry point file for the application",
                         "type": "string",
                         "example": "server.js",
+                        "nullable": true
+                    },
+                    "package_manager": {
+                        "description": "Package manager",
+                        "type": "string",
+                        "enum": [
+                            "npm",
+                            "yarn",
+                            "pnpm"
+                        ],
+                        "example": "npm",
                         "nullable": true
                     },
                     "source_type": {
