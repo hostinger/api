@@ -1,4 +1,8 @@
 # Hostinger API
+### Fri Dec 19 2025
+- added `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
+### Thu Dec 18 2025
+- removed `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
 ### Thu Dec 04 2025
 - `POST` `/api/reach/v1/contacts`:
   - `200` response: added `surname`.`nullable`
