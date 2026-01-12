@@ -1,4 +1,6 @@
 # Hostinger API
+### Mon Jan 12 2026
+- removed `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
 ### Fri Dec 19 2025
 - added `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
 ### Thu Dec 18 2025
