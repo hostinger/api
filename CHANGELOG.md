@@ -1,4 +1,6 @@
 # Hostinger API
+### Thu Feb 05 2026
+- added `GET` `/api/reach/v1/profiles`
 ### Mon Jan 12 2026
 - removed `DELETE` `/api/billing/v1/subscriptions/{subscriptionId}`
 ### Fri Dec 19 2025
