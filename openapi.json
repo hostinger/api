@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.11.1",
+        "version": "0.11.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1782,6 +1782,34 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "List Profiles",
+                "description": "This endpoint returns all profiles available to the client, including their basic information.",
+                "operationId": "reach_listProfilesV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.ProfileCollection"
                                 }
                             }
                         }
@@ -6604,6 +6632,82 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Profiles.ProfileCollection": {
+                "description": "Array of [`Reach.V1.Profiles.ProfileResource`](#model/reachv1profilesprofileresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Profiles.ProfileResource"
+                }
+            },
+            "Reach.V1.Profiles.ProfileResource": {
+                "properties": {
+                    "limits": {
+                        "properties": {
+                            "ai_messages_limit": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "subscribers_limit": {
+                                "type": "integer",
+                                "example": 500
+                            },
+                            "emails_monthly_limit": {
+                                "type": "integer",
+                                "example": 3500
+                            },
+                            "ai_messages_additional": {
+                                "type": "integer",
+                                "example": 1096
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "is_trial": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-10-21T05:38:23.000000Z"
+                    },
+                    "resource_id": {
+                        "type": "integer",
+                        "example": 44340307
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "profiles": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "uuid": {
+                                    "type": "string",
+                                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                                },
+                                "domain": {
+                                    "type": "string",
+                                    "example": "example.com"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2026-01-21T07:35:04.000000Z"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2026-01-21T07:35:04.000000Z"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.Action.ActionCollection": {
                 "description": "Array of [`VPS.V1.Action.ActionResource`](#model/vpsv1actionactionresource)",
                 "type": "array",
@@ -8184,6 +8288,11 @@
             "x-displayName": "Segments"
         },
         {
+            "name": "Reach: Profiles",
+            "description": "Reach: Profiles",
+            "x-displayName": "Profiles"
+        },
+        {
             "name": "VPS: Data centers",
             "description": "Access information on available data centers, including location details, so you can choose the optimal region for deploying your virtual machines.",
             "x-displayName": "Data centers"
@@ -8297,7 +8406,8 @@
             "name": "Reach",
             "tags": [
                 "Reach: Contacts",
-                "Reach: Segments"
+                "Reach: Segments",
+                "Reach: Profiles"
             ]
         },
         {
