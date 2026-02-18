@@ -1,4 +1,18 @@
 # Hostinger API
+### Wed Feb 18 2026
+- `POST` `/api/reach/v1/contacts`:
+  - `200` response: changed `description`
+  - `200` response: added `x-scalar-ignore`
+  - `200` response: removed support for `uuid` property
+  - `200` response: removed support for `name` property
+  - `200` response: removed support for `surname` property
+  - `200` response: removed support for `email` property
+  - `200` response: removed support for `subscription_status` property
+  - `200` response: removed support for `subscribed_at` property
+  - `200` response: removed support for `source` property
+  - `200` response: removed support for `note` property
+  - `200` response: added support for `message` property
+- added `POST` `/api/reach/v1/profiles/{profileUuid}/contacts`
 ### Thu Feb 05 2026
 - added `GET` `/api/reach/v1/profiles`
 ### Mon Jan 12 2026
