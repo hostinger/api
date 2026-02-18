@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.11.3",
+        "version": "0.11.4",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1627,11 +1627,11 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Success response",
+                        "description": "Success empty response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Reach.V1.Contacts.ContactResource"
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -1645,7 +1645,9 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
             }
         },
         "/api/reach/v1/segmentation/segments": {
@@ -1785,6 +1787,52 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/contacts": {
+            "post": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Create a new profile contact",
+                "description": "Create a new contact in the email marketing system.\n\nThis endpoint allows you to create a new contact with basic information like name, email, and surname.\n\nIf double opt-in is enabled, the contact will be created with a pending status and a confirmation email will be sent.",
+                "operationId": "reach_createANewProfileContactV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -8034,6 +8082,16 @@
                 "schema": {
                     "type": "string",
                     "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+            },
+            "profileUuid": {
+                "name": "profileUuid",
+                "in": "path",
+                "description": "Profile uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "550e8400-e09b-41d4-a716-400055000000"
                 }
             },
             "segmentUuid": {
