@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.11.4",
+        "version": "0.11.5",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -73,49 +73,6 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
-            }
-        },
-        "/api/billing/v1/orders": {
-            "post": {
-                "tags": [
-                    "Billing: Orders"
-                ],
-                "summary": "Create service order",
-                "description": "Create a new service order. \n\n**DEPRECATED**\n\nTo purchase a domain, use [`POST /api/domains/v1/portfolio`](/#tag/domains-portfolio/POST/api/domains/v1/portfolio) instead.\n\nTo purchase a VPS, use [`POST /api/vps/v1/virtual-machines`](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines) instead.\n\n\nTo place order, you need to provide payment method ID and list of price items from the catalog endpoint together with quantity.\nCoupons also can be provided during order creation.\n\nOrders created using this endpoint will be set for automatic renewal.\n\nSome `credit_card` payments might need additional verification, rendering purchase unprocessed.\nWe recommend use other payment methods than `credit_card` if you encounter this issue.",
-                "operationId": "billing_createServiceOrderV1",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Billing.V1.Order.StoreRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                },
-                "deprecated": true,
-                "x-scalar-ignore": true
             }
         },
         "/api/billing/v1/payment-methods/{paymentMethodId}": {
@@ -1802,9 +1759,9 @@
                 "tags": [
                     "Reach: Contacts"
                 ],
-                "summary": "Create a new profile contact",
+                "summary": "Create new contacts",
                 "description": "Create a new contact in the email marketing system.\n\nThis endpoint allows you to create a new contact with basic information like name, email, and surname.\n\nIf double opt-in is enabled, the contact will be created with a pending status and a confirmation email will be sent.",
-                "operationId": "reach_createANewProfileContactV1",
+                "operationId": "reach_createNewContactsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/profileUuid"
@@ -4280,50 +4237,6 @@
                 },
                 "type": "object",
                 "x-scalar-ignore": true
-            },
-            "Billing.V1.Order.StoreRequest": {
-                "required": [
-                    "payment_method_id",
-                    "items"
-                ],
-                "properties": {
-                    "payment_method_id": {
-                        "description": "Payment method ID",
-                        "type": "integer",
-                        "example": 517244
-                    },
-                    "items": {
-                        "type": "array",
-                        "items": {
-                            "required": [
-                                "item_id",
-                                "quantity"
-                            ],
-                            "properties": {
-                                "item_id": {
-                                    "description": "Price Item ID",
-                                    "type": "string",
-                                    "example": "hostingercom-vps-kvm2-usd-1m"
-                                },
-                                "quantity": {
-                                    "type": "integer",
-                                    "example": 1
-                                }
-                            },
-                            "type": "object"
-                        }
-                    },
-                    "coupons": {
-                        "description": "Discount coupon codes",
-                        "type": "array",
-                        "items": {
-                            "example": [
-                                "Coupon 3"
-                            ]
-                        }
-                    }
-                },
-                "type": "object"
             },
             "Billing.V1.Subscription.CancelRequest": {
                 "properties": {
@@ -8251,11 +8164,6 @@
             "x-displayName": "Catalog"
         },
         {
-            "name": "Billing: Orders",
-            "description": "Initiate and track new service orders seamlessly. This category streamlines the process of purchasing Hostinger services, enabling efficient management of order details.",
-            "x-displayName": "Orders"
-        },
-        {
             "name": "Billing: Payment methods",
             "description": "Review and manage the payment methods linked to your Hostinger account. Enjoy a secure and convenient overview for handling billing and transactions.",
             "x-displayName": "Payment methods"
@@ -8421,7 +8329,6 @@
             "name": "Billing",
             "tags": [
                 "Billing: Catalog",
-                "Billing: Orders",
                 "Billing: Payment methods",
                 "Billing: Subscriptions"
             ]
