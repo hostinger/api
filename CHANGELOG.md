@@ -1,4 +1,6 @@
 # Hostinger API
+### Fri Mar 20 2026
+- removed `POST` `/api/billing/v1/orders`
 ### Wed Feb 18 2026
 - `POST` `/api/reach/v1/contacts`:
   - `200` response: changed `description`
