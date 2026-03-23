@@ -1,4 +1,35 @@
 # Hostinger API
+### Mon Mar 23 2026
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/setup`: `requestBody`: changed `password`.`description`
+- `POST` `/api/vps/v1/virtual-machines/{virtualMachineId}/recreate`:
+  - `requestBody`: changed `panel_password`.`description`
+  - `requestBody`: changed `password`.`description`
+- `POST` `/api/vps/v1/virtual-machines`: `requestBody`: changed `setup`.`password`.`description`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker`:
+  - `200` response: changed `items`.`containers`.`items`.`ports`.`items`.`type`.`x-enum-descriptions`.`published`
+  - `200` response: changed `items`.`containers`.`items`.`ports`.`items`.`type`.`x-enum-descriptions`.`published_range`
+  - `200` response: changed `items`.`containers`.`items`.`ports`.`items`.`type`.`x-enum-descriptions`.`exposed`
+  - `200` response: changed `items`.`containers`.`items`.`ports`.`items`.`type`.`x-enum-descriptions`.`exposed_range`
+  - `200` response: changed `items`.`containers`.`items`.`health`.`x-enum-descriptions`.``
+  - `200` response: changed `items`.`containers`.`items`.`health`.`x-enum-descriptions`.`healthy`
+  - `200` response: changed `items`.`containers`.`items`.`health`.`x-enum-descriptions`.`unhealthy`
+  - `200` response: changed `items`.`containers`.`items`.`health`.`x-enum-descriptions`.`starting`
+  - `200` response: changed `items`.`containers`.`items`.`state`.`x-enum-descriptions`.`paused`
+  - `200` response: changed `items`.`containers`.`items`.`state`.`x-enum-descriptions`.`dead`
+- `GET` `/api/vps/v1/virtual-machines/{virtualMachineId}/docker/{projectName}/containers`:
+  - `200` response: changed `items`.`ports`.`items`.`type`.`x-enum-descriptions`.`published`
+  - `200` response: changed `items`.`ports`.`items`.`type`.`x-enum-descriptions`.`published_range`
+  - `200` response: changed `items`.`ports`.`items`.`type`.`x-enum-descriptions`.`exposed`
+  - `200` response: changed `items`.`ports`.`items`.`type`.`x-enum-descriptions`.`exposed_range`
+  - `200` response: changed `items`.`health`.`x-enum-descriptions`.``
+  - `200` response: changed `items`.`health`.`x-enum-descriptions`.`healthy`
+  - `200` response: changed `items`.`health`.`x-enum-descriptions`.`unhealthy`
+  - `200` response: changed `items`.`health`.`x-enum-descriptions`.`starting`
+  - `200` response: changed `items`.`state`.`x-enum-descriptions`.`paused`
+  - `200` response: changed `items`.`state`.`x-enum-descriptions`.`dead`
+- `POST` `/api/dns/v1/zones/{domain}/validate`: `requestBody`: changed `overwrite`.`description`
+- `PUT` `/api/dns/v1/zones/{domain}`: `requestBody`: changed `overwrite`.`description`
+- `GET` `/api/billing/v1/catalog`: `200` response: changed `items`.`metadata`.`description`
 ### Fri Mar 20 2026
 - removed `POST` `/api/billing/v1/orders`
 ### Wed Feb 18 2026
