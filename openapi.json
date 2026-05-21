@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.11.6",
+        "version": "0.12.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4782,6 +4782,13 @@
                     "surname": {
                         "type": "string",
                         "example": "Doe",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "description": "Phone number in E.164 format (leading \"+\" then 7-15 digits)",
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "+14155552671",
                         "nullable": true
                     },
                     "note": {
