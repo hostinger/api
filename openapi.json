@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.13.0",
+        "version": "0.14.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1257,6 +1257,128 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Hosting.V1.Domains.FreeSubdomainResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/subdomains": {
+            "get": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "List website subdomains",
+                "description": "Retrieve all subdomains created under the selected website.\n\nUse this endpoint to inspect subdomain configuration for a specific website,\nincluding the parent domain and root directory assigned to each subdomain.",
+                "operationId": "hosting_listWebsiteSubdomainsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Domains.SubdomainCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "Create website subdomain",
+                "description": "Create a new subdomain for the selected website.\n\nProvide a subdomain prefix and, optionally, a custom directory or the\nwebsite public directory to use as the subdomain root.",
+                "operationId": "hosting_createWebsiteSubdomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Domains.CreateSubdomainRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/subdomains/{subdomain}": {
+            "delete": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "Delete website subdomain",
+                "description": "Delete an existing subdomain from the selected website.\n\nUse this endpoint to remove subdomains that are no longer needed.",
+                "operationId": "hosting_deleteWebsiteSubdomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/subdomain_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -4627,6 +4749,30 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Domains.CreateSubdomainRequest": {
+                "required": [
+                    "subdomain"
+                ],
+                "properties": {
+                    "subdomain": {
+                        "description": "Subdomain prefix to create under the selected website",
+                        "type": "string",
+                        "example": "blog"
+                    },
+                    "directory": {
+                        "description": "Directory name for the subdomain relative to the website root",
+                        "type": "string",
+                        "example": "blog",
+                        "nullable": true
+                    },
+                    "is_using_public_directory": {
+                        "description": "Use the website public directory as the subdomain root directory",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Domains.VerifyOwnershipRequest": {
                 "required": [
                     "domain"
@@ -6175,6 +6321,43 @@
                         "description": "Generated free subdomain",
                         "type": "string",
                         "example": "palegreen-fox-548498.hostingersite.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Domains.SubdomainCollection": {
+                "description": "Array of [`Hosting.V1.Domains.SubdomainResource`](#model/hostingv1domainssubdomainresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Domains.SubdomainResource"
+                }
+            },
+            "Hosting.V1.Domains.SubdomainResource": {
+                "properties": {
+                    "username": {
+                        "description": "Website username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "domain": {
+                        "description": "Full subdomain",
+                        "type": "string",
+                        "example": "blog.example.com"
+                    },
+                    "parent_domain": {
+                        "description": "Parent website domain",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "root_directory": {
+                        "description": "Subdomain root directory",
+                        "type": "string",
+                        "example": "/home/u123456789/domains/blog.example.com/public_html"
+                    },
+                    "subdomain": {
+                        "description": "Subdomain prefix",
+                        "type": "string",
+                        "example": "blog"
                     }
                 },
                 "type": "object"
@@ -7962,6 +8145,15 @@
                     "type": "integer",
                     "example": 123,
                     "nullable": false
+                }
+            },
+            "subdomain_path": {
+                "name": "subdomain",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "blog"
                 }
             },
             "username": {
