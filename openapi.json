@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.14.0",
+        "version": "0.17.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1209,6 +1209,263 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/databases/{name}/change-password": {
+            "patch": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Change database password",
+                "description": "Changes the password for the specified database user.\n\nThe database name must be the full name returned by the list databases endpoint.\nThe password must also be updated in any website configuration that uses this database.",
+                "operationId": "hosting_changeDatabasePasswordV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_name_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Databases.ChangeDatabasePasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/databases": {
+            "get": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "List account databases",
+                "description": "Returns a paginated list of databases for the specified account.\n\nUse the domain and is_assigned filters to find databases assigned to a specific domain.",
+                "operationId": "hosting_listAccountDatabasesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain_filter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_is_assigned"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_search"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Hosting.V1.Databases.DatabaseCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Create account database",
+                "description": "Creates a database with a database user and password for the specified account.\n\nThe database name and user are automatically prefixed with the account username when needed.",
+                "operationId": "hosting_createAccountDatabaseV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Databases.CreateDatabaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/databases/{name}": {
+            "delete": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Delete account database",
+                "description": "Permanently deletes a database and its remote connections.\n\nThe database name must be the full name returned by the list databases endpoint.",
+                "operationId": "hosting_deleteAccountDatabaseV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_name_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/databases/{name}/repair": {
+            "patch": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Repair database",
+                "description": "Repairs corrupted database tables asynchronously.\n\nUse when database errors, crashes, or corruption are reported.\nThe database name must be the full name returned by the list databases endpoint.",
+                "operationId": "hosting_repairDatabaseV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_name_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/databases/{name}/phpmyadmin-link": {
+            "get": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Get phpMyAdmin link",
+                "description": "Returns a direct sign-on link to phpMyAdmin for the specified database.\n\nUse this when a visual database interface is needed for SQL queries, imports, exports, or table management.\nThe database name must be the full name returned by the list databases endpoint.",
+                "operationId": "hosting_getPhpMyAdminLinkV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_name_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Databases.PhpMyAdminLinkResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/datacenters": {
             "get": {
                 "tags": [
@@ -1257,6 +1514,128 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Hosting.V1.Domains.FreeSubdomainResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/parked-domains": {
+            "get": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "List website parked domains",
+                "description": "Retrieve all parked or alias domains created under the selected website.\n\nUse this endpoint to inspect parked domain configuration for a specific website,\nincluding the parent domain and root directory assigned to each parked domain.",
+                "operationId": "hosting_listWebsiteParkedDomainsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Domains.ParkedDomainCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "Create website parked domain",
+                "description": "Create a parked or alias domain for the selected website.\n\nProvide a domain name or IP address to park on the website so it serves the same content\nas the parent domain.",
+                "operationId": "hosting_createWebsiteParkedDomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Domains.CreateParkedDomainRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/parked-domains/{parkedDomain}": {
+            "delete": {
+                "tags": [
+                    "Hosting: Domains"
+                ],
+                "summary": "Delete website parked domain",
+                "description": "Delete an existing parked or alias domain from the selected website.\n\nUse this endpoint to remove parked domains that are no longer needed.",
+                "operationId": "hosting_deleteWebsiteParkedDomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/parked_domain_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -1568,6 +1947,104 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/installations": {
+            "post": {
+                "tags": [
+                    "Hosting: Wordpress"
+                ],
+                "summary": "Install WordPress",
+                "description": "Install WordPress on an existing website.\n\nThe website must already exist before calling this endpoint. To create a new\nwebsite first, use POST /api/hosting/v1/websites and poll\nGET /api/hosting/v1/websites until it appears.\n\nCall GET /api/hosting/v1/wordpress/installations filtered by username and\ndomain before proceeding to check whether WordPress is already installed on\nthe target domain/path. If WordPress already exists and `overwrite` is false\n(the default), the async job will fail.\n\nThis operation is asynchronous: a successful response only means the install\njob has been queued, not that WordPress is ready. Installation typically\ntakes 1-2 minutes. Poll GET /api/hosting/v1/wordpress/installations filtered\nby username and domain to track progress. When the installation appears in\nthat list, WordPress is ready.",
+                "operationId": "hosting_installWordPressV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Wordpress.InstallWordpressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/wordpress/installations": {
+            "get": {
+                "tags": [
+                    "Hosting: Wordpress"
+                ],
+                "summary": "List WordPress installations",
+                "description": "List WordPress installations accessible to the authenticated client.\n\nUse this endpoint to discover existing WordPress installations and to poll\nfor installation status after calling the install endpoint. When a newly\nrequested installation appears in this list, WordPress is ready. Filter by\nusername and domain to narrow results to a specific website.\n\nEach installation includes a `valid` flag and, when invalid, a\n`validationError` describing why.",
+                "operationId": "hosting_listWordPressInstallationsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain_filter"
+                    },
+                    {
+                        "name": "ownership",
+                        "in": "query",
+                        "description": "Filter by ownership type. Defaults to \"owned\". Use \"all\" to include both owned and managed installations.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "owned",
+                                "managed",
+                                "all"
+                            ],
+                            "example": "owned",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Wordpress.WordpressInstallationCollection"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -4737,6 +5214,52 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Databases.ChangeDatabasePasswordRequest": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "password": {
+                        "description": "New database user password.",
+                        "type": "string",
+                        "format": "password",
+                        "example": "Secu4ePa$$wor!D"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Databases.CreateDatabaseRequest": {
+                "required": [
+                    "name",
+                    "user",
+                    "password",
+                    "website_domain"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Database name. If the account username prefix is omitted, it is added automatically.",
+                        "type": "string",
+                        "example": "u123456789_test_db"
+                    },
+                    "user": {
+                        "description": "Database user. If the account username prefix is omitted, it is added automatically.",
+                        "type": "string",
+                        "example": "u123456789_admin"
+                    },
+                    "password": {
+                        "description": "Database user password.",
+                        "type": "string",
+                        "format": "password",
+                        "example": "Str0ngP@ssword!"
+                    },
+                    "website_domain": {
+                        "description": "Website domain assigned to the database.",
+                        "type": "string",
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Datacenters.ListRequest": {
                 "required": [
                     "order_id"
@@ -4745,6 +5268,19 @@
                     "order_id": {
                         "type": "integer",
                         "example": 12345
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Domains.CreateParkedDomainRequest": {
+                "required": [
+                    "parked_domain"
+                ],
+                "properties": {
+                    "parked_domain": {
+                        "description": "Domain name or IP address to park on the selected website",
+                        "type": "string",
+                        "example": "parked-domain.com"
                     }
                 },
                 "type": "object"
@@ -4806,6 +5342,104 @@
                         "description": "Datacenter code. This parameter is required when creating the first website on a new hosting plan.",
                         "type": "string",
                         "example": "us-east-1",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Wordpress.InstallWordpressRequest": {
+                "required": [
+                    "domain",
+                    "site_title",
+                    "credentials"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain of the existing website where WordPress will be installed",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "site_title": {
+                        "description": "Title of the WordPress site",
+                        "type": "string",
+                        "example": "My site"
+                    },
+                    "language": {
+                        "description": "WordPress locale. Defaults to en_US when omitted.",
+                        "type": "string",
+                        "example": "en_US",
+                        "nullable": true
+                    },
+                    "directory": {
+                        "description": "Relative directory to install WordPress into. Defaults to the website root when omitted.",
+                        "type": "string",
+                        "example": "public_html",
+                        "nullable": true
+                    },
+                    "overwrite": {
+                        "description": "When false (default), does not replace an existing installation. If WordPress is already installed on the domain/path, the async install job fails unless true.",
+                        "type": "boolean",
+                        "example": false,
+                        "nullable": true
+                    },
+                    "auto_updates": {
+                        "description": "WordPress core auto-update policy",
+                        "type": "string",
+                        "enum": [
+                            "all",
+                            "none",
+                            "minor"
+                        ],
+                        "example": "minor",
+                        "nullable": true
+                    },
+                    "version": {
+                        "description": "WordPress core version to install. If omitted, the latest core version compatible with the account vhost PHP version is selected.",
+                        "type": "string",
+                        "example": "6.5.2",
+                        "nullable": true
+                    },
+                    "credentials": {
+                        "description": "WordPress admin credentials",
+                        "required": [
+                            "email",
+                            "login",
+                            "password"
+                        ],
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "example": "owner@example.com"
+                            },
+                            "login": {
+                                "description": "WordPress admin username",
+                                "type": "string",
+                                "example": "admin"
+                            },
+                            "password": {
+                                "type": "string",
+                                "format": "password",
+                                "example": "********"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "database": {
+                        "description": "Optional. If the named database already exists, it will be used for this WordPress install. Otherwise a new database is created with a generated name and random credentials.",
+                        "properties": {
+                            "name": {
+                                "description": "Database name (username prefix added if missing)",
+                                "type": "string",
+                                "example": "mydb"
+                            },
+                            "password": {
+                                "type": "string",
+                                "format": "password",
+                                "example": "********",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object",
                         "nullable": true
                     }
                 },
@@ -6253,6 +6887,78 @@
                     "mydomain2.tld"
                 ]
             },
+            "Hosting.V1.Databases.DatabaseCollection": {
+                "description": "Array of [`Hosting.V1.Databases.DatabaseResource`](#model/hostingv1databasesdatabaseresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Databases.DatabaseResource"
+                }
+            },
+            "Hosting.V1.Databases.DatabaseResource": {
+                "properties": {
+                    "name": {
+                        "description": "Database name.",
+                        "type": "string",
+                        "example": "u123456789_test_db"
+                    },
+                    "user": {
+                        "description": "Database user.",
+                        "type": "string",
+                        "example": "u123456789_admin"
+                    },
+                    "domain": {
+                        "description": "Domain assigned to the database, or null when the database is unassigned.",
+                        "type": "string",
+                        "example": "example.com",
+                        "nullable": true
+                    },
+                    "permissions": {
+                        "description": "Database user permissions keyed by permission name.",
+                        "type": "object",
+                        "example": {
+                            "Alter": 1,
+                            "Drop": 0
+                        }
+                    },
+                    "created_at": {
+                        "description": "Database creation date in ISO 8601 format.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "updated_at": {
+                        "description": "Database last update date in ISO 8601 format.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "disk_usage_mb": {
+                        "description": "Current database disk usage in megabytes.",
+                        "type": "integer",
+                        "example": 32,
+                        "nullable": true
+                    },
+                    "max_size_mb": {
+                        "description": "Maximum allowed database size in megabytes.",
+                        "type": "integer",
+                        "example": 3072
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Databases.PhpMyAdminLinkResource": {
+                "required": [
+                    "link"
+                ],
+                "properties": {
+                    "link": {
+                        "description": "Direct sign-on URL to phpMyAdmin for the specified database.",
+                        "type": "string",
+                        "example": "https://auth-db123.hostinger.com/signon.php?sid=abc123"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Datacenter.CoordinatesResource": {
                 "properties": {
                     "latitude": {
@@ -6321,6 +7027,47 @@
                         "description": "Generated free subdomain",
                         "type": "string",
                         "example": "palegreen-fox-548498.hostingersite.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Domains.ParkedDomainCollection": {
+                "description": "Array of [`Hosting.V1.Domains.ParkedDomainResource`](#model/hostingv1domainsparkeddomainresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Domains.ParkedDomainResource"
+                }
+            },
+            "Hosting.V1.Domains.ParkedDomainResource": {
+                "properties": {
+                    "username": {
+                        "description": "Website username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "domain": {
+                        "description": "Parked domain name or IP address",
+                        "type": "string",
+                        "example": "parked-domain.com"
+                    },
+                    "parent_domain": {
+                        "description": "Parent website domain",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "root_directory": {
+                        "description": "Parked domain root directory",
+                        "type": "string",
+                        "example": "/home/u123456789/domains/example.com/public_html"
+                    },
+                    "type": {
+                        "description": "Whether the parked value is a domain name or an IP address (IPv4 or IPv6)",
+                        "type": "string",
+                        "enum": [
+                            "domain",
+                            "ip"
+                        ],
+                        "example": "domain"
                     }
                 },
                 "type": "object"
@@ -6574,6 +7321,80 @@
                         "type": "string",
                         "example": "parent.com",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Wordpress.WordpressInstallationCollection": {
+                "description": "Array of [`Hosting.V1.Wordpress.WordpressInstallationResource`](#model/hostingv1wordpresswordpressinstallationresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Wordpress.WordpressInstallationResource"
+                }
+            },
+            "Hosting.V1.Wordpress.WordpressInstallationResource": {
+                "properties": {
+                    "id": {
+                        "description": "WordPress installation (software) id",
+                        "type": "string",
+                        "example": "123"
+                    },
+                    "username": {
+                        "description": "Hosting account username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "domain": {
+                        "description": "Domain the installation belongs to",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "site_title": {
+                        "description": "WordPress site title",
+                        "type": "string",
+                        "example": "My site"
+                    },
+                    "url": {
+                        "description": "WordPress site URL",
+                        "type": "string",
+                        "example": "https://example.com"
+                    },
+                    "directory": {
+                        "description": "Installation directory",
+                        "type": "string",
+                        "example": "public_html"
+                    },
+                    "language": {
+                        "description": "WordPress locale",
+                        "type": "string",
+                        "example": "en_US"
+                    },
+                    "login": {
+                        "description": "WordPress admin username",
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "email": {
+                        "description": "WordPress admin email",
+                        "type": "string",
+                        "example": "owner@example.com"
+                    },
+                    "is_valid": {
+                        "description": "Whether the installation is considered valid",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "validation_error": {
+                        "description": "Reason the installation is invalid, if any",
+                        "type": "string",
+                        "example": "Invalid domain",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Installation creation timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2022-01-01T00:00:00Z"
                     }
                 },
                 "type": "object"
@@ -8052,6 +8873,39 @@
                     "example": "123e4567-e89b-12d3-a456-426614174000"
                 }
             },
+            "database_is_assigned": {
+                "name": "is_assigned",
+                "in": "query",
+                "description": "When used with domain, return only databases assigned to that domain.",
+                "required": false,
+                "schema": {
+                    "type": "boolean",
+                    "example": true,
+                    "nullable": true
+                }
+            },
+            "database_name_path": {
+                "name": "name",
+                "in": "path",
+                "description": "Full database name as returned by the list databases endpoint.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "u123456789_test_db"
+                }
+            },
+            "database_search": {
+                "name": "search",
+                "in": "query",
+                "description": "Search databases by name, user, or creation date.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "example": "test_db",
+                    "nullable": true
+                }
+            },
             "directory": {
                 "name": "directory",
                 "in": "query",
@@ -8134,6 +8988,15 @@
                         "suspended"
                     ],
                     "nullable": true
+                }
+            },
+            "parked_domain_path": {
+                "name": "parkedDomain",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "parked-domain.com"
                 }
             },
             "order_id_required": {
@@ -8408,6 +9271,11 @@
             "x-displayName": "WHOIS"
         },
         {
+            "name": "Hosting: Databases",
+            "description": "Hosting: Databases",
+            "x-displayName": "Databases"
+        },
+        {
             "name": "Hosting: Datacenters",
             "description": "Access information about available datacenters for hosting\nservices. This category provides details about data center\nlocations and capabilities to help you choose the optimal\nregion for your hosting needs.",
             "x-displayName": "Datacenters"
@@ -8558,6 +9426,7 @@
             "name": "Hosting",
             "tags": [
                 "Hosting: Datacenters",
+                "Hosting: Databases",
                 "Hosting: Domains",
                 "Hosting: Files",
                 "Hosting: NodeJS",
