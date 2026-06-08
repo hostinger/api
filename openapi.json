@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.17.1",
+        "version": "0.18.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1805,6 +1805,179 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "List Node.js builds",
+                "description": "Retrieve a paginated list of Node.js build processes for a specific website.\n\nEach build represents a single run of the Node.js build pipeline. Use the `states`\nquery parameter to filter results by build state (pending, running, completed, failed).\nUse the `uuid` from a build to poll its output via the `Get Node.js Build Logs` endpoint.",
+                "operationId": "hosting_listNode.jsBuildsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "name": "states",
+                        "in": "query",
+                        "description": "Build states to filter by",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "pending",
+                                    "running",
+                                    "completed",
+                                    "failed"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/from-archive": {
+            "post": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Create Node.js build from archive",
+                "description": "Upload a project archive, auto-detect build settings, and immediately start a Node.js build.\n\nThis is the recommended single-step approach for deploying a Node.js application.\nThe archive is uploaded to the website's file storage, build settings are auto-detected\nfrom the package.json inside the archive, and the build process starts automatically.\nOptional override fields take precedence over auto-detected values.\nMaximum archive size is 50MB.\n\nBefore archiving, exclude `node_modules/` and any build output directories\n(e.g. `dist/`, `.next/`, `build/`) — they are not needed because the build\nprocess runs the install step automatically, and including them unnecessarily\nincreases the archive size. This also helps keep the archive well under the 50MB limit.\n\nExample (zip):\n```\nzip -r archive.zip . --exclude \"node_modules/*\" --exclude \"dist/*\"\n```\n\nThe returned build `uuid` can be used to poll progress and retrieve logs via\nthe `Get Node.js Build Logs` endpoint.",
+                "operationId": "hosting_createNode.jsBuildFromArchiveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.CreateFromArchiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/{uuid}/logs": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Get Node.js build logs",
+                "description": "Retrieve logs from a specific Node.js build process.\n\nTo stream live output while a build is running, poll this endpoint repeatedly\nwhile the build state is `running`, passing the previously returned `lines` count\nas `from_line` to fetch only new output since the last call.\nLog content may contain ANSI escape sequences (color codes).",
+                "operationId": "hosting_getNode.jsBuildLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/build_uuid_path"
+                    },
+                    {
+                        "name": "from_line",
+                        "in": "query",
+                        "description": "Line from which to start retrieving logs",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "example": 10,
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildLogsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -5322,6 +5495,90 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.CreateFromArchiveRequest": {
+                "required": [
+                    "archive"
+                ],
+                "properties": {
+                    "archive": {
+                        "description": "Project archive file (.zip, .tar.gz, or .tgz), maximum 50MB",
+                        "type": "string"
+                    },
+                    "node_version": {
+                        "description": "Node.js version override (auto-detected from package.json if omitted)",
+                        "type": "integer",
+                        "enum": [
+                            18,
+                            20,
+                            22,
+                            24
+                        ],
+                        "example": 20,
+                        "nullable": true
+                    },
+                    "app_type": {
+                        "description": "Node.js application type override",
+                        "type": "string",
+                        "enum": [
+                            "create-react-app",
+                            "vite",
+                            "angular",
+                            "react",
+                            "vue",
+                            "parcel",
+                            "express",
+                            "fastify",
+                            "nest"
+                        ],
+                        "example": "vite",
+                        "nullable": true
+                    },
+                    "root_directory": {
+                        "description": "Application root directory override (where package.json is located) relative to public_html",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "webapp",
+                        "nullable": true
+                    },
+                    "output_directory": {
+                        "description": "Build output directory override relative to the root directory",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "dist",
+                        "nullable": true
+                    },
+                    "build_script": {
+                        "description": "Build script override",
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "example": "build",
+                        "nullable": true
+                    },
+                    "entry_file": {
+                        "description": "Main entry point file override",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "server.js",
+                        "nullable": true
+                    },
+                    "package_manager": {
+                        "description": "Package manager override",
+                        "type": "string",
+                        "enum": [
+                            "npm",
+                            "yarn",
+                            "pnpm"
+                        ],
+                        "example": "npm",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Websites.CreateWebsiteRequest": {
                 "required": [
                     "domain",
@@ -7109,6 +7366,33 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.BuildCollection": {
+                "description": "Array of [`Hosting.V1.NodeJs.BuildResource`](#model/hostingv1nodejsbuildresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildResource"
+                }
+            },
+            "Hosting.V1.NodeJs.BuildLogsResource": {
+                "required": [
+                    "logs",
+                    "lines"
+                ],
+                "properties": {
+                    "logs": {
+                        "description": "Logs from the build process, may contain ANSI escape sequences (for colors, etc.)",
+                        "type": "string",
+                        "example": "added 10 packages, and audited 11 packages in 8s\n\n3 packages are looking for funding\n  run `npm fund` for details",
+                        "nullable": true
+                    },
+                    "lines": {
+                        "description": "Number of log lines returned",
+                        "type": "integer",
+                        "example": 3
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.BuildOptionsResource": {
                 "required": [
                     "node_version",
@@ -7193,6 +7477,48 @@
                         ],
                         "nullable": true,
                         "description": "Source options, varies based on sourceType"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.BuildResource": {
+                "properties": {
+                    "uuid": {
+                        "description": "Build UUID",
+                        "type": "string",
+                        "example": "69f07fe2-197a-4fb3-9dae-606f965ad13d"
+                    },
+                    "state": {
+                        "description": "Build state",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "running",
+                            "completed",
+                            "failed"
+                        ],
+                        "example": "pending"
+                    },
+                    "options": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildOptionsResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Build options"
+                    },
+                    "created_at": {
+                        "description": "Creation timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49.067239Z"
+                    },
+                    "updated_at": {
+                        "description": "Last update timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49.067239Z"
                     }
                 },
                 "type": "object"
