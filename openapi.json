@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.18.1",
+        "version": "0.18.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1199,6 +1199,86 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores": {
+            "get": {
+                "tags": [
+                    "Ecommerce: Stores"
+                ],
+                "summary": "Get stores",
+                "description": "Retrieve the stores associated with your account.",
+                "operationId": "ecommerce_getStoresV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ecommerce.V1.Store.StoreCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ecommerce: Stores"
+                ],
+                "summary": "Create store",
+                "description": "Create a new store for your account.\n\nA primary sales channel is created alongside the store.",
+                "operationId": "ecommerce_createStoreV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.Store.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Store.StoreCreationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -5387,6 +5467,58 @@
                 },
                 "type": "object"
             },
+            "Ecommerce.V1.Store.StoreRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "My Store"
+                    },
+                    "country_code": {
+                        "description": "ISO 3166-1 alpha-2 country code.",
+                        "type": "string",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "example": "us"
+                    },
+                    "company_email": {
+                        "type": "string",
+                        "example": "owner@example.com"
+                    },
+                    "company_name": {
+                        "type": "string",
+                        "example": "My Company"
+                    },
+                    "language": {
+                        "description": "ISO 639-1 language code.",
+                        "type": "string",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "example": "en"
+                    },
+                    "sales_channel": {
+                        "properties": {
+                            "type": {
+                                "description": "Sales channel type. Only \"custom\" channels can be created via the API.",
+                                "type": "string",
+                                "enum": [
+                                    "custom"
+                                ],
+                                "example": "custom"
+                            },
+                            "external_id": {
+                                "description": "External identifier for the sales channel.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "example": null,
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Databases.ChangeDatabasePasswordRequest": {
                 "required": [
                     "password"
@@ -7143,6 +7275,124 @@
                     "mydomain1.tld",
                     "mydomain2.tld"
                 ]
+            },
+            "Ecommerce.V1.Store.StoreCollection": {
+                "description": "Array of [`Ecommerce.V1.Store.StoreResource`](#model/ecommercev1storestoreresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Ecommerce.V1.Store.StoreResource"
+                }
+            },
+            "Ecommerce.V1.Store.StoreCreationResource": {
+                "properties": {
+                    "store": {
+                        "properties": {
+                            "id": {
+                                "description": "Store ID",
+                                "type": "string",
+                                "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                            },
+                            "name": {
+                                "description": "Store name",
+                                "type": "string",
+                                "example": "My Store",
+                                "nullable": true
+                            },
+                            "company_name": {
+                                "description": "Company name",
+                                "type": "string",
+                                "example": "My Company",
+                                "nullable": true
+                            },
+                            "h_panel_id": {
+                                "description": "Identifier of the hPanel account that owns the store.",
+                                "type": "string",
+                                "example": "1234567"
+                            },
+                            "created_at": {
+                                "description": "Creation date",
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2026-01-21T07:35:04.000000Z"
+                            },
+                            "default_currency_code": {
+                                "description": "Default currency code (ISO 4217), in lowercase.",
+                                "type": "string",
+                                "example": "usd"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "sales_channel": {
+                        "properties": {
+                            "id": {
+                                "description": "Sales channel ID",
+                                "type": "string",
+                                "example": "scha_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                            },
+                            "type": {
+                                "description": "Sales channel type",
+                                "type": "string",
+                                "enum": [
+                                    "builder",
+                                    "horizons",
+                                    "tiktok",
+                                    "custom",
+                                    "quick-link",
+                                    "wordpress"
+                                ],
+                                "example": "custom"
+                            },
+                            "external_id": {
+                                "description": "External identifier for the sales channel",
+                                "type": "string",
+                                "example": null,
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Store.StoreResource": {
+                "properties": {
+                    "id": {
+                        "description": "Store ID",
+                        "type": "string",
+                        "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                    },
+                    "name": {
+                        "description": "Store name",
+                        "type": "string",
+                        "example": "My Store",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-21T07:35:04.000000Z"
+                    },
+                    "updated_at": {
+                        "description": "Last update date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-21T07:35:04.000000Z"
+                    },
+                    "version": {
+                        "description": "Store platform version identifier (e.g. \"v2_standalone\").",
+                        "type": "string",
+                        "example": "v2_standalone"
+                    },
+                    "company_name": {
+                        "description": "Company name",
+                        "type": "string",
+                        "example": "My Company",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
             },
             "Hosting.V1.Databases.DatabaseCollection": {
                 "description": "Array of [`Hosting.V1.Databases.DatabaseResource`](#model/hostingv1databasesdatabaseresource)",
@@ -9597,6 +9847,11 @@
             "x-displayName": "WHOIS"
         },
         {
+            "name": "Ecommerce: Stores",
+            "description": "Manage your online stores. This category includes endpoints\nfor listing the stores associated with your account and\ncreating new stores along with their primary sales channel.",
+            "x-displayName": "Stores"
+        },
+        {
             "name": "Hosting: Databases",
             "description": "Hosting: Databases",
             "x-displayName": "Databases"
@@ -9785,6 +10040,12 @@
                 "VPS: Recovery",
                 "VPS: Snapshots",
                 "VPS: Virtual machine"
+            ]
+        },
+        {
+            "name": "Ecommerce",
+            "tags": [
+                "Ecommerce: Stores"
             ]
         },
         {
