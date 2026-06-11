@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.18.2",
+        "version": "0.19.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1279,6 +1279,80 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/horizons/v1/websites": {
+            "post": {
+                "tags": [
+                    "Horizons: Websites"
+                ],
+                "summary": "Create website",
+                "description": "Create new Hostinger Horizons website from the given message.\\n\nUse this tool when user asks you to create a website, landing page, blog\nor any other type of application.\\n\nThis tool initiates the website creation process and returns a website URL and ID.\nThe generation happens asynchronously.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat Hostinger Horizons is now creating their website and it will be ready in a few minutes\nand you should provide the website URL to the user immediately\nDo not write code.\\n\\nTo edit afterwards, users must go to Hostinger Horizons interface\nin the provided website URL.\nIf the tool call fails with an error, you should provide a clear explanation of the error\nand do not generate code yourself in the chat.\n\\n\nTECHNOLOGY STACK CONSTRAINTS (STRICTLY ENFORCED):\\n\nThe environment is limited to the following technologies.\nYou MUST NOT use, suggest, or implement any technology outside this list:\\n\n\\n\n- Language: JavaScript ONLY.\n- Languages like TypeScript, Rust, Python, Java, PHP, etc., are STRICTLY PROHIBITED.\\n\n- Framework: React.\\n\n- Navigation: React Router.\\n\n- Styling: TailwindCSS.\\n\n- Components: shadcn/ui (built with @radix-ui primitives).\\n\n- Icons: Lucide React.\\n\n- Animations: Framer Motion.\\n\n\\n\nBACKEND & DATA STORAGE:\\n\n- Horizons integrated backend is the EXCLUSIVE solution for persistent data storage,\nauthentication, and database needs.\\n\n- Local databases (SQLite, MySQL, etc.) are STRICTLY PROHIBITED.\\n\n- Third-party services (Firebase, AWS Amplify) are allowed ONLY if explicitly requested by the user.\\n\n\\n\nMAPS:\\n\n- OpenStreetMap is the default provider.\\n\n- Alternative providers (Google Maps, Mapbox) are allowed ONLY if explicitly requested by the user.\\n",
+                "operationId": "horizons_createWebsiteV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Horizons.V1.Websites.CreateWebsiteRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horizons.V1.Websites.CreatedWebsiteResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/horizons/v1/websites/{websiteId}": {
+            "get": {
+                "tags": [
+                    "Horizons: Websites"
+                ],
+                "summary": "Get website",
+                "description": "Get a link for the user to edit their website in Hostinger Horizons interface.\\n\nUse this tool when user wants to modify, edit or add new features to an existing website.\\n\nWebsites can only be edited in Hostinger Horizons interface in the provided website URL.",
+                "operationId": "horizons_getWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horizons.V1.Websites.WebsiteUrlResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -5519,6 +5593,39 @@
                 },
                 "type": "object"
             },
+            "Horizons.V1.Websites.CreateWebsiteRequest": {
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "type",
+                                "text"
+                            ],
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "text"
+                                    ],
+                                    "example": "text"
+                                },
+                                "text": {
+                                    "description": "Detailed project specification.\nInclude purpose, key features, user flows, data models, and design preferences.\nThe specification should be detailed and comprehensive, covering all aspects of the project.",
+                                    "type": "string",
+                                    "maxLength": 20000,
+                                    "example": "Create a landing page for a coffee shop with a hero section, menu, and contact form"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Databases.ChangeDatabasePasswordRequest": {
                 "required": [
                     "password"
@@ -7390,6 +7497,38 @@
                         "type": "string",
                         "example": "My Company",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Horizons.V1.Websites.CreatedWebsiteResource": {
+                "required": [
+                    "website_url",
+                    "website_id"
+                ],
+                "properties": {
+                    "website_url": {
+                        "description": "The website URL for the user to access their website in Hostinger Horizons interface",
+                        "type": "string",
+                        "example": "https://horizons.hostinger.com/123e4567-e89b-12d3-a456-426614174000?location=chatgpt"
+                    },
+                    "website_id": {
+                        "description": "The website ID",
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    }
+                },
+                "type": "object"
+            },
+            "Horizons.V1.Websites.WebsiteUrlResource": {
+                "required": [
+                    "website_url"
+                ],
+                "properties": {
+                    "website_url": {
+                        "description": "The website URL for the user to access their website in Hostinger Horizons interface",
+                        "type": "string",
+                        "example": "https://horizons.hostinger.com/123e4567-e89b-12d3-a456-426614174000?location=chatgpt"
                     }
                 },
                 "type": "object"
@@ -9438,6 +9577,16 @@
                     "example": 564651
                 }
             },
+            "website_id_path": {
+                "name": "websiteId",
+                "in": "path",
+                "description": "The website ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                }
+            },
             "build_uuid_path": {
                 "name": "uuid",
                 "in": "path",
@@ -9852,6 +10001,11 @@
             "x-displayName": "Stores"
         },
         {
+            "name": "Horizons: Websites",
+            "description": "Create and access Hostinger Horizons websites. This category\nincludes endpoints for creating new AI-generated websites from\na text prompt and retrieving links to edit existing websites\nin the Hostinger Horizons interface.",
+            "x-displayName": "Websites"
+        },
+        {
             "name": "Hosting: Databases",
             "description": "Hosting: Databases",
             "x-displayName": "Databases"
@@ -10014,6 +10168,12 @@
                 "Hosting: Orders",
                 "Hosting: Websites",
                 "Hosting: Wordpress"
+            ]
+        },
+        {
+            "name": "Horizons",
+            "tags": [
+                "Horizons: Websites"
             ]
         },
         {
