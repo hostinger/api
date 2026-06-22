@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.19.1",
+        "version": "0.19.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1196,6 +1196,258 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Domains.V1.WHOIS.ProfileUsageResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/payment-methods/manual": {
+            "post": {
+                "tags": [
+                    "Ecommerce: Payments"
+                ],
+                "summary": "Enable manual payment method",
+                "description": "Enable a manual payment method so the store can accept orders without an online payment provider.",
+                "operationId": "ecommerce_enableManualPaymentMethodV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store to enable manual payment for.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.Payment.EnableManualPaymentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Payment.ManualPaymentResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/products/digital": {
+            "post": {
+                "tags": [
+                    "Ecommerce: Products"
+                ],
+                "summary": "Create digital product",
+                "description": "Create a published digital product with a single variant and an optional external download link.",
+                "operationId": "ecommerce_createDigitalProductV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store to create the product in.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.Product.CreateDigitalProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Product.ProductCreationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/products/physical": {
+            "post": {
+                "tags": [
+                    "Ecommerce: Products"
+                ],
+                "summary": "Create physical product",
+                "description": "Create a published physical product with a single variant priced in the store currency.",
+                "operationId": "ecommerce_createPhysicalProductV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store to create the product in.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.Product.CreatePhysicalProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Product.ProductCreationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/shipping": {
+            "post": {
+                "tags": [
+                    "Ecommerce: Shipping"
+                ],
+                "summary": "Set store shipping",
+                "description": "Set the flat-rate shipping price for a store, creating the shipping zone if it does not exist yet.",
+                "operationId": "ecommerce_setStoreShippingV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store to configure shipping for.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.Shipping.SetShippingRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Shipping.ShippingResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}": {
+            "delete": {
+                "tags": [
+                    "Ecommerce: Stores"
+                ],
+                "summary": "Delete store",
+                "description": "Soft-delete a store owned by your account.\n\nThe underlying store data is preserved; only the store is marked as deleted.",
+                "operationId": "ecommerce_deleteStoreV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store to delete.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Store.StoreDeleteResource"
                                 }
                             }
                         }
@@ -5591,6 +5843,111 @@
                 },
                 "type": "object"
             },
+            "Ecommerce.V1.Payment.EnableManualPaymentRequest": {
+                "properties": {
+                    "title": {
+                        "description": "Optional display name shown to customers at checkout.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Cash on delivery",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Product.CreateDigitalProductRequest": {
+                "required": [
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "The product name.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "My eBook"
+                    },
+                    "price": {
+                        "description": "Price in the smallest currency unit (e.g. cents). Must be positive.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 999
+                    },
+                    "description": {
+                        "description": "The product description.",
+                        "type": "string",
+                        "maxLength": 5000,
+                        "example": "A digital download.",
+                        "nullable": true
+                    },
+                    "currency": {
+                        "description": "ISO 4217 currency code. Defaults to the store's default currency when omitted.",
+                        "type": "string",
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "example": "usd",
+                        "nullable": true
+                    },
+                    "download_url": {
+                        "description": "Optional external download link delivered to the customer after purchase.",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "https://example.com/downloads/ebook.pdf",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Product.CreatePhysicalProductRequest": {
+                "required": [
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "The product name.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "My Product"
+                    },
+                    "price": {
+                        "description": "Price in the smallest currency unit (e.g. cents). Must be positive.",
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 1000
+                    },
+                    "description": {
+                        "description": "The product description.",
+                        "type": "string",
+                        "maxLength": 5000,
+                        "example": "A great product.",
+                        "nullable": true
+                    },
+                    "currency": {
+                        "description": "ISO 4217 currency code. Defaults to the store's default currency when omitted.",
+                        "type": "string",
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "example": "usd",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Shipping.SetShippingRequest": {
+                "required": [
+                    "price"
+                ],
+                "properties": {
+                    "price": {
+                        "description": "Flat shipping rate in the smallest currency unit (e.g. cents). Use 0 for free shipping.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 500
+                    }
+                },
+                "type": "object"
+            },
             "Ecommerce.V1.Store.StoreRequest": {
                 "properties": {
                     "name": {
@@ -7433,6 +7790,120 @@
                     "mydomain2.tld"
                 ]
             },
+            "Ecommerce.V1.Payment.ManualPaymentResource": {
+                "properties": {
+                    "payment_method": {
+                        "properties": {
+                            "id": {
+                                "description": "Store payment provider ID.",
+                                "type": "string",
+                                "example": "spp_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                            },
+                            "provider_id": {
+                                "description": "The payment provider identifier.",
+                                "type": "string",
+                                "example": "manual"
+                            },
+                            "is_enabled": {
+                                "description": "Whether the payment method is shown at checkout.",
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "title": {
+                                "description": "Display name shown to customers at checkout.",
+                                "type": "string",
+                                "example": "Cash on delivery"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "admin_url": {
+                        "description": "Admin UI deep-link to manage payment settings.",
+                        "type": "string",
+                        "example": "https://admin.example.com/store_01.../store-settings/payment-management"
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Product.ProductCreationResource": {
+                "properties": {
+                    "product": {
+                        "properties": {
+                            "id": {
+                                "description": "Product ID.",
+                                "type": "string",
+                                "example": "prod_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                            },
+                            "title": {
+                                "description": "Product name.",
+                                "type": "string",
+                                "example": "My Product"
+                            },
+                            "type": {
+                                "description": "Product type.",
+                                "type": "string",
+                                "enum": [
+                                    "physical",
+                                    "digital"
+                                ],
+                                "example": "physical"
+                            },
+                            "status": {
+                                "description": "Product status.",
+                                "type": "string",
+                                "example": "published"
+                            },
+                            "price": {
+                                "description": "Price in the smallest currency unit (e.g. cents).",
+                                "type": "integer",
+                                "example": 1000
+                            },
+                            "currency_code": {
+                                "description": "Currency the product is priced in (ISO 4217, lowercase).",
+                                "type": "string",
+                                "example": "usd"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "admin_url": {
+                        "description": "Admin UI deep-link to manage the product.",
+                        "type": "string",
+                        "example": "https://admin.example.com/store_01.../products/edit?product=prod_01..."
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Shipping.ShippingResource": {
+                "properties": {
+                    "shipping_option": {
+                        "properties": {
+                            "id": {
+                                "description": "Shipping option ID.",
+                                "type": "string",
+                                "example": "so_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                            },
+                            "amount": {
+                                "description": "Flat shipping rate in the smallest currency unit (e.g. cents).",
+                                "type": "integer",
+                                "example": 500
+                            },
+                            "currency_code": {
+                                "description": "Currency code the rate is charged in (ISO 4217, lowercase).",
+                                "type": "string",
+                                "example": "usd"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "admin_url": {
+                        "description": "Admin UI deep-link to manage shipping settings.",
+                        "type": "string",
+                        "example": "https://admin.example.com/store_01.../store-settings/shipping"
+                    }
+                },
+                "type": "object"
+            },
             "Ecommerce.V1.Store.StoreCollection": {
                 "description": "Array of [`Ecommerce.V1.Store.StoreResource`](#model/ecommercev1storestoreresource)",
                 "type": "array",
@@ -7508,6 +7979,21 @@
                             }
                         },
                         "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Store.StoreDeleteResource": {
+                "properties": {
+                    "id": {
+                        "description": "The ID of the deleted store.",
+                        "type": "string",
+                        "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                    },
+                    "is_deleted": {
+                        "description": "Always true when the store was soft-deleted.",
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
@@ -10046,8 +10532,23 @@
             "x-displayName": "WHOIS"
         },
         {
+            "name": "Ecommerce: Payments",
+            "description": "Manage payment methods for your online store. This category\nincludes endpoints for enabling payment options such as manual\n(cash on delivery) payment at checkout.",
+            "x-displayName": "Payments"
+        },
+        {
+            "name": "Ecommerce: Products",
+            "description": "Manage products in your online store. This category includes\nendpoints for creating physical and digital products with\npricing and optional descriptions.",
+            "x-displayName": "Products"
+        },
+        {
+            "name": "Ecommerce: Shipping",
+            "description": "Configure shipping options for your online store. This\ncategory includes endpoints for setting the flat-rate\nshipping price applied to customer orders.",
+            "x-displayName": "Shipping"
+        },
+        {
             "name": "Ecommerce: Stores",
-            "description": "Manage your online stores. This category includes endpoints\nfor listing the stores associated with your account and\ncreating new stores along with their primary sales channel.",
+            "description": "Manage your online stores. This category includes endpoints\nfor listing and creating stores associated with your account,\nand deleting stores you no longer need.",
             "x-displayName": "Stores"
         },
         {
@@ -10255,7 +10756,10 @@
         {
             "name": "Ecommerce",
             "tags": [
-                "Ecommerce: Stores"
+                "Ecommerce: Stores",
+                "Ecommerce: Products",
+                "Ecommerce: Shipping",
+                "Ecommerce: Payments"
             ]
         },
         {
