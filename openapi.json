@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.19.2",
+        "version": "0.19.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3018,6 +3018,39 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/domains/dns-status": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Get profile domain DNS status",
+                "description": "Retrieve the DNS configuration status for a profile's domain.\n\nThis endpoint reports the state of MX, SPF, DKIM and DMARC records, including the\nactual records found and the suggested records required for correct email delivery.",
+                "operationId": "reach_getProfileDomainDNSStatusV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsStatusResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -8851,6 +8884,72 @@
                         "maxLength": 75,
                         "example": "VIP customer",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Domains.DnsRecordStatus": {
+                "properties": {
+                    "actual": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "example": "MX"
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "example": "mx1.example.com"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "suggested": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "@"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "example": "MX"
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "example": "mx1.example.com"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "is_valid": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Domains.DnsStatusResource": {
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "mx": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
+                    },
+                    "spf": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
+                    },
+                    "dkim": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
+                    },
+                    "dmarc": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
                     }
                 },
                 "type": "object"
