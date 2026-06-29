@@ -8,12 +8,12 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.19.3",
+        "version": "0.19.4",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
                 "description": "Install official CLI tool. Examples and usage instructions can be found in our [Github repository](https://github.com/hostinger/api-cli).",
-                "source": "hapi vps vm list"
+                "source": "hostinger vps vm list"
             },
             {
                 "lang": "PHP",
