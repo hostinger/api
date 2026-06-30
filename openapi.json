@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.19.4",
+        "version": "0.20.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1787,6 +1787,143 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/databases/{name}/remote-connections": {
+            "post": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Create account database remote connection",
+                "description": "Allows a remote host to connect to the specified database.\n\nProvide an IPv4/IPv6 address, or \"%\" to allow any host. The database name must be\nthe full name returned by the list databases endpoint.",
+                "operationId": "hosting_createAccountDatabaseRemoteConnectionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_name_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Databases.RemoteConnections.CreateRemoteConnectionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Delete account database remote connection",
+                "description": "Permanently removes a remote-access rule, revoking the given host's remote access to the database.\n\nIdentify the rule with the required ip query parameter (the IPv4/IPv6 address, or \"%\",\nexactly as returned by the list remote connections endpoint). The database name must be\nthe full name returned by the list databases endpoint.",
+                "operationId": "hosting_deleteAccountDatabaseRemoteConnectionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/database_name_path"
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "Remote host to revoke: the IPv4/IPv6 address, or \"%\",\nexactly as returned by the list remote connections endpoint.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "192.0.2.10"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/databases/remote-connections": {
+            "get": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "List account database remote connections",
+                "description": "Returns the remote-access rules for the specified account: the remote hosts\n(IPv4/IPv6 addresses, or \"%\" for any host) allowed to connect to the account databases.\n\nUse the domain filter to only return rules for databases assigned to a specific domain.",
+                "operationId": "hosting_listAccountDatabaseRemoteConnectionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "Filter remote connections by the domain the database is assigned to.\nRules for databases not assigned to any domain are always included.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "example.com",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Databases.RemoteConnections.RemoteConnectionCollection"
                                 }
                             }
                         }
@@ -6112,6 +6249,19 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Databases.RemoteConnections.CreateRemoteConnectionRequest": {
+                "required": [
+                    "ip"
+                ],
+                "properties": {
+                    "ip": {
+                        "description": "Remote host to allow: an IPv4/IPv6 address, or \"%\" for any host.",
+                        "type": "string",
+                        "example": "192.0.2.10"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Datacenters.ListRequest": {
                 "required": [
                     "order_id"
@@ -8170,6 +8320,33 @@
                         "description": "Direct sign-on URL to phpMyAdmin for the specified database.",
                         "type": "string",
                         "example": "https://auth-db123.hostinger.com/signon.php?sid=abc123"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Databases.RemoteConnections.RemoteConnectionCollection": {
+                "description": "Array of [`Hosting.V1.Databases.RemoteConnections.RemoteConnectionResource`](#model/hostingv1databasesremoteconnectionsremoteconnectionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Databases.RemoteConnections.RemoteConnectionResource"
+                }
+            },
+            "Hosting.V1.Databases.RemoteConnections.RemoteConnectionResource": {
+                "properties": {
+                    "database_name": {
+                        "description": "Full name of the database the rule applies to.",
+                        "type": "string",
+                        "example": "u123456789_shop"
+                    },
+                    "database_user": {
+                        "description": "Database user the rule applies to.",
+                        "type": "string",
+                        "example": "u123456789_admin"
+                    },
+                    "ip": {
+                        "description": "Allowed remote host: an IPv4/IPv6 address, or \"%\" for any host.",
+                        "type": "string",
+                        "example": "192.0.2.10"
                     }
                 },
                 "type": "object"
