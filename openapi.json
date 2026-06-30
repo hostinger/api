@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.20.0",
+        "version": "0.21.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1602,6 +1602,155 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Horizons.V1.Websites.WebsiteUrlResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/cron-jobs": {
+            "get": {
+                "tags": [
+                    "Hosting: Cron Jobs"
+                ],
+                "summary": "List account cron jobs",
+                "description": "Returns the list of cron jobs configured for the specified account, including their schedule and command.",
+                "operationId": "hosting_listAccountCronJobsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.CronJobs.CronJobCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Cron Jobs"
+                ],
+                "summary": "Create account cron job",
+                "description": "Creates a cron job for the specified account from a schedule expression and a command.\n\nReturns the created cron job, including its uid, which is required to delete the cron job or fetch its output.",
+                "operationId": "hosting_createAccountCronJobV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.CronJobs.CreateCronJobRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.CronJobs.CronJobResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/cron-jobs/{uid}": {
+            "delete": {
+                "tags": [
+                    "Hosting: Cron Jobs"
+                ],
+                "summary": "Delete account cron job",
+                "description": "Permanently deletes the cron job identified by its uid.\n\nThe uid is returned by the list cron jobs endpoint.",
+                "operationId": "hosting_deleteAccountCronJobV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/cron_job_uid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/cron-jobs/{uid}/output": {
+            "get": {
+                "tags": [
+                    "Hosting: Cron Jobs"
+                ],
+                "summary": "Get cron job output",
+                "description": "Returns the output captured from the last execution of the cron job identified by its uid.\n\nThe uid is returned by the list cron jobs endpoint.",
+                "operationId": "hosting_getCronJobOutputV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/cron_job_uid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.CronJobs.CronJobOutputResource"
                                 }
                             }
                         }
@@ -6203,6 +6352,25 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.CronJobs.CreateCronJobRequest": {
+                "required": [
+                    "time",
+                    "command"
+                ],
+                "properties": {
+                    "time": {
+                        "description": "Cron schedule expression (for example \"0 2 * * *\" runs daily at 02:00).",
+                        "type": "string",
+                        "example": "0 2 * * *"
+                    },
+                    "command": {
+                        "description": "Command to execute on the schedule.",
+                        "type": "string",
+                        "example": "php /home/u123456789/cleanup.php"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Databases.ChangeDatabasePasswordRequest": {
                 "required": [
                     "password"
@@ -8248,6 +8416,51 @@
                         "description": "The website URL for the user to access their website in Hostinger Horizons interface",
                         "type": "string",
                         "example": "https://horizons.hostinger.com/123e4567-e89b-12d3-a456-426614174000?location=chatgpt"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.CronJobs.CronJobCollection": {
+                "description": "Array of [`Hosting.V1.CronJobs.CronJobResource`](#model/hostingv1cronjobscronjobresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.CronJobs.CronJobResource"
+                }
+            },
+            "Hosting.V1.CronJobs.CronJobOutputResource": {
+                "required": [
+                    "output"
+                ],
+                "properties": {
+                    "output": {
+                        "description": "Output captured from the last cron job execution. Empty when the cron job has not run yet.",
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.CronJobs.CronJobResource": {
+                "properties": {
+                    "uid": {
+                        "description": "Unique identifier of the cron job. Use it to delete the cron job or fetch its output.",
+                        "type": "string",
+                        "example": "cron_abc123"
+                    },
+                    "username": {
+                        "description": "Username of the account that owns the cron job.",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "time": {
+                        "description": "Cron schedule expression.",
+                        "type": "string",
+                        "example": "0 2 * * *"
+                    },
+                    "command": {
+                        "description": "Command executed on the schedule.",
+                        "type": "string",
+                        "example": "php /home/u123456789/cleanup.php"
                     }
                 },
                 "type": "object"
@@ -10410,6 +10623,16 @@
                     "example": "123e4567-e89b-12d3-a456-426614174000"
                 }
             },
+            "cron_job_uid_path": {
+                "name": "uid",
+                "in": "path",
+                "description": "Unique identifier of the cron job as returned by the list cron jobs endpoint.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "cron_abc123"
+                }
+            },
             "database_is_assigned": {
                 "name": "is_assigned",
                 "in": "query",
@@ -10833,6 +11056,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Hosting: Cron Jobs",
+            "description": "Hosting: Cron Jobs",
+            "x-displayName": "Cron Jobs"
+        },
+        {
             "name": "Hosting: Databases",
             "description": "Hosting: Databases",
             "x-displayName": "Databases"
@@ -10987,6 +11215,7 @@
         {
             "name": "Hosting",
             "tags": [
+                "Hosting: Cron Jobs",
                 "Hosting: Datacenters",
                 "Hosting: Databases",
                 "Hosting: Domains",
