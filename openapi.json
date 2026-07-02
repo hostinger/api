@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "0.22.1",
+        "version": "1.0.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2812,104 +2812,6 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/hosting/v1/accounts/{username}/wordpress/installations": {
-            "post": {
-                "tags": [
-                    "Hosting: Wordpress"
-                ],
-                "summary": "Install WordPress",
-                "description": "Install WordPress on an existing website.\n\nThe website must already exist before calling this endpoint. To create a new\nwebsite first, use POST /api/hosting/v1/websites and poll\nGET /api/hosting/v1/websites until it appears.\n\nCall GET /api/hosting/v1/wordpress/installations filtered by username and\ndomain before proceeding to check whether WordPress is already installed on\nthe target domain/path. If WordPress already exists and `overwrite` is false\n(the default), the async job will fail.\n\nThis operation is asynchronous: a successful response only means the install\njob has been queued, not that WordPress is ready. Installation typically\ntakes 1-2 minutes. Poll GET /api/hosting/v1/wordpress/installations filtered\nby username and domain to track progress. When the installation appears in\nthat list, WordPress is ready.",
-                "operationId": "hosting_installWordPressV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/username_path"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Hosting.V1.Wordpress.InstallWordpressRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success empty response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/hosting/v1/wordpress/installations": {
-            "get": {
-                "tags": [
-                    "Hosting: Wordpress"
-                ],
-                "summary": "List WordPress installations",
-                "description": "List WordPress installations accessible to the authenticated client.\n\nUse this endpoint to discover existing WordPress installations and to poll\nfor installation status after calling the install endpoint. When a newly\nrequested installation appears in this list, WordPress is ready. Filter by\nusername and domain to narrow results to a specific website.\n\nEach installation includes a `valid` flag and, when invalid, a\n`validationError` describing why.",
-                "operationId": "hosting_listWordPressInstallationsV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/username"
-                    },
-                    {
-                        "$ref": "#/components/parameters/domain_filter"
-                    },
-                    {
-                        "name": "ownership",
-                        "in": "query",
-                        "description": "Filter by ownership type. Defaults to \"owned\". Use \"all\" to include both owned and managed installations.",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "owned",
-                                "managed",
-                                "all"
-                            ],
-                            "example": "owned",
-                            "nullable": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Hosting.V1.Wordpress.WordpressInstallationCollection"
-                                }
-                            }
-                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -5763,6 +5665,202 @@
                     }
                 }
             }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/installations": {
+            "post": {
+                "tags": [
+                    "WordPress: Installations"
+                ],
+                "summary": "Install WordPress",
+                "description": "Install WordPress on an existing website.\n\nThe website must already exist before calling this endpoint. To create a new\nwebsite first, use POST /api/hosting/v1/websites and poll\nGET /api/hosting/v1/websites until it appears.\n\nCall GET /api/hosting/v1/wordpress/installations filtered by username and\ndomain before proceeding to check whether WordPress is already installed on\nthe target domain/path. If WordPress already exists and `overwrite` is false\n(the default), the async job will fail.\n\nThis operation is asynchronous: a successful response only means the install\njob has been queued, not that WordPress is ready. Installation typically\ntakes 1-2 minutes. Poll GET /api/hosting/v1/wordpress/installations filtered\nby username and domain to track progress. When the installation appears in\nthat list, WordPress is ready.",
+                "operationId": "hosting_installWordPressV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Installations.InstallWordPressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/wordpress/installations": {
+            "get": {
+                "tags": [
+                    "WordPress: Installations"
+                ],
+                "summary": "List WordPress installations",
+                "description": "List WordPress installations accessible to the authenticated client.\n\nUse this endpoint to discover existing WordPress installations and to poll\nfor installation status after calling the install endpoint. When a newly\nrequested installation appears in this list, WordPress is ready. Filter by\nusername and domain to narrow results to a specific website.\n\nEach installation includes a `valid` flag and, when invalid, a\n`validationError` describing why.",
+                "operationId": "hosting_listWordPressInstallationsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain_filter"
+                    },
+                    {
+                        "name": "ownership",
+                        "in": "query",
+                        "description": "Filter by ownership type. Defaults to \"owned\". Use \"all\" to include both owned and managed installations.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "owned",
+                                "managed",
+                                "all"
+                            ],
+                            "example": "owned",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Installations.WordPressInstallationCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/install": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Install WordPress plugins",
+                "description": "Install one or more plugins on an existing WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id`\nfield). Use GET /api/hosting/v1/wordpress/plugins to discover the plugin\nslugs available for installation.\n\nThis operation is asynchronous: a successful response only means the install\njob has been queued, not that the plugins are ready.",
+                "operationId": "hosting_installWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.InstallPluginsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/themes/install": {
+            "post": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "Install WordPress theme",
+                "description": "Install a theme on an existing WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id`\nfield).\n\nWhen the theme is one of the Hostinger themes (hostinger-blog,\nhostinger-affiliate-theme, hostinger-ai-theme), the optional `palette`,\n`layout`, and `font` fields are forwarded to the custom installer (defaults:\npalette1, layout1, default). For any other theme they are ignored.\n\nThis operation is asynchronous: a successful response only means the install\njob has been queued, not that the theme is ready.",
+                "operationId": "hosting_installWordPressThemeV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Themes.InstallThemeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -6601,104 +6699,6 @@
                 },
                 "type": "object"
             },
-            "Hosting.V1.Wordpress.InstallWordpressRequest": {
-                "required": [
-                    "domain",
-                    "site_title",
-                    "credentials"
-                ],
-                "properties": {
-                    "domain": {
-                        "description": "Domain of the existing website where WordPress will be installed",
-                        "type": "string",
-                        "example": "example.com"
-                    },
-                    "site_title": {
-                        "description": "Title of the WordPress site",
-                        "type": "string",
-                        "example": "My site"
-                    },
-                    "language": {
-                        "description": "WordPress locale. Defaults to en_US when omitted.",
-                        "type": "string",
-                        "example": "en_US",
-                        "nullable": true
-                    },
-                    "directory": {
-                        "description": "Relative directory to install WordPress into. Defaults to the website root when omitted.",
-                        "type": "string",
-                        "example": "public_html",
-                        "nullable": true
-                    },
-                    "overwrite": {
-                        "description": "When false (default), does not replace an existing installation. If WordPress is already installed on the domain/path, the async install job fails unless true.",
-                        "type": "boolean",
-                        "example": false,
-                        "nullable": true
-                    },
-                    "auto_updates": {
-                        "description": "WordPress core auto-update policy",
-                        "type": "string",
-                        "enum": [
-                            "all",
-                            "none",
-                            "minor"
-                        ],
-                        "example": "minor",
-                        "nullable": true
-                    },
-                    "version": {
-                        "description": "WordPress core version to install. If omitted, the latest core version compatible with the account vhost PHP version is selected.",
-                        "type": "string",
-                        "example": "6.5.2",
-                        "nullable": true
-                    },
-                    "credentials": {
-                        "description": "WordPress admin credentials",
-                        "required": [
-                            "email",
-                            "login",
-                            "password"
-                        ],
-                        "properties": {
-                            "email": {
-                                "type": "string",
-                                "example": "owner@example.com"
-                            },
-                            "login": {
-                                "description": "WordPress admin username",
-                                "type": "string",
-                                "example": "admin"
-                            },
-                            "password": {
-                                "type": "string",
-                                "format": "password",
-                                "example": "********"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "database": {
-                        "description": "Optional. If the named database already exists, it will be used for this WordPress install. Otherwise a new database is created with a generated name and random credentials.",
-                        "properties": {
-                            "name": {
-                                "description": "Database name (username prefix added if missing)",
-                                "type": "string",
-                                "example": "mydb"
-                            },
-                            "password": {
-                                "type": "string",
-                                "format": "password",
-                                "example": "********",
-                                "nullable": true
-                            }
-                        },
-                        "type": "object",
-                        "nullable": true
-                    }
-                },
-                "type": "object"
-            },
             "Reach.V1.Contacts.Segments.StoreRequest": {
                 "required": [
                     "name",
@@ -7218,6 +7218,175 @@
                             }
                         },
                         "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Installations.InstallWordPressRequest": {
+                "required": [
+                    "domain",
+                    "site_title",
+                    "credentials"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain of the existing website where WordPress will be installed",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "site_title": {
+                        "description": "Title of the WordPress site",
+                        "type": "string",
+                        "example": "My site"
+                    },
+                    "language": {
+                        "description": "WordPress locale. Defaults to en_US when omitted.",
+                        "type": "string",
+                        "example": "en_US",
+                        "nullable": true
+                    },
+                    "directory": {
+                        "description": "Relative directory to install WordPress into. Defaults to the website root when omitted.",
+                        "type": "string",
+                        "example": "public_html",
+                        "nullable": true
+                    },
+                    "overwrite": {
+                        "description": "When false (default), does not replace an existing installation. If WordPress is already installed on the domain/path, the async install job fails unless true.",
+                        "type": "boolean",
+                        "example": false,
+                        "nullable": true
+                    },
+                    "auto_updates": {
+                        "description": "WordPress core auto-update policy",
+                        "type": "string",
+                        "enum": [
+                            "all",
+                            "none",
+                            "minor"
+                        ],
+                        "example": "minor",
+                        "nullable": true
+                    },
+                    "version": {
+                        "description": "WordPress core version to install. If omitted, the latest core version compatible with the account vhost PHP version is selected.",
+                        "type": "string",
+                        "example": "6.5.2",
+                        "nullable": true
+                    },
+                    "credentials": {
+                        "description": "WordPress admin credentials",
+                        "required": [
+                            "email",
+                            "login",
+                            "password"
+                        ],
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "example": "owner@example.com"
+                            },
+                            "login": {
+                                "description": "WordPress admin username",
+                                "type": "string",
+                                "example": "admin"
+                            },
+                            "password": {
+                                "type": "string",
+                                "format": "password",
+                                "example": "********"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "database": {
+                        "description": "Optional. If the named database already exists, it will be used for this WordPress install. Otherwise a new database is created with a generated name and random credentials.",
+                        "properties": {
+                            "name": {
+                                "description": "Database name (username prefix added if missing)",
+                                "type": "string",
+                                "example": "mydb"
+                            },
+                            "password": {
+                                "type": "string",
+                                "format": "password",
+                                "example": "********",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.InstallPluginsRequest": {
+                "required": [
+                    "plugins"
+                ],
+                "properties": {
+                    "plugins": {
+                        "description": "Plugin slugs to install. Use GET /api/hosting/v1/wordpress/plugins to discover available slugs.",
+                        "type": "array",
+                        "items": {
+                            "description": "Plugin slug",
+                            "type": "string",
+                            "example": "akismet"
+                        },
+                        "maxItems": 20,
+                        "minItems": 1,
+                        "example": [
+                            "akismet",
+                            "hello-dolly"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.InstallThemeRequest": {
+                "required": [
+                    "theme"
+                ],
+                "properties": {
+                    "theme": {
+                        "description": "Slug of the theme to install. Hostinger theme slugs (hostinger-blog, hostinger-affiliate-theme, hostinger-ai-theme) trigger the custom installer and forward the optional palette/layout/font fields; any other WordPress theme slug uses the standard installer and ignores those fields.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "example": "hostinger-blog"
+                    },
+                    "palette": {
+                        "description": "Palette identifier. Only applied when the theme is a Hostinger theme; the default is used when omitted.",
+                        "type": "string",
+                        "default": "palette1",
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "example": "palette1",
+                        "nullable": true
+                    },
+                    "layout": {
+                        "description": "Layout identifier. Only applied when the theme is a Hostinger theme; the default is used when omitted.",
+                        "type": "string",
+                        "default": "layout1",
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "example": "layout1",
+                        "nullable": true
+                    },
+                    "font": {
+                        "description": "Font identifier. Only applied when the theme is a Hostinger theme; the default is used when omitted.",
+                        "type": "string",
+                        "default": "default",
+                        "enum": [
+                            "professional",
+                            "modern",
+                            "elegant",
+                            "creative",
+                            "dynamic",
+                            "default"
+                        ],
+                        "example": "default",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -8999,80 +9168,6 @@
                 },
                 "type": "object"
             },
-            "Hosting.V1.Wordpress.WordpressInstallationCollection": {
-                "description": "Array of [`Hosting.V1.Wordpress.WordpressInstallationResource`](#model/hostingv1wordpresswordpressinstallationresource)",
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/Hosting.V1.Wordpress.WordpressInstallationResource"
-                }
-            },
-            "Hosting.V1.Wordpress.WordpressInstallationResource": {
-                "properties": {
-                    "id": {
-                        "description": "WordPress installation (software) id",
-                        "type": "string",
-                        "example": "123"
-                    },
-                    "username": {
-                        "description": "Hosting account username",
-                        "type": "string",
-                        "example": "u123456789"
-                    },
-                    "domain": {
-                        "description": "Domain the installation belongs to",
-                        "type": "string",
-                        "example": "example.com"
-                    },
-                    "site_title": {
-                        "description": "WordPress site title",
-                        "type": "string",
-                        "example": "My site"
-                    },
-                    "url": {
-                        "description": "WordPress site URL",
-                        "type": "string",
-                        "example": "https://example.com"
-                    },
-                    "directory": {
-                        "description": "Installation directory",
-                        "type": "string",
-                        "example": "public_html"
-                    },
-                    "language": {
-                        "description": "WordPress locale",
-                        "type": "string",
-                        "example": "en_US"
-                    },
-                    "login": {
-                        "description": "WordPress admin username",
-                        "type": "string",
-                        "example": "admin"
-                    },
-                    "email": {
-                        "description": "WordPress admin email",
-                        "type": "string",
-                        "example": "owner@example.com"
-                    },
-                    "is_valid": {
-                        "description": "Whether the installation is considered valid",
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "validation_error": {
-                        "description": "Reason the installation is invalid, if any",
-                        "type": "string",
-                        "example": "Invalid domain",
-                        "nullable": true
-                    },
-                    "created_at": {
-                        "description": "Installation creation timestamp",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2022-01-01T00:00:00Z"
-                    }
-                },
-                "type": "object"
-            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -10403,6 +10498,80 @@
                     }
                 },
                 "type": "object"
+            },
+            "WordPress.V1.Installations.WordPressInstallationCollection": {
+                "description": "Array of [`WordPress.V1.Installations.WordPressInstallationResource`](#model/wordpressv1installationswordpressinstallationresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Installations.WordPressInstallationResource"
+                }
+            },
+            "WordPress.V1.Installations.WordPressInstallationResource": {
+                "properties": {
+                    "id": {
+                        "description": "WordPress installation (software) id",
+                        "type": "string",
+                        "example": "123"
+                    },
+                    "username": {
+                        "description": "Hosting account username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "domain": {
+                        "description": "Domain the installation belongs to",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "site_title": {
+                        "description": "WordPress site title",
+                        "type": "string",
+                        "example": "My site"
+                    },
+                    "url": {
+                        "description": "WordPress site URL",
+                        "type": "string",
+                        "example": "https://example.com"
+                    },
+                    "directory": {
+                        "description": "Installation directory",
+                        "type": "string",
+                        "example": "public_html"
+                    },
+                    "language": {
+                        "description": "WordPress locale",
+                        "type": "string",
+                        "example": "en_US"
+                    },
+                    "login": {
+                        "description": "WordPress admin username",
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "email": {
+                        "description": "WordPress admin email",
+                        "type": "string",
+                        "example": "owner@example.com"
+                    },
+                    "is_valid": {
+                        "description": "Whether the installation is considered valid",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "validation_error": {
+                        "description": "Reason the installation is invalid, if any",
+                        "type": "string",
+                        "example": "Invalid domain",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Installation creation timestamp",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2022-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
             }
         },
         "responses": {
@@ -10964,6 +11133,17 @@
                     "type": "integer",
                     "example": 1268054
                 }
+            },
+            "software_path": {
+                "name": "software",
+                "in": "path",
+                "description": "WordPress installation (software) identifier",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "pattern": "^[0-9]+$",
+                    "example": "1232456789"
+                }
             }
         },
         "securitySchemes": {
@@ -11096,11 +11276,6 @@
             "x-displayName": "Websites"
         },
         {
-            "name": "Hosting: Wordpress",
-            "description": "Hosting: Wordpress",
-            "x-displayName": "Wordpress"
-        },
-        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -11179,6 +11354,21 @@
             "name": "VPS: Snapshots",
             "description": "Create, restore, or delete snapshots that capture the state\nof your virtual machines at a given point, allowing you to\nquickly recover or test changes without affecting current\noperations.",
             "x-displayName": "Snapshots"
+        },
+        {
+            "name": "WordPress: Installations",
+            "description": "Manage WordPress installations on your hosting websites. This\ncategory includes endpoints for installing WordPress, listing\nexisting installations along with their validation status, and\nimporting a WordPress site from previously uploaded archive and\ndatabase files.",
+            "x-displayName": "Installations"
+        },
+        {
+            "name": "WordPress: Plugins",
+            "description": "Manage WordPress plugins on your installations. This category\nincludes endpoints for installing, activating, updating,\nlisting, and deleting plugins.",
+            "x-displayName": "Plugins"
+        },
+        {
+            "name": "WordPress: Themes",
+            "description": "Manage WordPress themes on your installations. This category\nincludes endpoints for installing, activating, updating,\nlisting, and deleting themes.",
+            "x-displayName": "Themes"
         }
     ],
     "x-tagGroups": [
@@ -11222,8 +11412,15 @@
                 "Hosting: Files",
                 "Hosting: NodeJS",
                 "Hosting: Orders",
-                "Hosting: Websites",
-                "Hosting: Wordpress"
+                "Hosting: Websites"
+            ]
+        },
+        {
+            "name": "WordPress",
+            "tags": [
+                "WordPress: Installations",
+                "WordPress: Plugins",
+                "WordPress: Themes"
             ]
         },
         {
