@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.2.0",
+        "version": "1.2.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1439,9 +1439,9 @@
                 "tags": [
                     "Ecommerce: Sales channels"
                 ],
-                "summary": "Create a custom sales channel",
+                "summary": "Create custom sales channel",
                 "description": "Create a custom sales channel for a store. Build your own frontend and keep your catalog,\norders, shipping and payments in sync through the Ecommerce API.",
-                "operationId": "ecommerce_createACustomSalesChannelV1",
+                "operationId": "ecommerce_createCustomSalesChannelV1",
                 "parameters": [
                     {
                         "name": "store_id",
@@ -1471,6 +1471,69 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Ecommerce.V1.SalesChannel.SalesChannelCreationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/sales-channels/{sales_channel_id}": {
+            "patch": {
+                "tags": [
+                    "Ecommerce: Sales channels"
+                ],
+                "summary": "Update sales channel",
+                "description": "Update a custom sales channel. The merchant-facing `name` and the public `url`\n(returned as the channel `domain`) can be changed. Pass `null` to clear a value.",
+                "operationId": "ecommerce_updateSalesChannelV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store that owns the sales channel.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    },
+                    {
+                        "name": "sales_channel_id",
+                        "in": "path",
+                        "description": "The ID of the sales channel to update.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "scha_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.SalesChannel.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.SalesChannel.SalesChannelUpdateResource"
                                 }
                             }
                         }
@@ -1650,6 +1713,46 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/metadata": {
+            "get": {
+                "tags": [
+                    "Ecommerce: Stores"
+                ],
+                "summary": "Get store metadata",
+                "description": "Get a store's readiness metadata: whether payment methods and shipping are configured,\nplus its default currency. Useful to verify prerequisites before building a storefront.",
+                "operationId": "ecommerce_getStoreMetadataV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store to read metadata for.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Store.StoreMetadataResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -7436,6 +7539,25 @@
                 },
                 "type": "object"
             },
+            "Ecommerce.V1.SalesChannel.UpdateRequest": {
+                "properties": {
+                    "name": {
+                        "description": "Merchant-facing custom name shown in the sales channels list. Pass null to clear it.",
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "Vintagio Onepager",
+                        "nullable": true
+                    },
+                    "url": {
+                        "description": "Public address where the custom sales channel lives. Pass null to clear it.",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "https://www.bestshirt.vintagio.com",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Ecommerce.V1.Shipping.SetShippingRequest": {
                 "required": [
                     "price"
@@ -9828,6 +9950,62 @@
                 },
                 "type": "object"
             },
+            "Ecommerce.V1.SalesChannel.SalesChannelUpdateResource": {
+                "properties": {
+                    "sales_channel": {
+                        "properties": {
+                            "id": {
+                                "description": "Sales channel ID",
+                                "type": "string",
+                                "example": "scha_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                            },
+                            "type": {
+                                "description": "Sales channel type",
+                                "type": "string",
+                                "enum": [
+                                    "builder",
+                                    "horizons",
+                                    "tiktok",
+                                    "custom",
+                                    "quick-link",
+                                    "wordpress"
+                                ],
+                                "example": "custom"
+                            },
+                            "is_primary": {
+                                "description": "Whether this is the primary sales channel.",
+                                "type": "boolean",
+                                "example": false
+                            },
+                            "is_active": {
+                                "description": "Whether the sales channel is active.",
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "external_id": {
+                                "description": "External identifier for the sales channel.",
+                                "type": "string",
+                                "example": null,
+                                "nullable": true
+                            },
+                            "name": {
+                                "description": "Merchant-facing custom name.",
+                                "type": "string",
+                                "example": "Vintagio Onepager",
+                                "nullable": true
+                            },
+                            "domain": {
+                                "description": "Public address where the custom sales channel lives.",
+                                "type": "string",
+                                "example": "https://www.bestshirt.vintagio.com",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "Ecommerce.V1.Shipping.ShippingResource": {
                 "properties": {
                     "shipping_option": {
@@ -9948,6 +10126,76 @@
                         "description": "Always true when the store was soft-deleted.",
                         "type": "boolean",
                         "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Store.StoreMetadataResource": {
+                "properties": {
+                    "metadata": {
+                        "properties": {
+                            "has_payment_methods": {
+                                "description": "Whether the store has at least one payment method connected.",
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "has_shipping": {
+                                "description": "Whether the store has at least one shipping option configured.",
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "default_currency_code": {
+                                "description": "The default currency code of the store.",
+                                "type": "string",
+                                "example": "eur"
+                            },
+                            "default_currency": {
+                                "description": "The store's default currency, or null when unset.",
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "eur"
+                                    },
+                                    "symbol": {
+                                        "type": "string",
+                                        "example": "€"
+                                    },
+                                    "symbol_native": {
+                                        "type": "string",
+                                        "example": "€"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Euro"
+                                    },
+                                    "name_plural": {
+                                        "type": "string",
+                                        "example": "Euros"
+                                    },
+                                    "decimal_digits": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "rounding": {
+                                        "type": "number",
+                                        "example": 0
+                                    },
+                                    "template": {
+                                        "type": "string",
+                                        "example": "€$1",
+                                        "nullable": true
+                                    },
+                                    "min_amount": {
+                                        "type": "number",
+                                        "example": 50,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
