@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.1.1",
+        "version": "1.2.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2836,6 +2836,261 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/php/extensions/reset": {
+            "patch": {
+                "tags": [
+                    "Hosting: PHP"
+                ],
+                "summary": "Reset PHP extensions",
+                "description": "Resets all PHP extensions of the website to their default state.\n\nUse it to recover from extension conflicts or restore the original configuration.",
+                "operationId": "hosting_resetPHPExtensionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/php/details": {
+            "get": {
+                "tags": [
+                    "Hosting: PHP"
+                ],
+                "summary": "Get PHP details",
+                "description": "Returns the full PHP configuration for the website: current version, available versions\n(supported and unsupported), enabled/disabled extensions, options with their current value,\ndefault, type and the plan limit (`max`), and conflicting extension groups.\n\nUse it to check the current PHP setup before updating the version, extensions or options.",
+                "operationId": "hosting_getPHPDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Php.PhpDetailsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/php/php-info": {
+            "get": {
+                "tags": [
+                    "Hosting: PHP"
+                ],
+                "summary": "Get PHP info",
+                "description": "Returns the full phpinfo page (HTML) for the website.\n\nUse it to debug PHP issues or inspect the complete PHP environment of the website.",
+                "operationId": "hosting_getPHPInfoV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Php.PhpInfoResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/php/extensions": {
+            "patch": {
+                "tags": [
+                    "Hosting: PHP"
+                ],
+                "summary": "Update PHP extensions",
+                "description": "Enables or disables PHP extensions (modules) for the website.\n\nUse the Get PHP details endpoint to check the current extension states before changing them.",
+                "operationId": "hosting_updatePHPExtensionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Php.UpdatePhpExtensionsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/php/options": {
+            "patch": {
+                "tags": [
+                    "Hosting: PHP"
+                ],
+                "summary": "Update PHP options",
+                "description": "Updates PHP options for the website (e.g. `memory_limit`, `max_execution_time`, `upload_max_filesize`).\nOnly provide the options you want to change, inside the `options` object.\n\nValues above the account plan limit are silently capped to that limit, so the request can succeed\nwith a smaller applied value. Call the Get PHP details endpoint afterwards to read the applied value.",
+                "operationId": "hosting_updatePHPOptionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Php.UpdatePhpOptionsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/php/version": {
+            "patch": {
+                "tags": [
+                    "Hosting: PHP"
+                ],
+                "summary": "Update PHP version",
+                "description": "Changes the PHP version of the website.\n\nUse the Get PHP details endpoint to see the versions available for the website.",
+                "operationId": "hosting_updatePHPVersionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Php.UpdatePhpVersionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -7504,6 +7759,72 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Php.UpdatePhpExtensionsRequest": {
+                "properties": {
+                    "enable": {
+                        "description": "PHP extensions to enable.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "json",
+                            "yaml"
+                        ]
+                    },
+                    "disable": {
+                        "description": "PHP extensions to disable.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "imagick"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Php.UpdatePhpOptionsRequest": {
+                "required": [
+                    "options"
+                ],
+                "properties": {
+                    "options": {
+                        "description": "Map of PHP options to update, keyed by option name. Only include options you want to change.",
+                        "type": "object",
+                        "example": {
+                            "memory_limit": "512M",
+                            "max_execution_time": 300,
+                            "upload_max_filesize": "256M"
+                        },
+                        "additionalProperties": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Php.UpdatePhpVersionRequest": {
+                "required": [
+                    "version"
+                ],
+                "properties": {
+                    "version": {
+                        "description": "PHP version to switch the website to.",
+                        "type": "string",
+                        "example": "8.1"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Websites.CreateWebsiteRequest": {
                 "required": [
                     "domain",
@@ -10216,6 +10537,121 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Php.PhpDetailsResource": {
+                "properties": {
+                    "php_version": {
+                        "description": "Current PHP version name",
+                        "type": "string",
+                        "example": "8.1"
+                    },
+                    "php_version_full": {
+                        "description": "Full PHP version name",
+                        "type": "string",
+                        "example": "8.1.27"
+                    },
+                    "php_versions": {
+                        "$ref": "#/components/schemas/Hosting.V1.Php.PhpVersionsResource"
+                    },
+                    "options": {
+                        "description": "PHP options keyed by option name",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/Hosting.V1.Php.PhpOptionResource"
+                        }
+                    },
+                    "extensions": {
+                        "description": "PHP extensions keyed by extension name",
+                        "type": "object",
+                        "example": {
+                            "yaml": {
+                                "state": "enabled",
+                                "description": ""
+                            }
+                        }
+                    },
+                    "conflicting_extensions": {
+                        "description": "Groups of extensions that conflict with each other",
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "example": [
+                                "apc",
+                                "opcache"
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Php.PhpInfoResource": {
+                "properties": {
+                    "info": {
+                        "description": "HTML string containing the full phpinfo page",
+                        "type": "string",
+                        "example": "<html>...</html>"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Php.PhpOptionResource": {
+                "properties": {
+                    "type": {
+                        "description": "Declared option type (e.g. bool, string)",
+                        "type": "string",
+                        "example": "bool"
+                    },
+                    "value": {
+                        "description": "Current value for this website",
+                        "type": "string",
+                        "example": "On"
+                    },
+                    "comment": {
+                        "description": "Human-readable description",
+                        "type": "string",
+                        "example": "Allows PHP file functions to retrieve data from remote locations"
+                    },
+                    "default": {
+                        "description": "Default value",
+                        "type": "string",
+                        "example": "On"
+                    },
+                    "range": {
+                        "description": "Allowed value range or limits, when applicable",
+                        "type": "string",
+                        "example": "8M-512M",
+                        "nullable": true
+                    },
+                    "max": {
+                        "description": "Maximum value allowed by the account hosting plan, when applicable",
+                        "type": "string",
+                        "example": "512M",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Php.PhpVersionsResource": {
+                "properties": {
+                    "supported": {
+                        "description": "Key-value pairs of supported versions",
+                        "type": "object",
+                        "example": {
+                            "8.1": "PHP 8.1"
+                        }
+                    },
+                    "unsupported": {
+                        "description": "Key-value pairs of unsupported versions",
+                        "type": "object",
+                        "example": {
+                            "5.2": "PHP 5.2"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Websites.WebsiteCollection": {
                 "description": "Array of [`Hosting.V1.Websites.WebsiteResource`](#model/hostingv1websiteswebsiteresource)",
                 "type": "array",
@@ -12787,6 +13223,11 @@
             "x-displayName": "Orders"
         },
         {
+            "name": "Hosting: PHP",
+            "description": "Hosting: PHP",
+            "x-displayName": "PHP"
+        },
+        {
             "name": "Hosting: Websites",
             "description": "Manage hosted websites and web applications. This category\nincludes endpoints for website deployment, configuration,\nmonitoring, and management of hosting resources.",
             "x-displayName": "Websites"
@@ -12928,6 +13369,7 @@
                 "Hosting: Files",
                 "Hosting: NodeJS",
                 "Hosting: Orders",
+                "Hosting: PHP",
                 "Hosting: Websites"
             ]
         },
