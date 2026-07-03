@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.0.0",
+        "version": "1.1.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5764,6 +5764,104 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/activate": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Activate WordPress plugin",
+                "description": "Activate an installed plugin on a WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the activation\njob has been queued.",
+                "operationId": "hosting_activateWordPressPluginV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.ActivatePluginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/deactivate": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Deactivate WordPress plugin",
+                "description": "Deactivate an installed plugin on a WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the\ndeactivation job has been queued.",
+                "operationId": "hosting_deactivateWordPressPluginV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.DeactivatePluginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/install": {
             "post": {
                 "tags": [
@@ -5813,6 +5911,403 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/available": {
+            "get": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "List available WordPress plugins",
+                "description": "List plugins recommended for installation on a WordPress installation that are\nnot yet installed.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
+                "operationId": "hosting_listAvailableWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Plugins.AvailablePluginCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins": {
+            "get": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "List installed WordPress plugins",
+                "description": "List plugins installed on a WordPress installation, including their status,\navailable updates and known vulnerabilities.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
+                "operationId": "hosting_listInstalledWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Filter installed plugins by category.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "cache"
+                            ],
+                            "example": "cache",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Plugins.InstalledPluginCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/wordpress/plugins": {
+            "get": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Search WordPress plugins",
+                "description": "Search the WordPress.org plugin directory for plugins available to install.\n\nUse the returned `slug` values with\nPOST /api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/install.",
+                "operationId": "hosting_searchWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term to match against plugin names. Minimum 3 characters.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minLength": 3,
+                            "example": "seo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Plugins.PluginCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/wordpress/plugins/suggested": {
+            "get": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "List suggested WordPress plugins",
+                "description": "List curated plugin suggestions grouped by website type.\n\nUse the returned `slug` values with\nPOST /api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/install.",
+                "operationId": "hosting_listSuggestedWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "query",
+                        "description": "Optionally scope suggestions to a specific order.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 123456,
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Plugins.SuggestedPluginGroupCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/wordpress/plugins/is-woocommerce-installed": {
+            "get": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Check if WooCommerce is installed",
+                "description": "Check whether WooCommerce is installed on any WordPress installation of a\ndomain. Optionally filter by domain to scope the check.",
+                "operationId": "hosting_checkIfWooCommerceIsInstalledV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain_filter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Plugins.WoocommerceInstalledResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/uninstall": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Uninstall WordPress plugins",
+                "description": "Uninstall one or more plugins from a WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the uninstall\njob has been queued.",
+                "operationId": "hosting_uninstallWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.UninstallPluginsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/hostinger/update": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Update Hostinger WordPress plugin",
+                "description": "Update a Hostinger plugin to its latest version on a WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the update job\nhas been queued.",
+                "operationId": "hosting_updateHostingerWordPressPluginV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.UpdateHostingerPluginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/update": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Update WordPress plugins",
+                "description": "Update one or more installed plugins to their latest version on a WordPress\ninstallation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the update job\nhas been queued.",
+                "operationId": "hosting_updateWordPressPluginsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.UpdatePluginsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/themes/activate": {
+            "post": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "Activate WordPress theme",
+                "description": "Activate an installed theme on a WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the activation\njob has been queued.",
+                "operationId": "hosting_activateWordPressThemeV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Themes.ActivateThemeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/wordpress/{software}/themes/install": {
             "post": {
                 "tags": [
@@ -5835,6 +6330,192 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/WordPress.V1.Themes.InstallThemeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/themes": {
+            "get": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "List installed WordPress themes",
+                "description": "List themes installed on a WordPress installation, including their status,\navailable updates and known vulnerabilities.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
+                "operationId": "hosting_listInstalledWordPressThemesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Themes.InstalledThemeCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/wordpress/themes": {
+            "get": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "List WordPress themes",
+                "description": "List WordPress themes available to install.\n\nUse the returned `slug` values with\nPOST /api/hosting/v1/accounts/{username}/wordpress/{software}/themes/install.",
+                "operationId": "hosting_listWordPressThemesV1",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "query",
+                        "description": "Optionally scope themes to a specific order.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 123456,
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term to match against theme names.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "blog",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Themes.ThemeCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/themes/uninstall": {
+            "post": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "Uninstall WordPress themes",
+                "description": "Uninstall one or more themes from a WordPress installation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the uninstall\njob has been queued.",
+                "operationId": "hosting_uninstallWordPressThemesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Themes.UninstallThemesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/themes/update": {
+            "post": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "Update WordPress themes",
+                "description": "Update one or more installed themes to their latest version on a WordPress\ninstallation.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).\n\nThis operation is asynchronous: a successful response only means the update job\nhas been queued.",
+                "operationId": "hosting_updateWordPressThemesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Themes.UpdateThemesRequest"
                             }
                         }
                     }
@@ -7320,6 +8001,36 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Plugins.ActivatePluginRequest": {
+                "required": [
+                    "plugin"
+                ],
+                "properties": {
+                    "plugin": {
+                        "description": "Slug of the installed plugin to activate.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "example": "akismet"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.DeactivatePluginRequest": {
+                "required": [
+                    "plugin"
+                ],
+                "properties": {
+                    "plugin": {
+                        "description": "Slug of the installed plugin to deactivate.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "example": "akismet"
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.Plugins.InstallPluginsRequest": {
                 "required": [
                     "plugins"
@@ -7339,6 +8050,87 @@
                             "akismet",
                             "hello-dolly"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.UninstallPluginsRequest": {
+                "required": [
+                    "plugins"
+                ],
+                "properties": {
+                    "plugins": {
+                        "description": "Slugs of the installed plugins to uninstall.",
+                        "type": "array",
+                        "items": {
+                            "description": "Plugin slug",
+                            "type": "string",
+                            "example": "akismet"
+                        },
+                        "maxItems": 20,
+                        "minItems": 1,
+                        "example": [
+                            "akismet",
+                            "hello-dolly"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.UpdateHostingerPluginRequest": {
+                "required": [
+                    "slug"
+                ],
+                "properties": {
+                    "slug": {
+                        "description": "Slug of the Hostinger plugin to update to its latest version.",
+                        "type": "string",
+                        "enum": [
+                            "hostinger",
+                            "hostinger-ai-assistant",
+                            "hostinger-affiliate-plugin",
+                            "hostinger-easy-onboarding",
+                            "hostinger-reach"
+                        ],
+                        "example": "hostinger-affiliate-plugin"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.UpdatePluginsRequest": {
+                "required": [
+                    "plugins"
+                ],
+                "properties": {
+                    "plugins": {
+                        "description": "Slugs of the installed plugins to update to their latest version.",
+                        "type": "array",
+                        "items": {
+                            "description": "Plugin slug",
+                            "type": "string",
+                            "example": "akismet"
+                        },
+                        "maxItems": 20,
+                        "minItems": 1,
+                        "example": [
+                            "akismet",
+                            "hello-dolly"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.ActivateThemeRequest": {
+                "required": [
+                    "theme"
+                ],
+                "properties": {
+                    "theme": {
+                        "description": "Slug of the installed theme to activate.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "example": "twentytwentyone"
                     }
                 },
                 "type": "object"
@@ -7387,6 +8179,52 @@
                         ],
                         "example": "default",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.UninstallThemesRequest": {
+                "required": [
+                    "themes"
+                ],
+                "properties": {
+                    "themes": {
+                        "description": "Slugs of the installed themes to uninstall.",
+                        "type": "array",
+                        "items": {
+                            "description": "Theme slug",
+                            "type": "string",
+                            "example": "twentytwentyone"
+                        },
+                        "maxItems": 20,
+                        "minItems": 1,
+                        "example": [
+                            "twentytwenty",
+                            "twentytwentyone"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.UpdateThemesRequest": {
+                "required": [
+                    "themes"
+                ],
+                "properties": {
+                    "themes": {
+                        "description": "Slugs of the installed themes to update to their latest version.",
+                        "type": "array",
+                        "items": {
+                            "description": "Theme slug",
+                            "type": "string",
+                            "example": "twentytwentyone"
+                        },
+                        "maxItems": 20,
+                        "minItems": 1,
+                        "example": [
+                            "twentytwenty",
+                            "twentytwentyone"
+                        ]
                     }
                 },
                 "type": "object"
@@ -10499,6 +11337,36 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Common.VulnerabilityResource": {
+                "properties": {
+                    "title": {
+                        "description": "Short title of the vulnerability",
+                        "type": "string",
+                        "example": "Cross-Site Scripting (XSS)"
+                    },
+                    "description": {
+                        "description": "Details about the vulnerability",
+                        "type": "string",
+                        "example": "A stored XSS vulnerability affecting older versions."
+                    },
+                    "affected_in": {
+                        "description": "Version in which the vulnerability was introduced or is present",
+                        "type": "string",
+                        "example": "4.7.0"
+                    },
+                    "fixed_in": {
+                        "description": "Version in which the vulnerability was fixed",
+                        "type": "string",
+                        "example": "4.7.1"
+                    },
+                    "direct_url": {
+                        "description": "Link to the vulnerability advisory",
+                        "type": "string",
+                        "example": "https://www.wordfence.com/threat-intel/vulnerabilities/id/example"
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.Installations.WordPressInstallationCollection": {
                 "description": "Array of [`WordPress.V1.Installations.WordPressInstallationResource`](#model/wordpressv1installationswordpressinstallationresource)",
                 "type": "array",
@@ -10569,6 +11437,369 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2022-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.AvailablePluginCollection": {
+                "description": "Array of [`WordPress.V1.Plugins.AvailablePluginResource`](#model/wordpressv1pluginsavailablepluginresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Plugins.AvailablePluginResource"
+                }
+            },
+            "WordPress.V1.Plugins.AvailablePluginResource": {
+                "properties": {
+                    "slug": {
+                        "description": "Plugin slug used when installing the plugin",
+                        "type": "string",
+                        "example": "akismet"
+                    },
+                    "title": {
+                        "description": "Human readable plugin name",
+                        "type": "string",
+                        "example": "Akismet Anti-Spam"
+                    },
+                    "description": {
+                        "description": "Short plugin description",
+                        "type": "string",
+                        "example": "Protect your site from spam."
+                    },
+                    "onboarding_description_slug": {
+                        "description": "Translation slug for the onboarding description",
+                        "type": "string",
+                        "example": "akismet_onboarding_description",
+                        "nullable": true
+                    },
+                    "recommended_description_slug": {
+                        "description": "Translation slug for the recommended description",
+                        "type": "string",
+                        "example": "akismet_recommended_description",
+                        "nullable": true
+                    },
+                    "link": {
+                        "description": "Link to the plugin page on WordPress.org",
+                        "type": "string",
+                        "example": "https://wordpress.org/plugins/akismet/"
+                    },
+                    "version": {
+                        "description": "Latest available plugin version",
+                        "type": "string",
+                        "example": "5.3"
+                    },
+                    "required_wordpress_version": {
+                        "description": "Minimum WordPress version required by the plugin",
+                        "type": "string",
+                        "example": "5.8"
+                    },
+                    "required_php_version": {
+                        "description": "Minimum PHP version required by the plugin",
+                        "type": "string",
+                        "example": "7.2"
+                    },
+                    "is_plan_upgrade_needed": {
+                        "description": "Whether a hosting plan upgrade is required to use the plugin",
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.InstalledPluginCollection": {
+                "description": "Array of [`WordPress.V1.Plugins.InstalledPluginResource`](#model/wordpressv1pluginsinstalledpluginresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Plugins.InstalledPluginResource"
+                }
+            },
+            "WordPress.V1.Plugins.InstalledPluginResource": {
+                "properties": {
+                    "name": {
+                        "description": "Plugin slug",
+                        "type": "string",
+                        "example": "akismet"
+                    },
+                    "title": {
+                        "description": "Human readable plugin name",
+                        "type": "string",
+                        "example": "Akismet Anti-Spam"
+                    },
+                    "version": {
+                        "description": "Installed plugin version",
+                        "type": "string",
+                        "example": "5.3"
+                    },
+                    "status": {
+                        "description": "Whether the plugin is active or inactive",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "update": {
+                        "description": "Available update version, or \"none\" when up to date",
+                        "type": "string",
+                        "example": "none"
+                    },
+                    "vulnerabilities": {
+                        "description": "Known vulnerabilities affecting the installed version",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WordPress.V1.Common.VulnerabilityResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.PluginCollection": {
+                "description": "Array of [`WordPress.V1.Plugins.PluginResource`](#model/wordpressv1pluginspluginresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Plugins.PluginResource"
+                }
+            },
+            "WordPress.V1.Plugins.PluginResource": {
+                "properties": {
+                    "slug": {
+                        "description": "Plugin slug used when installing the plugin",
+                        "type": "string",
+                        "example": "akismet"
+                    },
+                    "title": {
+                        "description": "Human readable plugin name",
+                        "type": "string",
+                        "example": "Akismet Anti-Spam"
+                    },
+                    "icons": {
+                        "description": "Plugin icon URLs keyed by resolution",
+                        "properties": {
+                            "1x": {
+                                "type": "string",
+                                "example": "https://ps.w.org/akismet/assets/icon-128x128.png"
+                            },
+                            "2x": {
+                                "type": "string",
+                                "example": "https://ps.w.org/akismet/assets/icon-256x256.png"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "description": {
+                        "description": "Short plugin description",
+                        "type": "string",
+                        "example": "Used by millions, Akismet is quite possibly the best way to protect your site from spam."
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.SuggestedPluginGroupCollection": {
+                "description": "Array of [`WordPress.V1.Plugins.SuggestedPluginGroupResource`](#model/wordpressv1pluginssuggestedplugingroupresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Plugins.SuggestedPluginGroupResource"
+                }
+            },
+            "WordPress.V1.Plugins.SuggestedPluginGroupResource": {
+                "properties": {
+                    "website_type": {
+                        "description": "Website type the suggested plugins are grouped by",
+                        "type": "string",
+                        "enum": [
+                            "business",
+                            "online-store",
+                            "blog",
+                            "portfolio",
+                            "affiliate-marketing",
+                            "other",
+                            "default"
+                        ],
+                        "example": "blog"
+                    },
+                    "plugins": {
+                        "description": "Plugins suggested for the website type",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WordPress.V1.Plugins.SuggestedPluginResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.SuggestedPluginResource": {
+                "properties": {
+                    "slug": {
+                        "description": "Plugin slug used when installing the plugin",
+                        "type": "string",
+                        "example": "akismet"
+                    },
+                    "title": {
+                        "description": "Human readable plugin name",
+                        "type": "string",
+                        "example": "Akismet Anti-Spam"
+                    },
+                    "description": {
+                        "description": "Short plugin description",
+                        "type": "string",
+                        "example": "Protect your site from spam."
+                    },
+                    "onboarding_description_slug": {
+                        "description": "Translation slug for the onboarding description",
+                        "type": "string",
+                        "example": "akismet_onboarding_description",
+                        "nullable": true
+                    },
+                    "recommended_description_slug": {
+                        "description": "Translation slug for the recommended description",
+                        "type": "string",
+                        "example": "akismet_recommended_description",
+                        "nullable": true
+                    },
+                    "link": {
+                        "description": "Link to the plugin page on WordPress.org",
+                        "type": "string",
+                        "example": "https://wordpress.org/plugins/akismet/"
+                    },
+                    "version": {
+                        "description": "Latest available plugin version",
+                        "type": "string",
+                        "example": "5.3"
+                    },
+                    "required_wordpress_version": {
+                        "description": "Minimum WordPress version required by the plugin",
+                        "type": "string",
+                        "example": "5.8"
+                    },
+                    "required_php_version": {
+                        "description": "Minimum PHP version required by the plugin",
+                        "type": "string",
+                        "example": "7.2"
+                    },
+                    "is_preselected": {
+                        "description": "Whether the plugin is preselected during onboarding",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_plan_upgrade_needed": {
+                        "description": "Whether a hosting plan upgrade is required to use the plugin",
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Plugins.WoocommerceInstalledResource": {
+                "properties": {
+                    "is_installed": {
+                        "description": "Whether WooCommerce is installed on any WordPress installation of the domain",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.InstalledThemeCollection": {
+                "description": "Array of [`WordPress.V1.Themes.InstalledThemeResource`](#model/wordpressv1themesinstalledthemeresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Themes.InstalledThemeResource"
+                }
+            },
+            "WordPress.V1.Themes.InstalledThemeResource": {
+                "properties": {
+                    "name": {
+                        "description": "Theme slug",
+                        "type": "string",
+                        "example": "twentytwentyone"
+                    },
+                    "title": {
+                        "description": "Human readable theme name",
+                        "type": "string",
+                        "example": "Twenty Twenty-One"
+                    },
+                    "version": {
+                        "description": "Installed theme version",
+                        "type": "string",
+                        "example": "2.2"
+                    },
+                    "status": {
+                        "description": "Whether the theme is active or inactive",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "update": {
+                        "description": "Available update version, or \"none\" when up to date",
+                        "type": "string",
+                        "example": "none"
+                    },
+                    "vulnerabilities": {
+                        "description": "Known vulnerabilities affecting the installed version",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WordPress.V1.Common.VulnerabilityResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.ThemeCollection": {
+                "description": "Array of [`WordPress.V1.Themes.ThemeResource`](#model/wordpressv1themesthemeresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Themes.ThemeResource"
+                }
+            },
+            "WordPress.V1.Themes.ThemeResource": {
+                "properties": {
+                    "slug": {
+                        "description": "Theme slug used when installing the theme",
+                        "type": "string",
+                        "example": "twentytwentyone"
+                    },
+                    "title": {
+                        "description": "Human readable theme name",
+                        "type": "string",
+                        "example": "Twenty Twenty-One"
+                    },
+                    "url": {
+                        "description": "Link to the theme page on WordPress.org",
+                        "type": "string",
+                        "example": "https://wordpress.org/themes/twentytwentyone/"
+                    },
+                    "featured_image_url": {
+                        "description": "URL of the theme preview thumbnail",
+                        "type": "string",
+                        "example": "https://ts.w.org/wp-content/themes/twentytwentyone/screenshot.png",
+                        "nullable": true
+                    },
+                    "full_image_url": {
+                        "description": "URL of the full-size theme preview image",
+                        "type": "string",
+                        "example": "https://ts.w.org/wp-content/themes/twentytwentyone/screenshot.png",
+                        "nullable": true
+                    },
+                    "description": {
+                        "description": "Short theme description",
+                        "type": "string",
+                        "example": "A blank canvas for your ideas.",
+                        "nullable": true
+                    },
+                    "logo_url": {
+                        "description": "URL of the theme logo",
+                        "type": "string",
+                        "example": "https://ts.w.org/wp-content/themes/twentytwentyone/logo.png",
+                        "nullable": true
+                    },
+                    "is_plan_upgrade_needed": {
+                        "description": "Whether a hosting plan upgrade is required to use the theme",
+                        "type": "boolean",
+                        "example": false
                     }
                 },
                 "type": "object"
