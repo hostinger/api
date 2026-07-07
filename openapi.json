@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.3.0",
+        "version": "1.4.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1824,6 +1824,196 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Horizons.V1.Websites.WebsiteUrlResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cache/clear": {
+            "delete": {
+                "tags": [
+                    "Hosting: Cache"
+                ],
+                "summary": "Clear website cache",
+                "description": "Permanently clears all server-side cache for the website at once. Use it when content was\nupdated and needs to be visible immediately, or after making major changes.\n\nAlso purges the Hostinger CDN cache when CDN is enabled on the website. For a WordPress\ninstallation living in a subdirectory, pass the directory query parameter to clear its cache.",
+                "operationId": "hosting_clearWebsiteCacheV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "name": "directory",
+                        "in": "query",
+                        "description": "Directory of the website installation to clear, relative to the website root.\nDefaults to the website root.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "blog"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cacheless-mode/disable": {
+            "patch": {
+                "tags": [
+                    "Hosting: Cache"
+                ],
+                "summary": "Disable cacheless mode",
+                "description": "Turns off development (cacheless) mode and returns the website to normal caching. Use it after\nfinishing development work to restore the performance benefits of caching.",
+                "operationId": "hosting_disableCachelessModeV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cache/disable": {
+            "patch": {
+                "tags": [
+                    "Hosting: Cache"
+                ],
+                "summary": "Disable website cache",
+                "description": "Turns off server-side caching for the website until it is enabled again. May impact performance.\nUse it when experiencing cache-related issues; to temporarily bypass caching while developing\nor debugging, prefer enabling cacheless mode instead.\n\nDoes nothing if caching is already disabled.",
+                "operationId": "hosting_disableWebsiteCacheV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cacheless-mode/enable": {
+            "patch": {
+                "tags": [
+                    "Hosting: Cache"
+                ],
+                "summary": "Enable cacheless mode",
+                "description": "Enables development (cacheless) mode where nothing is cached, effectively turning off all\ncaching for the website. Use it while actively developing, testing changes, debugging issues,\nor when real-time updates must be visible. Disable cacheless mode afterwards to restore\nnormal caching.",
+                "operationId": "hosting_enableCachelessModeV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cache/enable": {
+            "patch": {
+                "tags": [
+                    "Hosting: Cache"
+                ],
+                "summary": "Enable website cache",
+                "description": "Turns on server-side caching for the website for better performance. Use it for faster page\nloads, reduced server load, or improved user experience. Recommended for production websites.\n\nDoes nothing if caching is already enabled.",
+                "operationId": "hosting_enableWebsiteCacheV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -14390,6 +14580,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Hosting: Cache",
+            "description": "Hosting: Cache",
+            "x-displayName": "Cache"
+        },
+        {
             "name": "Hosting: Cron Jobs",
             "description": "Hosting: Cron Jobs",
             "x-displayName": "Cron Jobs"
@@ -14589,6 +14784,7 @@
         {
             "name": "Hosting",
             "tags": [
+                "Hosting: Cache",
                 "Hosting: Cron Jobs",
                 "Hosting: Datacenters",
                 "Hosting: Databases",
