@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.5.0",
+        "version": "1.5.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1883,14 +1883,14 @@
                 }
             }
         },
-        "/api/hosting/v1/accounts/{username}/websites/{domain}/cacheless-mode/disable": {
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cacheless-mode/toggle": {
             "patch": {
                 "tags": [
                     "Hosting: Cache"
                 ],
-                "summary": "Disable cacheless mode",
-                "description": "Turns off development (cacheless) mode and returns the website to normal caching. Use it after\nfinishing development work to restore the performance benefits of caching.",
-                "operationId": "hosting_disableCachelessModeV1",
+                "summary": "Toggle cacheless mode",
+                "description": "Turns development (cacheless) mode on or off, based on the enabled flag. When enabled, nothing\nis cached, effectively turning off all caching for the website; use it while actively developing,\ntesting changes, debugging issues, or when real-time updates must be visible. Disable it after\nfinishing development work to restore the performance benefits of caching.",
+                "operationId": "hosting_toggleCachelessModeV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/username_path"
@@ -1899,6 +1899,16 @@
                         "$ref": "#/components/parameters/domain"
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Cache.ToggleCachelessModeRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success empty response",
@@ -1909,6 +1919,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -1919,14 +1932,14 @@
                 }
             }
         },
-        "/api/hosting/v1/accounts/{username}/websites/{domain}/cache/disable": {
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/cache/toggle": {
             "patch": {
                 "tags": [
                     "Hosting: Cache"
                 ],
-                "summary": "Disable website cache",
-                "description": "Turns off server-side caching for the website until it is enabled again. May impact performance.\nUse it when experiencing cache-related issues; to temporarily bypass caching while developing\nor debugging, prefer enabling cacheless mode instead.\n\nDoes nothing if caching is already disabled.",
-                "operationId": "hosting_disableWebsiteCacheV1",
+                "summary": "Toggle website cache",
+                "description": "Turns server-side caching for the website on or off, based on the enabled flag. Enable it for\nfaster page loads, reduced server load, and improved user experience; recommended for production\nwebsites. Disabling may impact performance; to temporarily bypass caching while developing or\ndebugging, prefer toggling cacheless mode instead.\n\nDoes nothing if caching is already in the requested state.",
+                "operationId": "hosting_toggleWebsiteCacheV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/username_path"
@@ -1935,6 +1948,16 @@
                         "$ref": "#/components/parameters/domain"
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Cache.ToggleCacheRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success empty response",
@@ -1946,77 +1969,8 @@
                             }
                         }
                     },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/hosting/v1/accounts/{username}/websites/{domain}/cacheless-mode/enable": {
-            "patch": {
-                "tags": [
-                    "Hosting: Cache"
-                ],
-                "summary": "Enable cacheless mode",
-                "description": "Enables development (cacheless) mode where nothing is cached, effectively turning off all\ncaching for the website. Use it while actively developing, testing changes, debugging issues,\nor when real-time updates must be visible. Disable cacheless mode afterwards to restore\nnormal caching.",
-                "operationId": "hosting_enableCachelessModeV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/username_path"
-                    },
-                    {
-                        "$ref": "#/components/parameters/domain"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success empty response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/hosting/v1/accounts/{username}/websites/{domain}/cache/enable": {
-            "patch": {
-                "tags": [
-                    "Hosting: Cache"
-                ],
-                "summary": "Enable website cache",
-                "description": "Turns on server-side caching for the website for better performance. Use it for faster page\nloads, reduced server load, or improved user experience. Recommended for production websites.\n\nDoes nothing if caching is already enabled.",
-                "operationId": "hosting_enableWebsiteCacheV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/username_path"
-                    },
-                    {
-                        "$ref": "#/components/parameters/domain"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success empty response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
-                                }
-                            }
-                        }
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -8540,6 +8494,32 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Cache.ToggleCacheRequest": {
+                "required": [
+                    "enabled"
+                ],
+                "properties": {
+                    "enabled": {
+                        "description": "Turn server-side caching on (true) or off (false) for the website.",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Cache.ToggleCachelessModeRequest": {
+                "required": [
+                    "enabled"
+                ],
+                "properties": {
+                    "enabled": {
+                        "description": "Turn development (cacheless) mode on (true) or off (false) for the website.",
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
