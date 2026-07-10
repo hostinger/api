@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.5.1",
+        "version": "1.6.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -39,6 +39,442 @@
         }
     ],
     "paths": {
+        "/api/agency-hosting/v1/orders/{order_id}/datacenters": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Datacenters"
+                ],
+                "summary": "List available datacenters for an Agency Plan order",
+                "description": "Lists the datacenters available for provisioning a new website on the given Agency Plan\nhosting order.\n\nEach datacenter includes a `pinger_url` you can ping from the client to measure round-trip\nlatency; comparing the results across datacenters lets you pick the nearest one (lowest\nping) before choosing its `code` as the `datacenter_code` when creating a website setup.",
+                "operationId": "agency-hosting_listAvailableDatacentersForAnAgencyPlanOrderV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Datacenters.DatacenterCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains/{from_domain}": {
+            "put": {
+                "tags": [
+                    "Agency Hosting: Domains"
+                ],
+                "summary": "Change Agency Plan website domain",
+                "description": "Changes the primary domain for an Agency Plan website.\n\nProvide the current domain in the path and the new domain in the request body.\nSet domain to null to revert to the temporary domain.",
+                "operationId": "agency-hosting_changeAgencyPlanWebsiteDomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/from_domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Domains.ChangeDomainRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: Domains"
+                ],
+                "summary": "Link domain to Agency Plan website",
+                "description": "Links a domain to the specified Agency Plan website so it can serve traffic for that domain.",
+                "operationId": "agency-hosting_linkDomainToAgencyPlanWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Domains.LinkDomainRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/domains": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Domains"
+                ],
+                "summary": "List Agency Plan domains",
+                "description": "Returns a paginated list of domains associated with Agency Plan websites accessible to the authenticated client.\n\nUse the website_uuids filter to narrow results to specific websites.",
+                "operationId": "agency-hosting_listAgencyPlanDomainsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/website_uuids"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AgencyHosting.V1.Domains.DomainCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains/{domain}": {
+            "delete": {
+                "tags": [
+                    "Agency Hosting: Domains"
+                ],
+                "summary": "Unlink domain from Agency Plan website",
+                "description": "Unlinks a domain from the specified Agency Plan website.\n\nThe website stops serving traffic on this domain immediately.\n\nWebsite files and database are preserved, and any other linked domains remain accessible.\n\nIf this is the only domain on the website, unlinking leaves the website without an accessible domain.",
+                "operationId": "agency-hosting_unlinkDomainFromAgencyPlanWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/orders/{order_id}/websites/setups": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: Website Setups"
+                ],
+                "summary": "Provision a new Agency Plan website",
+                "description": "Provisions a new website on one of your Agency Plan hosting orders.\n\nChoose the datacenter, stack (`flavor`), and PHP version for the site. Optionally attach\nyour own `domain` — omit it, set it to `null`, or leave it unavailable and a free\n`*.hostingersite.com` subdomain is generated instead — and/or install WordPress by\nsupplying the `wordpress` details (admin account, site title, and language).\n\nCommon setups:\n- **Plain PHP site**: `flavor` set to `php-fpm`, with `settings.php.version`; omit\n  `wordpress` and `type`.\n- **WordPress site**: `flavor` set to the desired WordPress version (e.g. `wp-7.0`), plus\n  the `wordpress` block (admin account, title, language).\n- **Static/Node.js frontend app**: `flavor` set to `php-fpm` and `type` set to\n  `node-static`.\n\nProvisioning runs in the background, so the response returns immediately with a setup UUID\nthat identifies the job. The new website becomes reachable once provisioning finishes.",
+                "operationId": "agency-hosting_provisionANewAgencyPlanWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Setups.CreateSetupRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Setups.WebsiteSetupResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/orders/{order_id}/websites/setups/{setup_uuid}": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Website Setups"
+                ],
+                "summary": "Get Agency Plan website setup status",
+                "description": "Returns the current status of an Agency Plan website setup started via the setups\nendpoint.\n\nPoll this endpoint using the `setup_uuid` returned from the provisioning request until\n`status` becomes `completed`, at which point `website_uid` identifies the new website.",
+                "operationId": "agency-hosting_getAgencyPlanWebsiteSetupStatusV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/setup_uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Setups.WebsiteSetupStatusResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/build-assets": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: Websites"
+                ],
+                "summary": "Build Agency Plan website NodeJS assets",
+                "description": "Builds and deploys a Node.js application for an Agency Plan website from an already-uploaded archive.\n\nUpload the archive to file browser first, then provide its relative path from document root in this request.\nWebsite contents are overwritten by the build result, which is deployed to public_html.",
+                "operationId": "agency-hosting_buildAgencyPlanWebsiteNodeJSAssetsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.BuildAssetsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Websites"
+                ],
+                "summary": "Get Agency Plan website details",
+                "description": "Retrieves detailed information about a specific Agency Plan website, including configuration,\nstatus, metadata, hosting plan details, and resource quotas.",
+                "operationId": "agency-hosting_getAgencyPlanWebsiteDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Agency Hosting: Websites"
+                ],
+                "summary": "Delete Agency Plan website",
+                "description": "Deletes an Agency Plan website and schedules cleanup of its resources.\n\nThis action is irreversible. Website files, databases, and linked domains are removed.",
+                "operationId": "agency-hosting_deleteAgencyPlanWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteDeletionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/processes": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Websites"
+                ],
+                "summary": "List running Agency Plan website processes",
+                "description": "Lists active and recently completed asynchronous processes for an Agency Plan website.\n\nEach process has a unique ID (for tracking), a type, and a status (running, completed, failed).\nPoll this endpoint after initiating async operations (SSL setup, backups, cloning) to track progress.",
+                "operationId": "agency-hosting_listRunningAgencyPlanWebsiteProcessesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteProcessCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/billing/v1/catalog": {
             "get": {
                 "tags": [
@@ -7882,6 +8318,187 @@
                 "type": "object",
                 "x-scalar-ignore": true
             },
+            "AgencyHosting.V1.Domains.ChangeDomainRequest": {
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "New domain to assign to the website. Set to null to revert to the temporary domain.",
+                        "type": "string",
+                        "example": "new.example.com",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Domains.LinkDomainRequest": {
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Fully qualified domain name to link to the website",
+                        "type": "string",
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Setups.CreateSetupRequest": {
+                "description": "Create a new Agency Plan website setup on the given order",
+                "required": [
+                    "datacenter_code",
+                    "flavor",
+                    "settings"
+                ],
+                "properties": {
+                    "datacenter_code": {
+                        "description": "Datacenter code where the website should be provisioned. Available codes depend on live capacity and are not a fixed set.",
+                        "type": "string",
+                        "example": "us-east"
+                    },
+                    "flavor": {
+                        "description": "Setup flavor: a specific WordPress version in the format `wp-<major>.<minor>` or `wp-<major>.<minor>.<patch>` (e.g. `wp-6.8.2`), or `php-fpm` for a plain PHP stack. Generic versions like `wp-latest` are not allowed.",
+                        "type": "string",
+                        "pattern": "^(wp-[0-9]+(\\.[0-9]+){1,2}|php-fpm)$",
+                        "example": "wp-6.8.2"
+                    },
+                    "settings": {
+                        "description": "Website settings",
+                        "required": [
+                            "php"
+                        ],
+                        "properties": {
+                            "php": {
+                                "required": [
+                                    "version"
+                                ],
+                                "properties": {
+                                    "version": {
+                                        "description": "PHP version",
+                                        "type": "string",
+                                        "example": "8.3"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "domain": {
+                        "description": "Primary domain to attach to the website. Omit or set to null to get a free auto-generated *.hostingersite.com subdomain instead.",
+                        "type": "string",
+                        "example": "example.com",
+                        "nullable": true
+                    },
+                    "type": {
+                        "description": "Website type",
+                        "type": "string",
+                        "enum": [
+                            "horizons",
+                            "node-static"
+                        ],
+                        "example": "node-static",
+                        "nullable": true
+                    },
+                    "wordpress": {
+                        "description": "WordPress installation options",
+                        "required": [
+                            "language",
+                            "title",
+                            "admin"
+                        ],
+                        "properties": {
+                            "language": {
+                                "type": "string",
+                                "example": "en_US"
+                            },
+                            "title": {
+                                "type": "string",
+                                "example": "My Blog"
+                            },
+                            "admin": {
+                                "required": [
+                                    "user",
+                                    "password",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "user": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "S3cureP@ssw0rd"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "admin@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "clone": {
+                        "description": "Clone the new website from an existing website",
+                        "required": [
+                            "website_uid"
+                        ],
+                        "properties": {
+                            "website_uid": {
+                                "type": "string",
+                                "example": "zpwlGlp19"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "derive_domain": {
+                        "description": "Derive the domain from an existing vhost",
+                        "required": [
+                            "from_vhost"
+                        ],
+                        "properties": {
+                            "from_vhost": {
+                                "required": [
+                                    "username",
+                                    "vhost"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "u123456789"
+                                    },
+                                    "vhost": {
+                                        "type": "string",
+                                        "example": "example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.BuildAssetsRequest": {
+                "description": "Build Node.js assets from an already-uploaded archive",
+                "required": [
+                    "archive_path"
+                ],
+                "properties": {
+                    "archive_path": {
+                        "description": "Directory, relative to the website document root, where the uploaded site archive currently lives. Most commonly this is simply `public_html`.",
+                        "type": "string",
+                        "example": "public_html"
+                    }
+                },
+                "type": "object"
+            },
             "Billing.V1.Subscription.CancelRequest": {
                 "properties": {
                     "reason_code": {
@@ -9796,6 +10413,656 @@
                             "twentytwenty",
                             "twentytwentyone"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Datacenters.CoordinatesResource": {
+                "properties": {
+                    "latitude": {
+                        "description": "Latitude coordinate",
+                        "type": "number",
+                        "format": "float",
+                        "example": 51.5074
+                    },
+                    "longitude": {
+                        "description": "Longitude coordinate",
+                        "type": "number",
+                        "format": "float",
+                        "example": 0.1278
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Datacenters.DatacenterCollection": {
+                "description": "Array of [`AgencyHosting.V1.Datacenters.DatacenterResource`](#model/agencyhostingv1datacentersdatacenterresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Datacenters.DatacenterResource"
+                }
+            },
+            "AgencyHosting.V1.Datacenters.DatacenterResource": {
+                "required": [
+                    "title",
+                    "code",
+                    "country",
+                    "coordinates",
+                    "pinger_url"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Datacenter title",
+                        "type": "string",
+                        "example": "Europe (Netherlands)"
+                    },
+                    "code": {
+                        "description": "Datacenter code",
+                        "type": "string",
+                        "example": "ukfast"
+                    },
+                    "country": {
+                        "description": "Datacenter country code",
+                        "type": "string",
+                        "example": "uk"
+                    },
+                    "coordinates": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Datacenters.CoordinatesResource"
+                    },
+                    "pinger_url": {
+                        "description": "URL you can ping to measure round-trip latency to this datacenter. Compare the measured latency across datacenters to identify the nearest one (lowest ping) for your website. Null when no online server is currently available to measure against.",
+                        "type": "string",
+                        "example": "https://my-website.com/ping.php",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Domains.DomainCollection": {
+                "description": "Array of [`AgencyHosting.V1.Domains.DomainResource`](#model/agencyhostingv1domainsdomainresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Domains.DomainResource"
+                }
+            },
+            "AgencyHosting.V1.Domains.DomainResource": {
+                "properties": {
+                    "fqdn": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "website_uid": {
+                        "description": "Owner website UID",
+                        "type": "string",
+                        "example": "zpwlGlp19"
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Setups.WebsiteSetupResource": {
+                "properties": {
+                    "setup_uuid": {
+                        "description": "UUID tracking the asynchronous website setup process",
+                        "type": "string",
+                        "example": "0193b6d4-fabb-70e0-8ea4-cfe060a45898"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Setups.WebsiteSetupStatusResource": {
+                "properties": {
+                    "website_uid": {
+                        "description": "UID of the website created by the setup, available once provisioning completes",
+                        "type": "string",
+                        "example": "zpwlGlp19",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Website setup status",
+                        "type": "string",
+                        "enum": [
+                            "running",
+                            "completed"
+                        ],
+                        "example": "running"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.CustomSslCertResource": {
+                "properties": {
+                    "is_expired": {
+                        "description": "Is the SSL certificate expired",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.SslCertResource": {
+                "properties": {
+                    "names": {
+                        "description": "SSL cert names",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "test.com"
+                        },
+                        "example": [
+                            "test.com",
+                            "www.test.com"
+                        ]
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteDeletionResource": {
+                "properties": {
+                    "website_uid": {
+                        "description": "Deleted website UID",
+                        "type": "string",
+                        "example": "zpwlGlp19"
+                    },
+                    "status": {
+                        "description": "Deletion status",
+                        "type": "string",
+                        "example": "deleted"
+                    },
+                    "message": {
+                        "description": "Human-readable result message",
+                        "type": "string",
+                        "example": "Website scheduled for deletion"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "is_cleanup_scheduled": {
+                        "description": "Whether background cleanup has been scheduled",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteDomainDetailsCollection": {
+                "description": "Array of [`AgencyHosting.V1.Websites.WebsiteDomainDetailsResource`](#model/agencyhostingv1websiteswebsitedomaindetailsresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteDomainDetailsResource"
+                }
+            },
+            "AgencyHosting.V1.Websites.WebsiteDomainDetailsResource": {
+                "properties": {
+                    "fqdn": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "test.com"
+                    },
+                    "parent_fqdn": {
+                        "description": "Parent domain name if the domain is a subdomain",
+                        "type": "string",
+                        "example": "test.com",
+                        "nullable": true
+                    },
+                    "ipv6": {
+                        "description": "IPv6 address",
+                        "type": "string",
+                        "example": "2001:db8::1",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "nameservers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "a.dns-parking.com"
+                        },
+                        "example": [
+                            "a.dns-parking.com",
+                            "b.dns-parking.com"
+                        ]
+                    },
+                    "ssl_cert": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.SslCertResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "custom_ssl_cert": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.CustomSslCertResource"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteOrderPlanResource": {
+                "properties": {
+                    "name": {
+                        "description": "Plan name",
+                        "type": "string",
+                        "example": "Hosting Single",
+                        "nullable": true
+                    },
+                    "parameters": {
+                        "description": "Plan parameters",
+                        "properties": {
+                            "disk_quota_bytes": {
+                                "description": "Disk quota in bytes",
+                                "type": "integer",
+                                "example": 21474836480
+                            },
+                            "inode_quota": {
+                                "description": "Inode quota",
+                                "type": "integer",
+                                "example": 10000
+                            },
+                            "cpu_cores": {
+                                "description": "CPU cores",
+                                "type": "integer",
+                                "example": 2
+                            },
+                            "memory_quota_bytes": {
+                                "description": "Memory quota in bytes",
+                                "type": "integer",
+                                "example": 1073741824
+                            },
+                            "disk_iops_quota": {
+                                "description": "Disk IOPs quota",
+                                "type": "integer",
+                                "example": 100000
+                            },
+                            "process_quota": {
+                                "description": "Process quota",
+                                "type": "integer",
+                                "example": 10000
+                            },
+                            "website_quota": {
+                                "description": "Website quota",
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "max_databases_per_website": {
+                                "description": "Maximum number of databases per website",
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "is_cdn_available": {
+                                "description": "Is CDN available",
+                                "type": "boolean",
+                                "example": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteOrderResource": {
+                "properties": {
+                    "id": {
+                        "description": "Order ID",
+                        "type": "integer",
+                        "example": 123456
+                    },
+                    "status": {
+                        "description": "Order status",
+                        "type": "string",
+                        "example": "active",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "plan": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteOrderPlanResource"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsitePhpSettingsResource": {
+                "properties": {
+                    "version": {
+                        "description": "PHP version",
+                        "type": "string",
+                        "example": "8.3"
+                    },
+                    "workers": {
+                        "description": "Number of PHP workers",
+                        "type": "integer",
+                        "example": 4
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsitePreviewDomainResource": {
+                "properties": {
+                    "fqdn": {
+                        "description": "Preview domain name",
+                        "type": "string",
+                        "example": "plum-bee-184082.hostingersite.com"
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteProcessCollection": {
+                "description": "Array of [`AgencyHosting.V1.Websites.WebsiteProcessResource`](#model/agencyhostingv1websiteswebsiteprocessresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteProcessResource"
+                }
+            },
+            "AgencyHosting.V1.Websites.WebsiteProcessResource": {
+                "properties": {
+                    "id": {
+                        "description": "Process ID",
+                        "type": "string",
+                        "example": "0193b6d4-fabb-70e0-8ea4-cfe060a45898"
+                    },
+                    "type": {
+                        "description": "Process type",
+                        "type": "string",
+                        "example": "backup_generation"
+                    },
+                    "status": {
+                        "description": "Process status",
+                        "type": "string",
+                        "enum": [
+                            "running",
+                            "completed",
+                            "failed"
+                        ],
+                        "example": "running"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteRemoteAccessResource": {
+                "properties": {
+                    "mode": {
+                        "description": "Remote access mode",
+                        "type": "string",
+                        "example": "ssh_and_sftp"
+                    },
+                    "ssh": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteSshDetailsResource"
+                    },
+                    "sftp": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteSftpDetailsResource"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteResource": {
+                "properties": {
+                    "uid": {
+                        "description": "Website UID",
+                        "type": "string",
+                        "example": "zpwlGlp19"
+                    },
+                    "ipv4": {
+                        "description": "IPv4 address",
+                        "type": "string",
+                        "example": "192.161.10.1"
+                    },
+                    "flavor": {
+                        "description": "Setup flavor",
+                        "type": "string",
+                        "example": "wp-6.2.0"
+                    },
+                    "type": {
+                        "description": "Website type",
+                        "type": "string",
+                        "example": "node-static",
+                        "nullable": true
+                    },
+                    "description": {
+                        "description": "Description",
+                        "type": "string",
+                        "example": "Very awesome website",
+                        "nullable": true
+                    },
+                    "state": {
+                        "description": "Website state",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "suspended"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "domains": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteDomainDetailsCollection"
+                    },
+                    "preview_domain": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsitePreviewDomainResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "settings": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteSettingsResource"
+                    },
+                    "wordpress": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WordPressInstallResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "remote_access": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteRemoteAccessResource"
+                    },
+                    "server": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteServerResource"
+                    },
+                    "order": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteOrderResource"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteUserResource"
+                    },
+                    "staging_root": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteStagingRootResource"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteServerResource": {
+                "properties": {
+                    "hostname": {
+                        "description": "Server hostname",
+                        "type": "string",
+                        "example": "us-west-1.hstgr.io"
+                    },
+                    "country_code": {
+                        "description": "Country code",
+                        "type": "string",
+                        "example": "us"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteSettingsResource": {
+                "properties": {
+                    "php": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsitePhpSettingsResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "PHP settings"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteSftpDetailsResource": {
+                "properties": {
+                    "username": {
+                        "description": "SFTP username",
+                        "type": "string",
+                        "example": "u123456789_abcDeFg"
+                    },
+                    "host": {
+                        "description": "SFTP host",
+                        "type": "string",
+                        "example": "192.161.10.1"
+                    },
+                    "port": {
+                        "description": "SFTP port",
+                        "type": "integer",
+                        "example": 65002
+                    },
+                    "is_enabled": {
+                        "description": "Is SFTP access enabled",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteSshDetailsResource": {
+                "properties": {
+                    "username": {
+                        "description": "SSH username",
+                        "type": "string",
+                        "example": "u123456789_abcDeFg"
+                    },
+                    "host": {
+                        "description": "SSH host",
+                        "type": "string",
+                        "example": "192.161.10.1"
+                    },
+                    "port": {
+                        "description": "SSH port",
+                        "type": "integer",
+                        "example": 65002
+                    },
+                    "is_enabled": {
+                        "description": "Is SSH access enabled",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_password_enabled": {
+                        "description": "Is SSH password access enabled",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteStagingRootResource": {
+                "properties": {
+                    "uid": {
+                        "description": "UID of the website this is a staging environment of",
+                        "type": "string",
+                        "example": "zpwlGlp19"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteUserResource": {
+                "properties": {
+                    "username": {
+                        "description": "System username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "state": {
+                        "description": "User state",
+                        "type": "string",
+                        "example": "active"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WordPressInstallResource": {
+                "properties": {
+                    "domain": {
+                        "description": "WordPress domain",
+                        "type": "string",
+                        "example": "test.com"
+                    },
+                    "title": {
+                        "description": "WordPress title",
+                        "type": "string",
+                        "example": "My Blog"
+                    },
+                    "language": {
+                        "description": "WordPress language",
+                        "type": "string",
+                        "example": "en_US"
+                    },
+                    "is_config_locked": {
+                        "description": "WordPress configuration lock status",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
                     }
                 },
                 "type": "object"
@@ -14018,6 +15285,63 @@
             }
         },
         "parameters": {
+            "from_domain": {
+                "name": "from_domain",
+                "in": "path",
+                "description": "Current domain name to change from",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "old.example.com"
+                }
+            },
+            "order_id_path": {
+                "name": "order_id",
+                "in": "path",
+                "description": "Agency Plan order ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 123456
+                }
+            },
+            "setup_uuid": {
+                "name": "setup_uuid",
+                "in": "path",
+                "description": "Website setup UUID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "0193b6d4-fabb-70e0-8ea4-cfe060a45898"
+                }
+            },
+            "website_uid": {
+                "name": "website_uid",
+                "in": "path",
+                "description": "Agency Plan website UID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "zpwlGlp19"
+                }
+            },
+            "website_uuids": {
+                "name": "website_uuids",
+                "in": "query",
+                "description": "Filter by website UIDs",
+                "required": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "zpwlGlp19"
+                    ],
+                    "nullable": true
+                }
+            },
             "category": {
                 "name": "category",
                 "in": "query",
@@ -14511,6 +15835,26 @@
     ],
     "tags": [
         {
+            "name": "Agency Hosting: Datacenters",
+            "description": "Agency Hosting: Datacenters",
+            "x-displayName": "Datacenters"
+        },
+        {
+            "name": "Agency Hosting: Domains",
+            "description": "Agency Hosting: Domains",
+            "x-displayName": "Domains"
+        },
+        {
+            "name": "Agency Hosting: Website Setups",
+            "description": "Agency Hosting: Website Setups",
+            "x-displayName": "Website Setups"
+        },
+        {
+            "name": "Agency Hosting: Websites",
+            "description": "Agency Hosting: Websites",
+            "x-displayName": "Websites"
+        },
+        {
             "name": "Billing: Catalog",
             "description": "Access a comprehensive catalog of service plans and\nsubscription options, complete with detailed pricing\nand features.",
             "x-displayName": "Catalog"
@@ -14810,6 +16154,15 @@
                 "Hosting: Orders",
                 "Hosting: PHP",
                 "Hosting: Websites"
+            ]
+        },
+        {
+            "name": "Agency Hosting",
+            "tags": [
+                "Agency Hosting: Domains",
+                "Agency Hosting: Websites",
+                "Agency Hosting: Website Setups",
+                "Agency Hosting: Datacenters"
             ]
         },
         {
