@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.6.1",
+        "version": "1.6.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -240,6 +240,52 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/files/import-archive": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: Files"
+                ],
+                "summary": "Import Agency Plan website from archive",
+                "description": "Imports an Agency Plan website from an already-uploaded archive.\n\nUpload the archive to the website's root directory via file browser first, then provide its\nfilename in this request. Website contents are overwritten by the archive contents. Supported\narchive types: .zip, .tar, .tar.gz, .tgz.",
+                "operationId": "agency-hosting_importAgencyPlanWebsiteFromArchiveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Files.ImportArchiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -8345,6 +8391,20 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Files.ImportArchiveRequest": {
+                "description": "Import a website from an already-uploaded archive",
+                "required": [
+                    "archive_name"
+                ],
+                "properties": {
+                    "archive_name": {
+                        "description": "Archive filename (e.g., archive.zip). The file must already be uploaded to the website's .h5g/ directory.",
+                        "type": "string",
+                        "example": "archive.zip"
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Setups.CreateSetupRequest": {
                 "description": "Create a new Agency Plan website setup on the given order",
                 "required": [
@@ -10501,6 +10561,31 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Files.UploadUrlResource": {
+                "required": [
+                    "url",
+                    "auth_key",
+                    "rest_auth_key"
+                ],
+                "properties": {
+                    "url": {
+                        "description": "The TUS upload endpoint URL to send upload requests to",
+                        "type": "string",
+                        "example": "https://h5g12345-fm.hstgr.io/rest/1b2b4e5d5a5f795f/api/tus"
+                    },
+                    "auth_key": {
+                        "description": "Authentication token to pass as the `X-Auth` header in TUS upload requests",
+                        "type": "string",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfX0.O-x6KeHMkNqnbYvbRcdDEQXOSLcqyE7xNrnKvftbG3A"
+                    },
+                    "rest_auth_key": {
+                        "description": "Authentication token to pass as the `X-Auth-Rest` header in TUS upload requests",
+                        "type": "string",
+                        "example": "5c3b12fabf3d9652780a23ae705d2feb556c89907d0db50cddb8dffc27c1149d-1b2b4e5d5a5f795f"
                     }
                 },
                 "type": "object"
@@ -15845,6 +15930,11 @@
             "x-displayName": "Domains"
         },
         {
+            "name": "Agency Hosting: Files",
+            "description": "Agency Hosting: Files",
+            "x-displayName": "Files"
+        },
+        {
             "name": "Agency Hosting: Website Setups",
             "description": "Agency Hosting: Website Setups",
             "x-displayName": "Website Setups"
@@ -16162,7 +16252,8 @@
                 "Agency Hosting: Domains",
                 "Agency Hosting: Websites",
                 "Agency Hosting: Website Setups",
-                "Agency Hosting: Datacenters"
+                "Agency Hosting: Datacenters",
+                "Agency Hosting: Files"
             ]
         },
         {
