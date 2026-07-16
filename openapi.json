@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.7.1",
+        "version": "1.8.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3584,6 +3584,112 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/vulnerabilities": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "List Node.js vulnerabilities",
+                "description": "Lists known npm package vulnerabilities detected on a Node.js website, enriched with\nadvisory metadata (severity, CVSS score, CVE, advisory URL). Results are sorted from\nthe most severe to the least severe, then by publish date (newest first). Use the\n`severities` query parameter to filter.\n\nVulnerabilities with `is_patchable` set to `true` can be auto-fixed via the\n`Patch Node.js Vulnerabilities` endpoint, which opens a GitHub pull request with\nupdated package versions. Auto-fix is only available for websites deployed from a\nconnected GitHub repository. Vulnerabilities with `is_patching_in_progress` set to\n`true` are already included in an open patch pull request; while any patch pull\nrequest is open, new patch requests for this website are rejected until it is merged\nor closed.\n\nData comes from periodic dependency scans, so it may lag behind the latest deployment.\nAn empty list means the most recent scan found no vulnerabilities; it does not\nguarantee the current deployment is vulnerability-free. Available on Business and\nCloud Hosting plans.",
+                "operationId": "hosting_listNode.jsVulnerabilitiesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "name": "severities",
+                        "in": "query",
+                        "description": "Severities to filter by",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "low",
+                                    "moderate",
+                                    "high",
+                                    "critical",
+                                    "unknown"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.VulnerabilityCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/vulnerabilities/patch": {
+            "post": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Patch Node.js vulnerabilities",
+                "description": "Patches the selected Node.js vulnerabilities by updating the affected package versions\nin `package.json` and opening a GitHub pull request in the connected repository. The\ncustomer reviews and merges the pull request; merging triggers the automatic deployment.\n\nAuto-fix is only available for websites deployed from a connected GitHub repository.\nWebsites deployed from an archive have no auto-fix path and return a 404. The Hostinger\nGitHub App needs write access to the repository; without it the request fails with a\n403 explaining the missing permission.\n\nOnly vulnerabilities with `is_patchable` set to `true` can be patched. Non-patchable\nIDs in the selection are skipped; the pull request covers the patchable subset, listed\nin `patched_vulnerability_ids`. Selections without any patchable vulnerability are\nrejected with a 422. Only one patch pull request can be open at a time per website;\nclose or merge it before patching again. Available on Business and Cloud Hosting plans.",
+                "operationId": "hosting_patchNode.jsVulnerabilitiesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.PatchVulnerabilitiesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.PatchResultResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -9504,6 +9610,23 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.PatchVulnerabilitiesRequest": {
+                "required": [
+                    "vulnerability_ids"
+                ],
+                "properties": {
+                    "vulnerability_ids": {
+                        "description": "List of vulnerability IDs to patch, as returned by the list vulnerabilities endpoint.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "GHSA-1111-2222-3333"
+                        },
+                        "minItems": 1
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Php.UpdatePhpExtensionsRequest": {
                 "properties": {
                     "enable": {
@@ -13169,6 +13292,36 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.PatchResultResource": {
+                "properties": {
+                    "pr_url": {
+                        "description": "URL to the created GitHub pull request",
+                        "type": "string",
+                        "example": "https://github.com/owner/repo/pull/42"
+                    },
+                    "pr_number": {
+                        "description": "GitHub pull request number",
+                        "type": "integer",
+                        "example": 42
+                    },
+                    "head_branch": {
+                        "description": "The branch created with the fix",
+                        "type": "string",
+                        "example": "fix/patch-vulnerabilities-a1b2c3d4"
+                    },
+                    "patched_vulnerability_ids": {
+                        "description": "List of vulnerability IDs that were patched in the pull request",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "GHSA-jf85-cpcp-j695"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.SourceOptionsResource": {
                 "properties": {
                     "archive_path": {
@@ -13176,6 +13329,109 @@
                         "type": "string",
                         "example": "archive.zip",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.VulnerabilityCollection": {
+                "description": "Array of [`Hosting.V1.NodeJs.VulnerabilityResource`](#model/hostingv1nodejsvulnerabilityresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.VulnerabilityResource"
+                }
+            },
+            "Hosting.V1.NodeJs.VulnerabilityResource": {
+                "properties": {
+                    "package_name": {
+                        "description": "Name of the affected npm package",
+                        "type": "string",
+                        "example": "lodash"
+                    },
+                    "installed_version": {
+                        "description": "Version of the package currently installed",
+                        "type": "string",
+                        "example": "4.17.0"
+                    },
+                    "is_direct": {
+                        "description": "Whether the package is a direct dependency",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_patchable": {
+                        "description": "Whether the vulnerability can be auto-patched without a major version bump",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "fix_version": {
+                        "description": "Version that fixes the vulnerability, if known",
+                        "type": "string",
+                        "example": "4.17.21",
+                        "nullable": true
+                    },
+                    "vulnerability_id": {
+                        "description": "Unique vulnerability identifier (e.g. GHSA or CVE)",
+                        "type": "string",
+                        "example": "GHSA-jf85-cpcp-j695"
+                    },
+                    "severity": {
+                        "description": "Severity level of the vulnerability",
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "moderate",
+                            "high",
+                            "critical",
+                            "unknown"
+                        ],
+                        "example": "high"
+                    },
+                    "title": {
+                        "description": "Short human-readable title of the vulnerability",
+                        "type": "string",
+                        "example": "Prototype Pollution in lodash"
+                    },
+                    "description": {
+                        "description": "Detailed description of the vulnerability",
+                        "type": "string",
+                        "example": "Versions of lodash prior to 4.17.11 are vulnerable to prototype pollution.",
+                        "nullable": true
+                    },
+                    "cvss_score": {
+                        "description": "CVSS base score (0.0-10.0)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 9.8,
+                        "nullable": true
+                    },
+                    "cve": {
+                        "description": "CVE identifier, if available",
+                        "type": "string",
+                        "example": "CVE-2019-10744",
+                        "nullable": true
+                    },
+                    "cwe": {
+                        "description": "CWE identifier describing the weakness type",
+                        "type": "string",
+                        "example": "CWE-1321",
+                        "nullable": true
+                    },
+                    "url": {
+                        "description": "URL to the vulnerability advisory",
+                        "type": "string",
+                        "example": "https://github.com/advisories/GHSA-jf85-cpcp-j695",
+                        "nullable": true
+                    },
+                    "published_at": {
+                        "description": "Date the vulnerability was published, in ISO 8601 format",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2019-07-26T00:00:00Z",
+                        "nullable": true
+                    },
+                    "is_patching_in_progress": {
+                        "description": "Whether this vulnerability is included in a currently open patch pull request",
+                        "type": "boolean",
+                        "example": false
                     }
                 },
                 "type": "object"
