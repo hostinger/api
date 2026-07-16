@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.7.0",
+        "version": "1.7.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1463,6 +1463,39 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/portfolio/{domain}/renewal": {
+            "get": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Get domain renewal information",
+                "description": "Retrieve renewal information for a specified domain, including its status and current\nexpiration date.\n\nUse this endpoint to build renewal automation and expiry monitoring for a single domain.",
+                "operationId": "domains_getDomainRenewalInformationV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Portfolio.Renewal.RenewalInformationResource"
                                 }
                             }
                         }
@@ -12059,6 +12092,27 @@
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Portfolio.Renewal.RenewalInformationResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "status": {
+                        "description": "Domain status",
+                        "type": "string",
+                        "example": "Active"
+                    },
+                    "expires_at": {
+                        "description": "Domain expiration date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-05-25 13:53:04"
                     }
                 },
                 "type": "object"
