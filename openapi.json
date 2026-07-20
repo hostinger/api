@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.8.1",
+        "version": "1.8.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -414,6 +414,39 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/cache": {
+            "delete": {
+                "tags": [
+                    "Agency Hosting: Cache"
+                ],
+                "summary": "Clear Agency Plan website cache",
+                "description": "Clears cache for all domains associated with an Agency Plan website, including its preview domain.\n\nThis operation clears all cache types for the website.",
+                "operationId": "agency-hosting_clearAgencyPlanWebsiteCacheV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -16507,6 +16540,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Agency Hosting: Cache",
+            "description": "Agency Hosting: Cache",
+            "x-displayName": "Cache"
+        },
+        {
             "name": "Agency Hosting: Cron Jobs",
             "description": "Agency Hosting: Cron Jobs",
             "x-displayName": "Cron Jobs"
@@ -16821,7 +16859,8 @@
                 "Agency Hosting: Cron Jobs",
                 "Agency Hosting: Website Setups",
                 "Agency Hosting: Datacenters",
-                "Agency Hosting: Files"
+                "Agency Hosting: Files",
+                "Agency Hosting: Cache"
             ]
         },
         {
