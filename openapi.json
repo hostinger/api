@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.8.0",
+        "version": "1.8.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -414,6 +414,133 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/cron-jobs": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Cron Jobs"
+                ],
+                "summary": "List Agency Plan website cron jobs",
+                "description": "Returns a paginated list of cron jobs configured for an Agency Plan website.\n\nEach entry includes the schedule expression and the command executed on that schedule.",
+                "operationId": "agency-hosting_listAgencyPlanWebsiteCronJobsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AgencyHosting.V1.Websites.CronJobs.CronJobCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Agency Hosting: Cron Jobs"
+                ],
+                "summary": "Create Agency Plan website cron job",
+                "description": "Creates a cron job for an Agency Plan website from a schedule expression and a command.\n\nReturns the created cron job, including its uuid, which is required to delete the cron job.",
+                "operationId": "agency-hosting_createAgencyPlanWebsiteCronJobV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.CronJobs.CreateCronJobRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.CronJobs.CronJobResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/cron-jobs/{uuid}": {
+            "delete": {
+                "tags": [
+                    "Agency Hosting: Cron Jobs"
+                ],
+                "summary": "Delete Agency Plan website cron job",
+                "description": "Permanently deletes the cron job identified by its uuid from an Agency Plan website.\n\nThe operation is idempotent: deleting a cron job that does not exist succeeds without error.",
+                "operationId": "agency-hosting_deleteAgencyPlanWebsiteCronJobV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_cron_job_uuid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -8744,6 +8871,25 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Websites.CronJobs.CreateCronJobRequest": {
+                "required": [
+                    "time",
+                    "command"
+                ],
+                "properties": {
+                    "time": {
+                        "description": "Cron schedule expression (standard 5-field crontab syntax).",
+                        "type": "string",
+                        "example": "*/30 * * * *"
+                    },
+                    "command": {
+                        "description": "Command to run on the schedule. Must not contain pipe (|) or redirection (<, >) characters.",
+                        "type": "string",
+                        "example": "php artisan schedule:run"
+                    }
+                },
+                "type": "object"
+            },
             "Billing.V1.Subscription.CancelRequest": {
                 "properties": {
                     "reason_code": {
@@ -10834,6 +10980,39 @@
                             "completed"
                         ],
                         "example": "running"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.CronJobs.CronJobCollection": {
+                "description": "Array of [`AgencyHosting.V1.Websites.CronJobs.CronJobResource`](#model/agencyhostingv1websitescronjobscronjobresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.CronJobs.CronJobResource"
+                }
+            },
+            "AgencyHosting.V1.Websites.CronJobs.CronJobResource": {
+                "properties": {
+                    "uuid": {
+                        "description": "Unique identifier of the cron job. Use it to delete the cron job.",
+                        "type": "string",
+                        "example": "01931d6f-68f5-7b72-8d9e-09c6e1e6aa0e"
+                    },
+                    "time": {
+                        "description": "Cron schedule expression.",
+                        "type": "string",
+                        "example": "*/30 * * * *"
+                    },
+                    "command": {
+                        "description": "Command executed on the configured schedule.",
+                        "type": "string",
+                        "example": "php artisan schedule:run"
+                    },
+                    "created_at": {
+                        "description": "Cron job creation timestamp.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-10-28T12:00:00+00:00"
                     }
                 },
                 "type": "object"
@@ -15742,6 +15921,17 @@
             }
         },
         "parameters": {
+            "agency_cron_job_uuid_path": {
+                "name": "uuid",
+                "in": "path",
+                "description": "Unique identifier of the cron job as returned by the list cron jobs endpoint.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "01931d6f-68f5-7b72-8d9e-09c6e1e6aa0e"
+                }
+            },
             "from_domain": {
                 "name": "from_domain",
                 "in": "path",
@@ -16317,6 +16507,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Agency Hosting: Cron Jobs",
+            "description": "Agency Hosting: Cron Jobs",
+            "x-displayName": "Cron Jobs"
+        },
+        {
             "name": "Billing: Catalog",
             "description": "Access a comprehensive catalog of service plans and\nsubscription options, complete with detailed pricing\nand features.",
             "x-displayName": "Catalog"
@@ -16623,6 +16818,7 @@
             "tags": [
                 "Agency Hosting: Domains",
                 "Agency Hosting: Websites",
+                "Agency Hosting: Cron Jobs",
                 "Agency Hosting: Website Setups",
                 "Agency Hosting: Datacenters",
                 "Agency Hosting: Files"
