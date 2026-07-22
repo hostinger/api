@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.10.0",
+        "version": "1.11.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1452,6 +1452,39 @@
                 }
             }
         },
+        "/api/domains/v1/portfolio/{domain}/auth-code": {
+            "get": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Get domain authorization code",
+                "description": "Retrieve the authorization (EPP) code for a specified domain so it can be transferred\naway from Hostinger to another registrar.\n\nRequesting a new code invalidates any code retrieved previously.\n\nUse this endpoint to obtain the code required to transfer a domain to another registrar.",
+                "operationId": "domains_getDomainAuthorizationCodeV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Portfolio.AuthCode.AuthCodeResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/domains/v1/portfolio/{domain}/domain-lock": {
             "put": {
                 "tags": [
@@ -1749,6 +1782,67 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/transfers/{domain}": {
+            "get": {
+                "tags": [
+                    "Domains: Transfer"
+                ],
+                "summary": "Get transfer",
+                "description": "Retrieve the transfer for a specified domain.\n\nUse this endpoint to track an incoming or outgoing registrar transfer and its status.",
+                "operationId": "domains_getTransferV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Transfer.TransferResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/transfers": {
+            "get": {
+                "tags": [
+                    "Domains: Transfer"
+                ],
+                "summary": "Get transfer list",
+                "description": "Retrieve all domain transfers in your portfolio.\n\nUse this endpoint to monitor incoming and outgoing registrar transfers across your domains.",
+                "operationId": "domains_getTransferListV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Transfer.TransferCollection"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -12561,6 +12655,17 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.Portfolio.AuthCode.AuthCodeResource": {
+                "properties": {
+                    "auth_code": {
+                        "description": "Domain authorization code used to transfer the domain to another registrar.",
+                        "type": "string",
+                        "example": "RN0000",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Portfolio.Renewal.RenewalInformationResource": {
                 "properties": {
                     "domain": {
@@ -12578,6 +12683,42 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2027-05-25 13:53:04"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Transfer.TransferCollection": {
+                "description": "Array of [`Domains.V1.Transfer.TransferResource`](#model/domainsv1transfertransferresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Domains.V1.Transfer.TransferResource"
+                }
+            },
+            "Domains.V1.Transfer.TransferResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "status": {
+                        "description": "Transfer status",
+                        "type": "string",
+                        "example": "Completed"
+                    },
+                    "initiated_at": {
+                        "description": "When the transfer was initiated",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-19T08:07:49Z",
+                        "nullable": true
+                    },
+                    "completed_at": {
+                        "description": "When the transfer completed",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-24T08:15:01Z",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -16882,6 +17023,11 @@
             "x-displayName": "Portfolio"
         },
         {
+            "name": "Domains: Transfer",
+            "description": "Domains: Transfer",
+            "x-displayName": "Transfer"
+        },
+        {
             "name": "Domains: WHOIS",
             "description": "Manage WHOIS contact profiles for your domains. This category\nincludes endpoints for creating, updating, deleting, and\nretrieving WHOIS profiles.\nWHOIS profile stores registration data for domain names and\nis required for domain registration.",
             "x-displayName": "WHOIS"
@@ -17112,6 +17258,7 @@
                 "Domains: Availability",
                 "Domains: Forwarding",
                 "Domains: Portfolio",
+                "Domains: Transfer",
                 "Domains: WHOIS"
             ]
         },
