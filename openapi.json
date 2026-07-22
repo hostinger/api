@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.12.0",
+        "version": "1.12.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -16320,6 +16320,60 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2022-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Installations.WordPressMcpInstallationCollection": {
+                "description": "Array of [`WordPress.V1.Installations.WordPressMcpInstallationResource`](#model/wordpressv1installationswordpressmcpinstallationresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/WordPress.V1.Installations.WordPressMcpInstallationResource"
+                }
+            },
+            "WordPress.V1.Installations.WordPressMcpInstallationResource": {
+                "properties": {
+                    "id": {
+                        "description": "WordPress installation (software) id",
+                        "type": "string",
+                        "example": "123"
+                    },
+                    "username": {
+                        "description": "Hosting account username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "domain": {
+                        "description": "Domain the installation belongs to",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "directory": {
+                        "description": "Installation directory on the server",
+                        "type": "string",
+                        "example": "/home/u123456789/domains/example.com/public_html"
+                    },
+                    "token": {
+                        "description": "JWT used to authenticate against the installation MCP server",
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    "mcp_url": {
+                        "description": "MCP (Model Context Protocol) endpoint URL for the WordPress installation",
+                        "type": "string",
+                        "example": "https://example.com/wp-json/hostinger/mcp"
+                    },
+                    "expires_in": {
+                        "description": "Token lifetime in seconds from the moment it was issued",
+                        "type": "integer",
+                        "example": 3600
+                    },
+                    "expires_at": {
+                        "description": "Date-time at which the token expires",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-05T12:08:00Z",
+                        "nullable": true
                     }
                 },
                 "type": "object"
