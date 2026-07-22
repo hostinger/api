@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.9.0",
+        "version": "1.10.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1326,6 +1326,50 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Domains: Forwarding"
+                ],
+                "summary": "Update domain forwarding",
+                "description": "Update domain forwarding configuration.\n\nUse this endpoint to modify existing redirect configuration for domains.",
+                "operationId": "domains_updateDomainForwardingV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Forwarding.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Forwarding.ForwardingResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -9208,6 +9252,33 @@
                         "type": "string",
                         "example": "mydomain.tld"
                     },
+                    "redirect_type": {
+                        "description": "Redirect type",
+                        "type": "string",
+                        "enum": [
+                            "301",
+                            "302"
+                        ],
+                        "example": "301",
+                        "x-enum-descriptions": {
+                            "301": "Permanent",
+                            "302": "Temporary"
+                        }
+                    },
+                    "redirect_url": {
+                        "description": "URL to forward domain to",
+                        "type": "string",
+                        "example": "https://forward.to.my.url"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Forwarding.UpdateRequest": {
+                "required": [
+                    "redirect_type",
+                    "redirect_url"
+                ],
+                "properties": {
                     "redirect_type": {
                         "description": "Redirect type",
                         "type": "string",
