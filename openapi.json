@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.8.2",
+        "version": "1.9.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4299,6 +4299,65 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders": {
+            "get": {
+                "tags": [
+                    "Mail: Orders"
+                ],
+                "summary": "Get mail order list",
+                "description": "Retrieve a paginated list of mail orders associated with your account.\n\nUse this endpoint to monitor your mail services, including their status,\nplan, attached domain, and expiration details.",
+                "operationId": "mail_getMailOrderListV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_domain_filter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_order_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_order_is_trial"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_order_sort"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Orders.OrderCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -13880,6 +13939,107 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Orders.OrderCollection": {
+                "description": "Array of [`Mail.V1.Orders.OrderResource`](#model/mailv1ordersorderresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Orders.OrderResource"
+                }
+            },
+            "Mail.V1.Orders.OrderDomainResource": {
+                "properties": {
+                    "id": {
+                        "description": "Domain resource ID",
+                        "type": "string",
+                        "example": "DO1a2b3c4d5e6f7g"
+                    },
+                    "name": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Orders.OrderPlanResource": {
+                "properties": {
+                    "name": {
+                        "description": "Plan name",
+                        "type": "string",
+                        "example": "hostinger_free"
+                    },
+                    "title": {
+                        "description": "Plan title",
+                        "type": "string",
+                        "example": "Free Email"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Orders.OrderResource": {
+                "properties": {
+                    "id": {
+                        "description": "Order resource ID",
+                        "type": "string",
+                        "example": "OR1a2b3c4d5e6f7g"
+                    },
+                    "status": {
+                        "description": "Order status",
+                        "type": "string",
+                        "enum": [
+                            "pending_setup",
+                            "active",
+                            "suspended"
+                        ],
+                        "example": "active"
+                    },
+                    "is_trial": {
+                        "description": "Whether the order is currently in a trial period",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "seats": {
+                        "description": "Number of mailbox seats purchased with the order",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "domain": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Mail.V1.Orders.OrderDomainResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Domain the order is attached to"
+                    },
+                    "plan": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Mail.V1.Orders.OrderPlanResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Plan the order was purchased with"
+                    },
+                    "has_pending_upgrade": {
+                        "description": "Whether an upgrade is currently pending for the order",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-02-27T11:54:22Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -16322,6 +16482,62 @@
                     "example": "u123456789"
                 }
             },
+            "mail_order_domain_filter": {
+                "name": "domain",
+                "in": "query",
+                "description": "Filter orders by domain name (exact match)",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "example.com",
+                    "nullable": true
+                }
+            },
+            "mail_order_sort": {
+                "name": "sort",
+                "in": "query",
+                "description": "Sort orders by field. Prefix with `-` for descending order.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "default": "-created_at",
+                    "enum": [
+                        "created_at",
+                        "-created_at",
+                        "expires_at",
+                        "-expires_at"
+                    ],
+                    "example": "-created_at",
+                    "nullable": true
+                }
+            },
+            "mail_order_status": {
+                "name": "status",
+                "in": "query",
+                "description": "Filter orders by status",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "pending_setup",
+                        "active",
+                        "suspended"
+                    ],
+                    "example": "active",
+                    "nullable": true
+                }
+            },
+            "mail_order_is_trial": {
+                "name": "is_trial",
+                "in": "query",
+                "description": "Filter orders by trial state",
+                "required": false,
+                "schema": {
+                    "type": "boolean",
+                    "example": false,
+                    "nullable": true
+                }
+            },
             "uuid": {
                 "name": "uuid",
                 "in": "path",
@@ -16685,6 +16901,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Mail: Orders",
+            "description": "Manage your mail service orders. This category includes\nendpoints for listing mail orders associated with your\naccount, along with their status, plan, domain, and\nexpiration details.",
+            "x-displayName": "Orders"
+        },
+        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -16834,6 +17055,12 @@
             "name": "Domain Access Verifier",
             "tags": [
                 "Domain Access Verifier: Verifications"
+            ]
+        },
+        {
+            "name": "Mail",
+            "tags": [
+                "Mail: Orders"
             ]
         },
         {
