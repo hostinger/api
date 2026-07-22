@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.11.2",
+        "version": "1.12.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4652,6 +4652,65 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/mailboxes": {
+            "get": {
+                "tags": [
+                    "Mail: Mailboxes"
+                ],
+                "summary": "Get mailbox list",
+                "description": "Retrieve a paginated list of mailboxes belonging to a mail order.\n\nUse this endpoint to monitor mailboxes of your mail service, including\ntheir status, enabled protocols, attached resource counts, and\nperiodically synced usage numbers (usage may lag behind live values).",
+                "operationId": "mail_getMailboxListV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_sort"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Mailboxes.MailboxCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -14481,6 +14540,139 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Mailboxes.MailboxCollection": {
+                "description": "Array of [`Mail.V1.Mailboxes.MailboxResource`](#model/mailv1mailboxesmailboxresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Mailboxes.MailboxResource"
+                }
+            },
+            "Mail.V1.Mailboxes.MailboxCountsResource": {
+                "properties": {
+                    "forwarders": {
+                        "description": "Number of attached forwarders",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "aliases": {
+                        "description": "Number of attached aliases",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "autoreplies": {
+                        "description": "Number of attached auto-replies",
+                        "type": "integer",
+                        "example": 0
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Mailboxes.MailboxProtocolsResource": {
+                "properties": {
+                    "is_imap_enabled": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_pop3_enabled": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_smtp_in_enabled": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_smtp_out_enabled": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Mailboxes.MailboxResource": {
+                "properties": {
+                    "id": {
+                        "description": "Mailbox resource ID",
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "description": "Email address of the mailbox",
+                        "type": "string",
+                        "example": "info@example.com"
+                    },
+                    "status": {
+                        "description": "Mailbox status",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "suspended"
+                        ],
+                        "example": "active"
+                    },
+                    "status_reason": {
+                        "description": "Reason the mailbox was suspended",
+                        "type": "string",
+                        "example": "abuse",
+                        "nullable": true
+                    },
+                    "protocols": {
+                        "$ref": "#/components/schemas/Mail.V1.Mailboxes.MailboxProtocolsResource"
+                    },
+                    "counts": {
+                        "$ref": "#/components/schemas/Mail.V1.Mailboxes.MailboxCountsResource"
+                    },
+                    "is_catchall": {
+                        "description": "Whether the mailbox is the catch-all destination for its domain",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "usage": {
+                        "$ref": "#/components/schemas/Mail.V1.Mailboxes.MailboxUsageResource"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-01T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-20T14:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Mailboxes.MailboxUsageResource": {
+                "description": "Periodically synced usage numbers (may lag behind live values)",
+                "properties": {
+                    "storage_used": {
+                        "description": "Storage used in kilobytes",
+                        "type": "integer",
+                        "example": 512000
+                    },
+                    "storage_quota": {
+                        "description": "Storage quota in kilobytes",
+                        "type": "integer",
+                        "example": 10485760
+                    },
+                    "messages_used": {
+                        "type": "integer",
+                        "example": 1240
+                    },
+                    "messages_quota": {
+                        "type": "integer",
+                        "example": 50000
+                    },
+                    "synced_at": {
+                        "description": "When the usage numbers were last synced; null if never synced",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-22T08:12:00Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.Orders.OrderCollection": {
                 "description": "Array of [`Mail.V1.Orders.OrderResource`](#model/mailv1ordersorderresource)",
                 "type": "array",
@@ -17055,6 +17247,44 @@
                     "nullable": true
                 }
             },
+            "mail_mailbox_search": {
+                "name": "search",
+                "in": "query",
+                "description": "Filter mailboxes whose email address contains the given string",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "info",
+                    "nullable": true
+                }
+            },
+            "mail_mailbox_sort": {
+                "name": "sort",
+                "in": "query",
+                "description": "Sort mailboxes by field. Prefix with `-` for descending order.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "default": "address",
+                    "enum": [
+                        "address",
+                        "-address"
+                    ],
+                    "example": "address",
+                    "nullable": true
+                }
+            },
+            "mail_order_id_path": {
+                "name": "orderId",
+                "in": "path",
+                "description": "Order resource ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "OR1a2b3c4d5e6f7g"
+                }
+            },
             "mail_order_sort": {
                 "name": "sort",
                 "in": "query",
@@ -17473,6 +17703,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Mail: Mailboxes",
+            "description": "Manage mailboxes of your mail orders. This category includes\nendpoints for listing mailboxes with their status, enabled\nprotocols, attached resource counts, and usage numbers.",
+            "x-displayName": "Mailboxes"
+        },
+        {
             "name": "Mail: Orders",
             "description": "Manage your mail service orders. This category includes\nendpoints for listing mail orders associated with your\naccount, along with their status, plan, domain, and\nexpiration details.",
             "x-displayName": "Orders"
@@ -17633,7 +17868,8 @@
         {
             "name": "Mail",
             "tags": [
-                "Mail: Orders"
+                "Mail: Orders",
+                "Mail: Mailboxes"
             ]
         },
         {
