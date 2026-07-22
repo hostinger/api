@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.11.1",
+        "version": "1.11.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -562,6 +562,221 @@
                     },
                     {
                         "$ref": "#/components/parameters/agency_cron_job_uuid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/databases": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Databases"
+                ],
+                "summary": "List Agency Plan website databases",
+                "description": "Returns a paginated list of MySQL databases created for an Agency Plan website.\n\nEach entry includes the database's non-system users.",
+                "operationId": "agency-hosting_listAgencyPlanWebsiteDatabasesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.DatabaseCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Agency Hosting: Databases"
+                ],
+                "summary": "Create Agency Plan website database",
+                "description": "Creates a MySQL database with a dedicated user for an Agency Plan website.\n\nThe database name, username, and password must all be provided by the caller.",
+                "operationId": "agency-hosting_createAgencyPlanWebsiteDatabaseV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.CreateDatabaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.DatabaseResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/databases/{database_name}": {
+            "delete": {
+                "tags": [
+                    "Agency Hosting: Databases"
+                ],
+                "summary": "Delete Agency Plan website database",
+                "description": "Permanently deletes a MySQL database and all its data from an Agency Plan website, including its users.\n\nThe operation is idempotent: deleting a database that does not exist succeeds without error.",
+                "operationId": "agency-hosting_deleteAgencyPlanWebsiteDatabaseV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_database_name_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/databases/{database_name}/users": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: Databases"
+                ],
+                "summary": "Create Agency Plan website database user",
+                "description": "Creates a user for an existing database on an Agency Plan website.\n\nEach database supports a single non-system user; creating a user for a database that already has one fails.",
+                "operationId": "agency-hosting_createAgencyPlanWebsiteDatabaseUserV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_database_name_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.Users.CreateDatabaseUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.DatabaseUserResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/databases/{database_name}/users/{database_user_name}": {
+            "delete": {
+                "tags": [
+                    "Agency Hosting: Databases"
+                ],
+                "summary": "Delete Agency Plan website database user",
+                "description": "Permanently deletes a database user from an Agency Plan website database, revoking all access it had.\n\nThe operation is idempotent: deleting a user that does not exist succeeds without error.",
+                "operationId": "agency-hosting_deleteAgencyPlanWebsiteDatabaseUserV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_database_name_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_database_user_name_path"
                     }
                 ],
                 "responses": {
@@ -9120,6 +9335,70 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Websites.Databases.CreateDatabaseRequest": {
+                "required": [
+                    "database_name",
+                    "database_user",
+                    "password"
+                ],
+                "properties": {
+                    "database_name": {
+                        "description": "Database name to create (alphanumeric characters).",
+                        "type": "string",
+                        "maxLength": 30,
+                        "minLength": 3,
+                        "example": "mydatabase"
+                    },
+                    "database_user": {
+                        "description": "Database username to create alongside the database (alphanumeric characters).",
+                        "type": "string",
+                        "maxLength": 12,
+                        "minLength": 3,
+                        "example": "myuser"
+                    },
+                    "password": {
+                        "description": "Password for the database user (requires mixed case, letters, and numbers).",
+                        "type": "string",
+                        "format": "password",
+                        "maxLength": 50,
+                        "minLength": 8,
+                        "example": "Str0ngP@ssword!"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.Databases.Users.CreateDatabaseUserRequest": {
+                "required": [
+                    "database_user",
+                    "password"
+                ],
+                "properties": {
+                    "database_user": {
+                        "description": "Database username to create (alphanumeric and underscores).",
+                        "type": "string",
+                        "maxLength": 12,
+                        "minLength": 3,
+                        "example": "my_user"
+                    },
+                    "password": {
+                        "description": "Password for the database user (requires mixed case, letters, and numbers).",
+                        "type": "string",
+                        "format": "password",
+                        "maxLength": 50,
+                        "minLength": 8,
+                        "example": "Str0ngP@ssword!"
+                    },
+                    "host": {
+                        "description": "Host the user connects from (IPv4, IPv6, % wildcard, or localhost). Defaults to localhost.",
+                        "type": "string",
+                        "maxLength": 40,
+                        "minLength": 1,
+                        "example": "localhost",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Billing.V1.Subscription.CancelRequest": {
                 "properties": {
                     "reason_code": {
@@ -11288,6 +11567,57 @@
                         "nullable": true
                     },
                     "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.Databases.DatabaseCollection": {
+                "description": "Array of [`AgencyHosting.V1.Websites.Databases.DatabaseResource`](#model/agencyhostingv1websitesdatabasesdatabaseresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.DatabaseResource"
+                }
+            },
+            "AgencyHosting.V1.Websites.Databases.DatabaseResource": {
+                "properties": {
+                    "name": {
+                        "description": "Database name.",
+                        "type": "string",
+                        "example": "my_database"
+                    },
+                    "created_at": {
+                        "description": "Database creation date in ISO 8601 format.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    },
+                    "users": {
+                        "description": "Non-system users that can access the database.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AgencyHosting.V1.Websites.Databases.DatabaseUserResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.Databases.DatabaseUserResource": {
+                "properties": {
+                    "name": {
+                        "description": "Database username.",
+                        "type": "string",
+                        "example": "my_user"
+                    },
+                    "host": {
+                        "description": "Database host the user is allowed to connect from.",
+                        "type": "string",
+                        "example": "localhost"
+                    },
+                    "created_at": {
+                        "description": "Database user creation date in ISO 8601 format.",
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-05-29T05:49:49+00:00"
@@ -16337,6 +16667,26 @@
                     "example": "01931d6f-68f5-7b72-8d9e-09c6e1e6aa0e"
                 }
             },
+            "agency_database_name_path": {
+                "name": "database_name",
+                "in": "path",
+                "description": "Full database name as returned by the list databases endpoint.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "my_database"
+                }
+            },
+            "agency_database_user_name_path": {
+                "name": "database_user_name",
+                "in": "path",
+                "description": "Database username as returned by the list databases endpoint.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "my_user"
+                }
+            },
             "from_domain": {
                 "name": "from_domain",
                 "in": "path",
@@ -16978,6 +17328,11 @@
             "x-displayName": "Cron Jobs"
         },
         {
+            "name": "Agency Hosting: Databases",
+            "description": "Agency Hosting: Databases",
+            "x-displayName": "Databases"
+        },
+        {
             "name": "Billing: Catalog",
             "description": "Access a comprehensive catalog of service plans and\nsubscription options, complete with detailed pricing\nand features.",
             "x-displayName": "Catalog"
@@ -17305,7 +17660,8 @@
                 "Agency Hosting: Website Setups",
                 "Agency Hosting: Datacenters",
                 "Agency Hosting: Files",
-                "Agency Hosting: Cache"
+                "Agency Hosting: Cache",
+                "Agency Hosting: Databases"
             ]
         },
         {
