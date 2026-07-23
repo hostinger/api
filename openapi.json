@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.12.1",
+        "version": "1.12.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -922,6 +922,47 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/orders": {
+            "post": {
+                "tags": [
+                    "Billing: Orders"
+                ],
+                "summary": "Create purchase order",
+                "description": "Create a purchase order for any Hostinger product.\n\nThis unified endpoint places an order for one or more catalog items and\nworks across all Hostinger products, leveraging the existing billing\ninfrastructure. Use the [catalog endpoint](#tag/billing-catalog) to look\nup the `item_id` values available for purchase.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nThis endpoint only places the order. Product-specific provisioning\n(e.g. VPS setup or domain registration) is not performed here — once the\norder completes, use the relevant product endpoints or\n[hPanel](https://hpanel.hostinger.com/) to finalize setup.\n\nUse this endpoint to purchase any product available in the catalog.",
+                "operationId": "billing_createPurchaseOrderV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Billing.V1.Order.PurchaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -9458,6 +9499,51 @@
                 },
                 "type": "object"
             },
+            "Billing.V1.Order.PurchaseRequest": {
+                "required": [
+                    "items"
+                ],
+                "properties": {
+                    "payment_method_id": {
+                        "description": "Payment method ID, default will be used if not provided",
+                        "type": "integer",
+                        "example": 1327362
+                    },
+                    "items": {
+                        "description": "Catalog price items to purchase",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "item_id"
+                            ],
+                            "properties": {
+                                "item_id": {
+                                    "description": "Catalog price item ID",
+                                    "type": "string",
+                                    "example": "hostingercom-vps-kvm2-usd-1m"
+                                },
+                                "quantity": {
+                                    "description": "Quantity to purchase",
+                                    "type": "integer",
+                                    "default": 1,
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "coupons": {
+                        "description": "Discount coupon codes",
+                        "type": "array",
+                        "items": {
+                            "example": [
+                                "Coupon 3"
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Billing.V1.Subscription.CancelRequest": {
                 "properties": {
                     "reason_code": {
@@ -17622,6 +17708,11 @@
             "x-displayName": "Catalog"
         },
         {
+            "name": "Billing: Orders",
+            "description": "Initiate and track new service orders seamlessly. This\ncategory streamlines the process of purchasing Hostinger\nservices, enabling efficient management of order details.",
+            "x-displayName": "Orders"
+        },
+        {
             "name": "Billing: Payment methods",
             "description": "Review and manage the payment methods linked to your\nHostinger account. Enjoy a secure and convenient overview\nfor handling billing and transactions.",
             "x-displayName": "Payment methods"
@@ -17892,6 +17983,7 @@
             "name": "Billing",
             "tags": [
                 "Billing: Catalog",
+                "Billing: Orders",
                 "Billing: Payment methods",
                 "Billing: Subscriptions"
             ]
