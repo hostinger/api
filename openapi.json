@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.17.0",
+        "version": "1.18.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4805,6 +4805,147 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/api-tokens": {
+            "post": {
+                "tags": [
+                    "Mail: API Tokens"
+                ],
+                "summary": "Create API token",
+                "description": "Create an API token for the given mail order. The token grants access\nto the [Hostinger Email API](https://api.mail.hostinger.com/), where\nyou can provision and manage the mailboxes it is scoped to.\n\nThe plaintext token is returned only in this response, never again.\nA maximum of 10 tokens can exist per order. Use\n`scope.has_all_mailboxes` to cover all current and future mailboxes,\nor list specific mailboxes in `scope.mailbox_ids`.",
+                "operationId": "mail_createAPITokenV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.CreateApiTokenRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.ApiTokens.ApiTokenCreatedResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/api-tokens/{tokenId}": {
+            "delete": {
+                "tags": [
+                    "Mail: API Tokens"
+                ],
+                "summary": "Revoke API token",
+                "description": "Revoke an API token. The token immediately loses access to the\n[Hostinger Email API](https://api.mail.hostinger.com/). This action\ncannot be undone.",
+                "operationId": "mail_revokeAPITokenV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_api_token_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/api-tokens": {
+            "get": {
+                "tags": [
+                    "Mail: API Tokens"
+                ],
+                "summary": "List API tokens",
+                "description": "Retrieve a paginated list of\n[Hostinger Email API](https://api.mail.hostinger.com/) tokens across\nall your mail orders, optionally filtered by order. Plaintext tokens\nare never included; they are returned only when a token is created.",
+                "operationId": "mail_listAPITokensV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_api_token_order_filter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.ApiTokens.ApiTokenCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -10257,6 +10398,43 @@
                         "maxLength": 50,
                         "minLength": 8,
                         "example": "SecurePassword123!"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Schema.CreateApiTokenRequestSchema": {
+                "required": [
+                    "name",
+                    "scope"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Human-readable label for this token",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "CRM integration"
+                    },
+                    "scope": {
+                        "description": "Mailbox scope this token can access",
+                        "required": [
+                            "has_all_mailboxes"
+                        ],
+                        "properties": {
+                            "has_all_mailboxes": {
+                                "description": "Grant access to all current and future mailboxes of the order",
+                                "type": "boolean",
+                                "example": false
+                            },
+                            "mailbox_ids": {
+                                "description": "Required when `has_all_mailboxes` is false. Mailbox resource IDs of this order.",
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "example": "AC1a2b3c4d5e6f7g"
+                                }
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -15841,6 +16019,126 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.ApiTokens.ApiTokenCollection": {
+                "description": "Array of [`Mail.V1.ApiTokens.ApiTokenResource`](#model/mailv1apitokensapitokenresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.ApiTokens.ApiTokenResource"
+                }
+            },
+            "Mail.V1.ApiTokens.ApiTokenCreatedResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique API token identifier",
+                        "type": "string",
+                        "example": "019683f8-1234-7abc-8def-0123456789ab"
+                    },
+                    "token": {
+                        "description": "Plaintext API token, returned only in this response. Grants access to the [Hostinger Email API](https://api.mail.hostinger.com/) for mailbox provisioning and management.",
+                        "type": "string",
+                        "example": "4a6f8b2d1e9c3f7a0b5d8e2c4f1a7b3d9e6c2f8a1b4d7e0c3f6a9b2d5e8c1f4a"
+                    },
+                    "name": {
+                        "description": "Human-readable label for this token",
+                        "type": "string",
+                        "example": "CRM integration",
+                        "nullable": true
+                    },
+                    "scope": {
+                        "$ref": "#/components/schemas/Mail.V1.ApiTokens.ApiTokenScopeResource"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-05-05T12:00:00Z"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "api_token",
+                            "oauth"
+                        ],
+                        "example": "api_token"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.ApiTokens.ApiTokenMailboxResource": {
+                "properties": {
+                    "id": {
+                        "description": "Mailbox resource ID",
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.ApiTokens.ApiTokenResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique API token identifier",
+                        "type": "string",
+                        "example": "019683f8-1234-7abc-8def-0123456789ab"
+                    },
+                    "order_id": {
+                        "description": "Resource ID of the owning mail order",
+                        "type": "string",
+                        "example": "OR1a2b3c4d5e6f7g",
+                        "nullable": true
+                    },
+                    "name": {
+                        "description": "Human-readable label for this token",
+                        "type": "string",
+                        "example": "CRM integration",
+                        "nullable": true
+                    },
+                    "scope": {
+                        "$ref": "#/components/schemas/Mail.V1.ApiTokens.ApiTokenScopeResource"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-05-05T12:00:00Z"
+                    },
+                    "last_used_at": {
+                        "description": "Last successful authentication using this token",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-05-15T08:30:00Z",
+                        "nullable": true
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "api_token",
+                            "oauth"
+                        ],
+                        "example": "api_token"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.ApiTokens.ApiTokenScopeResource": {
+                "properties": {
+                    "has_all_mailboxes": {
+                        "description": "Whether the token covers all current and future mailboxes of the order",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "mailboxes": {
+                        "description": "Mailboxes this token grants access to. Empty when `has_all_mailboxes` is true.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Mail.V1.ApiTokens.ApiTokenMailboxResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.Logs.Access.AccessLogCollection": {
                 "description": "Array of [`Mail.V1.Logs.Access.AccessLogResource`](#model/mailv1logsaccessaccesslogresource)",
                 "type": "array",
@@ -19277,6 +19575,27 @@
                     "nullable": true
                 }
             },
+            "mail_api_token_id_path": {
+                "name": "tokenId",
+                "in": "path",
+                "description": "API token ID (returned when the token was created)",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "019683f8-1234-7abc-8def-0123456789ab"
+                }
+            },
+            "mail_api_token_order_filter": {
+                "name": "order_id",
+                "in": "query",
+                "description": "Filter tokens by order resource ID. Single value or comma-separated list.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "OR1a2b3c4d5e6f7g,OR9z8y7x6w5v4u3t",
+                    "nullable": true
+                }
+            },
             "mail_order_domain_filter": {
                 "name": "domain",
                 "in": "query",
@@ -19917,6 +20236,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Mail: API Tokens",
+            "description": "Manage API tokens for the\n[Hostinger Email API](https://api.mail.hostinger.com/). Tokens are\nscoped to mailboxes of a mail order and grant access to mailbox\nprovisioning and management through the Email API.",
+            "x-displayName": "API Tokens"
+        },
+        {
             "name": "Mail: Logs",
             "description": "Inspect activity logs of your mail orders. This category includes\nendpoints for access logs, inbound and outbound delivery logs,\nmailbox action logs, and account action logs.",
             "x-displayName": "Logs"
@@ -20096,6 +20420,7 @@
                 "Mail: Orders",
                 "Mail: Mailboxes",
                 "Mail: Webhooks",
+                "Mail: API Tokens",
                 "Mail: Logs"
             ]
         },
