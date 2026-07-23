@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.14.0",
+        "version": "1.14.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -883,6 +883,118 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteProcessCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/wordpress/settings/version": {
+            "patch": {
+                "tags": [
+                    "Agency Hosting: WordPress"
+                ],
+                "summary": "Change Agency Plan website WordPress core version",
+                "description": "Changes the installed WordPress core version on an Agency Plan website to one of the versions available for installation.",
+                "operationId": "agency-hosting_changeAgencyPlanWebsiteWordPressCoreVersionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.WordPress.ChangeVersionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/wordpress/settings": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: WordPress"
+                ],
+                "summary": "Get Agency Plan website WordPress settings",
+                "description": "Returns the current WordPress settings for an Agency Plan website: installed core version,\nLiteSpeed Cache plugin status, object cache status, and maintenance mode status.",
+                "operationId": "agency-hosting_getAgencyPlanWebsiteWordPressSettingsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.WordPress.SettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/wordpress/settings/versions": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: WordPress"
+                ],
+                "summary": "List available WordPress versions for an Agency Plan website",
+                "description": "Lists the WordPress core versions available for installation on an Agency Plan website.",
+                "operationId": "agency-hosting_listAvailableWordPressVersionsForAnAgencyPlanWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.WordPress.VersionCollection"
                                 }
                             }
                         }
@@ -9680,6 +9792,19 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.WordPress.ChangeVersionRequest": {
+                "required": [
+                    "version"
+                ],
+                "properties": {
+                    "version": {
+                        "description": "Target WordPress core version to install. Must be one of the available versions.",
+                        "type": "string",
+                        "example": "6.5.5"
+                    }
+                },
+                "type": "object"
+            },
             "Billing.V1.Order.PurchaseRequest": {
                 "required": [
                     "items"
@@ -12458,6 +12583,49 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.WordPress.SettingsResource": {
+                "properties": {
+                    "core_version": {
+                        "description": "Currently installed WordPress core version, or null when it cannot be determined.",
+                        "type": "string",
+                        "example": "6.5.5",
+                        "nullable": true
+                    },
+                    "is_lite_speed_cache_enabled": {
+                        "description": "Whether the LiteSpeed Cache plugin is active.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_object_cache_enabled": {
+                        "description": "Whether LiteSpeed object cache is enabled.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_maintenance_mode_enabled": {
+                        "description": "Whether WordPress maintenance mode is currently enabled.",
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.WordPress.VersionCollection": {
+                "description": "Array of [`AgencyHosting.V1.WordPress.VersionResource`](#model/agencyhostingv1wordpressversionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.WordPress.VersionResource"
+                }
+            },
+            "AgencyHosting.V1.WordPress.VersionResource": {
+                "properties": {
+                    "version": {
+                        "description": "WordPress core version.",
+                        "type": "string",
+                        "example": "6.5.5"
                     }
                 },
                 "type": "object"
@@ -17894,6 +18062,11 @@
             "x-displayName": "Databases"
         },
         {
+            "name": "Agency Hosting: WordPress",
+            "description": "Agency Hosting: WordPress",
+            "x-displayName": "WordPress"
+        },
+        {
             "name": "Billing: Catalog",
             "description": "Access a comprehensive catalog of service plans and\nsubscription options, complete with detailed pricing\nand features.",
             "x-displayName": "Catalog"
@@ -18227,14 +18400,15 @@
         {
             "name": "Agency Hosting",
             "tags": [
-                "Agency Hosting: Domains",
-                "Agency Hosting: Websites",
-                "Agency Hosting: Cron Jobs",
-                "Agency Hosting: Website Setups",
-                "Agency Hosting: Datacenters",
-                "Agency Hosting: Files",
                 "Agency Hosting: Cache",
-                "Agency Hosting: Databases"
+                "Agency Hosting: Cron Jobs",
+                "Agency Hosting: Databases",
+                "Agency Hosting: Datacenters",
+                "Agency Hosting: Domains",
+                "Agency Hosting: Files",
+                "Agency Hosting: Website Setups",
+                "Agency Hosting: Websites",
+                "Agency Hosting: WordPress"
             ]
         },
         {
