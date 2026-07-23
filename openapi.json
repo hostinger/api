@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.12.2",
+        "version": "1.13.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4757,6 +4757,56 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Mail: Mailboxes"
+                ],
+                "summary": "Create mailbox",
+                "description": "Create a mailbox under the given mail order. The full email address is\ncomposed from the given local part and the domain of the order.",
+                "operationId": "mail_createMailboxV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.CreateMailboxRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Mailboxes.MailboxResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/mail/v1/orders": {
@@ -9220,6 +9270,30 @@
                 },
                 "type": "object",
                 "x-scalar-ignore": true
+            },
+            "Mail.V1.Schema.CreateMailboxRequestSchema": {
+                "required": [
+                    "local_part",
+                    "password"
+                ],
+                "properties": {
+                    "local_part": {
+                        "description": "Local part of the mailbox address (the part before the @). The domain is taken from the order. Must start and end with a letter or digit; single dots, underscores and hyphens are allowed in between.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "pattern": "^(?=[a-z0-9])(?=.*[a-z0-9]$)[a-z0-9_-]+(?:\\.[a-z0-9_-]+)*$",
+                        "example": "john.doe"
+                    },
+                    "password": {
+                        "description": "Mailbox password. Minimum 8 characters with uppercase, lowercase, number and special character.",
+                        "type": "string",
+                        "format": "password",
+                        "maxLength": 50,
+                        "minLength": 8,
+                        "example": "SecurePassword123!"
+                    }
+                },
+                "type": "object"
             },
             "AgencyHosting.V1.Domains.ChangeDomainRequest": {
                 "required": [
