@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.16.0",
+        "version": "1.17.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5494,7 +5494,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookResource"
+                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookCreatedResource"
                                 }
                             }
                         }
@@ -5512,6 +5512,328 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/webhooks/delivery-logs": {
+            "get": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "List webhook delivery logs",
+                "description": "Retrieve a paginated list of webhook delivery logs for the given mail\norder, including delivery outcome, duration, and retry counts.\nSupports filtering by mailbox.",
+                "operationId": "mail_listWebhookDeliveryLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_mailbox_filter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookDeliveryLogCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/webhooks/{webhookId}": {
+            "get": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "Get webhook",
+                "description": "Retrieve the details of a single webhook. The webhook secret is never\nincluded; it is returned only when a webhook is created or its secret\nis regenerated.",
+                "operationId": "mail_getWebhookV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "Delete webhook",
+                "description": "Permanently delete a webhook. This action cannot be undone. After\ndeletion the URL no longer receives event notifications.",
+                "operationId": "mail_deleteWebhookV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "Update webhook",
+                "description": "Partially update a webhook. Only the fields included in the request\nbody are changed; omitted fields retain their current values. Pass\n`\"description\": null` to clear the description.",
+                "operationId": "mail_updateWebhookV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.UpdateWebhookRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/webhooks": {
+            "get": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "List webhooks",
+                "description": "Retrieve a paginated list of webhooks belonging to the given mail\norder. Supports filtering by mailbox and status. The webhook secret\nis never included; it is returned only when a webhook is created or\nits secret is regenerated.",
+                "operationId": "mail_listWebhooksV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_mailbox_filter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/webhooks/{webhookId}/regenerate-secret": {
+            "post": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "Regenerate webhook secret",
+                "description": "Regenerate the secret of a webhook. The previous secret is\nimmediately invalidated. The new secret is returned only in this\nresponse and is sent as a bearer token with every delivery.",
+                "operationId": "mail_regenerateWebhookSecretV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookSecretResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/webhooks/{webhookId}/test": {
+            "post": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "Test webhook",
+                "description": "Send a test delivery to the webhook URL and return the result. Test\nrequests are rate limited upstream.",
+                "operationId": "mail_testWebhookV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_webhook_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookTestResultResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "429": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
@@ -10006,6 +10328,51 @@
                     },
                     "url": {
                         "description": "Publicly reachable URL that receives the webhook POST requests",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "https://example.com/webhooks/incoming"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Schema.UpdateWebhookRequestSchema": {
+                "description": "Fields to update. All fields are optional; only provided fields are changed. Pass `\"description\": null` to clear the description.",
+                "properties": {
+                    "name": {
+                        "description": "New human-readable name for the webhook",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Updated notifier"
+                    },
+                    "description": {
+                        "description": "New description, or null to clear it",
+                        "type": "string",
+                        "example": "Now also handles newsletters",
+                        "nullable": true
+                    },
+                    "events": {
+                        "description": "Replaces the full list of subscribed events",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "message.received"
+                            ],
+                            "example": "message.received"
+                        }
+                    },
+                    "status": {
+                        "description": "New status for the webhook",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "disabled",
+                            "paused"
+                        ],
+                        "example": "paused"
+                    },
+                    "url": {
+                        "description": "New URL to deliver events to",
                         "type": "string",
                         "maxLength": 2048,
                         "example": "https://example.com/webhooks/incoming"
@@ -16089,20 +16456,14 @@
                 },
                 "type": "object"
             },
-            "Mail.V1.Webhooks.WebhookMailboxResource": {
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "example": "AC1a2b3c4d5e6f7g"
-                    },
-                    "address": {
-                        "type": "string",
-                        "example": "user@example.com"
-                    }
-                },
-                "type": "object"
+            "Mail.V1.Webhooks.WebhookCollection": {
+                "description": "Array of [`Mail.V1.Webhooks.WebhookResource`](#model/mailv1webhookswebhookresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookResource"
+                }
             },
-            "Mail.V1.Webhooks.WebhookResource": {
+            "Mail.V1.Webhooks.WebhookCreatedResource": {
                 "properties": {
                     "id": {
                         "description": "Unique webhook identifier",
@@ -16163,6 +16524,212 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2026-07-23T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookDeliveryLogCollection": {
+                "description": "Array of [`Mail.V1.Webhooks.WebhookDeliveryLogResource`](#model/mailv1webhookswebhookdeliverylogresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookDeliveryLogResource"
+                }
+            },
+            "Mail.V1.Webhooks.WebhookDeliveryLogResource": {
+                "properties": {
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    },
+                    "mailbox_address": {
+                        "description": "Email address of the mailbox this delivery is attached to",
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "webhook_url": {
+                        "description": "URL that received the webhook POST request",
+                        "type": "string",
+                        "example": "https://example.com/webhooks/incoming"
+                    },
+                    "is_successful": {
+                        "description": "Whether the delivery was successful",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "duration": {
+                        "description": "Webhook request duration in milliseconds",
+                        "type": "integer",
+                        "example": 42
+                    },
+                    "retry_count": {
+                        "description": "Number of delivery attempts made",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "max_retry_count": {
+                        "description": "Maximum number of delivery attempts allowed",
+                        "type": "integer",
+                        "example": 5
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookMailboxResource": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique webhook identifier",
+                        "type": "string",
+                        "example": "019683f8-1234-7abc-8def-0123456789ab"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookMailboxResource"
+                    },
+                    "name": {
+                        "description": "Human-readable name for this webhook",
+                        "type": "string",
+                        "example": "New message notifier"
+                    },
+                    "description": {
+                        "description": "Optional description of the webhook's purpose",
+                        "type": "string",
+                        "example": "Notifies our CRM when a new email arrives",
+                        "nullable": true
+                    },
+                    "events": {
+                        "description": "Events that trigger this webhook",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "message.received"
+                            ],
+                            "example": "message.received"
+                        }
+                    },
+                    "status": {
+                        "description": "Current status of the webhook",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "disabled",
+                            "paused"
+                        ],
+                        "example": "active"
+                    },
+                    "url": {
+                        "description": "URL that receives webhook POST requests",
+                        "type": "string",
+                        "example": "https://example.com/webhooks/incoming"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookSecretResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique webhook identifier",
+                        "type": "string",
+                        "example": "019683f8-1234-7abc-8def-0123456789ab"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookMailboxResource"
+                    },
+                    "name": {
+                        "description": "Human-readable name for this webhook",
+                        "type": "string",
+                        "example": "New message notifier"
+                    },
+                    "description": {
+                        "description": "Optional description of the webhook's purpose",
+                        "type": "string",
+                        "example": "Notifies our CRM when a new email arrives",
+                        "nullable": true
+                    },
+                    "events": {
+                        "description": "Events that trigger this webhook",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "message.received"
+                            ],
+                            "example": "message.received"
+                        }
+                    },
+                    "status": {
+                        "description": "Current status of the webhook",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "disabled",
+                            "paused"
+                        ],
+                        "example": "active"
+                    },
+                    "url": {
+                        "description": "URL that receives webhook POST requests",
+                        "type": "string",
+                        "example": "https://example.com/webhooks/incoming"
+                    },
+                    "secret": {
+                        "description": "New webhook secret, sent as `Authorization: Bearer <secret>` with every delivery. The previous secret is immediately invalidated and the new one is not returned again.",
+                        "type": "string",
+                        "example": "4a6f8b2d1e9c3f7a0b5d8e2c4f1a7b3d9e6c2f8a1b4d7e0c3f6a9b2d5e8c1f4"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookTestResultResource": {
+                "properties": {
+                    "http_status": {
+                        "description": "HTTP status code returned by the webhook endpoint",
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "is_successful": {
+                        "description": "Whether the test delivery was successful",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "error": {
+                        "description": "Error message returned by the webhook endpoint in case of failure",
+                        "type": "string",
+                        "example": "Something bad happened",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -18927,6 +19494,43 @@
                 "schema": {
                     "type": "boolean",
                     "example": false,
+                    "nullable": true
+                }
+            },
+            "mail_webhook_id_path": {
+                "name": "webhookId",
+                "in": "path",
+                "description": "Webhook ID (returned when the webhook was created)",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "019683f8-1234-7abc-8def-0123456789ab"
+                }
+            },
+            "mail_webhook_mailbox_filter": {
+                "name": "mailbox_id",
+                "in": "query",
+                "description": "Filter by the mailbox resource ID the webhooks are attached to",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "AC1a2b3c4d5e6f7g",
+                    "nullable": true
+                }
+            },
+            "mail_webhook_status": {
+                "name": "status",
+                "in": "query",
+                "description": "Filter webhooks by status",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "disabled",
+                        "paused"
+                    ],
+                    "example": "active",
                     "nullable": true
                 }
             },
