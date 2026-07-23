@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.14.1",
+        "version": "1.15.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4812,14 +4812,372 @@
                 }
             }
         },
+        "/api/mail/v1/orders/{orderId}/logs/access": {
+            "get": {
+                "tags": [
+                    "Mail: Logs"
+                ],
+                "summary": "List access logs",
+                "description": "Retrieve paginated access logs for the domain attached to the given\nmail order. Supports filtering by account, date range, protocol,\nstatus, and deletion flag. Results are sorted by timestamp descending.",
+                "operationId": "mail_listAccessLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_account"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_from_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_to_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_access_log_protocol"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_access_log_has_deletions"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Logs.Access.AccessLogCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/logs/action": {
+            "get": {
+                "tags": [
+                    "Mail: Logs"
+                ],
+                "summary": "List action logs",
+                "description": "Retrieve paginated account action logs (administrative and user\nactions) for the given mail order. Supports filtering by account,\ndate range, and status. Results are sorted by timestamp descending.",
+                "operationId": "mail_listActionLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_account"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_from_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_to_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Logs.Action.ActionLogCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/logs/inbound": {
+            "get": {
+                "tags": [
+                    "Mail: Logs"
+                ],
+                "summary": "List inbound logs",
+                "description": "Retrieve paginated inbound (received mail) delivery logs for the\ndomain attached to the given mail order. Supports filtering by\naccount, date range, status, sender, and recipient. Results are\nsorted by timestamp descending.",
+                "operationId": "mail_listInboundLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_account"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_from_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_to_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_sender"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_recipient"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Logs.Common.DeliveryLogCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/logs/mailbox-actions": {
+            "get": {
+                "tags": [
+                    "Mail: Logs"
+                ],
+                "summary": "List mailbox action logs",
+                "description": "Retrieve paginated mailbox action logs (message and mailbox events)\nfor a mailbox in the given mail order. The mailbox email must belong\nto the order's domain. Supports date range and event type filters.\nResults are sorted by timestamp descending.",
+                "operationId": "mail_listMailboxActionLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_email"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_from_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_to_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_action_event"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Logs.MailboxActions.MailboxActionLogCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/logs/outbound": {
+            "get": {
+                "tags": [
+                    "Mail: Logs"
+                ],
+                "summary": "List outbound logs",
+                "description": "Retrieve paginated outbound (sent mail) delivery logs for the domain\nattached to the given mail order. Supports filtering by account, date\nrange, status, sender, and recipient. Results are sorted by timestamp\ndescending.",
+                "operationId": "mail_listOutboundLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_account"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_from_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_to_date"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_sender"
+                    },
+                    {
+                        "$ref": "#/components/parameters/mail_log_recipient"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Logs.Common.DeliveryLogCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/mail/v1/orders/{orderId}/mailboxes": {
             "get": {
                 "tags": [
                     "Mail: Mailboxes"
                 ],
-                "summary": "Get mailbox list",
+                "summary": "List mailboxes",
                 "description": "Retrieve a paginated list of mailboxes belonging to a mail order.\n\nUse this endpoint to monitor mailboxes of your mail service, including\ntheir status, enabled protocols, attached resource counts, and\nperiodically synced usage numbers (usage may lag behind live values).",
-                "operationId": "mail_getMailboxListV1",
+                "operationId": "mail_listMailboxesV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/mail_order_id_path"
@@ -5017,9 +5375,9 @@
                 "tags": [
                     "Mail: Orders"
                 ],
-                "summary": "Get mail order list",
+                "summary": "List orders",
                 "description": "Retrieve a paginated list of mail orders associated with your account.\n\nUse this endpoint to monitor your mail services, including their status,\nplan, attached domain, and expiration details.",
-                "operationId": "mail_getMailOrderListV1",
+                "operationId": "mail_listOrdersV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/mail_order_domain_filter"
@@ -14975,6 +15333,281 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Logs.Access.AccessLogCollection": {
+                "description": "Array of [`Mail.V1.Logs.Access.AccessLogResource`](#model/mailv1logsaccessaccesslogresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Logs.Access.AccessLogResource"
+                }
+            },
+            "Mail.V1.Logs.Access.AccessLogResource": {
+                "properties": {
+                    "account": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "domain": {
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "session": {
+                        "type": "string",
+                        "example": "nVpwr1XahpcqAkeAAAQAAJjSnW8aYxyM"
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "example": "imap"
+                    },
+                    "remote_ip": {
+                        "type": "string",
+                        "example": "192.168.0.1"
+                    },
+                    "login_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T13:13:54Z"
+                    },
+                    "in": {
+                        "description": "Bytes received",
+                        "type": "integer",
+                        "example": 421
+                    },
+                    "out": {
+                        "description": "Bytes sent",
+                        "type": "integer",
+                        "example": 9381
+                    },
+                    "deleted": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "expunged": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "trashed": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "logout_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T13:13:55Z"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T13:13:55Z"
+                    },
+                    "app_name": {
+                        "type": "string",
+                        "example": "com.google.android.gm"
+                    },
+                    "has_deletions": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "result": {
+                        "type": "string",
+                        "example": "ok"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Access"
+                    },
+                    "is_important": {
+                        "description": "True when the session deleted, expunged or trashed messages",
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Logs.Action.ActionLogCollection": {
+                "description": "Array of [`Mail.V1.Logs.Action.ActionLogResource`](#model/mailv1logsactionactionlogresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Logs.Action.ActionLogResource"
+                }
+            },
+            "Mail.V1.Logs.Action.ActionLogResource": {
+                "properties": {
+                    "action": {
+                        "type": "string",
+                        "example": "Account created"
+                    },
+                    "extra": {
+                        "description": "Arbitrary contextual payload",
+                        "type": "object",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T12:11:34Z"
+                    },
+                    "ip_address": {
+                        "description": "Only populated for user-role logs",
+                        "type": "string",
+                        "example": "127.0.0.1"
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "user"
+                    },
+                    "action_context": {
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "response_status": {
+                        "type": "string",
+                        "enum": [
+                            "OK",
+                            "Fail"
+                        ],
+                        "example": "OK"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Logs.Common.DeliveryLogCollection": {
+                "description": "Array of [`Mail.V1.Logs.Common.DeliveryLogResource`](#model/mailv1logscommondeliverylogresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Logs.Common.DeliveryLogResource"
+                }
+            },
+            "Mail.V1.Logs.Common.DeliveryLogRelayEventResource": {
+                "properties": {
+                    "address_to": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "relay": {
+                        "type": "string",
+                        "example": "server.example.com[192.168.0.1]:587"
+                    },
+                    "delay": {
+                        "type": "string",
+                        "example": "3.1"
+                    },
+                    "dsn": {
+                        "type": "string",
+                        "example": "2.0.0"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Sent"
+                    },
+                    "response": {
+                        "type": "string",
+                        "example": "250 2.0.0 Ok: queued as 6153112091D"
+                    },
+                    "time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T13:13:55Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Logs.Common.DeliveryLogResource": {
+                "properties": {
+                    "account": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "rcpt": {
+                        "type": "string",
+                        "example": "recipient@example.com"
+                    },
+                    "rcpts": {
+                        "type": "string",
+                        "example": "recipient@example.com"
+                    },
+                    "client_ip": {
+                        "type": "string",
+                        "example": "192.168.0.1"
+                    },
+                    "from": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "nrcpt": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T13:13:55Z"
+                    },
+                    "relay_events": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Mail.V1.Logs.Common.DeliveryLogRelayEventResource"
+                        }
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Delivered"
+                    },
+                    "is_spam": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Logs.MailboxActions.MailboxActionLogCollection": {
+                "description": "Array of [`Mail.V1.Logs.MailboxActions.MailboxActionLogResource`](#model/mailv1logsmailboxactionsmailboxactionlogresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Logs.MailboxActions.MailboxActionLogResource"
+                }
+            },
+            "Mail.V1.Logs.MailboxActions.MailboxActionLogResource": {
+                "properties": {
+                    "folder": {
+                        "type": "string",
+                        "example": "INBOX.Sent"
+                    },
+                    "time": {
+                        "description": "Unix timestamp of the event",
+                        "type": "integer",
+                        "example": 1773906125
+                    },
+                    "event": {
+                        "type": "string",
+                        "enum": [
+                            "MessageNew",
+                            "MessageRead",
+                            "MessageAppend",
+                            "MessageExpunge",
+                            "MailboxCreate",
+                            "MailboxDelete",
+                            "MailboxRename"
+                        ],
+                        "example": "MessageNew"
+                    },
+                    "mailbox": {
+                        "description": "Mailbox email address",
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "hostname": {
+                        "type": "string",
+                        "example": "de-fra-mailstorage71.hostinger.io"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-16T13:13:55Z"
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.Mailboxes.MailboxCollection": {
                 "description": "Array of [`Mail.V1.Mailboxes.MailboxResource`](#model/mailv1mailboxesmailboxresource)",
                 "type": "array",
@@ -17725,6 +18358,33 @@
                     "example": "u123456789"
                 }
             },
+            "mail_access_log_has_deletions": {
+                "name": "has_deletions",
+                "in": "query",
+                "description": "Filter access log entries by whether the session had deletions",
+                "required": false,
+                "schema": {
+                    "type": "boolean",
+                    "example": false,
+                    "nullable": true
+                }
+            },
+            "mail_access_log_protocol": {
+                "name": "protocol",
+                "in": "query",
+                "description": "Filter access log entries by protocol",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "imap",
+                        "pop3",
+                        "smtp"
+                    ],
+                    "example": "imap",
+                    "nullable": true
+                }
+            },
             "mail_order_domain_filter": {
                 "name": "domain",
                 "in": "query",
@@ -17734,6 +18394,122 @@
                     "type": "string",
                     "example": "example.com",
                     "nullable": true
+                }
+            },
+            "mail_log_account": {
+                "name": "account",
+                "in": "query",
+                "description": "Filter log entries by a specific email account",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com",
+                    "nullable": true
+                }
+            },
+            "mail_log_date": {
+                "name": "date",
+                "in": "query",
+                "description": "Exact date filter (YYYY-MM-DD). Takes precedence over `from_date`/`to_date` when both are given.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2026-03-16",
+                    "nullable": true
+                }
+            },
+            "mail_log_from_date": {
+                "name": "from_date",
+                "in": "query",
+                "description": "Date range start (RFC 3339)",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-03-01T00:00:00Z",
+                    "nullable": true
+                }
+            },
+            "mail_log_recipient": {
+                "name": "recipient",
+                "in": "query",
+                "description": "Filter log entries by recipient. Accepts a full email address or a domain.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "recipient.com",
+                    "nullable": true
+                }
+            },
+            "mail_log_sender": {
+                "name": "sender",
+                "in": "query",
+                "description": "Filter log entries by sender. Accepts a full email address or a domain.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "user@example.com",
+                    "nullable": true
+                }
+            },
+            "mail_log_status": {
+                "name": "status",
+                "in": "query",
+                "description": "Filter log entries by status",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "Successful",
+                        "Failed"
+                    ],
+                    "example": "Successful",
+                    "nullable": true
+                }
+            },
+            "mail_log_to_date": {
+                "name": "to_date",
+                "in": "query",
+                "description": "Date range end (RFC 3339)",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-03-31T23:59:59Z",
+                    "nullable": true
+                }
+            },
+            "mail_mailbox_action_event": {
+                "name": "event",
+                "in": "query",
+                "description": "Filter mailbox action log entries by event type",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "MessageNew",
+                        "MessageRead",
+                        "MessageAppend",
+                        "MessageExpunge",
+                        "MailboxCreate",
+                        "MailboxDelete",
+                        "MailboxRename"
+                    ],
+                    "example": "MessageNew",
+                    "nullable": true
+                }
+            },
+            "mail_mailbox_email": {
+                "name": "email",
+                "in": "query",
+                "description": "Mailbox email address. Must belong to the order's domain.",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com"
                 }
             },
             "mail_mailbox_id_path": {
@@ -18212,6 +18988,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Mail: Logs",
+            "description": "Inspect activity logs of your mail orders. This category includes\nendpoints for access logs, inbound and outbound delivery logs,\nmailbox action logs, and account action logs.",
+            "x-displayName": "Logs"
+        },
+        {
             "name": "Mail: Mailboxes",
             "description": "Manage mailboxes of your mail orders. This category includes\nendpoints for listing mailboxes with their status, enabled\nprotocols, attached resource counts, and usage numbers.",
             "x-displayName": "Mailboxes"
@@ -18379,7 +19160,8 @@
             "name": "Mail",
             "tags": [
                 "Mail: Orders",
-                "Mail: Mailboxes"
+                "Mail: Mailboxes",
+                "Mail: Logs"
             ]
         },
         {
