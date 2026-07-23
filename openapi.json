@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.15.0",
+        "version": "1.16.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5429,6 +5429,97 @@
                 }
             }
         },
+        "/api/mail/v1/orders/{orderId}/plan": {
+            "get": {
+                "tags": [
+                    "Mail: Orders"
+                ],
+                "summary": "Get order plan",
+                "description": "Retrieve the plan the given mail order was purchased with, including\ndomain-level and mailbox-level quotas, limits, and protocol\navailability.",
+                "operationId": "mail_getOrderPlanV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Orders.PlanResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/mailboxes/{mailboxId}/webhooks": {
+            "post": {
+                "tags": [
+                    "Mail: Webhooks"
+                ],
+                "summary": "Create webhook",
+                "description": "Create a webhook for the given mailbox. The generated secret is\nreturned only in this response and is sent as a bearer token with\nevery delivery.",
+                "operationId": "mail_createWebhookV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.CreateWebhookRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/reach/v1/contacts/{uuid}": {
             "delete": {
                 "tags": [
@@ -9868,6 +9959,56 @@
                         "maxLength": 50,
                         "minLength": 8,
                         "example": "SecurePassword123!"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Schema.CreateWebhookRequestSchema": {
+                "required": [
+                    "name",
+                    "events",
+                    "url"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Human-readable name for this webhook",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "New message notifier"
+                    },
+                    "description": {
+                        "description": "Optional description of the webhook's purpose",
+                        "type": "string",
+                        "example": "Notifies our CRM when a new email arrives",
+                        "nullable": true
+                    },
+                    "events": {
+                        "description": "Events that trigger this webhook",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "message.received"
+                            ],
+                            "example": "message.received"
+                        }
+                    },
+                    "status": {
+                        "description": "Initial status of the webhook",
+                        "type": "string",
+                        "default": "active",
+                        "enum": [
+                            "active",
+                            "disabled",
+                            "paused"
+                        ],
+                        "example": "active"
+                    },
+                    "url": {
+                        "description": "Publicly reachable URL that receives the webhook POST requests",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "https://example.com/webhooks/incoming"
                     }
                 },
                 "type": "object"
@@ -15842,6 +15983,190 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Orders.PlanDomainResource": {
+                "properties": {
+                    "mailbox_quota": {
+                        "description": "Maximum number of mailboxes per domain",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "forwarder_quota": {
+                        "description": "Maximum number of forwarders per domain",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "alias_quota": {
+                        "description": "Maximum number of aliases per domain",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "is_catchall_enabled": {
+                        "description": "Whether catch-all mailboxes are available",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_imap_enabled": {
+                        "description": "Whether IMAP access is available",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_pop3_enabled": {
+                        "description": "Whether POP3 access is available",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Orders.PlanMailboxResource": {
+                "properties": {
+                    "storage_quota": {
+                        "description": "Storage quota per mailbox in megabytes",
+                        "type": "integer",
+                        "example": 10240
+                    },
+                    "messages_quota": {
+                        "description": "Maximum number of stored messages per mailbox",
+                        "type": "integer",
+                        "example": 10000
+                    },
+                    "forwarder_quota": {
+                        "description": "Maximum number of forwarders per mailbox",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "alias_quota": {
+                        "description": "Maximum number of aliases per mailbox",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "max_outbound_message_size": {
+                        "description": "Maximum outbound message size in bytes",
+                        "type": "integer",
+                        "example": 25000000
+                    },
+                    "max_outbound_attachment_size": {
+                        "description": "Maximum outbound attachment size in bytes",
+                        "type": "integer",
+                        "example": 20000000
+                    },
+                    "max_outbound_recipient_limit": {
+                        "description": "Maximum number of recipients per outbound message",
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "rate_limit_inbound": {
+                        "description": "Inbound message rate limit as `messages/seconds`",
+                        "type": "string",
+                        "example": "100/86400"
+                    },
+                    "rate_limit_outbound": {
+                        "description": "Outbound message rate limit as `messages/seconds`",
+                        "type": "string",
+                        "example": "100/86400"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Orders.PlanResource": {
+                "properties": {
+                    "name": {
+                        "description": "Machine name of the plan",
+                        "type": "string",
+                        "example": "hostinger_free"
+                    },
+                    "title": {
+                        "description": "Human-readable plan title",
+                        "type": "string",
+                        "example": "Free Email"
+                    },
+                    "domain": {
+                        "$ref": "#/components/schemas/Mail.V1.Orders.PlanDomainResource"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Orders.PlanMailboxResource"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookMailboxResource": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Webhooks.WebhookResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique webhook identifier",
+                        "type": "string",
+                        "example": "019683f8-1234-7abc-8def-0123456789ab"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Webhooks.WebhookMailboxResource"
+                    },
+                    "name": {
+                        "description": "Human-readable name for this webhook",
+                        "type": "string",
+                        "example": "New message notifier"
+                    },
+                    "description": {
+                        "description": "Optional description of the webhook's purpose",
+                        "type": "string",
+                        "example": "Notifies our CRM when a new email arrives",
+                        "nullable": true
+                    },
+                    "events": {
+                        "description": "Events that trigger this webhook",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "message.received"
+                            ],
+                            "example": "message.received"
+                        }
+                    },
+                    "status": {
+                        "description": "Current status of the webhook",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "disabled",
+                            "paused"
+                        ],
+                        "example": "active"
+                    },
+                    "url": {
+                        "description": "URL that receives webhook POST requests",
+                        "type": "string",
+                        "example": "https://example.com/webhooks/incoming"
+                    },
+                    "secret": {
+                        "description": "One-time webhook secret, returned only on creation. Sent as `Authorization: Bearer <secret>` with every delivery.",
+                        "type": "string",
+                        "example": "4a6f8b2d1e9c3f7a0b5d8e2c4f1a7b3d9e6c2f8a1b4d7e0c3f6a9b2d5e8c1f4"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-23T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -19003,6 +19328,11 @@
             "x-displayName": "Orders"
         },
         {
+            "name": "Mail: Webhooks",
+            "description": "Manage webhooks of your mailboxes. This category includes endpoints\nfor creating webhooks that notify your systems about mailbox events\nsuch as received messages.",
+            "x-displayName": "Webhooks"
+        },
+        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -19161,6 +19491,7 @@
             "tags": [
                 "Mail: Orders",
                 "Mail: Mailboxes",
+                "Mail: Webhooks",
                 "Mail: Logs"
             ]
         },
