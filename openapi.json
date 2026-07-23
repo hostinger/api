@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.13.0",
+        "version": "1.14.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4809,6 +4809,97 @@
                 }
             }
         },
+        "/api/mail/v1/mailboxes/{mailboxId}": {
+            "delete": {
+                "tags": [
+                    "Mail: Mailboxes"
+                ],
+                "summary": "Delete mailbox",
+                "description": "Delete a mailbox. The mailbox is soft-deleted and stays restorable\nfor a limited period before it is permanently removed.",
+                "operationId": "mail_deleteMailboxV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/mailboxes/{mailboxId}/password": {
+            "patch": {
+                "tags": [
+                    "Mail: Mailboxes"
+                ],
+                "summary": "Change mailbox password",
+                "description": "Change the password of a mailbox.",
+                "operationId": "mail_changeMailboxPasswordV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.ChangeMailboxPasswordRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/mail/v1/orders": {
             "get": {
                 "tags": [
@@ -9270,6 +9361,22 @@
                 },
                 "type": "object",
                 "x-scalar-ignore": true
+            },
+            "Mail.V1.Schema.ChangeMailboxPasswordRequestSchema": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "password": {
+                        "description": "New mailbox password. Minimum 8 characters with uppercase, lowercase, number and special character; must not be a commonly used password.",
+                        "type": "string",
+                        "format": "password",
+                        "maxLength": 50,
+                        "minLength": 8,
+                        "example": "SecurePassword123!"
+                    }
+                },
+                "type": "object"
             },
             "Mail.V1.Schema.CreateMailboxRequestSchema": {
                 "required": [
@@ -17459,6 +17566,16 @@
                     "type": "string",
                     "example": "example.com",
                     "nullable": true
+                }
+            },
+            "mail_mailbox_id_path": {
+                "name": "mailboxId",
+                "in": "path",
+                "description": "Mailbox resource ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "AC1a2b3c4d5e6f7g"
                 }
             },
             "mail_mailbox_search": {
