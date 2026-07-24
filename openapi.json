@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.18.2",
+        "version": "1.19.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4987,6 +4987,197 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/mailboxes/{mailboxId}/autoreplies": {
+            "post": {
+                "tags": [
+                    "Mail: Autoreplies"
+                ],
+                "summary": "Create autoreply",
+                "description": "Create an automatic reply for the given mailbox. A mailbox can have\nonly one autoreply. Omit `starts_at` to activate the autoreply\nimmediately and omit `ends_at` to keep it active indefinitely.",
+                "operationId": "mail_createAutoreplyV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.UpsertAutoreplyRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Autoreplies.AutoreplyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/autoreplies/{autoreplyId}": {
+            "put": {
+                "tags": [
+                    "Mail: Autoreplies"
+                ],
+                "summary": "Update autoreply",
+                "description": "Replace the autoreply with the given content and schedule. Omitted\noptional fields are cleared: omit `starts_at` to activate the\nautoreply immediately and omit `ends_at` to keep it active\nindefinitely.",
+                "operationId": "mail_updateAutoreplyV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_autoreply_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.UpsertAutoreplyRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Autoreplies.AutoreplyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Mail: Autoreplies"
+                ],
+                "summary": "Delete autoreply",
+                "description": "Delete the autoreply of a mailbox. The mailbox stops sending\nautomatic replies immediately.",
+                "operationId": "mail_deleteAutoreplyV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_autoreply_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/autoreplies": {
+            "get": {
+                "tags": [
+                    "Mail: Autoreplies"
+                ],
+                "summary": "List autoreplies",
+                "description": "Retrieve a paginated list of autoreplies across all mailboxes of a\nmail order.",
+                "operationId": "mail_listAutorepliesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Autoreplies.AutoreplyCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -10598,6 +10789,46 @@
                         "type": "string",
                         "maxLength": 2048,
                         "example": "https://example.com/webhooks/incoming"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Schema.UpsertAutoreplyRequestSchema": {
+                "required": [
+                    "subject",
+                    "body"
+                ],
+                "properties": {
+                    "subject": {
+                        "description": "Subject of the automatic reply",
+                        "type": "string",
+                        "example": "Out of office"
+                    },
+                    "body": {
+                        "description": "Body of the automatic reply",
+                        "type": "string",
+                        "example": "I am on vacation until August 1st."
+                    },
+                    "display_name": {
+                        "description": "Sender display name used for the reply",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "John Doe",
+                        "nullable": true
+                    },
+                    "starts_at": {
+                        "description": "When the autoreply becomes active. Defaults to now.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "ends_at": {
+                        "description": "When the autoreply stops. Omit for an indefinite autoreply.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-09-01T00:00:00Z",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -16261,6 +16492,79 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Autoreplies.AutoreplyCollection": {
+                "description": "Array of [`Mail.V1.Autoreplies.AutoreplyResource`](#model/mailv1autorepliesautoreplyresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Autoreplies.AutoreplyResource"
+                }
+            },
+            "Mail.V1.Autoreplies.AutoreplyMailboxResource": {
+                "properties": {
+                    "id": {
+                        "description": "Mailbox resource ID",
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Autoreplies.AutoreplyResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique autoreply identifier",
+                        "type": "string",
+                        "example": "AR1a2b3c4d5e6f7g"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Autoreplies.AutoreplyMailboxResource"
+                    },
+                    "subject": {
+                        "description": "Subject of the automatic reply",
+                        "type": "string",
+                        "example": "Out of office"
+                    },
+                    "body": {
+                        "description": "Body of the automatic reply",
+                        "type": "string",
+                        "example": "I am on vacation until August 1st."
+                    },
+                    "display_name": {
+                        "description": "Sender display name used for the reply",
+                        "type": "string",
+                        "example": "John Doe",
+                        "nullable": true
+                    },
+                    "starts_at": {
+                        "description": "When the autoreply becomes active",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-01T00:00:00Z"
+                    },
+                    "ends_at": {
+                        "description": "When the autoreply stops",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-09-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-24T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-24T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.Logs.Access.AccessLogCollection": {
                 "description": "Array of [`Mail.V1.Logs.Access.AccessLogResource`](#model/mailv1logsaccessaccesslogresource)",
                 "type": "array",
@@ -19732,6 +20036,16 @@
                     "nullable": true
                 }
             },
+            "mail_autoreply_id_path": {
+                "name": "autoreplyId",
+                "in": "path",
+                "description": "Autoreply resource ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "AR1a2b3c4d5e6f7g"
+                }
+            },
             "mail_order_domain_filter": {
                 "name": "domain",
                 "in": "query",
@@ -20382,6 +20696,11 @@
             "x-displayName": "API Tokens"
         },
         {
+            "name": "Mail: Autoreplies",
+            "description": "Manage automatic replies of your mailboxes. This category includes\nendpoints for creating, updating, listing, and deleting autoreplies\nsuch as out-of-office messages. A mailbox can have one autoreply.",
+            "x-displayName": "Autoreplies"
+        },
+        {
             "name": "Mail: Logs",
             "description": "Inspect activity logs of your mail orders. This category includes\nendpoints for access logs, inbound and outbound delivery logs,\nmailbox action logs, and account action logs.",
             "x-displayName": "Logs"
@@ -20560,6 +20879,7 @@
             "tags": [
                 "Mail: Orders",
                 "Mail: Mailboxes",
+                "Mail: Autoreplies",
                 "Mail: Webhooks",
                 "Mail: API Tokens",
                 "Mail: Logs"
