@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.19.0",
+        "version": "1.20.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5169,6 +5169,244 @@
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/mailboxes/{mailboxId}/forwarders": {
+            "post": {
+                "tags": [
+                    "Mail: Forwarders"
+                ],
+                "summary": "Create forwarder",
+                "description": "Create a forwarder from the given mailbox to the destination address.\nThe destination receives a confirmation email and forwarding becomes\nactive only after it is confirmed.",
+                "operationId": "mail_createForwarderV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.CreateForwarderRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Forwarders.ForwarderResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/forwarders/{forwarderId}": {
+            "delete": {
+                "tags": [
+                    "Mail: Forwarders"
+                ],
+                "summary": "Delete forwarder",
+                "description": "Delete a forwarder. The mailbox stops forwarding messages to the\ndestination address immediately.",
+                "operationId": "mail_deleteForwarderV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_forwarder_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/forwarders": {
+            "get": {
+                "tags": [
+                    "Mail: Forwarders"
+                ],
+                "summary": "List forwarders",
+                "description": "Retrieve a paginated list of forwarders across all mailboxes of a\nmail order.",
+                "operationId": "mail_listForwardersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Forwarders.ForwarderCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/forwarders/{forwarderId}/confirmation/resend": {
+            "post": {
+                "tags": [
+                    "Mail: Forwarders"
+                ],
+                "summary": "Resend forwarder confirmation",
+                "description": "Resend the confirmation email to the destination address of an\nunconfirmed forwarder.",
+                "operationId": "mail_resendForwarderConfirmationV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_forwarder_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/forwarders/{forwarderId}/keep-copy": {
+            "patch": {
+                "tags": [
+                    "Mail: Forwarders"
+                ],
+                "summary": "Update forwarder keep-copy setting",
+                "description": "Enable or disable keeping a copy of forwarded messages in the\nmailbox.",
+                "operationId": "mail_updateForwarderKeepCopySettingV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_forwarder_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.UpdateForwarderKeepCopyRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -10674,6 +10912,24 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Schema.CreateForwarderRequestSchema": {
+                "required": [
+                    "destination"
+                ],
+                "properties": {
+                    "destination": {
+                        "description": "Email address the messages will be forwarded to",
+                        "type": "string",
+                        "example": "jane@example.org"
+                    },
+                    "is_keep_copy_enabled": {
+                        "description": "Whether to keep a copy of forwarded messages in the mailbox. Defaults to false.",
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.Schema.CreateMailboxRequestSchema": {
                 "required": [
                     "local_part",
@@ -10744,6 +11000,19 @@
                         "type": "string",
                         "maxLength": 2048,
                         "example": "https://example.com/webhooks/incoming"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Schema.UpdateForwarderKeepCopyRequestSchema": {
+                "required": [
+                    "is_keep_copy_enabled"
+                ],
+                "properties": {
+                    "is_keep_copy_enabled": {
+                        "description": "Whether to keep a copy of forwarded messages in the mailbox",
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
@@ -16565,6 +16834,70 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Forwarders.ForwarderCollection": {
+                "description": "Array of [`Mail.V1.Forwarders.ForwarderResource`](#model/mailv1forwardersforwarderresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Forwarders.ForwarderResource"
+                }
+            },
+            "Mail.V1.Forwarders.ForwarderMailboxResource": {
+                "properties": {
+                    "id": {
+                        "description": "Mailbox resource ID",
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Forwarders.ForwarderResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique forwarder identifier",
+                        "type": "string",
+                        "example": "FW1a2b3c4d5e6f7g"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Forwarders.ForwarderMailboxResource"
+                    },
+                    "destination": {
+                        "description": "Email address the messages are forwarded to",
+                        "type": "string",
+                        "example": "jane@example.org"
+                    },
+                    "is_keep_copy_enabled": {
+                        "description": "Whether a copy of forwarded messages is kept in the mailbox",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_active": {
+                        "description": "Whether the forwarder is active",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_confirmed": {
+                        "description": "Whether the destination address has confirmed the forwarding",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-24T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-24T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.Logs.Access.AccessLogCollection": {
                 "description": "Array of [`Mail.V1.Logs.Access.AccessLogResource`](#model/mailv1logsaccessaccesslogresource)",
                 "type": "array",
@@ -20057,6 +20390,16 @@
                     "nullable": true
                 }
             },
+            "mail_forwarder_id_path": {
+                "name": "forwarderId",
+                "in": "path",
+                "description": "Forwarder resource ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "FW1a2b3c4d5e6f7g"
+                }
+            },
             "mail_log_account": {
                 "name": "account",
                 "in": "query",
@@ -20701,6 +21044,11 @@
             "x-displayName": "Autoreplies"
         },
         {
+            "name": "Mail: Forwarders",
+            "description": "Manage forwarders of your mailboxes. This category includes endpoints\nfor creating, listing, and deleting forwarders that redirect incoming\nmessages to another email address. The destination address must\nconfirm the forwarding before it becomes active.",
+            "x-displayName": "Forwarders"
+        },
+        {
             "name": "Mail: Logs",
             "description": "Inspect activity logs of your mail orders. This category includes\nendpoints for access logs, inbound and outbound delivery logs,\nmailbox action logs, and account action logs.",
             "x-displayName": "Logs"
@@ -20880,6 +21228,7 @@
                 "Mail: Orders",
                 "Mail: Mailboxes",
                 "Mail: Autoreplies",
+                "Mail: Forwarders",
                 "Mail: Webhooks",
                 "Mail: API Tokens",
                 "Mail: Logs"
