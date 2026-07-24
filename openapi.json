@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.18.1",
+        "version": "1.18.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -286,6 +286,50 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/orders": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Orders"
+                ],
+                "summary": "List Agency Plan orders",
+                "description": "Returns a paginated list of Agency Plan orders accessible to the authenticated client.",
+                "operationId": "agency-hosting_listAgencyPlanOrdersV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AgencyHosting.V1.Orders.OrderCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -12985,6 +13029,84 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Orders.DatacenterResource": {
+                "properties": {
+                    "code": {
+                        "description": "Datacenter code",
+                        "type": "string",
+                        "example": "ukfast"
+                    },
+                    "country": {
+                        "description": "Datacenter country",
+                        "type": "string",
+                        "example": "uk"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.OrderCollection": {
+                "description": "Array of [`AgencyHosting.V1.Orders.OrderResource`](#model/agencyhostingv1ordersorderresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Orders.OrderResource"
+                }
+            },
+            "AgencyHosting.V1.Orders.OrderResource": {
+                "properties": {
+                    "id": {
+                        "description": "Order ID",
+                        "type": "integer",
+                        "example": 123456
+                    },
+                    "client_id": {
+                        "description": "Order client ID",
+                        "type": "integer",
+                        "example": 123456
+                    },
+                    "status": {
+                        "description": "Order status",
+                        "type": "string",
+                        "example": "active",
+                        "nullable": true
+                    },
+                    "plan": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.PlanResource"
+                    },
+                    "datacenter": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Orders.DatacenterResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Order datacenter"
+                    },
+                    "created_at": {
+                        "description": "Order creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.PlanResource": {
+                "properties": {
+                    "name": {
+                        "description": "Plan display name",
+                        "type": "string",
+                        "example": "Shared Business hosting",
+                        "nullable": true
+                    },
+                    "key": {
+                        "description": "Plan key",
+                        "type": "string",
+                        "example": "shared_business_hosting",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Setups.WebsiteSetupResource": {
                 "properties": {
                     "setup_uuid": {
@@ -20075,6 +20197,11 @@
             "x-displayName": "Files"
         },
         {
+            "name": "Agency Hosting: Orders",
+            "description": "Agency Hosting: Orders",
+            "x-displayName": "Orders"
+        },
+        {
             "name": "Agency Hosting: Website Setups",
             "description": "Agency Hosting: Website Setups",
             "x-displayName": "Website Setups"
@@ -20462,6 +20589,7 @@
                 "Agency Hosting: Datacenters",
                 "Agency Hosting: Domains",
                 "Agency Hosting: Files",
+                "Agency Hosting: Orders",
                 "Agency Hosting: Website Setups",
                 "Agency Hosting: Websites",
                 "Agency Hosting: WordPress"
