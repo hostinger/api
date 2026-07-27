@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.20.0",
+        "version": "1.20.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3545,9 +3545,9 @@
                 "tags": [
                     "Hosting: Databases"
                 ],
-                "summary": "Create account database remote connection",
+                "summary": "Create database remote connection",
                 "description": "Allows a remote host to connect to the specified database.\n\nProvide an IPv4/IPv6 address, or \"%\" to allow any host. The database name must be\nthe full name returned by the list databases endpoint.",
-                "operationId": "hosting_createAccountDatabaseRemoteConnectionV1",
+                "operationId": "hosting_createDatabaseRemoteConnectionV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/username_path"
@@ -3592,9 +3592,9 @@
                 "tags": [
                     "Hosting: Databases"
                 ],
-                "summary": "Delete account database remote connection",
+                "summary": "Delete database remote connection",
                 "description": "Permanently removes a remote-access rule, revoking the given host's remote access to the database.\n\nIdentify the rule with the required ip query parameter (the IPv4/IPv6 address, or \"%\",\nexactly as returned by the list remote connections endpoint). The database name must be\nthe full name returned by the list databases endpoint.",
-                "operationId": "hosting_deleteAccountDatabaseRemoteConnectionV1",
+                "operationId": "hosting_deleteDatabaseRemoteConnectionV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/username_path"
@@ -3638,9 +3638,9 @@
                 "tags": [
                     "Hosting: Databases"
                 ],
-                "summary": "List account database remote connections",
+                "summary": "List database remote connections",
                 "description": "Returns the remote-access rules for the specified account: the remote hosts\n(IPv4/IPv6 addresses, or \"%\" for any host) allowed to connect to the account databases.\n\nUse the domain filter to only return rules for databases assigned to a specific domain.",
-                "operationId": "hosting_listAccountDatabaseRemoteConnectionsV1",
+                "operationId": "hosting_listDatabaseRemoteConnectionsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/username_path"
