@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.20.1",
+        "version": "1.21.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4856,6 +4856,150 @@
                 }
             }
         },
+        "/api/mail/v1/mailboxes/{mailboxId}/aliases": {
+            "post": {
+                "tags": [
+                    "Mail: Aliases"
+                ],
+                "summary": "Create alias",
+                "description": "Create an alias for the given mailbox. The alias address is formed\nfrom the given local part and the domain of the mailbox. Messages\nsent to the alias are delivered to the mailbox.",
+                "operationId": "mail_createAliasV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Mail.V1.Schema.CreateAliasRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Aliases.AliasResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/aliases/{aliasId}": {
+            "delete": {
+                "tags": [
+                    "Mail: Aliases"
+                ],
+                "summary": "Delete alias",
+                "description": "Delete an alias. Messages sent to the alias address are no longer\ndelivered to the mailbox.",
+                "operationId": "mail_deleteAliasV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_alias_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/aliases": {
+            "get": {
+                "tags": [
+                    "Mail: Aliases"
+                ],
+                "summary": "List aliases",
+                "description": "Retrieve a paginated list of aliases across all mailboxes of a mail\norder.",
+                "operationId": "mail_listAliasesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Aliases.AliasCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/mail/v1/orders/{orderId}/api-tokens": {
             "post": {
                 "tags": [
@@ -5177,6 +5321,182 @@
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/mailboxes/{mailboxId}/catchalls": {
+            "post": {
+                "tags": [
+                    "Mail: Catchalls"
+                ],
+                "summary": "Create catch-all",
+                "description": "Create a catch-all that routes all messages sent to unknown addresses\nof the domain to the given mailbox. The mailbox address receives a\nconfirmation email and the catch-all becomes active only after it is\nconfirmed. A domain can have only one catch-all.",
+                "operationId": "mail_createCatchAllV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_mailbox_id_path"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Mail.V1.Catchalls.CatchallResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/catchalls/{catchallId}": {
+            "delete": {
+                "tags": [
+                    "Mail: Catchalls"
+                ],
+                "summary": "Delete catch-all",
+                "description": "Delete a catch-all. Messages sent to unknown addresses of the domain\nare no longer routed to the mailbox.",
+                "operationId": "mail_deleteCatchAllV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_catchall_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/orders/{orderId}/catchalls": {
+            "get": {
+                "tags": [
+                    "Mail: Catchalls"
+                ],
+                "summary": "List catch-alls",
+                "description": "Retrieve a paginated list of catch-alls across all mailboxes of a\nmail order.",
+                "operationId": "mail_listCatchAllsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Mail.V1.Catchalls.CatchallCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/mail/v1/catchalls/{catchallId}/confirmation/resend": {
+            "post": {
+                "tags": [
+                    "Mail: Catchalls"
+                ],
+                "summary": "Resend catch-all confirmation",
+                "description": "Resend the confirmation email to the mailbox address of an\nunconfirmed catch-all.",
+                "operationId": "mail_resendCatchAllConfirmationV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/mail_catchall_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "422": {
@@ -10871,6 +11191,20 @@
                         "maxLength": 50,
                         "minLength": 8,
                         "example": "SecurePassword123!"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Schema.CreateAliasRequestSchema": {
+                "required": [
+                    "local_part"
+                ],
+                "properties": {
+                    "local_part": {
+                        "description": "Local part of the alias address (the part before the @). The domain is taken from the mailbox. Case-insensitive and stored lowercase; must start and end with a letter or digit; single dots, underscores and hyphens are allowed in between.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "example": "info"
                     }
                 },
                 "type": "object"
@@ -16641,6 +16975,61 @@
                 },
                 "type": "object"
             },
+            "Mail.V1.Aliases.AliasCollection": {
+                "description": "Array of [`Mail.V1.Aliases.AliasResource`](#model/mailv1aliasesaliasresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Aliases.AliasResource"
+                }
+            },
+            "Mail.V1.Aliases.AliasMailboxResource": {
+                "properties": {
+                    "id": {
+                        "description": "Mailbox resource ID",
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "john@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Aliases.AliasResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique alias identifier",
+                        "type": "string",
+                        "example": "AA1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "description": "Email address of the alias",
+                        "type": "string",
+                        "example": "info@example.com"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Aliases.AliasMailboxResource"
+                    },
+                    "is_active": {
+                        "description": "Whether the alias is active and not suspended",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-27T12:00:00Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-27T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Mail.V1.ApiTokens.ApiTokenCollection": {
                 "description": "Array of [`Mail.V1.ApiTokens.ApiTokenResource`](#model/mailv1apitokensapitokenresource)",
                 "type": "array",
@@ -16830,6 +17219,65 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2026-07-24T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Catchalls.CatchallCollection": {
+                "description": "Array of [`Mail.V1.Catchalls.CatchallResource`](#model/mailv1catchallscatchallresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Mail.V1.Catchalls.CatchallResource"
+                }
+            },
+            "Mail.V1.Catchalls.CatchallMailboxResource": {
+                "properties": {
+                    "id": {
+                        "description": "Mailbox resource ID",
+                        "type": "string",
+                        "example": "AC1a2b3c4d5e6f7g"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Mail.V1.Catchalls.CatchallResource": {
+                "properties": {
+                    "id": {
+                        "description": "Unique catch-all identifier",
+                        "type": "string",
+                        "example": "CA1a2b3c4d5e6f7g"
+                    },
+                    "mailbox": {
+                        "$ref": "#/components/schemas/Mail.V1.Catchalls.CatchallMailboxResource"
+                    },
+                    "domain": {
+                        "description": "Domain whose unrouted messages are caught",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "is_active": {
+                        "description": "Whether the catch-all is active",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_confirmed": {
+                        "description": "Whether the mailbox address has confirmed the catch-all",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-27T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-07-27T12:00:00Z"
                     }
                 },
                 "type": "object"
@@ -20348,6 +20796,16 @@
                     "nullable": true
                 }
             },
+            "mail_alias_id_path": {
+                "name": "aliasId",
+                "in": "path",
+                "description": "Alias resource ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "AA1a2b3c4d5e6f7g"
+                }
+            },
             "mail_api_token_id_path": {
                 "name": "tokenId",
                 "in": "path",
@@ -20377,6 +20835,16 @@
                 "schema": {
                     "type": "string",
                     "example": "AR1a2b3c4d5e6f7g"
+                }
+            },
+            "mail_catchall_id_path": {
+                "name": "catchallId",
+                "in": "path",
+                "description": "Catch-all resource ID",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "CA1a2b3c4d5e6f7g"
                 }
             },
             "mail_order_domain_filter": {
@@ -21034,6 +21502,11 @@
             "x-displayName": "Websites"
         },
         {
+            "name": "Mail: Aliases",
+            "description": "Manage aliases of your mailboxes. An alias is an additional email\naddress that delivers incoming messages to an existing mailbox. This\ncategory includes endpoints for creating, listing, and deleting\naliases.",
+            "x-displayName": "Aliases"
+        },
+        {
             "name": "Mail: API Tokens",
             "description": "Manage API tokens for the\n[Hostinger Email API](https://api.mail.hostinger.com/). Tokens are\nscoped to mailboxes of a mail order and grant access to mailbox\nprovisioning and management through the Email API.",
             "x-displayName": "API Tokens"
@@ -21042,6 +21515,11 @@
             "name": "Mail: Autoreplies",
             "description": "Manage automatic replies of your mailboxes. This category includes\nendpoints for creating, updating, listing, and deleting autoreplies\nsuch as out-of-office messages. A mailbox can have one autoreply.",
             "x-displayName": "Autoreplies"
+        },
+        {
+            "name": "Mail: Catchalls",
+            "description": "Manage catch-alls of your domains. A catch-all routes all messages\nsent to unknown addresses of a domain to a designated mailbox. The\nmailbox address must confirm the catch-all before it becomes active.",
+            "x-displayName": "Catchalls"
         },
         {
             "name": "Mail: Forwarders",
@@ -21227,8 +21705,10 @@
             "tags": [
                 "Mail: Orders",
                 "Mail: Mailboxes",
+                "Mail: Aliases",
                 "Mail: Autoreplies",
                 "Mail: Forwarders",
+                "Mail: Catchalls",
                 "Mail: Webhooks",
                 "Mail: API Tokens",
                 "Mail: Logs"
