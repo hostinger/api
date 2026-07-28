@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.21.0",
+        "version": "1.22.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -20477,7 +20477,8 @@
                     "type": "string",
                     "enum": [
                         "DOMAIN",
-                        "VPS"
+                        "VPS",
+                        "EMAIL"
                     ],
                     "example": "VPS"
                 }
