@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.22.0",
+        "version": "1.23.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1305,6 +1305,52 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/billing/v1/subscriptions/{subscriptionId}/renew": {
+            "post": {
+                "tags": [
+                    "Billing: Subscriptions"
+                ],
+                "summary": "Renew subscription",
+                "description": "Create a renewal order for an existing Hostinger subscription.\n\nThis endpoint places a renewal order for a single subscription, leveraging\nthe existing billing infrastructure. Use the\n[subscriptions endpoint](#tag/billing-subscriptions) to look up the\n`subscriptionId` values available for renewal.\n\nIf no payment method is provided, your default payment method will be used automatically.\n\nUse this endpoint to renew any subscription available in your account.",
+                "operationId": "billing_renewSubscriptionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/subscriptionId"
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Billing.V1.Subscription.Renewal.RenewRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Billing.V1.Order.OrderResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -11791,6 +11837,25 @@
                         ],
                         "example": "immediately",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Billing.V1.Subscription.Renewal.RenewRequest": {
+                "properties": {
+                    "payment_method_id": {
+                        "description": "Payment method ID, default will be used if not provided",
+                        "type": "integer",
+                        "example": 1327362
+                    },
+                    "coupons": {
+                        "description": "Discount coupon codes",
+                        "type": "array",
+                        "items": {
+                            "example": [
+                                "Coupon 3"
+                            ]
+                        }
                     }
                 },
                 "type": "object"
