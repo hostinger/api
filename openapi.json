@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.23.0",
+        "version": "1.24.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2298,6 +2298,70 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Domains.V1.Transfer.TransferCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/whois/default/{whoisId}": {
+            "delete": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Unset default WHOIS profile",
+                "description": "Unset WHOIS contact profile as default.\n\nThe profile itself is kept, it is only no longer pre-selected for its TLD.\n\nUse this endpoint to stop reusing contact information for new registrations.",
+                "operationId": "domains_unsetDefaultWHOISProfileV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/whoisId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Set WHOIS profile as default",
+                "description": "Set WHOIS contact profile as default.\n\nThe default profile is pre-selected for the TLD it belongs to when registering new domains.\n\nUse this endpoint to avoid picking contact information for every registration.",
+                "operationId": "domains_setWHOISProfileAsDefaultV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/whoisId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -9639,7 +9703,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Stop virtual machine",
-                "description": "Stop a specified virtual machine.\n\nIf the virtual machine is already stopped, the request will still be processed without any effect.\n\nUse this endpoint to power off running VPS instances.",
+                "description": "Stop a specified virtual machine.\n\nIf the virtual machine is already stopped, the request will still be processed without any effect.\n\nThis is a compute-only power state change and does not affect billing. To stop future charges,\ndisable auto-renewal on the owning subscription.\n\nUse this endpoint to power off running VPS instances.",
                 "operationId": "VPS_stopVirtualMachineV1",
                 "parameters": [
                     {
