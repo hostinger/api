@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.24.0",
+        "version": "1.25.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1910,6 +1910,70 @@
                 }
             }
         },
+        "/api/domains/v1/irtp/{domain}": {
+            "get": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Get pending IRTP verification",
+                "description": "Retrieve a pending IRTP verification for a domain.\n\nBoth the old and new registrant must confirm it before the WHOIS change takes effect.\n\nUse this endpoint to check the status of a WHOIS change awaiting registrant confirmation.",
+                "operationId": "domains_getPendingIRTPVerificationV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.IRTP.VerificationResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Cancel pending IRTP verification",
+                "description": "Cancel a pending IRTP verification.\n\nUse this endpoint to back out of a WHOIS change that is stuck waiting on registrant confirmation,\nfor example when the confirmation email cannot be received, without waiting out the 5-day expiry.",
+                "operationId": "domains_cancelPendingIRTPVerificationV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/domains/v1/portfolio/{domain}/auth-code": {
             "get": {
                 "tags": [
@@ -2311,14 +2375,55 @@
                 }
             }
         },
-        "/api/domains/v1/whois/default/{whoisId}": {
-            "delete": {
+        "/api/domains/v1/whois/change": {
+            "put": {
                 "tags": [
                     "Domains: WHOIS"
                 ],
-                "summary": "Unset default WHOIS profile",
-                "description": "Unset WHOIS contact profile as default.\n\nThe profile itself is kept, it is only no longer pre-selected for its TLD.\n\nUse this endpoint to stop reusing contact information for new registrations.",
-                "operationId": "domains_unsetDefaultWHOISProfileV1",
+                "summary": "Change WHOIS profile for domain",
+                "description": "Change WHOIS contact profile for a domain.\n\nRepoints the given contact roles to a new WHOIS profile and submits the change to the registry.\nThe profile currently assigned to those roles is resolved automatically;\nthe request fails if the given roles are not all on the same profile today.\n\nChanging transfer sensitive fields on the owner contact starts an IRTP verification.\n\nThe change is processed asynchronously.\n\nUse this endpoint to move a registered domain onto different contact information.",
+                "operationId": "domains_changeWHOISProfileForDomainV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.WHOIS.Change.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/whois/default/{whoisId}": {
+            "put": {
+                "tags": [
+                    "Domains: WHOIS"
+                ],
+                "summary": "Set WHOIS profile as default",
+                "description": "Set WHOIS contact profile as default.\n\nThe default profile is pre-selected for the TLD it belongs to when registering new domains.\n\nUse this endpoint to avoid picking contact information for every registration.",
+                "operationId": "domains_setWHOISProfileAsDefaultV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/whoisId"
@@ -2343,13 +2448,13 @@
                     }
                 }
             },
-            "patch": {
+            "delete": {
                 "tags": [
                     "Domains: WHOIS"
                 ],
-                "summary": "Set WHOIS profile as default",
-                "description": "Set WHOIS contact profile as default.\n\nThe default profile is pre-selected for the TLD it belongs to when registering new domains.\n\nUse this endpoint to avoid picking contact information for every registration.",
-                "operationId": "domains_setWHOISProfileAsDefaultV1",
+                "summary": "Unset default WHOIS profile",
+                "description": "Unset WHOIS contact profile as default.\n\nThe profile itself is kept, it is only no longer pre-selected for its TLD.\n\nUse this endpoint to stop reusing contact information for new registrations.",
+                "operationId": "domains_unsetDefaultWHOISProfileV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/whoisId"
@@ -12267,6 +12372,44 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.WHOIS.Change.UpdateRequest": {
+                "required": [
+                    "new_whois_id",
+                    "domain",
+                    "change_for"
+                ],
+                "properties": {
+                    "new_whois_id": {
+                        "description": "WHOIS profile ID to assign to the domain",
+                        "type": "integer",
+                        "example": 131502
+                    },
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "change_for": {
+                        "description": "Contact roles to repoint to the new WHOIS profile",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "owner",
+                                "admin",
+                                "billing",
+                                "tech"
+                            ]
+                        },
+                        "maxItems": 4,
+                        "example": [
+                            "owner",
+                            "admin"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.WHOIS.StoreRequest": {
                 "required": [
                     "tld",
@@ -15604,6 +15747,56 @@
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.IRTP.VerificationResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "status": {
+                        "description": "IRTP verification status",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "completed",
+                            "canceled"
+                        ],
+                        "example": "pending"
+                    },
+                    "old_confirmed_at": {
+                        "description": "When the old registrant confirmed the change",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-19T08:07:49Z",
+                        "nullable": true
+                    },
+                    "new_confirmed_at": {
+                        "description": "When the new registrant confirmed the change",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-19T08:07:49Z",
+                        "nullable": true
+                    },
+                    "old_whois_profile_email": {
+                        "description": "Email the old registrant confirmation was sent to",
+                        "type": "string",
+                        "example": "old-registrant@example.com"
+                    },
+                    "new_whois_profile_email": {
+                        "description": "Email the new registrant confirmation was sent to",
+                        "type": "string",
+                        "example": "new-registrant@example.com"
+                    },
+                    "expires_at": {
+                        "description": "When the verification auto-cancels if unconfirmed",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-24T08:07:49Z"
                     }
                 },
                 "type": "object"
@@ -21532,6 +21725,11 @@
             "x-displayName": "Forwarding"
         },
         {
+            "name": "Domains: WHOIS",
+            "description": "Manage WHOIS contact profiles for your domains. This category\nincludes endpoints for creating, updating, deleting, and\nretrieving WHOIS profiles.\nWHOIS profile stores registration data for domain names and\nis required for domain registration.",
+            "x-displayName": "WHOIS"
+        },
+        {
             "name": "Domains: Portfolio",
             "description": "Retrieve and manage your domain portfolio. This category lets\nyou list all domains linked to your account, including their\ncreation and expiration details.",
             "x-displayName": "Portfolio"
@@ -21540,11 +21738,6 @@
             "name": "Domains: Transfer",
             "description": "Domains: Transfer",
             "x-displayName": "Transfer"
-        },
-        {
-            "name": "Domains: WHOIS",
-            "description": "Manage WHOIS contact profiles for your domains. This category\nincludes endpoints for creating, updating, deleting, and\nretrieving WHOIS profiles.\nWHOIS profile stores registration data for domain names and\nis required for domain registration.",
-            "x-displayName": "WHOIS"
         },
         {
             "name": "Ecommerce: Miscellaneous",
