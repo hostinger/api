@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.25.0",
+        "version": "1.26.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1961,6 +1961,281 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/move/incoming/{domain}": {
+            "get": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Get incoming domain move",
+                "description": "Retrieve the incoming move for a specified domain.\n\nReturns 404 when no account is moving this domain to you.\n\nUse this endpoint to check whether a domain addressed to you is still waiting to be accepted.",
+                "operationId": "domains_getIncomingDomainMoveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/force_sync"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Move.MoveResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Accept incoming domain move",
+                "description": "Accept an incoming move for a specified domain.\n\nThe provided WHOIS profiles become the contacts of the domain, so they must belong\nto your account and satisfy the requirements of the TLD. Only the contact types the\ndomain actually uses are applied, but all four profile IDs have to be provided.\n\nThe move has to still be waiting for your decision, already accepted moves\ncannot be accepted again.\n\nAccepting does not complete the move. A confirmation email is sent to the email address of\nthe new owner contact, and the domain changes hands only after the change is confirmed from it.\nUntil then the move stays in the `activating` status, which can be followed with the\n[incoming move endpoint](#tag/domains-move).\n\nUse this endpoint to take ownership of a domain offered to you.",
+                "operationId": "domains_acceptIncomingDomainMoveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Move.Incoming.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Reject incoming domain move",
+                "description": "Reject an incoming move for a specified domain.\n\nThe domain stays in the account which initiated the move.\nMoves you have already accepted cannot be rejected anymore.\n\nUse this endpoint to decline a domain you do not want to take over.",
+                "operationId": "domains_rejectIncomingDomainMoveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/move/incoming": {
+            "get": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Get incoming domain move list",
+                "description": "Retrieve all domains other Hostinger accounts are moving to your account.\n\nMoves of every status are returned, including the ones which already completed.\n\nUse this endpoint to find domains waiting for you to accept them.",
+                "operationId": "domains_getIncomingDomainMoveListV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Move.MoveCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/move/outgoing/{domain}": {
+            "get": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Get outgoing domain move",
+                "description": "Retrieve the outgoing move for a specified domain.\n\nReturns 404 when the domain has no move in progress.\n\nUse this endpoint to track the status of a move you have initiated for a single domain.",
+                "operationId": "domains_getOutgoingDomainMoveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Move.MoveResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Start outgoing domain move",
+                "description": "Initiate a move of a specified domain to another Hostinger account.\n\nThe receiving account has to already exist and accept the move before the domain changes hands.\n\nThe domain must be active. The subscription it belongs to is resolved automatically,\nand the request is rejected with a 404 status code when the domain has no domain\nsubscription of its own.\n\nDomains protected by premium protection require an additional verification step,\nsuch requests are rejected with a 428 status code.\n\nUse this endpoint to hand a domain over to another Hostinger user.",
+                "operationId": "domains_startOutgoingDomainMoveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Move.Outgoing.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Cancel outgoing domain move",
+                "description": "Cancel an outgoing move for a specified domain.\n\nThe move can only be cancelled while the receiving account has not accepted it yet.\nThe domain stays in your account.\n\nUse this endpoint to withdraw a move you no longer want to complete.",
+                "operationId": "domains_cancelOutgoingDomainMoveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/move/outgoing": {
+            "get": {
+                "tags": [
+                    "Domains: Move"
+                ],
+                "summary": "Get outgoing domain move list",
+                "description": "Retrieve all domains you are moving to other Hostinger accounts.\n\nOnly moves which have not completed yet are returned.\n\nUse this endpoint to track moves you have initiated and the accounts they are addressed to.",
+                "operationId": "domains_getOutgoingDomainMoveListV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Move.MoveCollection"
                                 }
                             }
                         }
@@ -12280,6 +12555,59 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.Move.Incoming.UpdateRequest": {
+                "required": [
+                    "domain_contacts"
+                ],
+                "properties": {
+                    "domain_contacts": {
+                        "description": "WHOIS profiles of the accepting account. Only the contact types required by the TLD are applied, but all four IDs must be provided.",
+                        "required": [
+                            "owner_id",
+                            "admin_id",
+                            "billing_id",
+                            "tech_id"
+                        ],
+                        "properties": {
+                            "owner_id": {
+                                "description": "Owner contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 614698
+                            },
+                            "admin_id": {
+                                "description": "Administrative contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 114698
+                            },
+                            "billing_id": {
+                                "description": "Billing contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 154698
+                            },
+                            "tech_id": {
+                                "description": "Technical contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 524248
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Move.Outgoing.StoreRequest": {
+                "required": [
+                    "new_customer_email"
+                ],
+                "properties": {
+                    "new_customer_email": {
+                        "description": "Email address of the Hostinger account receiving the domain",
+                        "type": "string",
+                        "example": "new-owner@example.com"
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Portfolio.PurchaseRequest": {
                 "required": [
                     "domain",
@@ -15797,6 +16125,43 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2026-03-24T08:07:49Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Move.MoveCollection": {
+                "description": "Array of [`Domains.V1.Move.MoveResource`](#model/domainsv1movemoveresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Domains.V1.Move.MoveResource"
+                }
+            },
+            "Domains.V1.Move.MoveResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "status": {
+                        "description": "Status of the move",
+                        "type": "string",
+                        "enum": [
+                            "initiated",
+                            "activating",
+                            "completed"
+                        ],
+                        "example": "initiated"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-04T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-04T10:00:00Z"
                     }
                 },
                 "type": "object"
@@ -20876,6 +21241,16 @@
                     "example": 53513053
                 }
             },
+            "force_sync": {
+                "name": "force_sync",
+                "in": "query",
+                "description": "Re-check the move against the registry before responding. Only has an effect while the move is in the `activating` status.",
+                "schema": {
+                    "type": "boolean",
+                    "default": false,
+                    "example": true
+                }
+            },
             "tld": {
                 "name": "tld",
                 "in": "query",
@@ -21730,6 +22105,11 @@
             "x-displayName": "WHOIS"
         },
         {
+            "name": "Domains: Move",
+            "description": "Move domains between Hostinger accounts. This category\nincludes endpoints for initiating and cancelling moves of\nyour own domains to another account, and for accepting or\nrejecting moves initiated towards your account.\nA move changes which Hostinger account owns the domain and\ndoes not involve a registrar transfer.",
+            "x-displayName": "Move"
+        },
+        {
             "name": "Domains: Portfolio",
             "description": "Retrieve and manage your domain portfolio. This category lets\nyou list all domains linked to your account, including their\ncreation and expiration details.",
             "x-displayName": "Portfolio"
@@ -22005,6 +22385,7 @@
             "tags": [
                 "Domains: Availability",
                 "Domains: Forwarding",
+                "Domains: Move",
                 "Domains: Portfolio",
                 "Domains: Transfer",
                 "Domains: WHOIS"
