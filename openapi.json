@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.27.0",
+        "version": "1.28.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7354,7 +7354,7 @@
                     "Reach: Contacts"
                 ],
                 "summary": "Delete a contact",
-                "description": "Delete a contact with the specified UUID.\n\nThis endpoint permanently removes a contact from the email marketing system.",
+                "description": "Delete a contact with the specified UUID.\n\nThis endpoint permanently removes a contact from the email marketing system.\n\n**Deprecated.** This endpoint cannot target a profile, so it always falls back to the\nclient's default profile and cannot delete contacts of any other profile. Use\n`DELETE /api/reach/v1/profiles/{profileUuid}/contacts/{contactUuid}` instead.",
                 "operationId": "reach_deleteAContactV1",
                 "parameters": [
                     {
@@ -7371,6 +7371,167 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/contacts/fields/{fieldUuid}": {
+            "delete": {
+                "tags": [
+                    "Reach: Contact Fields"
+                ],
+                "summary": "Delete a contact field",
+                "description": "Delete a custom contact field.\n\nEvery value contacts hold for the field is deleted with it, and for the choice types so\nare its options. The contacts themselves are not affected.",
+                "operationId": "reach_deleteAContactFieldV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/fieldUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Reach: Contact Fields"
+                ],
+                "summary": "Update a contact field",
+                "description": "Rename a custom contact field and, for the choice types, replace its option set.\n\nOptions carrying a uuid are kept and relabelled, options without one are created, and any\nexisting option left out of the list is deleted along with the values contacts hold for\nit. The field type and slug cannot be changed.",
+                "operationId": "reach_updateAContactFieldV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/fieldUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/contacts/fields": {
+            "get": {
+                "tags": [
+                    "Reach: Contact Fields"
+                ],
+                "summary": "List contact fields",
+                "description": "Get the custom contact fields defined in a profile.\n\nCustom fields let you store your own attributes on contacts. The returned uuids are what\nyou pass to the contact update endpoint to set values, and choice fields also list the\noptions available to pick from.",
+                "operationId": "reach_listContactFieldsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Contact Fields"
+                ],
+                "summary": "Create a contact field",
+                "description": "Define a new custom contact field in a profile.\n\nThe `slug` is derived from the label and, like the field type, cannot be changed later.\nUse the returned uuid to set values on contacts.",
+                "operationId": "reach_createAContactFieldV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -7417,7 +7578,7 @@
                     "Reach: Contacts"
                 ],
                 "summary": "List contacts",
-                "description": "Get a list of contacts, optionally filtered by group and subscription status.\n\nThis endpoint returns a paginated list of contacts with their basic information.\nYou can filter contacts by group UUID and subscription status.",
+                "description": "Get a list of contacts, optionally filtered by group and subscription status.\n\nThis endpoint returns a paginated list of contacts with their basic information.\nYou can filter contacts by group UUID and subscription status.\n\n**Deprecated.** This endpoint cannot target a profile, so it always falls back to the\nclient's default profile and cannot list contacts of any other profile. Use\n`GET /api/reach/v1/profiles/{profileUuid}/contacts` instead, which also replaces the\ngroup filter with a tag filter.",
                 "operationId": "reach_listContactsV1",
                 "parameters": [
                     {
@@ -7455,7 +7616,8 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true
             },
             "post": {
                 "tags": [
@@ -7497,6 +7659,269 @@
                 },
                 "deprecated": true,
                 "x-scalar-ignore": true
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/contacts/{contactUuid}": {
+            "get": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Get contact details",
+                "description": "Get the full details of a single contact.\n\nAlongside the contact's own attributes this returns the tags assigned to it and the\nvalues it holds for the profile's custom contact fields.",
+                "operationId": "reach_getContactDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.ContactDetailsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Delete a profile contact",
+                "description": "Permanently delete a contact from a profile.\n\nThe contact is removed together with its custom field values and tag assignments.",
+                "operationId": "reach_deleteAProfileContactV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Update a contact",
+                "description": "Update a contact's attributes and custom field values.\n\nOnly the properties present in the request body are changed, so a partial body is enough\nto change a single attribute. Sending a property as `null` clears it.\n\nThe response carries the contact's core attributes. Read back its tags, custom field\nvalues, source and note with `GET /api/reach/v1/profiles/{profileUuid}/contacts/{contactUuid}`.",
+                "operationId": "reach_updateAContactV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.ProfileContactUpdateResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/contacts/bulk": {
+            "post": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Create contacts in bulk",
+                "description": "Create many contacts in a profile in a single call.\n\nThe contacts are imported in the background, so a success response means the import was\naccepted rather than finished. Contacts whose email already exists in the profile are\nleft as they are. If double opt-in is enabled, new contacts start off pending and are\nsent a confirmation email.",
+                "operationId": "reach_createContactsInBulkV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.BulkStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/contacts": {
+            "get": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "List profile contacts",
+                "description": "Get a paginated list of contacts belonging to a profile.\n\nContacts can be filtered by subscription status, by tag, and by an email search term.\nThe `meta.total` field of the response is the number of contacts matching the filters,\nso calling this endpoint without filters gives the profile's total contact count.",
+                "operationId": "reach_listProfileContactsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/subscription_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tag_uuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Contacts.ProfileContactCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Contacts"
+                ],
+                "summary": "Create new contacts",
+                "description": "Create a new contact in the email marketing system.\n\nThis endpoint allows you to create a new contact with basic information like name, email, and surname.\n\nIf double opt-in is enabled, the contact will be created with a pending status\nand a confirmation email will be sent.",
+                "operationId": "reach_createNewContactsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/reach/v1/segmentation/segments": {
@@ -7686,52 +8111,6 @@
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/reach/v1/profiles/{profileUuid}/contacts": {
-            "post": {
-                "tags": [
-                    "Reach: Contacts"
-                ],
-                "summary": "Create new contacts",
-                "description": "Create a new contact in the email marketing system.\n\nThis endpoint allows you to create a new contact with basic information like name, email, and surname.\n\nIf double opt-in is enabled, the contact will be created with a pending status\nand a confirmation email will be sent.",
-                "operationId": "reach_createNewContactsV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/profileUuid"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Reach.V1.Contacts.StoreRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success empty response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -13565,6 +13944,136 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.BulkStoreRequest": {
+                "description": "Create many contacts in one call",
+                "required": [
+                    "contacts"
+                ],
+                "properties": {
+                    "contacts": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "john.doe@example.com"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "John",
+                                    "nullable": true
+                                },
+                                "surname": {
+                                    "type": "string",
+                                    "example": "Doe",
+                                    "nullable": true
+                                },
+                                "phone": {
+                                    "description": "Phone number in E.164 format (leading \"+\" then 7-15 digits)",
+                                    "type": "string",
+                                    "maxLength": 20,
+                                    "example": "+14155552671",
+                                    "nullable": true
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 1000,
+                        "minItems": 1
+                    },
+                    "tag_uuids": {
+                        "description": "Existing tags to attach to every created contact",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "note": {
+                        "description": "Note applied to every created contact",
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "Imported from CRM",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Fields.StoreRequest": {
+                "description": "Define a custom contact field for the profile",
+                "required": [
+                    "type",
+                    "label"
+                ],
+                "properties": {
+                    "type": {
+                        "description": "Immutable once the field exists",
+                        "type": "string",
+                        "enum": [
+                            "text",
+                            "number",
+                            "date",
+                            "single_choice",
+                            "multi_choice"
+                        ],
+                        "example": "text"
+                    },
+                    "label": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Job title"
+                    },
+                    "options": {
+                        "description": "Required for single_choice and multi_choice, ignored for the scalar types. Labels must be unique regardless of casing.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 255
+                        },
+                        "maxItems": 100,
+                        "minItems": 1
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Fields.UpdateRequest": {
+                "description": "Rename a custom contact field and, for the choice types, replace its option set. The field type and slug are immutable.",
+                "required": [
+                    "label"
+                ],
+                "properties": {
+                    "label": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Job title"
+                    },
+                    "options": {
+                        "description": "Replaces the option set when provided. Entries carrying a uuid are kept and relabelled, entries without one are created, and any existing option missing from the list is deleted along with the values contacts hold for it.",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "label"
+                            ],
+                            "properties": {
+                                "uuid": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "label": {
+                                    "type": "string",
+                                    "maxLength": 255
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 100,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.Segments.StoreRequest": {
                 "required": [
                     "name",
@@ -13696,6 +14205,78 @@
                         "maxLength": 75,
                         "example": "VIP customer",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.UpdateRequest": {
+                "description": "Fields to change on a contact. Omitted properties are left untouched.",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John",
+                        "nullable": true
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "description": "Phone number in E.164 format (leading \"+\" then 7-15 digits)",
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "+14155552671",
+                        "nullable": true
+                    },
+                    "subscription_status": {
+                        "type": "string",
+                        "enum": [
+                            "subscribed",
+                            "unsubscribed",
+                            "confirmed",
+                            "pending"
+                        ],
+                        "example": "subscribed",
+                        "nullable": true
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "VIP customer",
+                        "nullable": true
+                    },
+                    "fields": {
+                        "description": "Set custom field values. Omit to leave untouched, send an empty array to clear them all.",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "uuid"
+                            ],
+                            "properties": {
+                                "uuid": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "description": "For the scalar field types",
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "selected_option_uuids": {
+                                    "description": "For the choice field types",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
@@ -19142,6 +19723,100 @@
                     "$ref": "#/components/schemas/Reach.V1.Contacts.ContactResource"
                 }
             },
+            "Reach.V1.Contacts.ContactDetailsResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John",
+                        "nullable": true
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+14155552671",
+                        "nullable": true
+                    },
+                    "subscription_status": {
+                        "type": "string",
+                        "enum": [
+                            "subscribed",
+                            "unsubscribed",
+                            "confirmed",
+                            "pending"
+                        ],
+                        "example": "subscribed"
+                    },
+                    "subscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "unsubscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-06-15T00:00:00Z",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2022-12-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "domain": {
+                        "type": "string",
+                        "example": "example.com",
+                        "nullable": true
+                    },
+                    "source": {
+                        "type": "string",
+                        "enum": [
+                            "sync",
+                            "import",
+                            "manual",
+                            "api",
+                            "form",
+                            "checkout",
+                            "horizons"
+                        ],
+                        "example": "api",
+                        "nullable": true
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "VIP customer",
+                        "nullable": true
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.TagResource"
+                        }
+                    },
+                    "fields": {
+                        "description": "Custom field values held by this contact",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldValueResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactResource": {
                 "properties": {
                     "uuid": {
@@ -19166,7 +19841,9 @@
                         "type": "string",
                         "enum": [
                             "subscribed",
-                            "unsubscribed"
+                            "unsubscribed",
+                            "confirmed",
+                            "pending"
                         ],
                         "example": "subscribed"
                     },
@@ -19180,7 +19857,11 @@
                         "enum": [
                             "sync",
                             "import",
-                            "manual"
+                            "manual",
+                            "api",
+                            "form",
+                            "checkout",
+                            "horizons"
                         ],
                         "example": "sync",
                         "nullable": true
@@ -19190,6 +19871,120 @@
                         "maxLength": 75,
                         "example": "VIP customer",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Fields.ContactFieldCollection": {
+                "description": "Array of [`Reach.V1.Contacts.Fields.ContactFieldResource`](#model/reachv1contactsfieldscontactfieldresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldResource"
+                }
+            },
+            "Reach.V1.Contacts.Fields.ContactFieldOptionResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Gold"
+                    },
+                    "sort_order": {
+                        "type": "integer",
+                        "example": 0
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Fields.ContactFieldResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "text",
+                            "number",
+                            "date",
+                            "single_choice",
+                            "multi_choice"
+                        ],
+                        "example": "text"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Job title"
+                    },
+                    "slug": {
+                        "description": "Derived from the label on creation and immutable afterwards",
+                        "type": "string",
+                        "example": "job_title"
+                    },
+                    "options": {
+                        "description": "Available choices. Always empty for the scalar field types.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldOptionResource"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Fields.ContactFieldValueResource": {
+                "description": "A custom contact field together with the value held by one contact",
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "text",
+                            "number",
+                            "date",
+                            "single_choice",
+                            "multi_choice"
+                        ],
+                        "example": "text"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Job title"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "job_title"
+                    },
+                    "value": {
+                        "description": "Set for the scalar field types, null for the choice types",
+                        "type": "string",
+                        "example": "Developer",
+                        "nullable": true
+                    },
+                    "selected_option_uuids": {
+                        "description": "Chosen options for the choice field types, empty for the scalar types",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "options": {
+                        "description": "Every option the field offers, not only the selected ones",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reach.V1.Contacts.Fields.ContactFieldOptionResource"
+                        }
                     }
                 },
                 "type": "object"
@@ -19210,6 +20005,133 @@
                     "title": {
                         "type": "string",
                         "example": "Newsletter Subscribers"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.ProfileContactCollection": {
+                "description": "Array of [`Reach.V1.Contacts.ProfileContactResource`](#model/reachv1contactsprofilecontactresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.ProfileContactResource"
+                }
+            },
+            "Reach.V1.Contacts.ProfileContactResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John",
+                        "nullable": true
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+14155552671",
+                        "nullable": true
+                    },
+                    "subscription_status": {
+                        "type": "string",
+                        "enum": [
+                            "subscribed",
+                            "unsubscribed",
+                            "confirmed",
+                            "pending"
+                        ],
+                        "example": "subscribed"
+                    },
+                    "subscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "unsubscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-06-15T00:00:00Z",
+                        "nullable": true
+                    },
+                    "source": {
+                        "type": "string",
+                        "enum": [
+                            "sync",
+                            "import",
+                            "manual",
+                            "api",
+                            "form",
+                            "checkout",
+                            "horizons"
+                        ],
+                        "example": "api",
+                        "nullable": true
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 75,
+                        "example": "VIP customer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.ProfileContactUpdateResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John",
+                        "nullable": true
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+14155552671",
+                        "nullable": true
+                    },
+                    "subscription_status": {
+                        "type": "string",
+                        "enum": [
+                            "subscribed",
+                            "unsubscribed",
+                            "confirmed",
+                            "pending"
+                        ],
+                        "example": "subscribed"
+                    },
+                    "subscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "unsubscribed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-06-15T00:00:00Z",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -19312,7 +20234,9 @@
                         "type": "string",
                         "enum": [
                             "subscribed",
-                            "unsubscribed"
+                            "unsubscribed",
+                            "confirmed",
+                            "pending"
                         ],
                         "example": "subscribed"
                     },
@@ -19326,7 +20250,11 @@
                         "enum": [
                             "sync",
                             "import",
-                            "manual"
+                            "manual",
+                            "api",
+                            "form",
+                            "checkout",
+                            "horizons"
                         ],
                         "example": "sync",
                         "nullable": true
@@ -19336,6 +20264,33 @@
                         "maxLength": 75,
                         "example": "VIP customer",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Tags.TagResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "type": {
+                        "description": "How the tag came about. `custom` covers the tags you create yourself, `form` covers the ones Reach creates for its forms.",
+                        "type": "string",
+                        "enum": [
+                            "form",
+                            "custom"
+                        ],
+                        "example": "custom"
+                    },
+                    "value": {
+                        "type": "string",
+                        "example": "Newsletter"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
                     }
                 },
                 "type": "object"
@@ -22021,6 +22976,17 @@
                     "nullable": true
                 }
             },
+            "search": {
+                "name": "search",
+                "in": "query",
+                "description": "Search contacts by email",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "john.doe@example.com"
+                }
+            },
             "uuid": {
                 "name": "uuid",
                 "in": "path",
@@ -22031,6 +22997,17 @@
                     "format": "uuid"
                 }
             },
+            "fieldUuid": {
+                "name": "fieldUuid",
+                "in": "path",
+                "description": "Contact field uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+            },
             "group_uuid": {
                 "name": "group_uuid",
                 "in": "query",
@@ -22038,6 +23015,17 @@
                 "required": false,
                 "schema": {
                     "type": "string",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+            },
+            "contactUuid": {
+                "name": "contactUuid",
+                "in": "path",
+                "description": "Contact uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
                     "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
             },
@@ -22070,9 +23058,22 @@
                     "type": "string",
                     "enum": [
                         "subscribed",
-                        "unsubscribed"
+                        "unsubscribed",
+                        "confirmed",
+                        "pending"
                     ],
                     "example": "subscribed"
+                }
+            },
+            "tag_uuid": {
+                "name": "tag_uuid",
+                "in": "query",
+                "description": "Filter contacts by tag UUID",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
             },
             "tokenId": {
@@ -22464,6 +23465,11 @@
             "x-displayName": "Contacts"
         },
         {
+            "name": "Reach: Contact Fields",
+            "description": "Reach: Contact Fields",
+            "x-displayName": "Contact Fields"
+        },
+        {
             "name": "Reach: Segments",
             "description": "Filter and segment your email contacts using various\ncriteria. This category includes endpoints for filtering\ncontacts by attributes, tags, and email addresses, as well\nas listing all available segments and retrieving contacts\nthat match specific attribute conditions.",
             "x-displayName": "Segments"
@@ -22680,6 +23686,7 @@
             "name": "Reach",
             "tags": [
                 "Reach: Contacts",
+                "Reach: Contact Fields",
                 "Reach: Segments",
                 "Reach: Profiles"
             ]
