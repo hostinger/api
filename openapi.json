@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.26.0",
+        "version": "1.27.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2282,6 +2282,47 @@
                 }
             }
         },
+        "/api/domains/v1/portfolio/claim": {
+            "post": {
+                "tags": [
+                    "Domains: Portfolio"
+                ],
+                "summary": "Claim free domain",
+                "description": "Claim a free domain available on your account and register it.\n\nUnlike purchasing a domain, this consumes a free domain you already have,\nso no payment method is required.\n\nA successful response means the domain is registered. If registration fails, login to\n[hPanel](https://hpanel.hostinger.com/) and check domain registration status.\n\nIf no WHOIS information is provided, default contact information for that TLD will be used.\nBefore making request, ensure WHOIS information for desired TLD exists in your account.\n\nSome TLDs require `additional_details` to be provided and these will be validated before claiming.\n\nRequests which cannot be fulfilled are rejected with an error code in the response body,\nfor example `2037` when no free domain is available.\n\nUse this endpoint to register a domain using a free domain from your account.",
+                "operationId": "domains_claimFreeDomainV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Portfolio.ClaimRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Portfolio.ClaimResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/domains/v1/portfolio/{domain}/domain-lock": {
             "put": {
                 "tags": [
@@ -2573,6 +2614,47 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/domains/v1/transfers/claim": {
+            "post": {
+                "tags": [
+                    "Domains: Transfer"
+                ],
+                "summary": "Claim free domain transfer",
+                "description": "Claim a free domain transfer available on your account and start the transfer.\n\nUnlike purchasing a transfer, this consumes a free domain transfer you already have,\nso no payment method is required.\n\nBefore making request, unlock the domain at the current registrar and get its authorization\ncode. The transfer is validated first, so domains which cannot be transferred are rejected\nbefore the free domain transfer is consumed.\n\nA successful response means the transfer has been started. Completion depends on the current\nregistrar and can be followed with the [transfer list endpoint](#tag/domains-transfer).\n\nIf no WHOIS information is provided, default contact information for that TLD will be used.\nBefore making request, ensure WHOIS information for desired TLD exists in your account.\n\nRequests which cannot be fulfilled are rejected with an error code in the response body.\n\nUse this endpoint to transfer a domain using a free domain transfer from your account.",
+                "operationId": "domains_claimFreeDomainTransferV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Transfer.ClaimRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Domains.V1.Transfer.TransferResource"
                                 }
                             }
                         }
@@ -12608,6 +12690,49 @@
                 },
                 "type": "object"
             },
+            "Domains.V1.Portfolio.ClaimRequest": {
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "my-new-domain.tld"
+                    },
+                    "domain_contacts": {
+                        "description": "Domain contact information",
+                        "properties": {
+                            "owner_id": {
+                                "description": "Owner contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "admin_id": {
+                                "description": "Administrative contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 546123
+                            },
+                            "billing_id": {
+                                "description": "Billing contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "tech_id": {
+                                "description": "Technical contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "additional_details": {
+                        "description": "Additional registration data, possible values depends on TLD",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Portfolio.PurchaseRequest": {
                 "required": [
                     "domain",
@@ -12696,6 +12821,57 @@
                         "description": "Fourth name server",
                         "type": "string",
                         "example": "ns4.some-nameserver.tld"
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Transfer.ClaimRequest": {
+                "required": [
+                    "domain",
+                    "auth_code"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "my-new-domain.tld"
+                    },
+                    "auth_code": {
+                        "description": "Authorization code from the current registrar",
+                        "type": "string",
+                        "example": "Auth123Code456"
+                    },
+                    "domain_contacts": {
+                        "description": "Domain contact information",
+                        "properties": {
+                            "owner_id": {
+                                "description": "Owner contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "admin_id": {
+                                "description": "Administrative contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 546123
+                            },
+                            "billing_id": {
+                                "description": "Billing contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "tech_id": {
+                                "description": "Technical contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "should_keep_ns": {
+                        "description": "Keep the existing nameservers of the domain",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
                     }
                 },
                 "type": "object"
@@ -16172,6 +16348,39 @@
                         "description": "Domain authorization code used to transfer the domain to another registrar.",
                         "type": "string",
                         "example": "RN0000",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Portfolio.ClaimResource": {
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "mydomain.tld",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Domain status",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "pending_setup",
+                            "expired",
+                            "requested",
+                            "pending_verification",
+                            "deleted",
+                            "suspended",
+                            "failed"
+                        ],
+                        "example": "active",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-05T10:14:22Z",
                         "nullable": true
                     }
                 },
