@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.28.0",
+        "version": "1.29.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -8121,6 +8121,338 @@
                 }
             }
         },
+        "/api/reach/v1/profiles/{profileUuid}/tags/{tagUuid}/contacts/{contactUuid}": {
+            "post": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Assign a contact to a tag",
+                "description": "Assign a tag to a single contact.\n\nUnlike the bulk endpoint this is applied immediately rather than queued. Assigning a tag\nthe contact already carries succeeds without duplicating it.",
+                "operationId": "reach_assignAContactToATagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tagUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.TagResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Remove a contact from a tag",
+                "description": "Remove a tag from a single contact.\n\nUnlike the bulk endpoint this is applied immediately rather than queued. Neither the tag\nnor the contact is deleted.",
+                "operationId": "reach_removeAContactFromATagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tagUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/contactUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/tags/{tagUuid}/contacts": {
+            "post": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Assign contacts to a tag",
+                "description": "Assign a tag to many contacts at once.\n\nPass `contact_uuids` to target specific contacts, or `all_contacts` to target every contact\nin the profile. The work is queued, so a success response means it was accepted rather than\nfinished. Contacts that already carry the tag are left alone.",
+                "operationId": "reach_assignContactsToATagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tagUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.ManageContactsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Remove contacts from a tag",
+                "description": "Remove a tag from many contacts at once.\n\nPass `contact_uuids` to target specific contacts, or `all_contacts` to target every contact\nin the profile. The work is queued, so a success response means it was accepted rather than\nfinished. The tag itself and the contacts are not deleted.",
+                "operationId": "reach_removeContactsFromATagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tagUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.ManageContactsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/tags/{tagUuid}": {
+            "delete": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Delete a tag",
+                "description": "Delete a tag and remove it from every contact carrying it.\n\nThe contacts themselves are not deleted. This is idempotent: deleting a tag that does not\nexist in the profile still succeeds.",
+                "operationId": "reach_deleteATagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tagUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Rename a tag",
+                "description": "Rename a tag.\n\nThe contacts assigned to the tag are unaffected. Names are unique within a profile, so\nrenaming a tag to a name that is already taken is rejected.",
+                "operationId": "reach_renameATagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/tagUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.TagResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/tags": {
+            "get": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "List profile tags",
+                "description": "Get all tags defined in a profile.\n\nTags are the way contacts are grouped in Reach, and can be used to filter the contact\nlist or to build segments.",
+                "operationId": "reach_listProfileTagsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.TagCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Tags"
+                ],
+                "summary": "Create or find tags",
+                "description": "Create tags in a profile.\n\nNames that already exist in the profile are not duplicated: the existing tag is returned\ninstead, so the call is safe to repeat. Every tag in the request is returned, whether it\nwas created now or already existed.",
+                "operationId": "reach_createOrFindTagsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.TagCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/reach/v1/profiles/{profileUuid}/domains/dns-status": {
             "get": {
                 "tags": [
@@ -14209,6 +14541,62 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.Tags.ManageContactsRequest": {
+                "description": "Contacts to assign to, or remove from, a tag",
+                "properties": {
+                    "contact_uuids": {
+                        "description": "Contacts to apply the change to. Required unless all_contacts is true.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "all_contacts": {
+                        "description": "Apply to every contact in the profile",
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Tags.StoreRequest": {
+                "description": "Names to create. Names that already exist in the profile are returned as they are.",
+                "required": [
+                    "names"
+                ],
+                "properties": {
+                    "names": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 255
+                        },
+                        "maxItems": 100,
+                        "minItems": 1,
+                        "example": [
+                            "Newsletter",
+                            "VIP",
+                            "Promo"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Tags.UpdateRequest": {
+                "description": "Rename a tag",
+                "required": [
+                    "value"
+                ],
+                "properties": {
+                    "value": {
+                        "description": "New tag name",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Newsletter"
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.UpdateRequest": {
                 "description": "Fields to change on a contact. Omitted properties are left untouched.",
                 "properties": {
@@ -20268,6 +20656,13 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.Tags.TagCollection": {
+                "description": "Array of [`Reach.V1.Contacts.Tags.TagResource`](#model/reachv1contactstagstagresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.Tags.TagResource"
+                }
+            },
             "Reach.V1.Contacts.Tags.TagResource": {
                 "properties": {
                     "uuid": {
@@ -23076,6 +23471,17 @@
                     "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
             },
+            "tagUuid": {
+                "name": "tagUuid",
+                "in": "path",
+                "description": "Tag uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+            },
             "tokenId": {
                 "name": "tokenId",
                 "in": "path",
@@ -23475,6 +23881,11 @@
             "x-displayName": "Segments"
         },
         {
+            "name": "Reach: Tags",
+            "description": "Reach: Tags",
+            "x-displayName": "Tags"
+        },
+        {
             "name": "Reach: Profiles",
             "description": "Reach: Profiles",
             "x-displayName": "Profiles"
@@ -23687,6 +24098,7 @@
             "tags": [
                 "Reach: Contacts",
                 "Reach: Contact Fields",
+                "Reach: Tags",
                 "Reach: Segments",
                 "Reach: Profiles"
             ]
