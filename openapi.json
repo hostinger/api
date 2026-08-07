@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.29.0",
+        "version": "1.30.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7930,7 +7930,7 @@
                     "Reach: Segments"
                 ],
                 "summary": "List segments",
-                "description": "Get a list of all contact segments.\n\nThis endpoint returns a list of contact segments that can be used to organize contacts.",
+                "description": "Get a list of all contact segments.\n\nThis endpoint returns a list of contact segments that can be used to organize contacts.\n\n**Deprecated.** This endpoint cannot target a profile, so it always falls back to\nthe client's default profile and cannot list the segments of any other profile. Use\n`GET /api/reach/v1/profiles/{profileUuid}/segmentation/segments` instead.",
                 "operationId": "reach_listSegmentsV1",
                 "responses": {
                     "200": {
@@ -7949,14 +7949,15 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true
             },
             "post": {
                 "tags": [
                     "Reach: Segments"
                 ],
                 "summary": "Create a new contact segment",
-                "description": "Create a new contact segment.\n\nThis endpoint allows creating a new contact segment that can be used to organize contacts.\nThe segment can be configured with specific criteria like email, name, subscription status, etc.",
+                "description": "Create a new contact segment.\n\nThis endpoint allows creating a new contact segment that can be used to organize contacts.\nThe segment can be configured with specific criteria like email, name, subscription status, etc.\n\n**Deprecated.** This endpoint cannot target a profile, so it always falls back to\nthe client's default profile and cannot create segments in any other profile. Use\n`POST /api/reach/v1/profiles/{profileUuid}/segmentation/segments` instead.",
                 "operationId": "reach_createANewContactSegmentV1",
                 "requestBody": {
                     "required": true,
@@ -7981,6 +7982,43 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/segmentation/segments/{segmentUuid}/count": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Count profile segment contacts",
+                "description": "Count the contacts currently matching a segment without listing them.\n\nCheaper than paging through the segment contacts endpoint when only the size is needed.",
+                "operationId": "reach_countProfileSegmentContactsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/segmentUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentContactsCountResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -8041,13 +8079,224 @@
                 }
             }
         },
+        "/api/reach/v1/profiles/{profileUuid}/segmentation/segments/{segmentUuid}": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Get profile segment details",
+                "description": "Get a single segment of a profile, including the conditions that define it.\n\nTo retrieve the contacts currently matching those conditions, use the segment contacts\nendpoint instead.",
+                "operationId": "reach_getProfileSegmentDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/segmentUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Update a profile segment",
+                "description": "Rename a segment and/or replace the conditions that define it.\n\n`name` is always required. Omit `conditions` to rename without touching the conditions;\nsupply them and they replace the existing set entirely rather than being merged into it.\nContacts are never modified, but which of them match the segment can change immediately.",
+                "operationId": "reach_updateAProfileSegmentV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/segmentUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.ProfileUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Delete a profile segment",
+                "description": "Delete a segment.\n\nOnly the segment definition is removed. The contacts that matched it are left untouched.",
+                "operationId": "reach_deleteAProfileSegmentV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/segmentUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/segmentation/segments": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "List profile segments",
+                "description": "Get a paginated list of the segments defined in a profile.\n\nEach entry carries the number of contacts currently matching it, which is recalculated on\nread rather than stored. Use `count_type` to count either every matching contact or only\nthe subscribed ones.",
+                "operationId": "reach_listProfileSegmentsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/count_type"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentListItemCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Create a profile segment",
+                "description": "Create a segment in a profile.\n\nA segment is a saved set of conditions rather than a fixed list, so its membership changes\nas contacts change. Creating one does not modify any contact.",
+                "operationId": "reach_createAProfileSegmentV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.ProfileStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/reach/v1/segmentation/segments/{segmentUuid}/contacts": {
             "get": {
                 "tags": [
                     "Reach: Segments"
                 ],
                 "summary": "List segment contacts",
-                "description": "Retrieve contacts associated with a specific segment.\n\nThis endpoint allows you to fetch and filter contacts that belong to a particular segment,\nidentified by its UUID.",
+                "description": "Retrieve contacts associated with a specific segment.\n\nThis endpoint allows you to fetch and filter contacts that belong to a particular segment,\nidentified by its UUID.\n\n**Deprecated.** This endpoint cannot target a profile, so it always falls back to\nthe client's default profile and cannot read segments of any other profile. Use\n`GET /api/reach/v1/profiles/{profileUuid}/segmentation/segments/{segmentUuid}/contacts` instead.",
                 "operationId": "reach_listSegmentContactsV1",
                 "parameters": [
                     {
@@ -8085,7 +8334,8 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true
             }
         },
         "/api/reach/v1/segmentation/segments/{segmentUuid}": {
@@ -8094,7 +8344,7 @@
                     "Reach: Segments"
                 ],
                 "summary": "Get segment details",
-                "description": "Get details of a specific segment.\n\nThis endpoint retrieves information about a single segment identified by UUID.\nSegments are used to organize and group contacts based on specific criteria.",
+                "description": "Get details of a specific segment.\n\nThis endpoint retrieves information about a single segment identified by UUID.\nSegments are used to organize and group contacts based on specific criteria.\n\n**Deprecated.** This endpoint cannot target a profile, so it always falls back to\nthe client's default profile and cannot read segments of any other profile. Use\n`GET /api/reach/v1/profiles/{profileUuid}/segmentation/segments/{segmentUuid}` instead.",
                 "operationId": "reach_getSegmentDetailsV1",
                 "parameters": [
                     {
@@ -8118,7 +8368,8 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true
             }
         },
         "/api/reach/v1/profiles/{profileUuid}/tags/{tagUuid}/contacts/{contactUuid}": {
@@ -14406,6 +14657,170 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.Segments.ProfileStoreRequest": {
+                "description": "Create a segment from a set of conditions",
+                "required": [
+                    "name",
+                    "conditions",
+                    "logic"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "VIP Customers"
+                    },
+                    "conditions": {
+                        "description": "Conditions a contact must satisfy to fall into the segment",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "attribute",
+                                "operator",
+                                "value"
+                            ],
+                            "properties": {
+                                "attribute": {
+                                    "description": "A built-in contact attribute, or `cf:{fieldUuid}` to target a custom\ncontact field. Custom fields are addressed by field UUID; their slug\nis not accepted.\n\nBuilt-in attributes: `email`, `note`, `domain`, `source`,\n`opt_in_method`, `subscription_status`, `subscribed_at`,\n`unsubscribed_at`, `created_at`, `tag`, `campaigns`, `processed`,\n`opened`, `clicked`, `delivered`, `bounced`, `soft_bounced`,\n`dropped`.\n\nWhich operators are accepted depends on the attribute.",
+                                    "type": "string",
+                                    "example": "email"
+                                },
+                                "operator": {
+                                    "type": "string",
+                                    "enum": [
+                                        "equals",
+                                        "not_equals",
+                                        "contains",
+                                        "not_contains",
+                                        "gte",
+                                        "lte",
+                                        "exists",
+                                        "within_last_days",
+                                        "not_within_last_days",
+                                        "older_than_days",
+                                        "processed",
+                                        "not_processed",
+                                        "delivered",
+                                        "not_delivered",
+                                        "dropped",
+                                        "not_dropped",
+                                        "bounced",
+                                        "not_bounced",
+                                        "soft_bounced",
+                                        "not_soft_bounced",
+                                        "opened",
+                                        "not_opened",
+                                        "clicked",
+                                        "not_clicked",
+                                        "unsubscribed",
+                                        "not_unsubscribed"
+                                    ],
+                                    "example": "equals"
+                                },
+                                "value": {
+                                    "description": "Always a string, including for numeric and date comparisons",
+                                    "type": "string",
+                                    "example": "example@example.com"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 5,
+                        "minItems": 1
+                    },
+                    "logic": {
+                        "description": "How to combine multiple conditions",
+                        "type": "string",
+                        "enum": [
+                            "AND",
+                            "OR"
+                        ],
+                        "example": "AND"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.ProfileUpdateRequest": {
+                "description": "Rename a segment and/or replace the conditions that define it",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "VIP Customers"
+                    },
+                    "conditions": {
+                        "description": "Replaces the existing conditions entirely. Omit to keep the current ones.",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "attribute",
+                                "operator",
+                                "value"
+                            ],
+                            "properties": {
+                                "attribute": {
+                                    "description": "A built-in contact attribute, or `cf:{fieldUuid}` to target a custom\ncontact field. Custom fields are addressed by field UUID; their slug\nis not accepted.\n\nBuilt-in attributes: `email`, `note`, `domain`, `source`,\n`opt_in_method`, `subscription_status`, `subscribed_at`,\n`unsubscribed_at`, `created_at`, `tag`, `campaigns`, `processed`,\n`opened`, `clicked`, `delivered`, `bounced`, `soft_bounced`,\n`dropped`.\n\nWhich operators are accepted depends on the attribute.",
+                                    "type": "string",
+                                    "example": "email"
+                                },
+                                "operator": {
+                                    "type": "string",
+                                    "enum": [
+                                        "equals",
+                                        "not_equals",
+                                        "contains",
+                                        "not_contains",
+                                        "gte",
+                                        "lte",
+                                        "exists",
+                                        "within_last_days",
+                                        "not_within_last_days",
+                                        "older_than_days",
+                                        "processed",
+                                        "not_processed",
+                                        "delivered",
+                                        "not_delivered",
+                                        "dropped",
+                                        "not_dropped",
+                                        "bounced",
+                                        "not_bounced",
+                                        "soft_bounced",
+                                        "not_soft_bounced",
+                                        "opened",
+                                        "not_opened",
+                                        "clicked",
+                                        "not_clicked",
+                                        "unsubscribed",
+                                        "not_unsubscribed"
+                                    ],
+                                    "example": "equals"
+                                },
+                                "value": {
+                                    "description": "Always a string, including for numeric and date comparisons",
+                                    "type": "string",
+                                    "example": "example@example.com"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 5,
+                        "minItems": 1
+                    },
+                    "logic": {
+                        "description": "How to combine multiple conditions. Required when conditions are given.",
+                        "type": "string",
+                        "enum": [
+                            "AND",
+                            "OR"
+                        ],
+                        "example": "AND"
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.Segments.StoreRequest": {
                 "required": [
                     "name",
@@ -14442,6 +14857,8 @@
                                         "not_dropped",
                                         "bounced",
                                         "not_bounced",
+                                        "soft_bounced",
+                                        "not_soft_bounced",
                                         "opened",
                                         "not_opened",
                                         "clicked",
@@ -20554,6 +20971,51 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.Segments.SegmentContactsCountResource": {
+                "properties": {
+                    "count": {
+                        "description": "Contacts currently matching the segment conditions",
+                        "type": "integer",
+                        "example": 150
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.SegmentListItemCollection": {
+                "description": "Array of [`Reach.V1.Contacts.Segments.SegmentListItemResource`](#model/reachv1contactssegmentssegmentlistitemresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentListItemResource"
+                }
+            },
+            "Reach.V1.Contacts.Segments.SegmentListItemResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "VIP Customers"
+                    },
+                    "contacts_count": {
+                        "description": "Contacts currently matching the segment conditions",
+                        "type": "integer",
+                        "example": 150
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.Segments.SegmentResource": {
                 "properties": {
                     "uuid": {
@@ -23432,6 +23894,21 @@
                 "schema": {
                     "type": "string",
                     "example": "550e8400-e09b-41d4-a716-400055000000"
+                }
+            },
+            "count_type": {
+                "name": "count_type",
+                "in": "query",
+                "description": "Which matching contacts to count for each segment",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "default": "all",
+                    "enum": [
+                        "all",
+                        "subscribed"
+                    ],
+                    "example": "all"
                 }
             },
             "segmentUuid": {
