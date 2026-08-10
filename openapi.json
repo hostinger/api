@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.30.0",
+        "version": "1.30.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -880,7 +880,7 @@
                     "Agency Hosting: Websites"
                 ],
                 "summary": "Delete Agency Plan website",
-                "description": "Deletes an Agency Plan website and schedules cleanup of its resources.\n\nThis action is irreversible. Website files, databases, and linked domains are removed.",
+                "description": "Permanently deletes an Agency Plan website. Deletion is processed asynchronously: the\nwebsite is immediately transitioned to a deleting state and the underlying server\nresources are removed in the background.",
                 "operationId": "agency-hosting_deleteAgencyPlanWebsiteV1",
                 "parameters": [
                     {
@@ -889,11 +889,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success response",
+                        "description": "Success empty response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteDeletionResource"
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -16261,36 +16261,6 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-05-29T05:49:49+00:00"
-                    }
-                },
-                "type": "object"
-            },
-            "AgencyHosting.V1.Websites.WebsiteDeletionResource": {
-                "properties": {
-                    "website_uid": {
-                        "description": "Deleted website UID",
-                        "type": "string",
-                        "example": "zpwlGlp19"
-                    },
-                    "status": {
-                        "description": "Deletion status",
-                        "type": "string",
-                        "example": "deleted"
-                    },
-                    "message": {
-                        "description": "Human-readable result message",
-                        "type": "string",
-                        "example": "Website scheduled for deletion"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-05-29T05:49:49+00:00"
-                    },
-                    "is_cleanup_scheduled": {
-                        "description": "Whether background cleanup has been scheduled",
-                        "type": "boolean",
-                        "example": true
                     }
                 },
                 "type": "object"
