@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.32.2",
+        "version": "1.32.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -4871,29 +4871,23 @@
                     {
                         "name": "file_types",
                         "in": "query",
-                        "description": "Filter by entry type, e.g. file,directory. Array or comma-separated. Omit for all types.",
+                        "description": "Filter by entry type, e.g. file,directory. Omit for all types.",
+                        "style": "form",
+                        "explode": false,
                         "schema": {
-                            "oneOf": [
-                                {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string",
-                                        "enum": [
-                                            "file",
-                                            "directory",
-                                            "symlink",
-                                            "other"
-                                        ]
-                                    },
-                                    "example": [
-                                        "file",
-                                        "directory"
-                                    ]
-                                },
-                                {
-                                    "type": "string",
-                                    "example": "file,directory"
-                                }
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "file",
+                                    "directory",
+                                    "symlink",
+                                    "other"
+                                ]
+                            },
+                            "example": [
+                                "file",
+                                "directory"
                             ]
                         }
                     }
