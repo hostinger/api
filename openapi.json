@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.32.3",
+        "version": "1.32.4",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -44,9 +44,9 @@
                 "tags": [
                     "Agency Hosting: Datacenters"
                 ],
-                "summary": "List available datacenters for an Agency Plan order",
+                "summary": "List available datacenters",
                 "description": "Lists the datacenters available for provisioning a new website on the given Agency Plan\nhosting order.\n\nEach datacenter includes a `pinger_url` you can ping from the client to measure round-trip\nlatency; comparing the results across datacenters lets you pick the nearest one (lowest\nping) before choosing its `code` as the `datacenter_code` when creating a website setup.",
-                "operationId": "agency-hosting_listAvailableDatacentersForAnAgencyPlanOrderV1",
+                "operationId": "agency-hosting_listAvailableDatacentersV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/order_id_path"
@@ -77,9 +77,9 @@
                 "tags": [
                     "Agency Hosting: Domains"
                 ],
-                "summary": "Change Agency Plan website domain",
+                "summary": "Change website domain",
                 "description": "Changes the primary domain for an Agency Plan website.\n\nProvide the current domain in the path and the new domain in the request body.\nSet domain to null to revert to the temporary domain.",
-                "operationId": "agency-hosting_changeAgencyPlanWebsiteDomainV1",
+                "operationId": "agency-hosting_changeWebsiteDomainV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -126,9 +126,9 @@
                 "tags": [
                     "Agency Hosting: Domains"
                 ],
-                "summary": "Link domain to Agency Plan website",
+                "summary": "Link domain to website",
                 "description": "Links a domain to the specified Agency Plan website so it can serve traffic for that domain.",
-                "operationId": "agency-hosting_linkDomainToAgencyPlanWebsiteV1",
+                "operationId": "agency-hosting_linkDomainToWebsiteV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -172,9 +172,9 @@
                 "tags": [
                     "Agency Hosting: Domains"
                 ],
-                "summary": "List Agency Plan domains",
+                "summary": "List domains",
                 "description": "Returns a paginated list of domains associated with Agency Plan websites accessible to the authenticated client.\n\nUse the website_uuids filter to narrow results to specific websites.",
-                "operationId": "agency-hosting_listAgencyPlanDomainsV1",
+                "operationId": "agency-hosting_listDomainsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/page"
@@ -219,9 +219,9 @@
                 "tags": [
                     "Agency Hosting: Domains"
                 ],
-                "summary": "Unlink domain from Agency Plan website",
+                "summary": "Unlink domain from website",
                 "description": "Unlinks a domain from the specified Agency Plan website.\n\nThe website stops serving traffic on this domain immediately.\n\nWebsite files and database are preserved, and any other linked domains remain accessible.\n\nIf this is the only domain on the website, unlinking leaves the website without an accessible domain.",
-                "operationId": "agency-hosting_unlinkDomainFromAgencyPlanWebsiteV1",
+                "operationId": "agency-hosting_unlinkDomainFromWebsiteV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -255,9 +255,9 @@
                 "tags": [
                     "Agency Hosting: Files"
                 ],
-                "summary": "Import Agency Plan website from archive",
+                "summary": "Import website from archive",
                 "description": "Imports an Agency Plan website from an already-uploaded archive.\n\nUpload the archive to the website's root directory via file browser first, then provide its\nfilename in this request. Website contents are overwritten by the archive contents. Supported\narchive types: .zip, .tar, .tar.gz, .tgz.",
-                "operationId": "agency-hosting_importAgencyPlanWebsiteFromArchiveV1",
+                "operationId": "agency-hosting_importWebsiteFromArchiveV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -301,9 +301,9 @@
                 "tags": [
                     "Agency Hosting: Orders"
                 ],
-                "summary": "List Agency Plan orders",
+                "summary": "List orders",
                 "description": "Returns a paginated list of Agency Plan orders accessible to the authenticated client.",
-                "operationId": "agency-hosting_listAgencyPlanOrdersV1",
+                "operationId": "agency-hosting_listOrdersV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/page"
@@ -345,9 +345,9 @@
                 "tags": [
                     "Agency Hosting: Website Setups"
                 ],
-                "summary": "Provision a new Agency Plan website",
+                "summary": "Create a new website",
                 "description": "Provisions a new website on one of your Agency Plan hosting orders.\n\nChoose the datacenter, stack (`flavor`), and PHP version for the site. Optionally attach\nyour own `domain` — omit it, set it to `null`, or leave it unavailable and a free\n`*.hostingersite.com` subdomain is generated instead — and/or install WordPress by\nsupplying the `wordpress` details (admin account, site title, and language).\n\nCommon setups:\n- **Plain PHP site**: `flavor` set to `php-fpm`, with `settings.php.version`; omit\n  `wordpress` and `type`.\n- **WordPress site**: `flavor` set to the desired WordPress version (e.g. `wp-7.0`), plus\n  the `wordpress` block (admin account, title, language).\n- **Static/Node.js frontend app**: `flavor` set to `php-fpm` and `type` set to\n  `node-static`.\n\nProvisioning runs in the background, so the response returns immediately with a setup UUID\nthat identifies the job. The new website becomes reachable once provisioning finishes.",
-                "operationId": "agency-hosting_provisionANewAgencyPlanWebsiteV1",
+                "operationId": "agency-hosting_createANewWebsiteV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/order_id_path"
@@ -391,9 +391,9 @@
                 "tags": [
                     "Agency Hosting: Website Setups"
                 ],
-                "summary": "Get Agency Plan website setup status",
+                "summary": "Get website setup status",
                 "description": "Returns the current status of an Agency Plan website setup started via the setups\nendpoint.\n\nPoll this endpoint using the `setup_uuid` returned from the provisioning request until\n`status` becomes `completed`, at which point `website_uid` identifies the new website.",
-                "operationId": "agency-hosting_getAgencyPlanWebsiteSetupStatusV1",
+                "operationId": "agency-hosting_getWebsiteSetupStatusV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/order_id_path"
@@ -427,9 +427,9 @@
                 "tags": [
                     "Agency Hosting: Websites"
                 ],
-                "summary": "Build Agency Plan website NodeJS assets",
+                "summary": "Build website NodeJS assets",
                 "description": "Builds and deploys a Node.js application for an Agency Plan website from an already-uploaded archive.\n\nUpload the archive to file browser first, then provide its relative path from document root in this request.\nWebsite contents are overwritten by the build result, which is deployed to public_html.",
-                "operationId": "agency-hosting_buildAgencyPlanWebsiteNodeJSAssetsV1",
+                "operationId": "agency-hosting_buildWebsiteNodeJSAssetsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -473,9 +473,9 @@
                 "tags": [
                     "Agency Hosting: Cache"
                 ],
-                "summary": "Clear Agency Plan website cache",
+                "summary": "Clear website cache",
                 "description": "Clears cache for all domains associated with an Agency Plan website, including its preview domain.\n\nThis operation clears all cache types for the website.",
-                "operationId": "agency-hosting_clearAgencyPlanWebsiteCacheV1",
+                "operationId": "agency-hosting_clearWebsiteCacheV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -506,9 +506,9 @@
                 "tags": [
                     "Agency Hosting: Cron Jobs"
                 ],
-                "summary": "List Agency Plan website cron jobs",
+                "summary": "List website cron jobs",
                 "description": "Returns a paginated list of cron jobs configured for an Agency Plan website.\n\nEach entry includes the schedule expression and the command executed on that schedule.",
-                "operationId": "agency-hosting_listAgencyPlanWebsiteCronJobsV1",
+                "operationId": "agency-hosting_listWebsiteCronJobsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -551,9 +551,9 @@
                 "tags": [
                     "Agency Hosting: Cron Jobs"
                 ],
-                "summary": "Create Agency Plan website cron job",
+                "summary": "Create website cron job",
                 "description": "Creates a cron job for an Agency Plan website from a schedule expression and a command.\n\nReturns the created cron job, including its uuid, which is required to delete the cron job.",
-                "operationId": "agency-hosting_createAgencyPlanWebsiteCronJobV1",
+                "operationId": "agency-hosting_createWebsiteCronJobV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -597,9 +597,9 @@
                 "tags": [
                     "Agency Hosting: Cron Jobs"
                 ],
-                "summary": "Delete Agency Plan website cron job",
+                "summary": "Delete website cron job",
                 "description": "Permanently deletes the cron job identified by its uuid from an Agency Plan website.\n\nThe operation is idempotent: deleting a cron job that does not exist succeeds without error.",
-                "operationId": "agency-hosting_deleteAgencyPlanWebsiteCronJobV1",
+                "operationId": "agency-hosting_deleteWebsiteCronJobV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -633,9 +633,9 @@
                 "tags": [
                     "Agency Hosting: Databases"
                 ],
-                "summary": "List Agency Plan website databases",
+                "summary": "List website databases",
                 "description": "Returns a paginated list of MySQL databases created for an Agency Plan website.\n\nEach entry includes the database's non-system users.",
-                "operationId": "agency-hosting_listAgencyPlanWebsiteDatabasesV1",
+                "operationId": "agency-hosting_listWebsiteDatabasesV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -678,9 +678,9 @@
                 "tags": [
                     "Agency Hosting: Databases"
                 ],
-                "summary": "Create Agency Plan website database",
+                "summary": "Create website database",
                 "description": "Creates a MySQL database with a dedicated user for an Agency Plan website.\n\nThe database name, username, and password must all be provided by the caller.",
-                "operationId": "agency-hosting_createAgencyPlanWebsiteDatabaseV1",
+                "operationId": "agency-hosting_createWebsiteDatabaseV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -724,9 +724,9 @@
                 "tags": [
                     "Agency Hosting: Databases"
                 ],
-                "summary": "Delete Agency Plan website database",
+                "summary": "Delete website database",
                 "description": "Permanently deletes a MySQL database and all its data from an Agency Plan website, including its users.\n\nThe operation is idempotent: deleting a database that does not exist succeeds without error.",
-                "operationId": "agency-hosting_deleteAgencyPlanWebsiteDatabaseV1",
+                "operationId": "agency-hosting_deleteWebsiteDatabaseV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -760,9 +760,9 @@
                 "tags": [
                     "Agency Hosting: Databases"
                 ],
-                "summary": "Create Agency Plan website database user",
+                "summary": "Create website database user",
                 "description": "Creates a user for an existing database on an Agency Plan website.\n\nEach database supports a single non-system user; creating a user for a database that already has one fails.",
-                "operationId": "agency-hosting_createAgencyPlanWebsiteDatabaseUserV1",
+                "operationId": "agency-hosting_createWebsiteDatabaseUserV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -809,9 +809,9 @@
                 "tags": [
                     "Agency Hosting: Databases"
                 ],
-                "summary": "Delete Agency Plan website database user",
+                "summary": "Delete website database user",
                 "description": "Permanently deletes a database user from an Agency Plan website database, revoking all access it had.\n\nThe operation is idempotent: deleting a user that does not exist succeeds without error.",
-                "operationId": "agency-hosting_deleteAgencyPlanWebsiteDatabaseUserV1",
+                "operationId": "agency-hosting_deleteWebsiteDatabaseUserV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -848,9 +848,9 @@
                 "tags": [
                     "Agency Hosting: Websites"
                 ],
-                "summary": "Get Agency Plan website details",
+                "summary": "Get website details",
                 "description": "Retrieves detailed information about a specific Agency Plan website, including configuration,\nstatus, metadata, hosting plan details, and resource quotas.",
-                "operationId": "agency-hosting_getAgencyPlanWebsiteDetailsV1",
+                "operationId": "agency-hosting_getWebsiteDetailsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -879,9 +879,9 @@
                 "tags": [
                     "Agency Hosting: Websites"
                 ],
-                "summary": "Delete Agency Plan website",
+                "summary": "Delete website",
                 "description": "Permanently deletes an Agency Plan website. Deletion is processed asynchronously: the\nwebsite is immediately transitioned to a deleting state and the underlying server\nresources are removed in the background.",
-                "operationId": "agency-hosting_deleteAgencyPlanWebsiteV1",
+                "operationId": "agency-hosting_deleteWebsiteV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -912,9 +912,9 @@
                 "tags": [
                     "Agency Hosting: Websites"
                 ],
-                "summary": "List running Agency Plan website processes",
+                "summary": "List website processes",
                 "description": "Lists active and recently completed asynchronous processes for an Agency Plan website.\n\nEach process has a unique ID (for tracking), a type, and a status (running, completed, failed).\nPoll this endpoint after initiating async operations (SSL setup, backups, cloning) to track progress.",
-                "operationId": "agency-hosting_listRunningAgencyPlanWebsiteProcessesV1",
+                "operationId": "agency-hosting_listWebsiteProcessesV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -945,9 +945,9 @@
                 "tags": [
                     "Agency Hosting: WordPress"
                 ],
-                "summary": "Change Agency Plan website WordPress core version",
+                "summary": "Change WordPress version",
                 "description": "Changes the installed WordPress core version on an Agency Plan website to one of the versions available for installation.",
-                "operationId": "agency-hosting_changeAgencyPlanWebsiteWordPressCoreVersionV1",
+                "operationId": "agency-hosting_changeWordPressVersionV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -991,9 +991,9 @@
                 "tags": [
                     "Agency Hosting: WordPress"
                 ],
-                "summary": "Get Agency Plan website WordPress settings",
+                "summary": "Get WordPress settings",
                 "description": "Returns the current WordPress settings for an Agency Plan website: installed core version,\nLiteSpeed Cache plugin status, object cache status, and maintenance mode status.",
-                "operationId": "agency-hosting_getAgencyPlanWebsiteWordPressSettingsV1",
+                "operationId": "agency-hosting_getWordPressSettingsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
@@ -1024,9 +1024,9 @@
                 "tags": [
                     "Agency Hosting: WordPress"
                 ],
-                "summary": "List available WordPress versions for an Agency Plan website",
+                "summary": "List available WordPress versions",
                 "description": "Lists the WordPress core versions available for installation on an Agency Plan website.",
-                "operationId": "agency-hosting_listAvailableWordPressVersionsForAnAgencyPlanWebsiteV1",
+                "operationId": "agency-hosting_listAvailableWordPressVersionsV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_uid"
