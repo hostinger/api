@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.32.1",
+        "version": "1.32.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3259,6 +3259,69 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Ecommerce.V1.Product.ProductCreationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/products/{product_id}/images": {
+            "post": {
+                "tags": [
+                    "Ecommerce: Products"
+                ],
+                "summary": "Upload and attach a product image",
+                "description": "Upload a raster image (JPEG, PNG, GIF or WebP, max 15MB) and attach it to a product in a single call.\nThe image is virus-scanned and validated by content, then stored on the CDN. Set is_thumbnail to make\nit the product's primary image.",
+                "operationId": "ecommerce_uploadAndAttachAProductImageV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store the product belongs to.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "The ID of the product to attach the image to.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "prod_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ecommerce.V1.Product.UploadProductImageRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Product.ProductImageUploadResource"
                                 }
                             }
                         }
@@ -14302,6 +14365,24 @@
                 },
                 "type": "object"
             },
+            "Ecommerce.V1.Product.UploadProductImageRequest": {
+                "required": [
+                    "image"
+                ],
+                "properties": {
+                    "image": {
+                        "description": "Raster image file (JPEG, PNG, GIF or WebP), maximum 15MB. SVG is not accepted.",
+                        "type": "string"
+                    },
+                    "is_thumbnail": {
+                        "description": "When true, the image becomes the product's thumbnail (primary image). When omitted, it becomes the\nthumbnail only if the product does not have one yet.",
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Ecommerce.V1.SalesChannel.StoreRequest": {
                 "required": [
                     "type",
@@ -18248,6 +18329,21 @@
                         "description": "Admin UI deep-link to manage the product.",
                         "type": "string",
                         "example": "https://admin.example.com/store_01.../products/edit?product=prod_01..."
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Product.ProductImageUploadResource": {
+                "properties": {
+                    "url": {
+                        "description": "CDN URL of the uploaded image.",
+                        "type": "string",
+                        "example": "https://cdn.example.com/store_01.../assets/01J8Z5F8W9K8M4A7B3C2D1E0FG.png"
+                    },
+                    "is_thumbnail": {
+                        "description": "Whether the image was set as the product's thumbnail (primary image).",
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
