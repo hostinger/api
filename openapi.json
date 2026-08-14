@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.32.5",
+        "version": "1.32.6",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3159,6 +3159,56 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/products/{product_id}/images/upload-url": {
+            "post": {
+                "tags": [
+                    "Ecommerce: Products"
+                ],
+                "summary": "Create a product image upload URL",
+                "description": "Returns a signed URL to upload a product image to (multipart/form-data POST). Then call the\nattach-image endpoint with the returned object_name to scan and attach it to the product.",
+                "operationId": "ecommerce_createAProductImageUploadURLV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "The ID of the store the product belongs to.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "The ID of the product the image will be attached to.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "prod_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Product.ProductImageUploadUrlResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -14360,15 +14410,18 @@
                 "type": "object"
             },
             "Ecommerce.V1.Product.UploadProductImageRequest": {
-                "required": [
-                    "image_url"
-                ],
                 "properties": {
                     "image_url": {
-                        "description": "Publicly reachable URL of the raster image (JPEG, PNG, GIF or WebP), maximum 15MB. The image is\nfetched, virus-scanned and validated by content, then stored on the CDN. SVG is not accepted.",
+                        "description": "Publicly reachable URL of the raster image (JPEG, PNG, GIF or WebP), maximum 15MB. The image is\nfetched, virus-scanned and validated by content, then stored on the CDN. SVG is not accepted.\nProvide either this or object_name.",
                         "type": "string",
                         "maxLength": 2048,
                         "example": "https://images.example.com/product.png"
+                    },
+                    "object_name": {
+                        "description": "Key returned by the upload-url endpoint. Provide this instead of image_url to attach an uploaded image.",
+                        "type": "string",
+                        "maxLength": 1024,
+                        "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG/01J8Z5F8W9K8M4A7B3C2D1E0FG"
                     },
                     "is_thumbnail": {
                         "description": "When true, the image becomes the product's thumbnail (primary image). When omitted, it becomes the\nthumbnail only if the product does not have one yet.",
@@ -18340,6 +18393,33 @@
                         "description": "Whether the image was set as the product's thumbnail (primary image).",
                         "type": "boolean",
                         "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Product.ProductImageUploadUrlResource": {
+                "properties": {
+                    "upload_url": {
+                        "description": "Signed URL to upload the image to with a multipart/form-data POST.",
+                        "type": "string",
+                        "example": "https://storage.googleapis.com/ecommerce-quarantine-euw3"
+                    },
+                    "fields": {
+                        "description": "Form fields to send alongside the file in the multipart POST.",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "object_name": {
+                        "description": "Key of the uploaded object — send it to the attach-image endpoint.",
+                        "type": "string",
+                        "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG/01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                    },
+                    "max_bytes": {
+                        "description": "Maximum accepted upload size in bytes.",
+                        "type": "integer",
+                        "example": 15728640
                     }
                 },
                 "type": "object"
