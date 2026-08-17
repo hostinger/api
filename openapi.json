@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.35.1",
+        "version": "1.36.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -330,6 +330,272 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/php-settings/extensions": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "List PHP extensions for a website",
+                "description": "Lists every PHP extension available to an Agency Plan website and whether it is currently enabled.",
+                "operationId": "agency-hosting_listPHPExtensionsForAWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.ExtensionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "Replace website PHP extensions",
+                "description": "Replaces the set of PHP extensions enabled on an Agency Plan website with the ones provided. Any toggleable extension not in the request is disabled, so call the extensions endpoint first and send the full desired set. Extensions compiled into PHP, reported with the \"built-in\" state, are always active and are unaffected.",
+                "operationId": "agency-hosting_replaceWebsitePHPExtensionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Php.UpdateExtensionsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/php-settings/options": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "List PHP options for a website",
+                "description": "Lists the php.ini directives that can be configured for an Agency Plan website, each with its default, the value currently in effect, and the values it accepts.",
+                "operationId": "agency-hosting_listPHPOptionsForAWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.OptionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "Replace website PHP options",
+                "description": "Replaces the custom php.ini values on an Agency Plan website with the ones provided. Any option not in the request is reset to its default, so call the options endpoint first and send the full desired set. Sending an empty array resets every option to its default.",
+                "operationId": "agency-hosting_replaceWebsitePHPOptionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Php.UpdateOptionsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/orders/{order_id}/websites/php-settings/versions": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "List available PHP versions for an order",
+                "description": "Lists the PHP versions available to websites created under an Agency Plan order, determined by the server the order is hosted on. Use this before creating a website; for a website that already exists, call the website-scoped versions endpoint instead.",
+                "operationId": "agency-hosting_listAvailablePHPVersionsForAnOrderV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.VersionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/php-settings/versions": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "List available PHP versions for a website",
+                "description": "Lists the PHP versions an Agency Plan website can be switched to. The version the website is currently running is returned as settings.php.version by the website details endpoint.",
+                "operationId": "agency-hosting_listAvailablePHPVersionsForAWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.VersionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/php-settings/version": {
+            "patch": {
+                "tags": [
+                    "Agency Hosting: PHP"
+                ],
+                "summary": "Update website PHP version",
+                "description": "Switches an Agency Plan website to a different PHP version. Call the available versions endpoint first to see which versions can be selected. The website restarts on the new version, so requests served during the switch may fail and code that is incompatible with the target version will break.",
+                "operationId": "agency-hosting_updateWebsitePHPVersionV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Php.UpdateVersionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -13779,6 +14045,72 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Php.UpdateExtensionsRequest": {
+                "required": [
+                    "extensions"
+                ],
+                "properties": {
+                    "extensions": {
+                        "description": "Extension names, exactly as returned by the extensions endpoint.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "bz2"
+                        },
+                        "maxItems": 500,
+                        "example": [
+                            "bz2",
+                            "zip"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Php.UpdateOptionsRequest": {
+                "required": [
+                    "options"
+                ],
+                "properties": {
+                    "options": {
+                        "description": "Option names and values. Each name must be one of the options returned by the options endpoint, and each value must satisfy that option's allowed_values when it declares them.",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "name",
+                                "value"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "description": "php.ini directive name.",
+                                    "type": "string",
+                                    "example": "memory_limit"
+                                },
+                                "value": {
+                                    "description": "Value to apply.",
+                                    "type": "string",
+                                    "example": "256M"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 500
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Php.UpdateVersionRequest": {
+                "required": [
+                    "version"
+                ],
+                "properties": {
+                    "version": {
+                        "description": "PHP version to switch the website to, as major.minor. Must be one of the versions returned by the available versions endpoint.",
+                        "type": "string",
+                        "example": "8.2"
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Setups.CreateSetupRequest": {
                 "description": "Create a new Agency Plan website setup on the given order",
                 "required": [
@@ -16926,6 +17258,109 @@
                         "type": "string",
                         "example": "shared_business_hosting",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Php.ExtensionCollection": {
+                "description": "Array of [`AgencyHosting.V1.Php.ExtensionResource`](#model/agencyhostingv1phpextensionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.ExtensionResource"
+                }
+            },
+            "AgencyHosting.V1.Php.ExtensionResource": {
+                "properties": {
+                    "name": {
+                        "description": "PHP extension name.",
+                        "type": "string",
+                        "example": "zip"
+                    },
+                    "description": {
+                        "description": "What the extension provides.",
+                        "type": "string",
+                        "example": "Lets PHP read and write compressed ZIP archives."
+                    },
+                    "state": {
+                        "description": "Whether the extension is currently enabled. Extensions in the \"built-in\" state are compiled into PHP and cannot be turned off.",
+                        "type": "string",
+                        "enum": [
+                            "enabled",
+                            "disabled",
+                            "built-in"
+                        ],
+                        "example": "enabled"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Php.OptionCollection": {
+                "description": "Array of [`AgencyHosting.V1.Php.OptionResource`](#model/agencyhostingv1phpoptionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.OptionResource"
+                }
+            },
+            "AgencyHosting.V1.Php.OptionResource": {
+                "properties": {
+                    "name": {
+                        "description": "php.ini directive name.",
+                        "type": "string",
+                        "example": "upload_max_filesize"
+                    },
+                    "description": {
+                        "description": "What the directive controls.",
+                        "type": "string",
+                        "example": "The maximum size in bytes of an uploaded file."
+                    },
+                    "default_value": {
+                        "description": "Value applied when no custom value is set.",
+                        "type": "string",
+                        "example": "128M"
+                    },
+                    "allowed_values": {
+                        "description": "Values this option accepts. Null when the option accepts any value of its type.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "128M",
+                            "256M",
+                            "512M"
+                        ],
+                        "nullable": true
+                    },
+                    "value": {
+                        "description": "Value currently in effect for the website.",
+                        "type": "string",
+                        "example": "256M"
+                    },
+                    "type": {
+                        "description": "Whether the option takes a single value or a list of values.",
+                        "type": "string",
+                        "enum": [
+                            "value",
+                            "list"
+                        ],
+                        "example": "value"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Php.VersionCollection": {
+                "description": "Array of [`AgencyHosting.V1.Php.VersionResource`](#model/agencyhostingv1phpversionresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Php.VersionResource"
+                }
+            },
+            "AgencyHosting.V1.Php.VersionResource": {
+                "properties": {
+                    "version": {
+                        "description": "PHP version available for the website.",
+                        "type": "string",
+                        "example": "8.2"
                     }
                 },
                 "type": "object"
@@ -25881,6 +26316,11 @@
             "x-displayName": "Orders"
         },
         {
+            "name": "Agency Hosting: PHP",
+            "description": "Agency Hosting: PHP",
+            "x-displayName": "PHP"
+        },
+        {
             "name": "Agency Hosting: Website Setups",
             "description": "Agency Hosting: Website Setups",
             "x-displayName": "Website Setups"
@@ -26324,6 +26764,7 @@
                 "Agency Hosting: Domains",
                 "Agency Hosting: Files",
                 "Agency Hosting: Orders",
+                "Agency Hosting: PHP",
                 "Agency Hosting: Website Setups",
                 "Agency Hosting: Websites",
                 "Agency Hosting: WordPress"
