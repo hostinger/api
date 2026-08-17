@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.32.6",
+        "version": "1.33.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7703,6 +7703,131 @@
                     },
                     "429": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/automations/{automationUuid}": {
+            "get": {
+                "tags": [
+                    "Reach: Automations"
+                ],
+                "summary": "Get automation details",
+                "description": "Get a single automation with the counts of contacts that entered it, are moving through it,\nfinished it or failed on the way.\n\nThis describes the automation itself. To see the workflow it runs, use the steps endpoint.",
+                "operationId": "reach_getAutomationDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/automationUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Automations.AutomationResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/automations": {
+            "get": {
+                "tags": [
+                    "Reach: Automations"
+                ],
+                "summary": "List automations",
+                "description": "Get a paginated list of the automations in a profile.\n\nEvery automation comes with the counts of contacts that entered it, are moving through it,\nfinished it or failed on the way. Those counts describe the contact journey and are not\nemail engagement metrics - for opens, clicks and unsubscribes use the campaign statistics\nendpoint instead.",
+                "operationId": "reach_listAutomationsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reach_automation_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reach_automation_sort_direction"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Automations.AutomationCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/automations/{automationUuid}/steps": {
+            "get": {
+                "tags": [
+                    "Reach: Automations"
+                ],
+                "summary": "List automation steps",
+                "description": "Get the workflow of an automation as a flat list of steps.\n\nThe steps form a tree rather than a straight line: follow `parent_uuid` to reconstruct the\nbranches, and use `step_order` to order the steps that share a parent. An automation with no\nsteps yet returns an empty list.",
+                "operationId": "reach_listAutomationStepsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/automationUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Automations.Steps.AutomationStepCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -21063,6 +21188,159 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Automations.AutomationCollection": {
+                "description": "Array of [`Reach.V1.Automations.AutomationResource`](#model/reachv1automationsautomationresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Automations.AutomationResource"
+                }
+            },
+            "Reach.V1.Automations.AutomationEventsResource": {
+                "description": "Counts of contacts moving through the automation.\n\nThese are not email engagement metrics. Automations expose no sent, open or click counters -\nuse the campaign statistics endpoint for those.",
+                "properties": {
+                    "started": {
+                        "description": "Contacts that ever entered the automation, including those that already left it.",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "in_progress": {
+                        "description": "Contacts currently moving through the automation, including those waiting on a delay step.",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "completed": {
+                        "description": "Contacts that reached the end of the workflow.",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "failed": {
+                        "description": "Contacts whose journey through the automation errored and stopped.",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Automations.AutomationResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Welcome series"
+                    },
+                    "status": {
+                        "description": "There is no `completed` status. Use `events.completed` to see how many contacts finished.",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "paused",
+                            "draft"
+                        ],
+                        "example": "active"
+                    },
+                    "type": {
+                        "description": "What kind of workflow this is. `custom` automations are the ones built from scratch.",
+                        "type": "string",
+                        "enum": [
+                            "welcome",
+                            "welcome_series",
+                            "promotional_series",
+                            "trust_building_series",
+                            "ecommerce_abandoned_cart",
+                            "ecommerce_recommend_after_purchase",
+                            "ecommerce_post_purchase",
+                            "ecommerce_discount_after_purchase",
+                            "re_engagement_non_openers",
+                            "re_engagement_non_clickers",
+                            "form_submitted",
+                            "custom"
+                        ],
+                        "example": "welcome_series"
+                    },
+                    "config": {
+                        "description": "Trigger configuration of the automation. The shape depends on the type.",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "events": {
+                        "$ref": "#/components/schemas/Reach.V1.Automations.AutomationEventsResource"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Automations.Steps.AutomationStepCollection": {
+                "description": "Array of [`Reach.V1.Automations.Steps.AutomationStepResource`](#model/reachv1automationsstepsautomationstepresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Automations.Steps.AutomationStepResource"
+                }
+            },
+            "Reach.V1.Automations.Steps.AutomationStepResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "parent_uuid": {
+                        "description": "The step this one branches from. Null for the entry point of the workflow.",
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f",
+                        "nullable": true
+                    },
+                    "step_order": {
+                        "description": "Position of this step among the steps sharing its parent.",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "type": {
+                        "description": "Role of the step in the workflow. A `conditional` step branches into several children.",
+                        "type": "string",
+                        "enum": [
+                            "trigger",
+                            "action",
+                            "conditional"
+                        ],
+                        "example": "action"
+                    },
+                    "value": {
+                        "description": "The concrete trigger, action, decision or delay this step performs.",
+                        "type": "string",
+                        "enum": [
+                            "new_contact",
+                            "new_segment_contact",
+                            "form_submitted",
+                            "webhook",
+                            "send_welcome_email",
+                            "send_email",
+                            "send_campaign",
+                            "decision",
+                            "delay"
+                        ],
+                        "example": "send_email"
+                    },
+                    "config": {
+                        "description": "Step configuration. The shape depends on the value, and is empty for steps that take none.",
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -24375,6 +24653,45 @@
                     "nullable": true
                 }
             },
+            "reach_automation_sort_direction": {
+                "name": "sort_direction",
+                "in": "query",
+                "description": "Order automations by creation date. Newest first unless set to `asc`.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                }
+            },
+            "reach_automation_status": {
+                "name": "status",
+                "in": "query",
+                "description": "Filter automations by status.\n\nThere is no `completed` status. An automation that has finished for every contact still\nreports `active`.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "paused",
+                        "draft"
+                    ],
+                    "example": "active"
+                }
+            },
+            "automationUuid": {
+                "name": "automationUuid",
+                "in": "path",
+                "description": "Automation uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "550e8400-e09b-41d4-a716-400055000000"
+                }
+            },
             "search": {
                 "name": "search",
                 "in": "query",
@@ -24885,6 +25202,11 @@
             "x-displayName": "Webhooks"
         },
         {
+            "name": "Reach: Automations",
+            "description": "Reach: Automations",
+            "x-displayName": "Automations"
+        },
+        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -25119,6 +25441,7 @@
                 "Reach: Contact Fields",
                 "Reach: Tags",
                 "Reach: Segments",
+                "Reach: Automations",
                 "Reach: Profiles"
             ]
         },
