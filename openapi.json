@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.33.0",
+        "version": "1.34.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7822,6 +7822,134 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Reach.V1.Automations.Steps.AutomationStepCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/campaigns/{campaignUuid}": {
+            "get": {
+                "tags": [
+                    "Reach: Campaigns"
+                ],
+                "summary": "Get campaign details",
+                "description": "Get a single campaign with its sender, subject, template reference, targeting and delivery\nprogress.\n\nThis describes how the campaign was set up and how far it has got. For opens, clicks and\nunsubscribes use the campaign statistics endpoint.",
+                "operationId": "reach_getCampaignDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/campaignUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Campaigns.CampaignDetailsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/campaigns": {
+            "get": {
+                "tags": [
+                    "Reach: Campaigns"
+                ],
+                "summary": "List campaigns",
+                "description": "Get a paginated list of the campaigns in a profile.\n\nEach campaign carries its headline engagement rates. Filter by status to find drafts,\nscheduled, sending or sent campaigns, keeping in mind that a fully sent campaign has the\nstatus `publish`. By default only regular campaigns are returned - pass `type` to get the\nemails sent by automations or the double opt-in confirmations instead.",
+                "operationId": "reach_listCampaignsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reach_campaign_status"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reach_campaign_type"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reach_campaign_sort_direction"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Campaigns.CampaignCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/campaigns/{campaignUuid}/statistics": {
+            "get": {
+                "tags": [
+                    "Reach: Campaigns"
+                ],
+                "summary": "Get campaign performance",
+                "description": "Get the performance of a campaign: delivery, opens, clicks and unsubscribes, with the\nmatching rates.\n\nEvery count is unique contacts rather than raw events, so a contact who opens the same email\nfive times is counted once.",
+                "operationId": "reach_getCampaignPerformanceV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/campaignUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Campaigns.CampaignStatisticsResource"
                                 }
                             }
                         }
@@ -21341,6 +21469,324 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Campaigns.CampaignCollection": {
+                "description": "Array of [`Reach.V1.Campaigns.CampaignResource`](#model/reachv1campaignscampaignresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Campaigns.CampaignResource"
+                }
+            },
+            "Reach.V1.Campaigns.CampaignDeliveryResource": {
+                "description": "Delivery progress. While the campaign is `sending`, `total_sent` climbs towards the estimate.",
+                "properties": {
+                    "total_sent": {
+                        "description": "Emails sent so far.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "estimated_total_recipients": {
+                        "description": "Recipients this campaign was estimated to reach when sending started. Null for\ncampaigns that have not started sending.",
+                        "type": "integer",
+                        "example": 900,
+                        "nullable": true
+                    },
+                    "subscribers_count": {
+                        "description": "Contacts currently targeted by this campaign.",
+                        "type": "integer",
+                        "example": 900
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Campaigns.CampaignDetailsResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Black Friday Campaign"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "example": "Don't miss our Black Friday deals!"
+                    },
+                    "sender_name": {
+                        "type": "string",
+                        "example": "Marketing Team"
+                    },
+                    "sender_email": {
+                        "type": "string",
+                        "example": "marketing@example.com"
+                    },
+                    "template_uuid": {
+                        "description": "The email template this campaign uses. The template title is not exposed.",
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "A fully sent campaign is `publish`. There is no `sent`, `paused` or `archived` status.",
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "scheduled",
+                            "sending",
+                            "publish",
+                            "failed"
+                        ],
+                        "example": "publish"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "campaign",
+                            "automation",
+                            "double_opt_in"
+                        ],
+                        "example": "campaign"
+                    },
+                    "failure_reason": {
+                        "description": "Set only while the status is `failed`.",
+                        "type": "string",
+                        "example": "sending_limit_reached",
+                        "nullable": true
+                    },
+                    "is_smart_send": {
+                        "description": "Whether delivery time is picked per contact rather than sent to everyone at once.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_all_contacts": {
+                        "description": "Whether the campaign targets every contact instead of the listed segments.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "delivery": {
+                        "$ref": "#/components/schemas/Reach.V1.Campaigns.CampaignDeliveryResource"
+                    },
+                    "segment_uuids": {
+                        "description": "Segments this campaign targets. Empty when it targets all contacts.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    },
+                    "sent_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    },
+                    "scheduled_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T08:00:00Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Campaigns.CampaignResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Black Friday Campaign"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "example": "Don't miss our Black Friday deals!"
+                    },
+                    "sender_name": {
+                        "type": "string",
+                        "example": "Marketing Team"
+                    },
+                    "sender_email": {
+                        "type": "string",
+                        "example": "marketing@example.com"
+                    },
+                    "template_uuid": {
+                        "description": "The email template this campaign uses. The template title is not exposed.",
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "A fully sent campaign is `publish`. There is no `sent`, `paused` or `archived` status.",
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "scheduled",
+                            "sending",
+                            "publish",
+                            "failed"
+                        ],
+                        "example": "publish"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "campaign",
+                            "automation",
+                            "double_opt_in"
+                        ],
+                        "example": "campaign"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    },
+                    "sent_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    },
+                    "scheduled_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T08:00:00Z",
+                        "nullable": true
+                    },
+                    "statistics": {
+                        "$ref": "#/components/schemas/Reach.V1.Campaigns.CampaignSummaryStatisticsResource"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Campaigns.CampaignStatisticsResource": {
+                "description": "Campaign performance. Every count is unique contacts rather than raw events, so a contact\nwho opens the same email five times is counted once.",
+                "properties": {
+                    "total_sent": {
+                        "description": "Emails sent for this campaign, and the denominator of every rate below.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "estimated_total_recipients": {
+                        "description": "Recipients this campaign was estimated to reach when sending started. Null for\ncampaigns that have not started sending.",
+                        "type": "integer",
+                        "example": 900,
+                        "nullable": true
+                    },
+                    "processed_count": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "delivered_count": {
+                        "type": "integer",
+                        "example": 90
+                    },
+                    "dropped_count": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "bounced_count": {
+                        "type": "integer",
+                        "example": 8
+                    },
+                    "soft_bounced_count": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "opened_count": {
+                        "description": "Contacts who opened this campaign.",
+                        "type": "integer",
+                        "example": 80
+                    },
+                    "clicked_count": {
+                        "description": "Contacts who clicked a link. Only clicks from contacts who also registered an open count.",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "unsubscribed_count": {
+                        "description": "Contacts who unsubscribed through this campaign.",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "open_rate": {
+                        "description": "Percentage of sent emails that were opened.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 42.5
+                    },
+                    "click_rate": {
+                        "description": "Percentage of sent emails that got a click.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 10
+                    },
+                    "click_to_open_rate": {
+                        "description": "Percentage of the contacts who opened that went on to click.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 23.5
+                    },
+                    "unsubscribe_rate": {
+                        "description": "Percentage of sent emails that led to an unsubscribe.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 1.5
+                    },
+                    "has_bounced_contacts": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Campaigns.CampaignSummaryStatisticsResource": {
+                "description": "Headline engagement rates. The statistics endpoint carries the full breakdown.",
+                "properties": {
+                    "total_sent": {
+                        "description": "Emails sent for this campaign, and the denominator of the rates below.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "open_rate": {
+                        "description": "Percentage of sent emails that were opened.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 42.5
+                    },
+                    "click_rate": {
+                        "description": "Percentage of sent emails that got a click.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 10
+                    },
+                    "click_to_open_rate": {
+                        "description": "Percentage of the contacts who opened that went on to click.",
+                        "type": "number",
+                        "format": "float",
+                        "example": 23.5
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -24692,6 +25138,63 @@
                     "example": "550e8400-e09b-41d4-a716-400055000000"
                 }
             },
+            "reach_campaign_sort_direction": {
+                "name": "sort_direction",
+                "in": "query",
+                "description": "Order campaigns by creation date. Newest first unless set to `asc`.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "example": "desc"
+                }
+            },
+            "reach_campaign_status": {
+                "name": "status",
+                "in": "query",
+                "description": "Filter campaigns by status.\n\nA fully sent campaign has the status `publish`. There is no `sent` status, and campaigns can\nbe neither paused nor archived.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "draft",
+                        "scheduled",
+                        "sending",
+                        "publish",
+                        "failed"
+                    ],
+                    "example": "publish"
+                }
+            },
+            "reach_campaign_type": {
+                "name": "type",
+                "in": "query",
+                "description": "Filter campaigns by type.\n\nDefaults to `campaign`, which leaves out the emails sent by automations and the double\nopt-in confirmations.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "default": "campaign",
+                    "enum": [
+                        "campaign",
+                        "automation",
+                        "double_opt_in"
+                    ],
+                    "example": "campaign"
+                }
+            },
+            "campaignUuid": {
+                "name": "campaignUuid",
+                "in": "path",
+                "description": "Campaign uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "550e8400-e09b-41d4-a716-400055000000"
+                }
+            },
             "search": {
                 "name": "search",
                 "in": "query",
@@ -25207,6 +25710,11 @@
             "x-displayName": "Automations"
         },
         {
+            "name": "Reach: Campaigns",
+            "description": "Reach: Campaigns",
+            "x-displayName": "Campaigns"
+        },
+        {
             "name": "Reach: Contacts",
             "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
             "x-displayName": "Contacts"
@@ -25442,6 +25950,7 @@
                 "Reach: Tags",
                 "Reach: Segments",
                 "Reach: Automations",
+                "Reach: Campaigns",
                 "Reach: Profiles"
             ]
         },
