@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.34.0",
+        "version": "1.35.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -9319,6 +9319,126 @@
                 }
             }
         },
+        "/api/reach/v1/profiles/{profileUuid}/forms/{formUuid}": {
+            "get": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Get form details",
+                "description": "Get a single form with the URL of its hosted template and the tags it applies to the contacts\nit captures.\n\nThere is no ready-made embed snippet in the response - either serve the template HTML yourself\nor build your own embed around the form uuid.",
+                "operationId": "reach_getFormDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Forms.FormDetailsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Delete form",
+                "description": "Permanently delete a form together with its template.\n\nA form that has already captured submissions cannot be deleted, so that the contacts it collected\nare never silently discarded - pause the form instead to stop it collecting new ones. Views alone\ndo not block deletion.",
+                "operationId": "reach_deleteFormV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/forms": {
+            "get": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "List forms",
+                "description": "Get a paginated list of the signup forms in a profile.\n\nEach form carries a reference to the template that renders it. Get the form details for a\ndirectly usable template URL and for the tags the form puts on the contacts it captures.",
+                "operationId": "reach_listFormsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Forms.FormCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/reach/v1/profiles/{profileUuid}/domains/dns-status": {
             "get": {
                 "tags": [
@@ -9339,6 +9459,39 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsStatusResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/limits": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Get remaining plan limits",
+                "description": "Get how much of the plan is left for the current period.\n\nTwo things to keep in mind before you build alerting on this. The period is a calendar month\nrather than a billing anniversary, so the counters reset on the 1st no matter when the\nsubscription started. And usage is tracked per order, so every profile on the same order shares\none pool and reports the same numbers here. Only the current period is available, past usage is\nnot kept.",
+                "operationId": "reach_getRemainingPlanLimitsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.PlanLimitsResource"
                                 }
                             }
                         }
@@ -22418,6 +22571,173 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Forms.FormCollection": {
+                "description": "Array of [`Reach.V1.Forms.FormResource`](#model/reachv1formsformresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Forms.FormResource"
+                }
+            },
+            "Reach.V1.Forms.FormDetailsResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Newsletter signup"
+                    },
+                    "status": {
+                        "description": "A `paused` form keeps its template online but stops accepting submissions.",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "paused",
+                            "draft"
+                        ],
+                        "example": "active"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "form"
+                        ],
+                        "example": "form"
+                    },
+                    "template": {
+                        "$ref": "#/components/schemas/Reach.V1.Forms.FormTemplateDetailsResource"
+                    },
+                    "tags": {
+                        "description": "Tags applied to every contact this form captures.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reach.V1.Forms.FormTagResource"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.FormResource": {
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Newsletter signup"
+                    },
+                    "status": {
+                        "description": "A `paused` form keeps its template online but stops accepting submissions.",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "paused",
+                            "draft"
+                        ],
+                        "example": "active"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "form"
+                        ],
+                        "example": "form"
+                    },
+                    "template": {
+                        "$ref": "#/components/schemas/Reach.V1.Forms.FormTemplateResource"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.FormTagResource": {
+                "description": "A tag applied to every contact this form captures.",
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "value": {
+                        "type": "string",
+                        "example": "Newsletter"
+                    },
+                    "type": {
+                        "description": "How the tag came about. `custom` covers the tags you create yourself, `import` the ones added\nby contact imports, and `form` and `system` the ones Reach creates on its own. Every form gets\na `form:{name}` tag when it is created.",
+                        "type": "string",
+                        "enum": [
+                            "form",
+                            "custom",
+                            "import",
+                            "system"
+                        ],
+                        "example": "system"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.FormTemplateDetailsResource": {
+                "description": "The rendered form template. There is no ready-made embed snippet - either serve the HTML behind\n`url` or build your own embed around the form uuid. All fields stay null until the template has\nbeen generated.",
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f",
+                        "nullable": true
+                    },
+                    "path": {
+                        "description": "Storage path of the template HTML, relative to the storage directory of this profile. `url`\nalready includes that prefix, so prefer it unless you resolve storage paths yourself.",
+                        "type": "string",
+                        "example": "forms/8f2c1b9e-1f4a-4a1e-9a2b-2f3c4d5e6f70/9a1b2c3d.html",
+                        "nullable": true
+                    },
+                    "url": {
+                        "description": "Publicly reachable URL of the template HTML.",
+                        "type": "string",
+                        "example": "https://cdn-reach.hostinger.com/storage/client123/profile-uuid/form.html",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.FormTemplateResource": {
+                "description": "The rendered form template. Both fields stay null until the template has been generated.",
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f",
+                        "nullable": true
+                    },
+                    "path": {
+                        "description": "Storage path of the template HTML, relative to the storage directory of this profile. Get the\nform details to receive a directly usable URL instead.",
+                        "type": "string",
+                        "example": "forms/8f2c1b9e-1f4a-4a1e-9a2b-2f3c4d5e6f70/9a1b2c3d.html",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Profiles.Domains.DnsRecordStatus": {
                 "properties": {
                     "actual": {
@@ -22480,6 +22800,54 @@
                     },
                     "dmarc": {
                         "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.PlanLimitUsageResource": {
+                "description": "Allowance, consumption and headroom of a single plan limit for the current period.",
+                "properties": {
+                    "limit": {
+                        "description": "The allowance for the current period.",
+                        "type": "integer",
+                        "example": 10000
+                    },
+                    "used": {
+                        "description": "How much of the allowance has been consumed so far.",
+                        "type": "integer",
+                        "example": 2500
+                    },
+                    "remaining": {
+                        "description": "Headroom left. Floors at 0, so it never reports a negative overage.",
+                        "type": "integer",
+                        "example": 7500
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.PlanLimitsResource": {
+                "description": "What the plan allows and what is left of it for the current period.\n\n`emails` counts every email sent. `recipients` counts the distinct contacts emailed - it is not the\nsize of the contact list, a contact emailed three times counts once and a contact never emailed does\nnot count at all. `ai_credits` counts the AI generations used, and its limit includes any extra\ncredits bought on top of the plan.",
+                "properties": {
+                    "emails": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.PlanLimitUsageResource"
+                    },
+                    "recipients": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.PlanLimitUsageResource"
+                    },
+                    "ai_credits": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.PlanLimitUsageResource"
+                    },
+                    "period_start": {
+                        "description": "Start of the current period. Periods are calendar months rather than billing anniversaries,\nso the counters reset at midnight UTC on the 1st no matter when the subscription started.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-01T00:00:00Z"
+                    },
+                    "period_end": {
+                        "description": "End of the current period, that is the last moment of the calendar month.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-31T23:59:59Z"
                     }
                 },
                 "type": "object"
@@ -25227,6 +25595,16 @@
                     "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
             },
+            "formUuid": {
+                "name": "formUuid",
+                "in": "path",
+                "description": "Form uuid parameter",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "550e8400-e09b-41d4-a716-400055000000"
+                }
+            },
             "group_uuid": {
                 "name": "group_uuid",
                 "in": "query",
@@ -25735,6 +26113,11 @@
             "x-displayName": "Tags"
         },
         {
+            "name": "Reach: Forms",
+            "description": "Reach: Forms",
+            "x-displayName": "Forms"
+        },
+        {
             "name": "Reach: Profiles",
             "description": "Reach: Profiles",
             "x-displayName": "Profiles"
@@ -25951,6 +26334,7 @@
                 "Reach: Segments",
                 "Reach: Automations",
                 "Reach: Campaigns",
+                "Reach: Forms",
                 "Reach: Profiles"
             ]
         },
