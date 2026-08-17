@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.35.0",
+        "version": "1.35.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -15178,14 +15178,24 @@
                         "type": "string",
                         "enum": [
                             "create-react-app",
+                            "gatsby",
                             "vite",
                             "angular",
                             "react",
                             "vue",
                             "parcel",
+                            "next",
+                            "nuxt",
+                            "nest",
                             "express",
                             "fastify",
-                            "nest"
+                            "astro",
+                            "svelte",
+                            "svelte-kit",
+                            "hono",
+                            "react-router",
+                            "nitro",
+                            "other"
                         ],
                         "example": "vite",
                         "nullable": true
@@ -19722,11 +19732,24 @@
                         "type": "string",
                         "enum": [
                             "create-react-app",
+                            "gatsby",
                             "vite",
                             "angular",
                             "react",
                             "vue",
-                            "parcel"
+                            "parcel",
+                            "next",
+                            "nuxt",
+                            "nest",
+                            "express",
+                            "fastify",
+                            "astro",
+                            "svelte",
+                            "svelte-kit",
+                            "hono",
+                            "react-router",
+                            "nitro",
+                            "other"
                         ],
                         "example": "vite",
                         "nullable": true
