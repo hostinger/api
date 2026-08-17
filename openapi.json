@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.36.0",
+        "version": "1.37.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5902,6 +5902,152 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/redirects": {
+            "get": {
+                "tags": [
+                    "Hosting: Redirects"
+                ],
+                "summary": "List website redirects",
+                "description": "Returns a paginated list of redirects configured for the selected website.",
+                "operationId": "hosting_listWebsiteRedirectsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Hosting.V1.Redirects.RedirectCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Redirects"
+                ],
+                "summary": "Create website redirect",
+                "description": "Creates a redirect from a URL on the selected website to another URL or IP address.",
+                "operationId": "hosting_createWebsiteRedirectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Redirects.CreateRedirectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Redirects.RedirectResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Hosting: Redirects"
+                ],
+                "summary": "Delete website redirect",
+                "description": "Permanently deletes the redirect identified by its source URL.\n\nPass the `from` value exactly as returned by the list redirects endpoint.",
+                "operationId": "hosting_deleteWebsiteRedirectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Source URL returned by the list redirects endpoint.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uri",
+                            "maxLength": 255,
+                            "example": "https://example.com/old-page"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success empty response",
@@ -15661,6 +15807,41 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Redirects.CreateRedirectRequest": {
+                "required": [
+                    "from",
+                    "to"
+                ],
+                "properties": {
+                    "from": {
+                        "description": "Source URL on the selected website",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "https://example.com/old-page"
+                    },
+                    "to": {
+                        "description": "Destination URL or IP address",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "https://example.com/new-page"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Redirects.DeleteRedirectRequest": {
+                "required": [
+                    "from"
+                ],
+                "properties": {
+                    "from": {
+                        "description": "Source URL returned by the list redirects endpoint",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "https://example.com/old-page"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Websites.CreateWebsiteRequest": {
                 "required": [
                     "domain",
@@ -20594,6 +20775,28 @@
                         "example": {
                             "5.2": "PHP 5.2"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Redirects.RedirectCollection": {
+                "description": "Array of [`Hosting.V1.Redirects.RedirectResource`](#model/hostingv1redirectsredirectresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Redirects.RedirectResource"
+                }
+            },
+            "Hosting.V1.Redirects.RedirectResource": {
+                "properties": {
+                    "from": {
+                        "description": "Source URL",
+                        "type": "string",
+                        "example": "https://example.com/old-page"
+                    },
+                    "to": {
+                        "description": "Destination URL",
+                        "type": "string",
+                        "example": "https://example.com/new-page"
                     }
                 },
                 "type": "object"
@@ -26496,6 +26699,11 @@
             "x-displayName": "PHP"
         },
         {
+            "name": "Hosting: Redirects",
+            "description": "Manage redirects for hosted websites. This category includes\nendpoints for listing, creating, and deleting redirects.",
+            "x-displayName": "Redirects"
+        },
+        {
             "name": "Hosting: Websites",
             "description": "Manage hosted websites and web applications. This category\nincludes endpoints for website deployment, configuration,\nmonitoring, and management of hosting resources.",
             "x-displayName": "Websites"
@@ -26751,6 +26959,7 @@
                 "Hosting: NodeJS",
                 "Hosting: Orders",
                 "Hosting: PHP",
+                "Hosting: Redirects",
                 "Hosting: Websites"
             ]
         },
