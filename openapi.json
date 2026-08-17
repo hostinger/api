@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.37.0",
+        "version": "1.38.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -296,6 +296,45 @@
                 }
             }
         },
+        "/api/agency-hosting/v1/orders/{order_id}/disk-usage-metrics": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Metrics"
+                ],
+                "summary": "List Agency Plan order disk usage metrics",
+                "description": "Returns aggregated disk and inode usage for the Agency Plan order over the\nselected time frame, plus the plan quotas. Figures cover the whole order\naccount. Values may be up to one hour stale. CPU, memory, and process usage\nare on the resource-usage-metrics endpoint.",
+                "operationId": "agency-hosting_listAgencyPlanOrderDiskUsageMetricsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_time_frame_days"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Orders.DiskUsageMetrics.MetricsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/agency-hosting/v1/orders": {
             "get": {
                 "tags": [
@@ -330,6 +369,45 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/orders/{order_id}/resource-usage-metrics": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Metrics"
+                ],
+                "summary": "List order resource usage metrics",
+                "description": "Returns aggregated CPU, memory, and process usage for the Agency Plan order\nover the selected time frame, plus the plan quotas and a per-website\nbreakdown. Each website is identified by uid. Suspended and deleted websites\nare excluded from both the order totals and the per-website breakdown.\nValues may be up to one hour stale. Disk and inode usage are on the\ndisk-usage-metrics endpoint.",
+                "operationId": "agency-hosting_listOrderResourceUsageMetricsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/order_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_time_frame_hours"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -17380,6 +17458,59 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Orders.DiskUsageMetrics.LimitsResource": {
+                "properties": {
+                    "disk_bytes": {
+                        "description": "Disk usage quota in bytes",
+                        "type": "integer",
+                        "example": 104857600
+                    },
+                    "inodes": {
+                        "description": "Inodes quota",
+                        "type": "integer",
+                        "example": 400000
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.DiskUsageMetrics.MetricCollection": {
+                "description": "Array of [`AgencyHosting.V1.Orders.DiskUsageMetrics.MetricResource`](#model/agencyhostingv1ordersdiskusagemetricsmetricresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Orders.DiskUsageMetrics.MetricResource"
+                }
+            },
+            "AgencyHosting.V1.Orders.DiskUsageMetrics.MetricResource": {
+                "properties": {
+                    "disk_bytes": {
+                        "description": "Disk usage in bytes at this sample",
+                        "type": "integer",
+                        "example": 104857600
+                    },
+                    "inodes": {
+                        "description": "Number of inodes used at this sample",
+                        "type": "integer",
+                        "example": 400000
+                    },
+                    "timestamp": {
+                        "description": "Unix timestamp of the sample",
+                        "type": "integer",
+                        "example": 1736325738
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.DiskUsageMetrics.MetricsResource": {
+                "properties": {
+                    "limits": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.DiskUsageMetrics.LimitsResource"
+                    },
+                    "metrics": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.DiskUsageMetrics.MetricCollection"
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Orders.OrderCollection": {
                 "description": "Array of [`AgencyHosting.V1.Orders.OrderResource`](#model/agencyhostingv1ordersorderresource)",
                 "type": "array",
@@ -17439,6 +17570,105 @@
                         "type": "string",
                         "example": "shared_business_hosting",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.ResourceUsageMetrics.LimitsResource": {
+                "properties": {
+                    "memory_bytes": {
+                        "description": "Memory usage quota in bytes",
+                        "type": "integer",
+                        "example": 104857600
+                    },
+                    "cpu_percent": {
+                        "description": "CPU usage quota in percent",
+                        "type": "integer",
+                        "example": 400
+                    },
+                    "processes": {
+                        "description": "Process usage quota",
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricCollection": {
+                "description": "Array of [`AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricResource`](#model/agencyhostingv1ordersresourceusagemetricsmetricresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricResource"
+                }
+            },
+            "AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricResource": {
+                "properties": {
+                    "cpu_percent": {
+                        "description": "CPU usage percentage at this sample",
+                        "type": "number",
+                        "format": "float",
+                        "example": 15.5
+                    },
+                    "memory_bytes": {
+                        "description": "Memory usage in bytes at this sample",
+                        "type": "integer",
+                        "example": 125829120
+                    },
+                    "processes": {
+                        "description": "Number of processes at this sample",
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "timestamp": {
+                        "description": "Unix timestamp of the sample",
+                        "type": "integer",
+                        "example": 1736325738
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricsResource": {
+                "properties": {
+                    "limits": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.LimitsResource"
+                    },
+                    "metrics": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricCollection"
+                    },
+                    "websites": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.WebsiteCollection"
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Orders.ResourceUsageMetrics.WebsiteCollection": {
+                "description": "Array of [`AgencyHosting.V1.Orders.ResourceUsageMetrics.WebsiteResource`](#model/agencyhostingv1ordersresourceusagemetricswebsiteresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.WebsiteResource"
+                }
+            },
+            "AgencyHosting.V1.Orders.ResourceUsageMetrics.WebsiteResource": {
+                "properties": {
+                    "uid": {
+                        "description": "Website UID",
+                        "type": "string",
+                        "example": "cvDuwAOvq"
+                    },
+                    "domains": {
+                        "description": "Domains associated with the website",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "example.com"
+                        },
+                        "example": [
+                            "example.com",
+                            "www.example.com"
+                        ]
+                    },
+                    "metrics": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Orders.ResourceUsageMetrics.MetricCollection"
                     }
                 },
                 "type": "object"
@@ -25446,6 +25676,41 @@
                     "example": "0193b6d4-fabb-70e0-8ea4-cfe060a45898"
                 }
             },
+            "agency_time_frame_days": {
+                "name": "time_frame_days",
+                "in": "query",
+                "description": "Length of the window in days, ending now. Bucket size grows with the window.",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "default": 1,
+                    "enum": [
+                        1,
+                        7,
+                        14,
+                        30
+                    ],
+                    "example": 7
+                }
+            },
+            "agency_time_frame_hours": {
+                "name": "time_frame_hours",
+                "in": "query",
+                "description": "Length of the window in hours, ending now. Bucket size grows with the window.",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "default": 24,
+                    "enum": [
+                        1,
+                        24,
+                        168,
+                        336,
+                        720
+                    ],
+                    "example": 168
+                }
+            },
             "website_uid": {
                 "name": "website_uid",
                 "in": "path",
@@ -26514,6 +26779,11 @@
             "x-displayName": "Files"
         },
         {
+            "name": "Agency Hosting: Metrics",
+            "description": "Agency Hosting: Metrics",
+            "x-displayName": "Metrics"
+        },
+        {
             "name": "Agency Hosting: Orders",
             "description": "Agency Hosting: Orders",
             "x-displayName": "Orders"
@@ -26972,6 +27242,7 @@
                 "Agency Hosting: Datacenters",
                 "Agency Hosting: Domains",
                 "Agency Hosting: Files",
+                "Agency Hosting: Metrics",
                 "Agency Hosting: Orders",
                 "Agency Hosting: PHP",
                 "Agency Hosting: Website Setups",
