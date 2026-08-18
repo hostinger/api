@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.38.0",
+        "version": "1.39.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -20223,6 +20223,16 @@
                         "description": "Maximum allowed database size in megabytes.",
                         "type": "integer",
                         "example": 3072
+                    },
+                    "host": {
+                        "description": "MySQL hostname for remote connections. Same value as hPanel Remote MySQL.\nIdentical for every database on this account. Not the database user grant host.",
+                        "type": "string",
+                        "example": "srv1517.hstgr.io"
+                    },
+                    "port": {
+                        "description": "MySQL port for remote connections. Always 3306.",
+                        "type": "integer",
+                        "example": 3306
                     }
                 },
                 "type": "object"
