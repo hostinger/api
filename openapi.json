@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.39.0",
+        "version": "1.40.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6155,7 +6155,7 @@
                     "Hosting: Websites"
                 ],
                 "summary": "List websites",
-                "description": "Retrieve a paginated list of websites (main and addon types) accessible to the authenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nUse the available query parameters to filter results by username,\norder ID, enabled status, or domain name for more targeted results.",
+                "description": "Retrieve a paginated list of websites (CloudLinux, Builder, and Horizons) accessible to the\nauthenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nEach website includes a `website_type` field describing the type of\nwebsite detected on the underlying platform (`wordpress`, `builder`,\n`horizons`, `nodejs`, or `other`). Some fields, such as\n`vhost_type`, `username`, and `root_directory`, only apply to\nCloudLinux websites and are null for other platforms.\n\nUse the available query parameters to filter results by username,\norder ID, enabled status, or domain name for more targeted results.",
                 "operationId": "hosting_listWebsitesV1",
                 "parameters": [
                     {
@@ -21051,12 +21051,13 @@
             "Hosting.V1.Websites.WebsiteResource": {
                 "properties": {
                     "domain": {
-                        "description": "Website domain",
+                        "description": "Website domain. Null for U4S websites with no domain attached.",
                         "type": "string",
-                        "example": "example.com"
+                        "example": "example.com",
+                        "nullable": true
                     },
                     "vhost_type": {
-                        "description": "Virtual host type",
+                        "description": "Virtual host type. Only present for CloudLinux websites.",
                         "type": "string",
                         "enum": [
                             "main",
@@ -21064,7 +21065,8 @@
                             "parked",
                             "subdomain"
                         ],
-                        "example": "main"
+                        "example": "main",
+                        "nullable": true
                     },
                     "is_enabled": {
                         "description": "Whether website is enabled",
@@ -21072,9 +21074,10 @@
                         "example": true
                     },
                     "username": {
-                        "description": "Username",
+                        "description": "Username. Not applicable for U4S websites.",
                         "type": "string",
-                        "example": "cl_user123"
+                        "example": "cl_user123",
+                        "nullable": true
                     },
                     "client_id": {
                         "description": "Client ID",
@@ -21093,14 +21096,33 @@
                         "example": "2024-01-15T10:30:00+00:00"
                     },
                     "root_directory": {
-                        "description": "Root directory path",
+                        "description": "Root directory path. Only present for CloudLinux websites.",
                         "type": "string",
-                        "example": "/home/u123456798/domains/example.com/public_html"
+                        "example": "/home/u123456798/domains/example.com/public_html",
+                        "nullable": true
                     },
                     "parent_domain": {
                         "description": "Parent domain",
                         "type": "string",
                         "example": "parent.com",
+                        "nullable": true
+                    },
+                    "website_type": {
+                        "description": "Type of website detected on the underlying platform.",
+                        "type": "string",
+                        "enum": [
+                            "wordpress",
+                            "builder",
+                            "horizons",
+                            "nodejs",
+                            "other"
+                        ],
+                        "example": "wordpress"
+                    },
+                    "horizons_uuid": {
+                        "description": "Horizons UUID. Only present for horizons websites.",
+                        "type": "string",
+                        "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                         "nullable": true
                     }
                 },
