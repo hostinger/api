@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.40.0",
+        "version": "1.41.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -237,6 +237,39 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/files/upload-urls": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: Files"
+                ],
+                "summary": "Generate upload URL",
+                "description": "Generate a file browser upload URL with authentication credentials for uploading files\nto an Agency Plan website's file storage.\n\nReturns `url`, `auth_key` and `rest_auth_key`. Use these to upload a file to the\nwebsite's file storage via the TUS resumable upload protocol (TUS 1.0.0). Send\n`X-Auth: {auth_key}` and `X-Auth-Rest: {rest_auth_key}` headers on every request below.\n\n1. Create the upload: `POST` to `{url}/{relative_file_path}?override=true` with headers\n   `upload-length: {file size in bytes}` and `upload-offset: 0`. Expect `201 Created`.\n2. Upload the file: send the file bytes to the same location (any TUS 1.0.0 client, or\n   `PATCH` requests with an `upload-offset` header tracking progress) until complete.\n\n`relative_file_path` is the destination path inside the website's file storage, e.g.\n`app.zip`.\n\nInstead of a TUS client, plain `curl` also works:\n```\nFILE=app.zip\nSIZE=$(stat -f%z \"$FILE\")   # stat -c%s on Linux\n\ncurl -i -X POST \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Upload-Length: ${SIZE}\" \\\n  -H \"Upload-Offset: 0\"\n# -> 201 Created\n\ncurl -i -X PATCH \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Content-Type: application/offset+octet-stream\" \\\n  -H \"Upload-Offset: 0\" \\\n  --data-binary \"@${FILE}\"\n# -> 204 No Content, Upload-Offset response header equals SIZE when done\n```",
+                "operationId": "agency-hosting_generateUploadURLV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Files.UploadUrlResource"
                                 }
                             }
                         }
@@ -5206,6 +5239,47 @@
                 }
             }
         },
+        "/api/hosting/v1/files/upload-urls": {
+            "post": {
+                "tags": [
+                    "Hosting: Files"
+                ],
+                "summary": "Generate upload URL",
+                "description": "Generate a file browser upload URL with authentication credentials\nfor uploading files directly to a website's file storage.\n\nReturns `url`, `auth_key` and `rest_auth_key`. Use these to upload a file to the\nwebsite's `public_html` directory via the TUS resumable upload protocol (TUS 1.0.0).\nSend `X-Auth: {auth_key}` and `X-Auth-Rest: {rest_auth_key}` headers on every request\nbelow.\n\n1. Create the upload: `POST` to `{url}/{relative_file_path}?override=true` with headers\n   `upload-length: {file size in bytes}` and `upload-offset: 0`. Expect `201 Created`.\n2. Upload the file: send the file bytes to the same location (any TUS 1.0.0 client, or\n   `PATCH` requests with an `upload-offset` header tracking progress) until complete.\n\n`relative_file_path` is the destination path inside `public_html`, e.g. `app.zip`.\n\nInstead of a TUS client, plain `curl` also works:\n```\nFILE=app.zip\nSIZE=$(stat -f%z \"$FILE\")   # stat -c%s on Linux\n\ncurl -i -X POST \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Upload-Length: ${SIZE}\" \\\n  -H \"Upload-Offset: 0\"\n# -> 201 Created\n\ncurl -i -X PATCH \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Content-Type: application/offset+octet-stream\" \\\n  -H \"Upload-Offset: 0\" \\\n  --data-binary \"@${FILE}\"\n# -> 204 No Content, Upload-Offset response header equals SIZE when done\n```",
+                "operationId": "hosting_generateUploadURLV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Files.GenerateUploadUrlRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Files.UploadUrlResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/domains/{domain}/files": {
             "get": {
                 "tags": [
@@ -5451,6 +5525,53 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Start Node.js build",
+                "description": "Start a Node.js build process using files already present on the website's file storage.\n\nWARNING: on success this overwrites the website's existing contents and cannot be\nundone — verify this is intended before calling this endpoint.\n\nThe `source_type` must be `archive` and `source_options.archive_path` must point to an\nexisting archive file on the server (relative to the website document root).\nUse the `Generate Upload URL` endpoint to obtain credentials and upload the archive first.\n\nTo auto-detect build settings from an archive before starting, first call the\n`Get Node.js Build Settings from Archive` endpoint. To upload an archive and start\na build in one step, use the `Create Node.js Build from Archive` endpoint instead.\n\nThe returned build `uuid` can be used to poll progress and retrieve logs via\nthe `Get Node.js Build Logs` endpoint.",
+                "operationId": "hosting_startNode.jsBuildV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.StartBuildRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/from-archive": {
@@ -5459,7 +5580,7 @@
                     "Hosting: NodeJS"
                 ],
                 "summary": "Create NodeJS build from archive",
-                "description": "Upload a project archive, auto-detect build settings, and immediately start a Node.js build.\n\nThis is the recommended single-step approach for deploying a Node.js application.\nThe archive is uploaded to the website's file storage, build settings are auto-detected\nfrom the package.json inside the archive, and the build process starts automatically.\nOptional override fields take precedence over auto-detected values.\nMaximum archive size is 50MB.\n\nBefore archiving, exclude `node_modules/` and any build output directories\n(e.g. `dist/`, `.next/`, `build/`) — they are not needed because the build\nprocess runs the install step automatically, and including them unnecessarily\nincreases the archive size. This also helps keep the archive well under the 50MB limit.\n\nExample (zip):\n```\nzip -r archive.zip . --exclude \"node_modules/*\" --exclude \"dist/*\"\n```\n\nThe returned build `uuid` can be used to poll progress and retrieve logs via\nthe `Get Node.js Build Logs` endpoint.",
+                "description": "Upload a project archive, auto-detect build settings, and immediately start a Node.js build.\n\nWARNING: on success this overwrites the website's existing contents and cannot be\nundone — verify this is intended before calling this endpoint.\n\nThis is the recommended single-step approach for deploying a Node.js application.\nThe archive is uploaded to the website's file storage, build settings are auto-detected\nfrom the package.json inside the archive, and the build process starts automatically.\nOptional override fields take precedence over auto-detected values.\nMaximum archive size is 50MB.\n\nBefore archiving, exclude `node_modules/` and any build output directories\n(e.g. `dist/`, `.next/`, `build/`) — they are not needed because the build\nprocess runs the install step automatically, and including them unnecessarily\nincreases the archive size. This also helps keep the archive well under the 50MB limit.\n\nExample (zip):\n```\nzip -r archive.zip . --exclude \"node_modules/*\" --exclude \"dist/*\"\n```\n\nThe returned build `uuid` can be used to poll progress and retrieve logs via\nthe `Get Node.js Build Logs` endpoint.",
                 "operationId": "hosting_createNodeJSBuildFromArchiveV1",
                 "parameters": [
                     {
@@ -5486,6 +5607,55 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/settings/from-archive": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Get Node.js build settings from archive",
+                "description": "Auto-detect Node.js build settings from a package.json inside an archive already on the server.\n\nUse this before calling `Start Node.js Build` to preview what settings will be used,\nor to let the user review and override values (framework, node version, root directory,\noutput directory, build script) before committing to a build.\n\nThe archive must already be present on the website's file storage. Use the\n`Generate Upload URL` endpoint to obtain credentials and upload the archive first.\nTo upload an archive and start a build in one step without inspecting settings first,\nuse the `Create Node.js Build from Archive` endpoint instead.",
+                "operationId": "hosting_getNode.jsBuildSettingsFromArchiveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "name": "archive_path",
+                        "in": "query",
+                        "description": "The path to the archive file relative to the document root of the vhost",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "example.zip"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildSettingsResource"
                                 }
                             }
                         }
@@ -6224,6 +6394,55 @@
                 "responses": {
                     "200": {
                         "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/deploy": {
+            "post": {
+                "tags": [
+                    "Hosting: Websites"
+                ],
+                "summary": "Deploy static site archive",
+                "description": "Deploy a static application from an archive file.\n\nWARNING: this overwrites the website's existing contents and cannot be undone —\nverify this is intended before calling this endpoint.\n\nThis endpoint allows you to deploy a static application from an archive\nfile that has been uploaded to the website's directory.\n\nThis only works for static sites (pre-built HTML/CSS/JS with no build step). For\nNode.js applications, use `Create NodeJS build from archive` instead, or\n`Start Node.js build` if the archive is already uploaded. For WordPress sites,\nuse `Import WordPress website`.",
+                "operationId": "hosting_deployStaticSiteArchiveV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Websites.DeployArchiveRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -12638,6 +12857,55 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/wordpress/import": {
+            "post": {
+                "tags": [
+                    "WordPress: Installations"
+                ],
+                "summary": "Import WordPress website",
+                "description": "Import WordPress website to the specified domain.\n\nWARNING: this overwrites the website's existing contents and cannot be undone —\nverify this is intended before calling this endpoint.\n\nThis endpoint allows you to import a WordPress website from archive and\ndatabase files that have been uploaded to the website's directory.",
+                "operationId": "hosting_importWordPressWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Installations.ImportWordPressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/wordpress/installations": {
             "post": {
                 "tags": [
@@ -13269,6 +13537,55 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/wordpress/plugins/deploy": {
+            "post": {
+                "tags": [
+                    "WordPress: Plugins"
+                ],
+                "summary": "Deploy WordPress plugin",
+                "description": "Deploy a WordPress plugin from an already uploaded directory.\n\nThis endpoint allows you to deploy a WordPress plugin that has been uploaded to the website's directory.\nThe plugin will be activated and made available in the WordPress admin panel.",
+                "operationId": "hosting_deployWordPressPluginV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Plugins.DeployPluginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/wordpress/{software}/plugins/install": {
             "post": {
                 "tags": [
@@ -13695,6 +14012,55 @@
                 "responses": {
                     "200": {
                         "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/wordpress/themes/deploy": {
+            "post": {
+                "tags": [
+                    "WordPress: Themes"
+                ],
+                "summary": "Deploy WordPress theme",
+                "description": "Deploy a WordPress theme from an already uploaded directory.\n\nThis endpoint allows you to deploy a WordPress theme that has been uploaded to the website's directory.\nThe theme can be optionally activated after deployment.",
+                "operationId": "hosting_deployWordPressThemeV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Themes.DeployThemeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -15708,6 +16074,25 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Files.GenerateUploadUrlRequest": {
+                "required": [
+                    "username",
+                    "domain"
+                ],
+                "properties": {
+                    "username": {
+                        "description": "Account username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "domain": {
+                        "description": "Website domain",
+                        "type": "string",
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.CreateFromArchiveRequest": {
                 "required": [
                     "archive"
@@ -15802,6 +16187,19 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.GetBuildSettingsRequest": {
+                "required": [
+                    "archive_path"
+                ],
+                "properties": {
+                    "archive_path": {
+                        "description": "The path to the archive file relative to the document root of the vhost",
+                        "type": "string",
+                        "example": "example.zip"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.PatchVulnerabilitiesRequest": {
                 "required": [
                     "vulnerability_ids"
@@ -15815,6 +16213,123 @@
                             "example": "GHSA-1111-2222-3333"
                         },
                         "minItems": 1
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.StartBuildRequest": {
+                "required": [
+                    "node_version",
+                    "app_type",
+                    "root_directory",
+                    "output_directory",
+                    "build_script",
+                    "source_type",
+                    "source_options"
+                ],
+                "properties": {
+                    "node_version": {
+                        "description": "Node.js version",
+                        "type": "integer",
+                        "enum": [
+                            18,
+                            20,
+                            22,
+                            24
+                        ],
+                        "example": 20
+                    },
+                    "app_type": {
+                        "description": "Node.js application type",
+                        "type": "string",
+                        "enum": [
+                            "create-react-app",
+                            "gatsby",
+                            "vite",
+                            "angular",
+                            "react",
+                            "vue",
+                            "parcel",
+                            "next",
+                            "nuxt",
+                            "nest",
+                            "express",
+                            "fastify",
+                            "astro",
+                            "svelte",
+                            "svelte-kit",
+                            "hono",
+                            "react-router",
+                            "nitro",
+                            "other"
+                        ],
+                        "example": "vite",
+                        "nullable": true
+                    },
+                    "root_directory": {
+                        "description": "Application root directory (where package.json is located) relative to public_html",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "webapp",
+                        "nullable": true
+                    },
+                    "output_directory": {
+                        "description": "Build output directory relative to the root directory",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "dist",
+                        "nullable": true
+                    },
+                    "build_script": {
+                        "description": "Build script that will be ran to build the application",
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "example": "build",
+                        "nullable": true
+                    },
+                    "entry_file": {
+                        "description": "The main entry point file for the application",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "server.js",
+                        "nullable": true
+                    },
+                    "package_manager": {
+                        "description": "Package manager",
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 1,
+                        "enum": [
+                            "npm",
+                            "yarn",
+                            "pnpm"
+                        ],
+                        "example": "npm",
+                        "nullable": true
+                    },
+                    "source_type": {
+                        "description": "The source type of the files",
+                        "type": "string",
+                        "enum": [
+                            "archive"
+                        ],
+                        "example": "archive"
+                    },
+                    "source_options": {
+                        "description": "Source-specific options",
+                        "properties": {
+                            "archive_path": {
+                                "description": "The path to the archive file relative to the document root of the vhost (required if source is \"archive\")",
+                                "type": "string",
+                                "example": "example.zip"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -15941,6 +16456,19 @@
                         "type": "string",
                         "example": "us-east-1",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Websites.DeployArchiveRequest": {
+                "required": [
+                    "archive_path"
+                ],
+                "properties": {
+                    "archive_path": {
+                        "description": "Relative path to the archive file from website root directory",
+                        "type": "string",
+                        "example": "uploads/archive.zip"
                     }
                 },
                 "type": "object"
@@ -16961,6 +17489,25 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Installations.ImportWordPressRequest": {
+                "required": [
+                    "archive_path",
+                    "sql_path"
+                ],
+                "properties": {
+                    "archive_path": {
+                        "description": "Path to the WordPress archive file (relative to website root)",
+                        "type": "string",
+                        "example": "backup.zip"
+                    },
+                    "sql_path": {
+                        "description": "Path to the database SQL file (relative to website root)",
+                        "type": "string",
+                        "example": "database.sql"
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.Installations.InstallWordPressRequest": {
                 "required": [
                     "domain",
@@ -17132,6 +17679,25 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Plugins.DeployPluginRequest": {
+                "required": [
+                    "slug",
+                    "plugin_path"
+                ],
+                "properties": {
+                    "slug": {
+                        "description": "Slug of the plugin",
+                        "type": "string",
+                        "example": "my-plugin"
+                    },
+                    "plugin_path": {
+                        "description": "Relative path to the plugin directory from wp-content/plugins",
+                        "type": "string",
+                        "example": "my-plugin-new"
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.Plugins.InstallPluginsRequest": {
                 "required": [
                     "plugins"
@@ -17232,6 +17798,32 @@
                         "maxLength": 50,
                         "minLength": 1,
                         "example": "twentytwentyone"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Themes.DeployThemeRequest": {
+                "required": [
+                    "slug",
+                    "theme_path"
+                ],
+                "properties": {
+                    "slug": {
+                        "description": "Slug of the theme",
+                        "type": "string",
+                        "example": "twentytwentyone"
+                    },
+                    "theme_path": {
+                        "description": "Relative path to the theme directory from wp-content/themes",
+                        "type": "string",
+                        "example": "twentytwentyone-new"
+                    },
+                    "is_activated": {
+                        "description": "Whether to activate the theme after deployment",
+                        "type": "boolean",
+                        "default": false,
+                        "example": false,
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -20538,6 +21130,31 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Files.UploadUrlResource": {
+                "required": [
+                    "url",
+                    "auth_key",
+                    "rest_auth_key"
+                ],
+                "properties": {
+                    "url": {
+                        "description": "The TUS upload endpoint URL to send upload requests to",
+                        "type": "string",
+                        "example": "https://srv12345-files.hstgr.io/"
+                    },
+                    "auth_key": {
+                        "description": "Authentication token to pass as the `X-Auth` header in TUS upload requests",
+                        "type": "string",
+                        "example": "eYJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im15dXNlcm5hbWUiLCJkb21haW4iOiJteWRvbWFpbi5jb20iLCJpYXQiOjE2ODgwMjM2MDAsImV4cCI6MTY4ODA2MDgwMH0.4fXoX1HnY2b8jv7gX9h8vZ6xX3K1t7y5H3Z5Z5Z5Z5Q"
+                    },
+                    "rest_auth_key": {
+                        "description": "Authentication token to pass as the `X-Auth-Rest` header in TUS upload requests",
+                        "type": "string",
+                        "example": "d555be24e1096adcb6a029fbd1f25fdf18db587c5dbd01e0e49b22f67108b121-f496d493c2swfwea"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.BuildCollection": {
                 "description": "Array of [`Hosting.V1.NodeJs.BuildResource`](#model/hostingv1nodejsbuildresource)",
                 "type": "array",
@@ -20704,6 +21321,101 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-05-29T05:49:49.067239Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.BuildSettingsResource": {
+                "required": [
+                    "app_type",
+                    "node_version",
+                    "root_directory",
+                    "output_directory",
+                    "build_script",
+                    "entry_file",
+                    "package_manager",
+                    "available_scripts"
+                ],
+                "properties": {
+                    "app_type": {
+                        "description": "Node.js application type",
+                        "type": "string",
+                        "enum": [
+                            "create-react-app",
+                            "gatsby",
+                            "vite",
+                            "angular",
+                            "react",
+                            "vue",
+                            "parcel",
+                            "next",
+                            "nuxt",
+                            "nest",
+                            "express",
+                            "fastify",
+                            "astro",
+                            "svelte",
+                            "svelte-kit",
+                            "hono",
+                            "react-router",
+                            "nitro",
+                            "other"
+                        ],
+                        "example": "create-react-app",
+                        "nullable": true
+                    },
+                    "node_version": {
+                        "description": "Node.js version",
+                        "type": "integer",
+                        "example": 18,
+                        "nullable": true
+                    },
+                    "root_directory": {
+                        "description": "Application root directory",
+                        "type": "string",
+                        "example": "frontend",
+                        "nullable": true
+                    },
+                    "output_directory": {
+                        "description": "Build output directory",
+                        "type": "string",
+                        "example": "dist",
+                        "nullable": true
+                    },
+                    "build_script": {
+                        "description": "The npm script to run to build the application",
+                        "type": "string",
+                        "example": "build",
+                        "nullable": true
+                    },
+                    "entry_file": {
+                        "description": "The main entry point file for the application",
+                        "type": "string",
+                        "example": "server.js",
+                        "nullable": true
+                    },
+                    "package_manager": {
+                        "description": "Package manager",
+                        "type": "string",
+                        "enum": [
+                            "npm",
+                            "yarn",
+                            "pnpm"
+                        ],
+                        "example": "npm",
+                        "nullable": true
+                    },
+                    "available_scripts": {
+                        "description": "The scripts configured in the package.json file",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "build"
+                        },
+                        "example": [
+                            "build",
+                            "test"
+                        ]
                     }
                 },
                 "type": "object"
