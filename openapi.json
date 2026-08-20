@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.41.0",
+        "version": "1.42.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1271,6 +1271,62 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: Websites"
+                ],
+                "summary": "List Agency Plan websites",
+                "description": "Retrieve a paginated list of Agency Plan websites (H5G, Builder, and Horizons) accessible to\nthe authenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nThe response shape differs per platform — see the `platform` field on each item.\n\nUse `website_types` to list only websites of a given detected type, e.g. only\nWordPress websites (`website_types=wordpress`) or only Node.js websites\n(`website_types=nodejs`). Combine with `order_ids`, `states`, or `domain` for more\ntargeted results.",
+                "operationId": "agency-hosting_listAgencyPlanWebsitesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_hosting_order_ids"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_hosting_states"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_hosting_website_types"
+                    },
+                    {
+                        "$ref": "#/components/parameters/agency_hosting_domain_filter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -6325,7 +6381,7 @@
                     "Hosting: Websites"
                 ],
                 "summary": "List websites",
-                "description": "Retrieve a paginated list of websites (CloudLinux, Builder, and Horizons) accessible to the\nauthenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nEach website includes a `website_type` field describing the type of\nwebsite detected on the underlying platform (`wordpress`, `builder`,\n`horizons`, `nodejs`, or `other`). Some fields, such as\n`vhost_type`, `username`, and `root_directory`, only apply to\nCloudLinux websites and are null for other platforms.\n\nUse the available query parameters to filter results by username,\norder ID, enabled status, or domain name for more targeted results.",
+                "description": "Retrieve a paginated list of websites (CloudLinux, Builder, and Horizons) accessible to the\nauthenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nEach website includes a `website_type` field describing the type of\nwebsite detected on the underlying platform (`wordpress`, `builder`,\n`horizons`, `nodejs`, or `other`). Some fields, such as\n`vhost_type`, `username`, and `root_directory`, only apply to\nCloudLinux websites and are null for other platforms.\n\nUse `website_types` to list only websites of a given detected type, e.g. only\nWordPress websites (`website_types=wordpress`) or only Node.js websites\n(`website_types=nodejs`). Combine with the other available query parameters to\nfilter by username, order ID, enabled status, or domain name for more targeted\nresults.",
                 "operationId": "hosting_listWebsitesV1",
                 "parameters": [
                     {
@@ -6345,6 +6401,9 @@
                     },
                     {
                         "$ref": "#/components/parameters/domain_filter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/hosting_website_types"
                     }
                 ],
                 "responses": {
@@ -18398,6 +18457,37 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Websites.BuilderWebsiteDetailsResource": {
+                "properties": {
+                    "id": {
+                        "description": "Builder ID",
+                        "type": "string",
+                        "example": "F1eWabGonyLa3162",
+                        "nullable": true
+                    },
+                    "vhost": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "test.com"
+                    },
+                    "type": {
+                        "description": "Detected website type",
+                        "type": "string",
+                        "example": "builder"
+                    },
+                    "username": {
+                        "description": "Account username",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49.067239Z"
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Websites.CronJobs.CronJobCollection": {
                 "description": "Array of [`AgencyHosting.V1.Websites.CronJobs.CronJobResource`](#model/agencyhostingv1websitescronjobscronjobresource)",
                 "type": "array",
@@ -18503,6 +18593,115 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Websites.H5gWebsiteDetailsResource": {
+                "properties": {
+                    "uid": {
+                        "description": "Website UID",
+                        "type": "string",
+                        "example": "zpwlGlp19"
+                    },
+                    "ipv4": {
+                        "description": "IPv4 address",
+                        "type": "string",
+                        "example": "192.161.10.1"
+                    },
+                    "flavor": {
+                        "description": "Setup flavor",
+                        "type": "string",
+                        "example": "wp-6.2.0"
+                    },
+                    "type": {
+                        "description": "Detected website type",
+                        "type": "string",
+                        "enum": [
+                            "wordpress",
+                            "builder",
+                            "horizons",
+                            "nodejs",
+                            "u4s",
+                            "other"
+                        ],
+                        "example": "wordpress"
+                    },
+                    "username": {
+                        "description": "Username for this order",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "description": {
+                        "description": "Description",
+                        "type": "string",
+                        "example": "Very awesome website",
+                        "nullable": true
+                    },
+                    "state": {
+                        "description": "Website state",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "suspended"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49.067239Z"
+                    },
+                    "settings": {
+                        "description": "Website settings, e.g. PHP configuration",
+                        "type": "object"
+                    },
+                    "wordpress": {
+                        "description": "WordPress installation details",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "domains": {
+                        "description": "Website domains",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "preview_domain": {
+                        "description": "Preview domain",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "processes": {
+                        "description": "Ongoing website processes",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "horizons_uuid": {
+                        "description": "Horizons UUID (only for horizons websites)",
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.PlanResource": {
+                "description": "Website plan details",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "hostinger_premium"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "example": "Premium Hosting"
+                    },
+                    "has_cdn": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Websites.SslCertResource": {
                 "properties": {
                     "names": {
@@ -18529,6 +18728,69 @@
                     }
                 },
                 "type": "object"
+            },
+            "AgencyHosting.V1.Websites.U4sWebsiteDetailsResource": {
+                "properties": {
+                    "uuid": {
+                        "description": "Application UUID",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "title": {
+                        "description": "Application title",
+                        "type": "string",
+                        "example": "My Node App"
+                    },
+                    "port": {
+                        "description": "Application port",
+                        "type": "integer",
+                        "example": 3000
+                    },
+                    "type": {
+                        "description": "Detected website type",
+                        "type": "string",
+                        "enum": [
+                            "u4s",
+                            "horizons"
+                        ],
+                        "example": "u4s"
+                    },
+                    "runtime": {
+                        "description": "Application runtime",
+                        "type": "string",
+                        "example": "u4s_node20"
+                    },
+                    "state": {
+                        "description": "Application state",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "domains": {
+                        "description": "Application domains",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "horizons_uuid": {
+                        "description": "Horizons UUID",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "preview_domain": {
+                        "description": "Preview domain",
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteCollection": {
+                "description": "Array of [`AgencyHosting.V1.Websites.WebsiteListItemResource`](#model/agencyhostingv1websiteswebsitelistitemresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgencyHosting.V1.Websites.WebsiteListItemResource"
+                }
             },
             "AgencyHosting.V1.Websites.WebsiteDomainDetailsCollection": {
                 "description": "Array of [`AgencyHosting.V1.Websites.WebsiteDomainDetailsResource`](#model/agencyhostingv1websiteswebsitedomaindetailsresource)",
@@ -18586,6 +18848,78 @@
                                 "$ref": "#/components/schemas/AgencyHosting.V1.Websites.CustomSslCertResource"
                             }
                         ],
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgencyHosting.V1.Websites.WebsiteListItemResource": {
+                "description": "Website item. The `details` shape differs per platform — see the `platform` field.",
+                "required": [
+                    "id",
+                    "client_id",
+                    "order_id",
+                    "platform",
+                    "state",
+                    "created_at",
+                    "plan",
+                    "details",
+                    "suspension_reason"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "zpwlGlp19"
+                    },
+                    "client_id": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "order_id": {
+                        "type": "integer",
+                        "example": 1234
+                    },
+                    "platform": {
+                        "description": "Website platform",
+                        "type": "string",
+                        "enum": [
+                            "h5g",
+                            "builder",
+                            "u4s"
+                        ],
+                        "example": "h5g"
+                    },
+                    "state": {
+                        "description": "Website state",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-05-29T05:49:49.067239Z"
+                    },
+                    "plan": {
+                        "$ref": "#/components/schemas/AgencyHosting.V1.Websites.PlanResource"
+                    },
+                    "details": {
+                        "description": "Platform-specific website details. Shape depends on `platform`.",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.H5gWebsiteDetailsResource"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.BuilderWebsiteDetailsResource"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AgencyHosting.V1.Websites.U4sWebsiteDetailsResource"
+                            }
+                        ]
+                    },
+                    "suspension_reason": {
+                        "description": "Reason for suspension, only populated for payment related suspensions",
+                        "type": "string",
+                        "example": "non_payment",
                         "nullable": true
                     }
                 },
@@ -26389,6 +26723,17 @@
                     "example": "my_user"
                 }
             },
+            "agency_hosting_domain_filter": {
+                "name": "domain",
+                "in": "query",
+                "description": "Filter by domain name (case-insensitive substring match)",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "example.com",
+                    "nullable": true
+                }
+            },
             "from_domain": {
                 "name": "from_domain",
                 "in": "path",
@@ -26409,6 +26754,25 @@
                     "example": 123456
                 }
             },
+            "agency_hosting_order_ids": {
+                "name": "order_ids",
+                "in": "query",
+                "description": "Filter by order IDs. Accepts a comma-separated list.",
+                "required": false,
+                "style": "form",
+                "explode": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        12345,
+                        67890
+                    ],
+                    "nullable": true
+                }
+            },
             "setup_uuid": {
                 "name": "setup_uuid",
                 "in": "path",
@@ -26418,6 +26782,31 @@
                     "type": "string",
                     "format": "uuid",
                     "example": "0193b6d4-fabb-70e0-8ea4-cfe060a45898"
+                }
+            },
+            "agency_hosting_states": {
+                "name": "states",
+                "in": "query",
+                "description": "Filter by website state. Accepts a comma-separated list.",
+                "required": false,
+                "style": "form",
+                "explode": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "locked",
+                            "suspended",
+                            "deleting",
+                            "deleted"
+                        ]
+                    },
+                    "example": [
+                        "active"
+                    ],
+                    "nullable": true
                 }
             },
             "agency_time_frame_days": {
@@ -26453,6 +26842,32 @@
                         720
                     ],
                     "example": 168
+                }
+            },
+            "agency_hosting_website_types": {
+                "name": "website_types",
+                "in": "query",
+                "description": "Filter by detected website type, e.g. wordpress,nodejs. Accepts a comma-separated list.",
+                "required": false,
+                "style": "form",
+                "explode": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "wordpress",
+                            "builder",
+                            "horizons",
+                            "nodejs",
+                            "other"
+                        ]
+                    },
+                    "example": [
+                        "wordpress",
+                        "nodejs"
+                    ],
+                    "nullable": true
                 }
             },
             "website_uid": {
@@ -26673,7 +27088,7 @@
             "domain_filter": {
                 "name": "domain",
                 "in": "query",
-                "description": "Filter by domain name (exact match)",
+                "description": "Filter by domain name (case-insensitive substring match)",
                 "required": false,
                 "schema": {
                     "type": "string",
@@ -26790,6 +27205,32 @@
                 "schema": {
                     "type": "string",
                     "example": "u123456789"
+                }
+            },
+            "hosting_website_types": {
+                "name": "website_types",
+                "in": "query",
+                "description": "Filter by detected website type, e.g. wordpress,nodejs. Accepts a comma-separated list.",
+                "required": false,
+                "style": "form",
+                "explode": false,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "wordpress",
+                            "builder",
+                            "horizons",
+                            "nodejs",
+                            "other"
+                        ]
+                    },
+                    "example": [
+                        "wordpress",
+                        "nodejs"
+                    ],
+                    "nullable": true
                 }
             },
             "mail_access_log_has_deletions": {
