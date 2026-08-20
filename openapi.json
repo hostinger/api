@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.42.0",
+        "version": "1.42.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5603,55 +5603,6 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/Hosting.V1.NodeJs.StartBuildRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildResource"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
-        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/from-archive": {
-            "post": {
-                "tags": [
-                    "Hosting: NodeJS"
-                ],
-                "summary": "Create NodeJS build from archive",
-                "description": "Upload a project archive, auto-detect build settings, and immediately start a Node.js build.\n\nWARNING: on success this overwrites the website's existing contents and cannot be\nundone — verify this is intended before calling this endpoint.\n\nThis is the recommended single-step approach for deploying a Node.js application.\nThe archive is uploaded to the website's file storage, build settings are auto-detected\nfrom the package.json inside the archive, and the build process starts automatically.\nOptional override fields take precedence over auto-detected values.\nMaximum archive size is 50MB.\n\nBefore archiving, exclude `node_modules/` and any build output directories\n(e.g. `dist/`, `.next/`, `build/`) — they are not needed because the build\nprocess runs the install step automatically, and including them unnecessarily\nincreases the archive size. This also helps keep the archive well under the 50MB limit.\n\nExample (zip):\n```\nzip -r archive.zip . --exclude \"node_modules/*\" --exclude \"dist/*\"\n```\n\nThe returned build `uuid` can be used to poll progress and retrieve logs via\nthe `Get Node.js Build Logs` endpoint.",
-                "operationId": "hosting_createNodeJSBuildFromArchiveV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/username_path"
-                    },
-                    {
-                        "$ref": "#/components/parameters/domain"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.CreateFromArchiveRequest"
                             }
                         }
                     }
