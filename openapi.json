@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.42.4",
+        "version": "1.42.5",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -18272,6 +18272,13 @@
                         "maxLength": 75,
                         "example": "VIP customer",
                         "nullable": true
+                    },
+                    "tag_uuids": {
+                        "description": "Existing tags to attach to the created contact",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 },
                 "type": "object"
