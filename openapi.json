@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.42.5",
+        "version": "1.43.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -10560,6 +10560,93 @@
                 }
             }
         },
+        "/api/reach/v1/profiles/{profileUuid}/segmentation/filters/attributes": {
+            "get": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "List segment filter attributes",
+                "description": "List every attribute a segment condition can filter on, with the operators each attribute\naccepts, the value format they expect and, where the value is constrained, the allowed\nvalues.\n\nThe list is profile specific: it includes the profile's custom contact fields, its tags and\nits 20 most recently published campaigns, so the valid attributes cannot be hardcoded. Read\nit before creating or updating a segment to discover the valid `attribute`, `operator` and\n`value` combinations.",
+                "operationId": "reach_listSegmentFilterAttributesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentFilterAttributesResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/segmentation/filters/contacts": {
+            "post": {
+                "tags": [
+                    "Reach: Segments"
+                ],
+                "summary": "Preview contacts matching conditions",
+                "description": "Preview the contacts matching a set of conditions without saving a segment.\n\nThe body is the same set of conditions accepted when creating or updating a segment, so this\nis how to check who a filter reaches, and how many, before persisting it. Nothing is stored\nand no contact is modified.\n\nCall the segment filter attributes endpoint first to discover the valid `attribute`,\n`operator` and `value` combinations.",
+                "operationId": "reach_previewContactsMatchingConditionsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.ProfileFilterContactsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Reach.V1.Contacts.ProfileContactCollection"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/reach/v1/profiles/{profileUuid}/segmentation/segments": {
             "get": {
                 "tags": [
@@ -11208,6 +11295,72 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsStatusResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/domains": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Get connected sending domain",
+                "description": "Get the sending domain connected to the profile, its verification status and any suspended\nsender addresses.\n\nCampaigns only go out once a domain is connected and active, so this is the cheapest way to\ncheck that precondition before building one. A profile with no domain connected returns the\nsame shape with every field set to `null`. For the individual MX, SPF, DKIM and DMARC records\nbehind the status, use the DNS status endpoint.",
+                "operationId": "reach_getConnectedSendingDomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.SendingDomainResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/features": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "List plan feature access",
+                "description": "List which plan features the profile can use.\n\nThis is the feature lock matrix, not a usage quota. `available` means the feature can be\nused right now and `locked` means it is not part of the base plan, so an upgrade is needed.\nFor remaining emails, recipients and AI credits use the limits endpoint instead.\n\nWorth checking before building something that cannot be activated afterwards, such as an\nautomation on a plan without automation activation.",
+                "operationId": "reach_listPlanFeatureAccessV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Features.PlanFeatureCollection"
                                 }
                             }
                         }
@@ -17971,6 +18124,119 @@
                         },
                         "maxItems": 100,
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.ProfileFilterContactsRequest": {
+                "description": "Conditions to preview, in the same shape accepted when creating a segment",
+                "required": [
+                    "conditions",
+                    "logic"
+                ],
+                "properties": {
+                    "conditions": {
+                        "description": "Conditions a contact must satisfy to appear in the preview",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "attribute",
+                                "operator",
+                                "value"
+                            ],
+                            "properties": {
+                                "attribute": {
+                                    "description": "A built-in contact attribute, or `cf:{fieldUuid}` to target a custom\ncontact field. Which operators are accepted depends on the attribute,\nso read the segment filter attributes endpoint for the authoritative\nlist.",
+                                    "type": "string",
+                                    "example": "email"
+                                },
+                                "operator": {
+                                    "type": "string",
+                                    "enum": [
+                                        "equals",
+                                        "not_equals",
+                                        "contains",
+                                        "not_contains",
+                                        "gte",
+                                        "lte",
+                                        "exists",
+                                        "within_last_days",
+                                        "not_within_last_days",
+                                        "older_than_days",
+                                        "processed",
+                                        "not_processed",
+                                        "delivered",
+                                        "not_delivered",
+                                        "dropped",
+                                        "not_dropped",
+                                        "bounced",
+                                        "not_bounced",
+                                        "soft_bounced",
+                                        "not_soft_bounced",
+                                        "opened",
+                                        "not_opened",
+                                        "clicked",
+                                        "not_clicked",
+                                        "unsubscribed",
+                                        "not_unsubscribed"
+                                    ],
+                                    "example": "equals"
+                                },
+                                "value": {
+                                    "description": "Always a string, including for numeric and date comparisons",
+                                    "type": "string",
+                                    "example": "example@example.com"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 5,
+                        "minItems": 1
+                    },
+                    "logic": {
+                        "description": "How to combine multiple conditions",
+                        "type": "string",
+                        "enum": [
+                            "AND",
+                            "OR"
+                        ],
+                        "example": "AND"
+                    },
+                    "page": {
+                        "description": "Page number",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "per_page": {
+                        "description": "Number of items per page",
+                        "type": "integer",
+                        "maximum": 100,
+                        "minimum": 1,
+                        "example": 25
+                    },
+                    "search": {
+                        "description": "Narrow the preview to contacts whose email matches",
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "sort_by": {
+                        "type": "string",
+                        "enum": [
+                            "email",
+                            "name",
+                            "surname",
+                            "phone",
+                            "subscription_status"
+                        ],
+                        "example": "email"
+                    },
+                    "sort_direction": {
+                        "type": "string",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "example": "asc"
                     }
                 },
                 "type": "object"
@@ -26619,6 +26885,137 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Contacts.Segments.SegmentFilterAttributeResource": {
+                "description": "One attribute a segment condition can filter on.",
+                "properties": {
+                    "name": {
+                        "description": "Value to send as the condition `attribute`.",
+                        "type": "string",
+                        "example": "email"
+                    },
+                    "type": {
+                        "description": "Where the attribute is sourced from.",
+                        "type": "string",
+                        "enum": [
+                            "contacts",
+                            "contact_metadata",
+                            "campaign_events",
+                            "contact_tags",
+                            "campaigns",
+                            "opt_in_method",
+                            "contact_field_values",
+                            "contact_field_selections"
+                        ],
+                        "example": "contacts"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Contact email address"
+                    },
+                    "operators": {
+                        "description": "Operators this attribute accepts, keyed by operator name.",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentFilterOperatorResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.SegmentFilterAttributesResource": {
+                "description": "The vocabulary a segment condition can be built from, for one profile.",
+                "properties": {
+                    "attributes": {
+                        "description": "Every attribute a condition can filter on, keyed by the value to send as\n`attribute`. Custom contact fields are keyed `cf:{fieldUuid}`, tags and campaigns by\ntheir uuid, so the keys are not a fixed list and should be read from this response\nrather than hardcoded.",
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/Reach.V1.Contacts.Segments.SegmentFilterAttributeResource"
+                        }
+                    },
+                    "logic_operators": {
+                        "description": "The values accepted by `logic` when a segment combines several conditions.",
+                        "type": "object",
+                        "example": {
+                            "AND": "AND",
+                            "OR": "OR"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Contacts.Segments.SegmentFilterOperatorResource": {
+                "description": "One operator an attribute accepts, and the value format it expects.",
+                "properties": {
+                    "operator": {
+                        "description": "Value to send as the condition `operator`.",
+                        "type": "string",
+                        "enum": [
+                            "equals",
+                            "not_equals",
+                            "contains",
+                            "not_contains",
+                            "gte",
+                            "lte",
+                            "exists",
+                            "within_last_days",
+                            "not_within_last_days",
+                            "older_than_days",
+                            "processed",
+                            "not_processed",
+                            "delivered",
+                            "not_delivered",
+                            "dropped",
+                            "not_dropped",
+                            "bounced",
+                            "not_bounced",
+                            "soft_bounced",
+                            "not_soft_bounced",
+                            "opened",
+                            "not_opened",
+                            "clicked",
+                            "not_clicked",
+                            "unsubscribed",
+                            "not_unsubscribed"
+                        ],
+                        "example": "equals"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Exact match"
+                    },
+                    "input_type": {
+                        "description": "Shape of the value this operator expects, useful for rendering an input.",
+                        "type": "string",
+                        "enum": [
+                            "text",
+                            "number",
+                            "date",
+                            "select"
+                        ],
+                        "example": "text"
+                    },
+                    "example": {
+                        "description": "An example value in the format this operator expects.",
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "enum_values": {
+                        "description": "The values this operator accepts, keyed by the value to send. Only present when the\noperator is constrained to a fixed set, such as a tag or campaign picker.",
+                        "type": "object",
+                        "example": {
+                            "yes": "yes",
+                            "no": "no"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.Segments.SegmentListItemCollection": {
                 "description": "Array of [`Reach.V1.Contacts.Segments.SegmentListItemResource`](#model/reachv1contactssegmentssegmentlistitemresource)",
                 "type": "array",
@@ -27019,6 +27416,107 @@
                     },
                     "dmarc": {
                         "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Domains.SendingDomainResource": {
+                "description": "The sending domain connected to the profile.\n\nWhen no domain is connected every field is `null` and `suspended_sender_emails` is empty,\nso the shape stays the same whether or not the profile is set up for sending.",
+                "properties": {
+                    "domain": {
+                        "description": "Domain campaigns are sent from. It may be a subdomain of the domain that was\nconnected, so it will not always match the website domain.",
+                        "type": "string",
+                        "example": "mail.example.com",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Campaigns can only be sent while the domain is `active`.",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive",
+                            "pending",
+                            "blocked"
+                        ],
+                        "example": "active",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "When the domain was connected to the profile.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-01T00:00:00Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "description": "When the domain or its verification state last changed.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-15T10:30:00Z",
+                        "nullable": true
+                    },
+                    "suspended_sender_emails": {
+                        "description": "Sender addresses on this domain that have been suspended. A campaign using one of\nthem will not go out even while the domain itself is active.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.SuspendedSenderEmailResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Domains.SuspendedSenderEmailResource": {
+                "description": "A sender address on the connected domain that is no longer allowed to send.",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "newsletter@example.com"
+                    },
+                    "email_local_part": {
+                        "description": "The part of the address before the @.",
+                        "type": "string",
+                        "example": "newsletter"
+                    },
+                    "suspended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-15T10:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Features.PlanFeatureCollection": {
+                "description": "Array of [`Reach.V1.Profiles.Features.PlanFeatureResource`](#model/reachv1profilesfeaturesplanfeatureresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Profiles.Features.PlanFeatureResource"
+                }
+            },
+            "Reach.V1.Profiles.Features.PlanFeatureResource": {
+                "description": "Whether a single plan feature can be used on the profile.",
+                "properties": {
+                    "feature": {
+                        "type": "string",
+                        "enum": [
+                            "AutomationActivation",
+                            "SmartSending",
+                            "AiGenerateSubjectLines",
+                            "TemplateCheckerAnalysis",
+                            "RemoveSignature",
+                            "Collaborators",
+                            "HtmlCodeEditor"
+                        ],
+                        "example": "AutomationActivation"
+                    },
+                    "is_available": {
+                        "description": "Whether the feature can be used right now.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_locked": {
+                        "description": "Whether the feature sits outside the base plan and needs an upgrade.",
+                        "type": "boolean",
+                        "example": false
                     }
                 },
                 "type": "object"
