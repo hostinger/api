@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.43.0",
+        "version": "1.43.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3805,9 +3805,9 @@
                 "tags": [
                     "Ecommerce: Orders"
                 ],
-                "summary": "List orders",
+                "summary": "List store orders",
                 "description": "List a store's orders newest first as summaries. Filter by status, payment or fulfilment\nstatus, customer email, order number or a free-text query. Amounts are in the smallest\ncurrency unit. Retrieve a single order for its line items, addresses and fulfilments.",
-                "operationId": "ecommerce_listOrdersV1",
+                "operationId": "ecommerce_listStoreOrdersV1",
                 "parameters": [
                     {
                         "name": "store_id",
