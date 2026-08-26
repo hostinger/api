@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.43.1",
+        "version": "1.44.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6693,6 +6693,89 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildSettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/settings/env": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "List Node.js environment variables",
+                "description": "Lists the Node.js environment variables currently set for the website. Values are always\nmasked as `********` and cannot be read back through this API. Use this endpoint to see\nwhich keys are configured or to verify a change, not to read values.\n\nTo change variables, use the `Replace Node.js environment variables` endpoint. It replaces\nthe whole set, so never copy the masked values from this response into that request; send\nthe full desired set with real values taken from the project `.env` file or the user\nprompt instead.",
+                "operationId": "hosting_listNode.jsEnvironmentVariablesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.EnvVarCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Replace Node.js environment variables",
+                "description": "Replaces the website's Node.js environment variables with the ones provided. This is a\nfull replace: any variable not in the request is deleted, and sending an empty `env_vars`\narray deletes every variable. Saving writes the values and restarts the running Node.js\nprocess.\n\nA restart is enough for apps that read environment variables at process start, such as\nExpress or NestJS. It is not enough for frameworks that bake variables into the build.\nNext.js standalone is one of those: build-time values (including `NEXT_PUBLIC_*`) need a\nfresh build. After this call, use the `Start Node.js build` endpoint so those apps\npick up the new values.\n\nThe `List Node.js environment variables` endpoint returns masked values (`********`), so\nnever copy values from it into this request. Always send the full desired set with real\nvalues taken from the project `.env` file or the user prompt.",
+                "operationId": "hosting_replaceNode.jsEnvironmentVariablesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.SetBuildEnvVarsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
                                 }
                             }
                         }
@@ -17742,6 +17825,43 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.SetBuildEnvVarsRequest": {
+                "required": [
+                    "env_vars"
+                ],
+                "properties": {
+                    "env_vars": {
+                        "description": "Environment variables to set. This is the full desired set: any variable not in\nthis list is deleted, and an empty array deletes every variable.",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "key",
+                                "value"
+                            ],
+                            "properties": {
+                                "key": {
+                                    "description": "Environment variable name. Must start with an uppercase letter or\nunderscore, followed by uppercase letters, digits or underscores.",
+                                    "type": "string",
+                                    "maxLength": 255,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Z_][A-Z0-9_]*$",
+                                    "example": "API_URL"
+                                },
+                                "value": {
+                                    "description": "Environment variable value.",
+                                    "type": "string",
+                                    "maxLength": 8192,
+                                    "minLength": 1,
+                                    "example": "https://api.example.com"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 1000
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.StartBuildRequest": {
                 "required": [
                     "node_version",
@@ -24266,6 +24386,28 @@
                             "build",
                             "test"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.EnvVarCollection": {
+                "description": "Array of [`Hosting.V1.NodeJs.EnvVarResource`](#model/hostingv1nodejsenvvarresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.EnvVarResource"
+                }
+            },
+            "Hosting.V1.NodeJs.EnvVarResource": {
+                "properties": {
+                    "key": {
+                        "description": "Environment variable name",
+                        "type": "string",
+                        "example": "DATABASE_URL"
+                    },
+                    "value": {
+                        "description": "Always the literal string ********. Real values cannot be read back through this API.",
+                        "type": "string",
+                        "example": "********"
                     }
                 },
                 "type": "object"
