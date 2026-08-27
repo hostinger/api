@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.46.0",
+        "version": "1.46.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -12259,20 +12259,11 @@
                     "VPS: Firewall"
                 ],
                 "summary": "Replace all firewall rules in group",
-                "description": "Replaces all firewall rules within a specified firewall group with the provided set of rules\nin a single atomic operation, instead of creating or deleting rules one by one.\n\nAny virtual machine using this firewall group will need to be synchronized after replacing rules;\npass the \"sync\" query parameter to trigger synchronization immediately.",
+                "description": "Replaces all firewall rules within a specified firewall group with the provided set of rules\nin a single atomic operation, instead of creating or deleting rules one by one.\n\nAny virtual machine using this firewall group will need to be synchronized after replacing rules;\npass the \"sync\" parameter to trigger synchronization immediately.",
                 "operationId": "VPS_replaceAllFirewallRulesInGroupV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/firewallId"
-                    },
-                    {
-                        "name": "sync",
-                        "in": "query",
-                        "description": "Synchronize the firewall group to all its virtual machines after replacing the rules",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
                     }
                 ],
                 "requestBody": {
@@ -18861,6 +18852,10 @@
                         "items": {
                             "$ref": "#/components/schemas/VPS.V1.Firewall.Rules.StoreRequest"
                         }
+                    },
+                    "sync": {
+                        "description": "Synchronize the firewall group to all its virtual machines after replacing the rules",
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
