@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.44.0",
+        "version": "1.45.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -21330,6 +21330,12 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z"
+                    },
+                    "suspended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-28T11:54:22Z",
+                        "nullable": true
                     }
                 },
                 "type": "object"
