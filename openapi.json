@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.45.0",
+        "version": "1.46.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -12254,6 +12254,59 @@
             }
         },
         "/api/vps/v1/firewall/{firewallId}/rules": {
+            "put": {
+                "tags": [
+                    "VPS: Firewall"
+                ],
+                "summary": "Replace all firewall rules in group",
+                "description": "Replaces all firewall rules within a specified firewall group with the provided set of rules\nin a single atomic operation, instead of creating or deleting rules one by one.\n\nAny virtual machine using this firewall group will need to be synchronized after replacing rules;\npass the \"sync\" query parameter to trigger synchronization immediately.",
+                "operationId": "VPS_replaceAllFirewallRulesInGroupV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/firewallId"
+                    },
+                    {
+                        "name": "sync",
+                        "in": "query",
+                        "description": "Synchronize the firewall group to all its virtual machines after replacing the rules",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.Firewall.Rules.ReplaceRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.Firewall.FirewallResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "VPS: Firewall"
@@ -18792,6 +18845,21 @@
                                 }
                             },
                             "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.Firewall.Rules.ReplaceRequest": {
+                "required": [
+                    "rules"
+                ],
+                "properties": {
+                    "rules": {
+                        "description": "The complete set of firewall rules that atomically replaces all existing rules in the group",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/VPS.V1.Firewall.Rules.StoreRequest"
                         }
                     }
                 },
