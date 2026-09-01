@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.46.1",
+        "version": "1.46.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -30908,424 +30908,544 @@
     ],
     "tags": [
         {
-            "name": "Agency Hosting: Datacenters",
-            "description": "Agency Hosting: Datacenters",
-            "x-displayName": "Datacenters"
-        },
-        {
-            "name": "Agency Hosting: Domains",
-            "description": "Agency Hosting: Domains",
-            "x-displayName": "Domains"
-        },
-        {
-            "name": "Agency Hosting: Files",
-            "description": "Agency Hosting: Files",
-            "x-displayName": "Files"
-        },
-        {
-            "name": "Agency Hosting: Metrics",
-            "description": "Agency Hosting: Metrics",
-            "x-displayName": "Metrics"
-        },
-        {
-            "name": "Agency Hosting: Orders",
-            "description": "Agency Hosting: Orders",
-            "x-displayName": "Orders"
-        },
-        {
-            "name": "Agency Hosting: PHP",
-            "description": "Agency Hosting: PHP",
-            "x-displayName": "PHP"
-        },
-        {
-            "name": "Agency Hosting: Website Setups",
-            "description": "Agency Hosting: Website Setups",
-            "x-displayName": "Website Setups"
-        },
-        {
-            "name": "Agency Hosting: Websites",
-            "description": "Agency Hosting: Websites",
-            "x-displayName": "Websites"
-        },
-        {
-            "name": "Agency Hosting: Cache",
-            "description": "Agency Hosting: Cache",
-            "x-displayName": "Cache"
-        },
-        {
-            "name": "Agency Hosting: Cron Jobs",
-            "description": "Agency Hosting: Cron Jobs",
-            "x-displayName": "Cron Jobs"
-        },
-        {
-            "name": "Agency Hosting: Databases",
-            "description": "Agency Hosting: Databases",
-            "x-displayName": "Databases"
-        },
-        {
-            "name": "Agency Hosting: WordPress",
-            "description": "Agency Hosting: WordPress",
-            "x-displayName": "WordPress"
+            "name": "Billing"
         },
         {
             "name": "Billing: Catalog",
             "description": "Access a comprehensive catalog of service plans and\nsubscription options, complete with detailed pricing\nand features.",
-            "x-displayName": "Catalog"
+            "x-displayName": "Catalog",
+            "x-parent": "Billing"
         },
         {
             "name": "Billing: Orders",
             "description": "Initiate and track new service orders seamlessly. This\ncategory streamlines the process of purchasing Hostinger\nservices, enabling efficient management of order details.",
-            "x-displayName": "Orders"
+            "x-displayName": "Orders",
+            "x-parent": "Billing"
         },
         {
             "name": "Billing: Payment methods",
             "description": "Review and manage the payment methods linked to your\nHostinger account. Enjoy a secure and convenient overview\nfor handling billing and transactions.",
-            "x-displayName": "Payment methods"
+            "x-displayName": "Payment methods",
+            "x-parent": "Billing"
         },
         {
             "name": "Billing: Subscriptions",
             "description": "Manage your account's subscriptions by retrieving lists of\nactive and expired plans along with details such as\nactivation and expiration dates.",
-            "x-displayName": "Subscriptions"
+            "x-displayName": "Subscriptions",
+            "x-parent": "Billing"
         },
         {
-            "name": "DNS: Snapshot",
-            "description": "Manage DNS snapshots for your domains.\nThis category includes endpoints for viewing and restoring\nsnapshots of your domain DNS zone.\nSnapshot is a point-in-time copy of your DNS zone, allowing you\nto restore your domain's DNS settings to a previous state.",
-            "x-displayName": "Snapshot"
-        },
-        {
-            "name": "DNS: Zone",
-            "description": "Manage DNS zones and records for your domains. This category\nincludes endpoints for retrieving, updating, deleting DNS zone\nand it's associated records.\nThe DNS zone will be created once you purchase new domain\nat Hostinger.",
-            "x-displayName": "Zone"
-        },
-        {
-            "name": "Domain Access Verifier: Verifications",
-            "description": "Manage domain verifications.\nThis category includes endpoints for retrieving active domain\nverifications, including verification status, records, and\nattempt dates.\nDomain verification allows you to prove ownership of domains\nthrough nameserver or TXT record verification methods.",
-            "x-displayName": "Verifications"
+            "name": "Domains"
         },
         {
             "name": "Domains: Availability",
             "description": "Check the availability of domain names across multiple TLDs.\nThis category allows you to verify if a specific domain name\nis available for registration, and to get AI generated name\nsuggestions when the name you wanted is already taken.",
-            "x-displayName": "Availability"
+            "x-displayName": "Availability",
+            "x-parent": "Domains"
         },
         {
             "name": "Domains: Forwarding",
             "description": "Domain forwarding or redirect is an easy way to direct your\nwebsite visitors to another site or page, making it simple to\nmaintain your brand and keep your visitors engaged.",
-            "x-displayName": "Forwarding"
-        },
-        {
-            "name": "Domains: WHOIS",
-            "description": "Manage WHOIS contact profiles for your domains. This category\nincludes endpoints for creating, updating, deleting, and\nretrieving WHOIS profiles.\nWHOIS profile stores registration data for domain names and\nis required for domain registration.",
-            "x-displayName": "WHOIS"
+            "x-displayName": "Forwarding",
+            "x-parent": "Domains"
         },
         {
             "name": "Domains: Move",
             "description": "Move domains between Hostinger accounts. This category\nincludes endpoints for initiating and cancelling moves of\nyour own domains to another account, and for accepting or\nrejecting moves initiated towards your account.\nA move changes which Hostinger account owns the domain and\ndoes not involve a registrar transfer.",
-            "x-displayName": "Move"
+            "x-displayName": "Move",
+            "x-parent": "Domains"
         },
         {
             "name": "Domains: Portfolio",
             "description": "Retrieve and manage your domain portfolio. This category lets\nyou list all domains linked to your account, including their\ncreation and expiration details.",
-            "x-displayName": "Portfolio"
+            "x-displayName": "Portfolio",
+            "x-parent": "Domains"
         },
         {
             "name": "Domains: Transfer",
             "description": "Domains: Transfer",
-            "x-displayName": "Transfer"
+            "x-displayName": "Transfer",
+            "x-parent": "Domains"
         },
         {
-            "name": "Ecommerce: Discounts",
-            "description": "Ecommerce: Discounts",
-            "x-displayName": "Discounts"
+            "name": "Domains: WHOIS",
+            "description": "Manage WHOIS contact profiles for your domains. This category\nincludes endpoints for creating, updating, deleting, and\nretrieving WHOIS profiles.\nWHOIS profile stores registration data for domain names and\nis required for domain registration.",
+            "x-displayName": "WHOIS",
+            "x-parent": "Domains"
         },
         {
-            "name": "Ecommerce: Miscellaneous",
-            "description": "Ecommerce: Miscellaneous",
-            "x-displayName": "Miscellaneous"
+            "name": "DNS"
         },
         {
-            "name": "Ecommerce: Orders",
-            "description": "Ecommerce: Orders",
-            "x-displayName": "Orders"
+            "name": "DNS: Snapshot",
+            "description": "Manage DNS snapshots for your domains.\nThis category includes endpoints for viewing and restoring\nsnapshots of your domain DNS zone.\nSnapshot is a point-in-time copy of your DNS zone, allowing you\nto restore your domain's DNS settings to a previous state.",
+            "x-displayName": "Snapshot",
+            "x-parent": "DNS"
         },
         {
-            "name": "Ecommerce: Payments",
-            "description": "Manage payment methods for your online store. This category\nincludes endpoints for enabling payment options such as manual\n(cash on delivery) payment at checkout.",
-            "x-displayName": "Payments"
+            "name": "DNS: Zone",
+            "description": "Manage DNS zones and records for your domains. This category\nincludes endpoints for retrieving, updating, deleting DNS zone\nand it's associated records.\nThe DNS zone will be created once you purchase new domain\nat Hostinger.",
+            "x-displayName": "Zone",
+            "x-parent": "DNS"
         },
         {
-            "name": "Ecommerce: Products",
-            "description": "Manage products in your online store. This category includes\nendpoints for creating physical and digital products with\npricing and optional descriptions.",
-            "x-displayName": "Products"
+            "name": "Domain Access Verifier"
         },
         {
-            "name": "Ecommerce: Sales channels",
-            "description": "Ecommerce: Sales channels",
-            "x-displayName": "Sales channels"
+            "name": "Domain Access Verifier: Verifications",
+            "description": "Manage domain verifications.\nThis category includes endpoints for retrieving active domain\nverifications, including verification status, records, and\nattempt dates.\nDomain verification allows you to prove ownership of domains\nthrough nameserver or TXT record verification methods.",
+            "x-displayName": "Verifications",
+            "x-parent": "Domain Access Verifier"
         },
         {
-            "name": "Ecommerce: Shipping",
-            "description": "Configure shipping options for your online store. This\ncategory includes endpoints for setting the flat-rate\nshipping price applied to customer orders.",
-            "x-displayName": "Shipping"
-        },
-        {
-            "name": "Ecommerce: Stores",
-            "description": "Manage your online stores. This category includes endpoints\nfor listing and creating stores associated with your account,\nand deleting stores you no longer need.",
-            "x-displayName": "Stores"
-        },
-        {
-            "name": "Ecommerce: Product variants",
-            "description": "Ecommerce: Product variants",
-            "x-displayName": "Product variants"
-        },
-        {
-            "name": "Horizons: Websites",
-            "description": "Create and access Hostinger Horizons websites. This category\nincludes endpoints for creating new AI-generated websites from\na text prompt and retrieving links to edit existing websites\nin the Hostinger Horizons interface.",
-            "x-displayName": "Websites"
-        },
-        {
-            "name": "Hosting: Cache",
-            "description": "Hosting: Cache",
-            "x-displayName": "Cache"
-        },
-        {
-            "name": "Hosting: Cron Jobs",
-            "description": "Hosting: Cron Jobs",
-            "x-displayName": "Cron Jobs"
-        },
-        {
-            "name": "Hosting: Databases",
-            "description": "Hosting: Databases",
-            "x-displayName": "Databases"
-        },
-        {
-            "name": "Hosting: Datacenters",
-            "description": "Access information about available datacenters for hosting\nservices. This category provides details about data center\nlocations and capabilities to help you choose the optimal\nregion for your hosting needs.",
-            "x-displayName": "Datacenters"
-        },
-        {
-            "name": "Hosting: Domains",
-            "description": "Manage domain-related hosting services and configurations.\nThis category includes endpoints for domain management,\nverification, and domain-specific hosting features.",
-            "x-displayName": "Domains"
-        },
-        {
-            "name": "Hosting: Files",
-            "description": "Hosting: Files",
-            "x-displayName": "Files"
-        },
-        {
-            "name": "Hosting: NodeJS",
-            "description": "Hosting: NodeJS",
-            "x-displayName": "NodeJS"
-        },
-        {
-            "name": "Hosting: Orders",
-            "description": "Manage hosting service orders and subscriptions. This\ncategory provides access to order information, status\ntracking, and order management capabilities for hosting\nservices.",
-            "x-displayName": "Orders"
-        },
-        {
-            "name": "Hosting: PHP",
-            "description": "Hosting: PHP",
-            "x-displayName": "PHP"
-        },
-        {
-            "name": "Hosting: Redirects",
-            "description": "Manage redirects for hosted websites. This category includes\nendpoints for listing, creating, and deleting redirects.",
-            "x-displayName": "Redirects"
-        },
-        {
-            "name": "Hosting: Websites",
-            "description": "Manage hosted websites and web applications. This category\nincludes endpoints for website deployment, configuration,\nmonitoring, and management of hosting resources.",
-            "x-displayName": "Websites"
-        },
-        {
-            "name": "Mail: Aliases",
-            "description": "Manage aliases of your mailboxes. An alias is an additional email\naddress that delivers incoming messages to an existing mailbox. This\ncategory includes endpoints for creating, listing, and deleting\naliases.",
-            "x-displayName": "Aliases"
-        },
-        {
-            "name": "Mail: API Tokens",
-            "description": "Manage API tokens for the\n[Hostinger Email API](https://api.mail.hostinger.com/). Tokens are\nscoped to mailboxes of a mail order and grant access to mailbox\nprovisioning and management through the Email API.",
-            "x-displayName": "API Tokens"
-        },
-        {
-            "name": "Mail: Autoreplies",
-            "description": "Manage automatic replies of your mailboxes. This category includes\nendpoints for creating, updating, listing, and deleting autoreplies\nsuch as out-of-office messages. A mailbox can have one autoreply.",
-            "x-displayName": "Autoreplies"
-        },
-        {
-            "name": "Mail: Catchalls",
-            "description": "Manage catch-alls of your domains. A catch-all routes all messages\nsent to unknown addresses of a domain to a designated mailbox. The\nmailbox address must confirm the catch-all before it becomes active.",
-            "x-displayName": "Catchalls"
-        },
-        {
-            "name": "Mail: Forwarders",
-            "description": "Manage forwarders of your mailboxes. This category includes endpoints\nfor creating, listing, and deleting forwarders that redirect incoming\nmessages to another email address. The destination address must\nconfirm the forwarding before it becomes active.",
-            "x-displayName": "Forwarders"
-        },
-        {
-            "name": "Mail: Logs",
-            "description": "Inspect activity logs of your mail orders. This category includes\nendpoints for access logs, inbound and outbound delivery logs,\nmailbox action logs, and account action logs.",
-            "x-displayName": "Logs"
-        },
-        {
-            "name": "Mail: Mailboxes",
-            "description": "Manage mailboxes of your mail orders. This category includes\nendpoints for listing mailboxes with their status, enabled\nprotocols, attached resource counts, and usage numbers.",
-            "x-displayName": "Mailboxes"
+            "name": "Mail"
         },
         {
             "name": "Mail: Orders",
             "description": "Manage your mail service orders. This category includes\nendpoints for listing mail orders associated with your\naccount, along with their status, plan, domain, and\nexpiration details.",
-            "x-displayName": "Orders"
+            "x-displayName": "Orders",
+            "x-parent": "Mail"
+        },
+        {
+            "name": "Mail: Mailboxes",
+            "description": "Manage mailboxes of your mail orders. This category includes\nendpoints for listing mailboxes with their status, enabled\nprotocols, attached resource counts, and usage numbers.",
+            "x-displayName": "Mailboxes",
+            "x-parent": "Mail"
+        },
+        {
+            "name": "Mail: Aliases",
+            "description": "Manage aliases of your mailboxes. An alias is an additional email\naddress that delivers incoming messages to an existing mailbox. This\ncategory includes endpoints for creating, listing, and deleting\naliases.",
+            "x-displayName": "Aliases",
+            "x-parent": "Mail"
+        },
+        {
+            "name": "Mail: Autoreplies",
+            "description": "Manage automatic replies of your mailboxes. This category includes\nendpoints for creating, updating, listing, and deleting autoreplies\nsuch as out-of-office messages. A mailbox can have one autoreply.",
+            "x-displayName": "Autoreplies",
+            "x-parent": "Mail"
+        },
+        {
+            "name": "Mail: Forwarders",
+            "description": "Manage forwarders of your mailboxes. This category includes endpoints\nfor creating, listing, and deleting forwarders that redirect incoming\nmessages to another email address. The destination address must\nconfirm the forwarding before it becomes active.",
+            "x-displayName": "Forwarders",
+            "x-parent": "Mail"
+        },
+        {
+            "name": "Mail: Catchalls",
+            "description": "Manage catch-alls of your domains. A catch-all routes all messages\nsent to unknown addresses of a domain to a designated mailbox. The\nmailbox address must confirm the catch-all before it becomes active.",
+            "x-displayName": "Catchalls",
+            "x-parent": "Mail"
         },
         {
             "name": "Mail: Webhooks",
             "description": "Manage webhooks of your mailboxes. This category includes endpoints\nfor creating webhooks that notify your systems about mailbox events\nsuch as received messages.",
-            "x-displayName": "Webhooks"
+            "x-displayName": "Webhooks",
+            "x-parent": "Mail"
         },
         {
-            "name": "Reach: Automations",
-            "description": "Reach: Automations",
-            "x-displayName": "Automations"
+            "name": "Mail: API Tokens",
+            "description": "Manage API tokens for the\n[Hostinger Email API](https://api.mail.hostinger.com/). Tokens are\nscoped to mailboxes of a mail order and grant access to mailbox\nprovisioning and management through the Email API.",
+            "x-displayName": "API Tokens",
+            "x-parent": "Mail"
         },
         {
-            "name": "Reach: Campaigns",
-            "description": "Reach: Campaigns",
-            "x-displayName": "Campaigns"
+            "name": "Mail: Logs",
+            "description": "Inspect activity logs of your mail orders. This category includes\nendpoints for access logs, inbound and outbound delivery logs,\nmailbox action logs, and account action logs.",
+            "x-displayName": "Logs",
+            "x-parent": "Mail"
         },
         {
-            "name": "Reach: Contacts",
-            "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
-            "x-displayName": "Contacts"
+            "name": "Hosting"
         },
         {
-            "name": "Reach: Contact Fields",
-            "description": "Reach: Contact Fields",
-            "x-displayName": "Contact Fields"
+            "name": "Hosting: Cache",
+            "description": "Hosting: Cache",
+            "x-displayName": "Cache",
+            "x-parent": "Hosting"
         },
         {
-            "name": "Reach: Segments",
-            "description": "Filter and segment your email contacts using various\ncriteria. This category includes endpoints for filtering\ncontacts by attributes, tags, and email addresses, as well\nas listing all available segments and retrieving contacts\nthat match specific attribute conditions.",
-            "x-displayName": "Segments"
+            "name": "Hosting: Cron Jobs",
+            "description": "Hosting: Cron Jobs",
+            "x-displayName": "Cron Jobs",
+            "x-parent": "Hosting"
         },
         {
-            "name": "Reach: Tags",
-            "description": "Reach: Tags",
-            "x-displayName": "Tags"
+            "name": "Hosting: Datacenters",
+            "description": "Access information about available datacenters for hosting\nservices. This category provides details about data center\nlocations and capabilities to help you choose the optimal\nregion for your hosting needs.",
+            "x-displayName": "Datacenters",
+            "x-parent": "Hosting"
         },
         {
-            "name": "Reach: Forms",
-            "description": "Reach: Forms",
-            "x-displayName": "Forms"
+            "name": "Hosting: Databases",
+            "description": "Hosting: Databases",
+            "x-displayName": "Databases",
+            "x-parent": "Hosting"
         },
         {
-            "name": "Reach: Profiles",
-            "description": "Reach: Profiles",
-            "x-displayName": "Profiles"
+            "name": "Hosting: Domains",
+            "description": "Manage domain-related hosting services and configurations.\nThis category includes endpoints for domain management,\nverification, and domain-specific hosting features.",
+            "x-displayName": "Domains",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: Data centers",
-            "description": "Access information on available data centers, including\nlocation details, so you can choose the optimal region for\ndeploying your virtual machines.",
-            "x-displayName": "Data centers"
+            "name": "Hosting: Files",
+            "description": "Hosting: Files",
+            "x-displayName": "Files",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: Docker Manager",
-            "description": "Manage Docker Compose projects directly on your VPS\ninstances. This feature is only available for VPS instances\nusing Docker OS templates and is currently experimental -\nbreaking changes may occur in future updates.\nIt enables you to programmatically deploy projects from\ndocker-compose.yml files by providing either a URL (including\nGitHub repositories) or the compose file contents directly.\nControl project lifecycle (start/stop/restart/update/delete)\nand retrieve runtime information including container lists,\nproject details, and aggregated logs.\nAll operations are scoped to a specific virtual machine for\nmulti-tenant management.",
-            "x-displayName": "Docker Manager"
+            "name": "Hosting: NodeJS",
+            "description": "Hosting: NodeJS",
+            "x-displayName": "NodeJS",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: Firewall",
-            "description": "Enhance network security with endpoints for creating,\nactivating, deactivating, syncing, updating, and deleting\nfirewalls and firewall rules for your virtual machines.\nThis firewall applies rules at the network level, so it will\ntake precedence over the virtual machine's internal firewall.\n\n**Access to firewall requires having at least one virtual machine.**",
-            "x-displayName": "Firewall"
+            "name": "Hosting: Orders",
+            "description": "Manage hosting service orders and subscriptions. This\ncategory provides access to order information, status\ntracking, and order management capabilities for hosting\nservices.",
+            "x-displayName": "Orders",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: Post-install scripts",
-            "description": "This category allows you to create, update, delete, and\nretrieve scripts that can be used for automated tasks after\nthe operating system installation. Use case includes setting\nup software, configuring settings, or running custom commands.",
-            "x-displayName": "Post-install scripts"
+            "name": "Hosting: PHP",
+            "description": "Hosting: PHP",
+            "x-displayName": "PHP",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: Public Keys",
-            "description": "Manage SSH keys for secure access. This category covers\nadding new public keys, attaching them to virtual machines,\nretrieving key lists, and deleting keys.",
-            "x-displayName": "Public Keys"
+            "name": "Hosting: Redirects",
+            "description": "Manage redirects for hosted websites. This category includes\nendpoints for listing, creating, and deleting redirects.",
+            "x-displayName": "Redirects",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: OS Templates",
-            "description": "Retrieve details of operating system templates or list all\navailable templates to choose the right configuration when\ndeploying or recreating virtual machines.",
-            "x-displayName": "OS Templates"
+            "name": "Hosting: Websites",
+            "description": "Manage hosted websites and web applications. This category\nincludes endpoints for website deployment, configuration,\nmonitoring, and management of hosting resources.",
+            "x-displayName": "Websites",
+            "x-parent": "Hosting"
         },
         {
-            "name": "VPS: Actions",
-            "description": "Track and review operations performed on your virtual\nmachines. These endpoints provide details about specific\nactions—such as start, stop, or restart—including\ntimestamps and statuses.",
-            "x-displayName": "Actions"
+            "name": "Agency Hosting"
         },
         {
-            "name": "VPS: Virtual machine",
-            "description": "Core virtual machine management functionality. Endpoints in\nthis category let you retrieve machine details, configure\nsettings (hostname, nameservers, passwords), and perform\noperations like start, stop, restart, or recreate.",
-            "x-displayName": "Virtual machine"
+            "name": "Agency Hosting: Cache",
+            "description": "Agency Hosting: Cache",
+            "x-displayName": "Cache",
+            "x-parent": "Agency Hosting"
         },
         {
-            "name": "VPS: Backups",
-            "description": "Safeguard your data by managing backups. You can list\navailable backups or restore a virtual machine from a backup.",
-            "x-displayName": "Backups"
+            "name": "Agency Hosting: Cron Jobs",
+            "description": "Agency Hosting: Cron Jobs",
+            "x-displayName": "Cron Jobs",
+            "x-parent": "Agency Hosting"
         },
         {
-            "name": "VPS: Malware scanner",
-            "description": "Monitor your virtual machines' security using the Monarx\nmalware scanner. Retrieve scan metrics or install/uninstall\nthe scanner to help protect against malware threats.",
-            "x-displayName": "Malware scanner"
+            "name": "Agency Hosting: Databases",
+            "description": "Agency Hosting: Databases",
+            "x-displayName": "Databases",
+            "x-parent": "Agency Hosting"
         },
         {
-            "name": "VPS: PTR records",
-            "description": "Manage reverse DNS settings by creating or deleting PTR\nrecords for your virtual machines, ensuring that IP addresses\ncorrectly resolve to hostnames.",
-            "x-displayName": "PTR records"
+            "name": "Agency Hosting: Datacenters",
+            "description": "Agency Hosting: Datacenters",
+            "x-displayName": "Datacenters",
+            "x-parent": "Agency Hosting"
         },
         {
-            "name": "VPS: Recovery",
-            "description": "Initiate or stop recovery mode to perform system rescue\noperations. This category enables you to boot a virtual\nmachine into a state suitable for repairing file systems\nor recovering data.",
-            "x-displayName": "Recovery"
+            "name": "Agency Hosting: Domains",
+            "description": "Agency Hosting: Domains",
+            "x-displayName": "Domains",
+            "x-parent": "Agency Hosting"
         },
         {
-            "name": "VPS: Snapshots",
-            "description": "Create, restore, or delete snapshots that capture the state\nof your virtual machines at a given point, allowing you to\nquickly recover or test changes without affecting current\noperations.",
-            "x-displayName": "Snapshots"
+            "name": "Agency Hosting: Files",
+            "description": "Agency Hosting: Files",
+            "x-displayName": "Files",
+            "x-parent": "Agency Hosting"
         },
         {
-            "name": "WordPress: AI Tools",
-            "description": "WordPress: AI Tools",
-            "x-displayName": "AI Tools"
+            "name": "Agency Hosting: Metrics",
+            "description": "Agency Hosting: Metrics",
+            "x-displayName": "Metrics",
+            "x-parent": "Agency Hosting"
+        },
+        {
+            "name": "Agency Hosting: Orders",
+            "description": "Agency Hosting: Orders",
+            "x-displayName": "Orders",
+            "x-parent": "Agency Hosting"
+        },
+        {
+            "name": "Agency Hosting: PHP",
+            "description": "Agency Hosting: PHP",
+            "x-displayName": "PHP",
+            "x-parent": "Agency Hosting"
+        },
+        {
+            "name": "Agency Hosting: Website Setups",
+            "description": "Agency Hosting: Website Setups",
+            "x-displayName": "Website Setups",
+            "x-parent": "Agency Hosting"
+        },
+        {
+            "name": "Agency Hosting: Websites",
+            "description": "Agency Hosting: Websites",
+            "x-displayName": "Websites",
+            "x-parent": "Agency Hosting"
+        },
+        {
+            "name": "Agency Hosting: WordPress",
+            "description": "Agency Hosting: WordPress",
+            "x-displayName": "WordPress",
+            "x-parent": "Agency Hosting"
+        },
+        {
+            "name": "WordPress"
         },
         {
             "name": "WordPress: Installations",
             "description": "Manage WordPress installations on your hosting websites. This\ncategory includes endpoints for installing WordPress, listing\nexisting installations along with their validation status, and\nimporting a WordPress site from previously uploaded archive and\ndatabase files.",
-            "x-displayName": "Installations"
-        },
-        {
-            "name": "WordPress: LiteSpeed Cache",
-            "description": "WordPress: LiteSpeed Cache",
-            "x-displayName": "LiteSpeed Cache"
-        },
-        {
-            "name": "WordPress: Login",
-            "description": "WordPress: Login",
-            "x-displayName": "Login"
-        },
-        {
-            "name": "WordPress: Maintenance",
-            "description": "WordPress: Maintenance",
-            "x-displayName": "Maintenance"
-        },
-        {
-            "name": "WordPress: Object Cache",
-            "description": "WordPress: Object Cache",
-            "x-displayName": "Object Cache"
+            "x-displayName": "Installations",
+            "x-parent": "WordPress"
         },
         {
             "name": "WordPress: Plugins",
             "description": "Manage WordPress plugins on your installations. This category\nincludes endpoints for installing, activating, updating,\nlisting, and deleting plugins.",
-            "x-displayName": "Plugins"
+            "x-displayName": "Plugins",
+            "x-parent": "WordPress"
         },
         {
             "name": "WordPress: Themes",
             "description": "Manage WordPress themes on your installations. This category\nincludes endpoints for installing, activating, updating,\nlisting, and deleting themes.",
-            "x-displayName": "Themes"
+            "x-displayName": "Themes",
+            "x-parent": "WordPress"
+        },
+        {
+            "name": "WordPress: Object Cache",
+            "description": "WordPress: Object Cache",
+            "x-displayName": "Object Cache",
+            "x-parent": "WordPress"
+        },
+        {
+            "name": "WordPress: LiteSpeed Cache",
+            "description": "WordPress: LiteSpeed Cache",
+            "x-displayName": "LiteSpeed Cache",
+            "x-parent": "WordPress"
+        },
+        {
+            "name": "WordPress: Maintenance",
+            "description": "WordPress: Maintenance",
+            "x-displayName": "Maintenance",
+            "x-parent": "WordPress"
+        },
+        {
+            "name": "WordPress: Login",
+            "description": "WordPress: Login",
+            "x-displayName": "Login",
+            "x-parent": "WordPress"
+        },
+        {
+            "name": "WordPress: AI Tools",
+            "description": "WordPress: AI Tools",
+            "x-displayName": "AI Tools",
+            "x-parent": "WordPress"
+        },
+        {
+            "name": "Horizons"
+        },
+        {
+            "name": "Horizons: Websites",
+            "description": "Create and access Hostinger Horizons websites. This category\nincludes endpoints for creating new AI-generated websites from\na text prompt and retrieving links to edit existing websites\nin the Hostinger Horizons interface.",
+            "x-displayName": "Websites",
+            "x-parent": "Horizons"
+        },
+        {
+            "name": "Reach"
+        },
+        {
+            "name": "Reach: Contacts",
+            "description": "Manage your email contacts and contact groups. This category\nincludes endpoints for creating, deleting, and listing\ncontacts, as well as managing contact groups.",
+            "x-displayName": "Contacts",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Contact Fields",
+            "description": "Reach: Contact Fields",
+            "x-displayName": "Contact Fields",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Tags",
+            "description": "Reach: Tags",
+            "x-displayName": "Tags",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Segments",
+            "description": "Filter and segment your email contacts using various\ncriteria. This category includes endpoints for filtering\ncontacts by attributes, tags, and email addresses, as well\nas listing all available segments and retrieving contacts\nthat match specific attribute conditions.",
+            "x-displayName": "Segments",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Automations",
+            "description": "Reach: Automations",
+            "x-displayName": "Automations",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Campaigns",
+            "description": "Reach: Campaigns",
+            "x-displayName": "Campaigns",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Forms",
+            "description": "Reach: Forms",
+            "x-displayName": "Forms",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "Reach: Profiles",
+            "description": "Reach: Profiles",
+            "x-displayName": "Profiles",
+            "x-parent": "Reach"
+        },
+        {
+            "name": "VPS"
+        },
+        {
+            "name": "VPS: Actions",
+            "description": "Track and review operations performed on your virtual\nmachines. These endpoints provide details about specific\nactions—such as start, stop, or restart—including\ntimestamps and statuses.",
+            "x-displayName": "Actions",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Backups",
+            "description": "Safeguard your data by managing backups. You can list\navailable backups or restore a virtual machine from a backup.",
+            "x-displayName": "Backups",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Data centers",
+            "description": "Access information on available data centers, including\nlocation details, so you can choose the optimal region for\ndeploying your virtual machines.",
+            "x-displayName": "Data centers",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Docker Manager",
+            "description": "Manage Docker Compose projects directly on your VPS\ninstances. This feature is only available for VPS instances\nusing Docker OS templates and is currently experimental -\nbreaking changes may occur in future updates.\nIt enables you to programmatically deploy projects from\ndocker-compose.yml files by providing either a URL (including\nGitHub repositories) or the compose file contents directly.\nControl project lifecycle (start/stop/restart/update/delete)\nand retrieve runtime information including container lists,\nproject details, and aggregated logs.\nAll operations are scoped to a specific virtual machine for\nmulti-tenant management.",
+            "x-displayName": "Docker Manager",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: PTR records",
+            "description": "Manage reverse DNS settings by creating or deleting PTR\nrecords for your virtual machines, ensuring that IP addresses\ncorrectly resolve to hostnames.",
+            "x-displayName": "PTR records",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Firewall",
+            "description": "Enhance network security with endpoints for creating,\nactivating, deactivating, syncing, updating, and deleting\nfirewalls and firewall rules for your virtual machines.\nThis firewall applies rules at the network level, so it will\ntake precedence over the virtual machine's internal firewall.\n\n**Access to firewall requires having at least one virtual machine.**",
+            "x-displayName": "Firewall",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Malware scanner",
+            "description": "Monitor your virtual machines' security using the Monarx\nmalware scanner. Retrieve scan metrics or install/uninstall\nthe scanner to help protect against malware threats.",
+            "x-displayName": "Malware scanner",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: OS Templates",
+            "description": "Retrieve details of operating system templates or list all\navailable templates to choose the right configuration when\ndeploying or recreating virtual machines.",
+            "x-displayName": "OS Templates",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Post-install scripts",
+            "description": "This category allows you to create, update, delete, and\nretrieve scripts that can be used for automated tasks after\nthe operating system installation. Use case includes setting\nup software, configuring settings, or running custom commands.",
+            "x-displayName": "Post-install scripts",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Public Keys",
+            "description": "Manage SSH keys for secure access. This category covers\nadding new public keys, attaching them to virtual machines,\nretrieving key lists, and deleting keys.",
+            "x-displayName": "Public Keys",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Recovery",
+            "description": "Initiate or stop recovery mode to perform system rescue\noperations. This category enables you to boot a virtual\nmachine into a state suitable for repairing file systems\nor recovering data.",
+            "x-displayName": "Recovery",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Snapshots",
+            "description": "Create, restore, or delete snapshots that capture the state\nof your virtual machines at a given point, allowing you to\nquickly recover or test changes without affecting current\noperations.",
+            "x-displayName": "Snapshots",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "VPS: Virtual machine",
+            "description": "Core virtual machine management functionality. Endpoints in\nthis category let you retrieve machine details, configure\nsettings (hostname, nameservers, passwords), and perform\noperations like start, stop, restart, or recreate.",
+            "x-displayName": "Virtual machine",
+            "x-parent": "VPS"
+        },
+        {
+            "name": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Stores",
+            "description": "Manage your online stores. This category includes endpoints\nfor listing and creating stores associated with your account,\nand deleting stores you no longer need.",
+            "x-displayName": "Stores",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Sales channels",
+            "description": "Ecommerce: Sales channels",
+            "x-displayName": "Sales channels",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Products",
+            "description": "Manage products in your online store. This category includes\nendpoints for creating physical and digital products with\npricing and optional descriptions.",
+            "x-displayName": "Products",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Product variants",
+            "description": "Ecommerce: Product variants",
+            "x-displayName": "Product variants",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Discounts",
+            "description": "Ecommerce: Discounts",
+            "x-displayName": "Discounts",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Orders",
+            "description": "Ecommerce: Orders",
+            "x-displayName": "Orders",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Shipping",
+            "description": "Configure shipping options for your online store. This\ncategory includes endpoints for setting the flat-rate\nshipping price applied to customer orders.",
+            "x-displayName": "Shipping",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Payments",
+            "description": "Manage payment methods for your online store. This category\nincludes endpoints for enabling payment options such as manual\n(cash on delivery) payment at checkout.",
+            "x-displayName": "Payments",
+            "x-parent": "Ecommerce"
+        },
+        {
+            "name": "Ecommerce: Miscellaneous",
+            "description": "Ecommerce: Miscellaneous",
+            "x-displayName": "Miscellaneous",
+            "x-parent": "Ecommerce"
         }
     ],
     "x-tagGroups": [
