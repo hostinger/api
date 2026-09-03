@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.46.3",
+        "version": "1.47.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -16193,7 +16193,6 @@
                         "description": "Website type",
                         "type": "string",
                         "enum": [
-                            "horizons",
                             "node-static"
                         ],
                         "example": "node-static",
@@ -16233,45 +16232,6 @@
                                     "email": {
                                         "type": "string",
                                         "example": "admin@example.com"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "clone": {
-                        "description": "Clone the new website from an existing website",
-                        "required": [
-                            "website_uid"
-                        ],
-                        "properties": {
-                            "website_uid": {
-                                "type": "string",
-                                "example": "zpwlGlp19"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "derive_domain": {
-                        "description": "Derive the domain from an existing vhost",
-                        "required": [
-                            "from_vhost"
-                        ],
-                        "properties": {
-                            "from_vhost": {
-                                "required": [
-                                    "username",
-                                    "vhost"
-                                ],
-                                "properties": {
-                                    "username": {
-                                        "type": "string",
-                                        "example": "u123456789"
-                                    },
-                                    "vhost": {
-                                        "type": "string",
-                                        "example": "example.com"
                                     }
                                 },
                                 "type": "object"
