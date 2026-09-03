@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.46.2",
+        "version": "1.46.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -9757,6 +9757,50 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Campaigns"
+                ],
+                "summary": "Create a draft campaign",
+                "description": "Create a campaign in a profile.\n\nThe campaign is created as a draft, so nothing is sent and no contact is touched. It has no\naudience yet either - targeting and scheduling are not part of this request, the draft is\nfinished and sent from the Reach interface.",
+                "operationId": "reach_createADraftCampaignV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Campaigns.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Campaigns.CreatedCampaignResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/reach/v1/profiles/{profileUuid}/campaigns/{campaignUuid}/statistics": {
@@ -11508,6 +11552,83 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/templates": {
+            "get": {
+                "tags": [
+                    "Reach: Templates"
+                ],
+                "summary": "List email templates",
+                "description": "Get a list of the email templates in a profile, most recently updated first.\n\nTemplates are the reusable email bodies a campaign is built from. The list is not paginated\nand only the metadata is returned - the template content itself is not exposed. Use the\n`uuid` of a template as the `template_uuid` when creating a campaign.",
+                "operationId": "reach_listEmailTemplatesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Templates.TemplateCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Templates"
+                ],
+                "summary": "Create an email template",
+                "description": "Create an email template in a profile.\n\nThe template holds the HTML body a campaign reuses, so it can be created before any\ncampaign exists. Only the template metadata comes back - keep the returned `uuid` to\nreference it as the `template_uuid` of a campaign.",
+                "operationId": "reach_createAnEmailTemplateV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Templates.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Templates.TemplateResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -18162,6 +18283,61 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Campaigns.StoreRequest": {
+                "description": "Create a campaign in draft status",
+                "required": [
+                    "sender_name",
+                    "sender_email"
+                ],
+                "properties": {
+                    "sender_name": {
+                        "description": "From name shown to the recipients.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "example": "Marketing Team"
+                    },
+                    "sender_email": {
+                        "description": "From address of the campaign. Its domain has to be verified on the profile before\nthe campaign can be sent.",
+                        "type": "string",
+                        "example": "marketing@example.com"
+                    },
+                    "title": {
+                        "description": "Name the campaign is listed under. Not shown to the recipients.",
+                        "type": "string",
+                        "example": "Black Friday Campaign"
+                    },
+                    "subject": {
+                        "description": "Subject line of the email.",
+                        "type": "string",
+                        "example": "Don't miss our Black Friday deals!"
+                    },
+                    "template_uuid": {
+                        "description": "Template to send, as returned by the template endpoints. Can be left out and\nattached later, but the campaign cannot be sent without one.",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "metadata": {
+                        "description": "Extra campaign fields. Any key outside the listed ones is rejected.",
+                        "properties": {
+                            "preheader": {
+                                "description": "Preview text shown after the subject line in the inbox.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "example": "Our biggest deals of the year"
+                            },
+                            "source": {
+                                "description": "Where the campaign was created from.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "example": "api"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.BulkStoreRequest": {
                 "description": "Create many contacts in one call",
                 "required": [
@@ -18837,6 +19013,27 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Templates.StoreRequest": {
+                "description": "Create a reusable email template",
+                "required": [
+                    "template_content"
+                ],
+                "properties": {
+                    "template_content": {
+                        "description": "The email body as HTML. It is sanitised before it is stored, so the saved template\ncan differ from what was sent - inline any styles the email clients need and keep\nthe markup self-contained.",
+                        "type": "string",
+                        "example": "<html><body><h1>Email Template</h1><p>Hello, traveler!</p></body></html>"
+                    },
+                    "title": {
+                        "description": "Name the template is listed under. Not shown to the recipients.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Summer Sale Draft",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -26636,6 +26833,85 @@
                 },
                 "type": "object"
             },
+            "Reach.V1.Campaigns.CreatedCampaignResource": {
+                "description": "The campaign as it was stored, without targeting or delivery progress",
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Black Friday Campaign"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "example": "Don't miss our Black Friday deals!"
+                    },
+                    "sender_name": {
+                        "type": "string",
+                        "example": "Marketing Team"
+                    },
+                    "sender_email": {
+                        "type": "string",
+                        "example": "marketing@example.com"
+                    },
+                    "template_uuid": {
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Always `draft` for a campaign that was just created.",
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "scheduled",
+                            "sending",
+                            "publish",
+                            "failed"
+                        ],
+                        "example": "draft"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "campaign",
+                            "automation",
+                            "double_opt_in"
+                        ],
+                        "example": "campaign"
+                    },
+                    "is_all_contacts": {
+                        "description": "Whether the campaign targets every contact instead of selected segments.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "metadata": {
+                        "description": "The stored extra fields, including the ones Reach sets itself.",
+                        "type": "object",
+                        "example": {
+                            "preheader": "Our biggest deals of the year"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Reach.V1.Contacts.ContactCollection": {
                 "description": "Array of [`Reach.V1.Contacts.ContactResource`](#model/reachv1contactscontactresource)",
                 "type": "array",
@@ -27852,6 +28128,42 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Templates.TemplateCollection": {
+                "description": "Array of [`Reach.V1.Templates.TemplateResource`](#model/reachv1templatestemplateresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Reach.V1.Templates.TemplateResource"
+                }
+            },
+            "Reach.V1.Templates.TemplateResource": {
+                "properties": {
+                    "uuid": {
+                        "description": "Pass this as the `template_uuid` of a campaign.",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000",
+                        "nullable": true
+                    },
+                    "title": {
+                        "description": "Null for templates that were never named.",
+                        "type": "string",
+                        "example": "Newsletter Template",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -31298,6 +31610,12 @@
             "x-parent": "Reach"
         },
         {
+            "name": "Reach: Templates",
+            "description": "Reach: Templates",
+            "x-displayName": "Templates",
+            "x-parent": "Reach"
+        },
+        {
             "name": "Reach: Forms",
             "description": "Reach: Forms",
             "x-displayName": "Forms",
@@ -31557,6 +31875,7 @@
                 "Reach: Segments",
                 "Reach: Automations",
                 "Reach: Campaigns",
+                "Reach: Templates",
                 "Reach: Forms",
                 "Reach: Profiles"
             ]
