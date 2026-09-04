@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.48.0",
+        "version": "1.49.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6660,6 +6660,89 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/settings": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Get Node.js build settings",
+                "description": "Returns the build settings stored for the website: framework (`app_type`), Node.js version,\nroot and output directory, build script, entry file and package manager. Stored settings\ndrive Git auto-deployment builds. A build started through the API uses the values sent in\nthat request and saves them here only when no settings exist yet.\n\nReturns 404 until the first build or the first settings update stores them. Use this after\na failed build to check whether the framework or the entry file were detected wrong, then\nfix them with the `Update Node.js build settings` endpoint.",
+                "operationId": "hosting_getNode.jsBuildSettingsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.StoredBuildSettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Update Node.js build settings",
+                "description": "Replaces the build settings stored for the website. Send the full set: `node_version` is\nrequired and every nullable field you omit is stored as null. Creates the settings when\nnone exist yet.\n\nThis does not start a build. Stored settings drive Git auto-deployment builds; a build\nstarted through the API uses the values sent in that request, so to rebuild with corrected\nsettings call `Start Node.js build` with the same values. Typical fixes: a wrong `app_type`\nafter auto-detection, or a missing `entry_file` for express, fastify, nest, nuxt and hono\napps.",
+                "operationId": "hosting_updateNode.jsBuildSettingsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.NodeJs.UpdateBuildSettingsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.StoredBuildSettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/settings/from-archive": {
             "get": {
                 "tags": [
@@ -6792,6 +6875,87 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/{uuid}/analysis": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Analyse failed Node.js build",
+                "description": "Returns an AI analysis of why a build failed and how to fix it, based on the build logs,\nthe project file list and package.json. Only builds in the `failed` state can be analysed;\nany other state returns 422. When no analysis could be produced both `analysis` and\n`solution` are null, in which case read `Get NodeJS build logs` instead.\n\nEach call runs the analysis again, so call it once per failed build and keep the result.\nLimited to 5 calls per minute per API client (429 above that).",
+                "operationId": "hosting_analyseFailedNode.jsBuildV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/build_uuid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildAnalysisResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/{uuid}": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Get Node.js build details",
+                "description": "Returns one build by UUID: its state (`pending`, `running`, `completed`, `failed`), the\noptions it ran with and timestamps. Poll this while a build is pending or running. When it\nis failed, read `Get NodeJS build logs` and `Analyse failed Node.js build` for the cause.\nReturns 404 when the UUID does not belong to a build of this website.",
+                "operationId": "hosting_getNode.jsBuildDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "$ref": "#/components/parameters/build_uuid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/{uuid}/logs": {
             "get": {
                 "tags": [
@@ -6836,6 +7000,145 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/runtime-logs": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Get Node.js runtime logs",
+                "description": "Returns the Node.js application's runtime console log entries, oldest first, each with\ntimestamp, level and message. On the first call send `period` (`1h`, `1d`, `1w` or `1m`)\nand optionally `levels` and `limit` (1-5000, default 1000); when more entries match than\n`limit`, the newest are kept.\n\nTo poll for new entries send `total_lines + 1` from the previous response as `from_line`\nand omit `period`; `period` and `from_line` cannot be combined. Lines that are not JSON\nwith a timestamp, level and message are skipped, so `logs` may hold fewer than `limit`\nentries while `total_lines` counts every raw line. Entries with a timestamp before\n`last_deployed_at` belong to the previous deployment. Returns an empty `logs` list when\nthe application has not written a log file yet.",
+                "operationId": "hosting_getNode.jsRuntimeLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": "Time window for the first fetch. Required when `from_line` is not sent.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "1h",
+                                "1d",
+                                "1w",
+                                "1m"
+                            ],
+                            "example": "1h"
+                        }
+                    },
+                    {
+                        "name": "from_line",
+                        "in": "query",
+                        "description": "1-based line of the log file to start from. For polling send `total_lines + 1` from the\nprevious response. Cannot be combined with `period`.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 5042
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Maximum number of log entries to return. When more entries match, the newest are kept.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1000,
+                            "maximum": 5000,
+                            "minimum": 1,
+                            "example": 200
+                        }
+                    },
+                    {
+                        "name": "levels",
+                        "in": "query",
+                        "description": "Return only entries with these log levels, sent as a comma-separated list, e.g. ERROR,WARN.\nMatching runs on the raw log line, so entries written with numeric levels (for example by\npino) are excluded while this filter is set.",
+                        "required": false,
+                        "style": "form",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "LOG",
+                                    "ERROR",
+                                    "WARN",
+                                    "INFO",
+                                    "DEBUG",
+                                    "TRACE"
+                                ]
+                            },
+                            "example": [
+                                "ERROR",
+                                "WARN"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.RuntimeLogsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Clear Node.js runtime logs",
+                "description": "Empties the Node.js application's runtime log file. This cannot be undone, so confirm with\nthe user before calling it. Returns success even when no log file exists yet.\n\nUse it before reproducing a problem so the next `Get Node.js runtime logs` call returns\nonly fresh entries; start that call with `period` again instead of reusing a `from_line`\nfrom before the clear.",
+                "operationId": "hosting_clearNode.jsRuntimeLogsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -18142,6 +18445,97 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.UpdateBuildSettingsRequest": {
+                "required": [
+                    "node_version"
+                ],
+                "properties": {
+                    "node_version": {
+                        "description": "Node.js major version",
+                        "type": "integer",
+                        "enum": [
+                            18,
+                            20,
+                            22,
+                            24
+                        ],
+                        "example": 20
+                    },
+                    "app_type": {
+                        "description": "Node.js application framework. Set it explicitly when auto-detection picked the wrong one.",
+                        "type": "string",
+                        "enum": [
+                            "create-react-app",
+                            "gatsby",
+                            "vite",
+                            "angular",
+                            "react",
+                            "vue",
+                            "parcel",
+                            "next",
+                            "nuxt",
+                            "nest",
+                            "express",
+                            "fastify",
+                            "astro",
+                            "svelte",
+                            "svelte-kit",
+                            "hono",
+                            "react-router",
+                            "nitro",
+                            "other"
+                        ],
+                        "example": "vite",
+                        "nullable": true
+                    },
+                    "root_directory": {
+                        "description": "Application root directory (where package.json is located) relative to public_html.\nOmit it, or send \".\", for public_html itself.",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "webapp",
+                        "nullable": true
+                    },
+                    "output_directory": {
+                        "description": "Build output directory relative to the root directory",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "dist",
+                        "nullable": true
+                    },
+                    "build_script": {
+                        "description": "The package.json script that builds the application",
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 1,
+                        "example": "build",
+                        "nullable": true
+                    },
+                    "entry_file": {
+                        "description": "The main entry point file for the application\n(required for express, fastify, nest, nuxt and hono app types)",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "example": "server.js",
+                        "nullable": true
+                    },
+                    "package_manager": {
+                        "description": "Package manager used to install dependencies",
+                        "type": "string",
+                        "maxLength": 20,
+                        "minLength": 1,
+                        "enum": [
+                            "npm",
+                            "yarn",
+                            "pnpm"
+                        ],
+                        "example": "npm",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Php.UpdatePhpExtensionsRequest": {
                 "properties": {
                     "enable": {
@@ -24389,6 +24783,27 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.BuildAnalysisResource": {
+                "required": [
+                    "analysis",
+                    "solution"
+                ],
+                "properties": {
+                    "analysis": {
+                        "description": "Why the build failed. null when no analysis could be produced.",
+                        "type": "string",
+                        "example": "The build failed because the entry file server.js does not exist in the project root.",
+                        "nullable": true
+                    },
+                    "solution": {
+                        "description": "Suggested fix for the build failure. null when no analysis could be produced.",
+                        "type": "string",
+                        "example": "Set entry_file to the file that starts the server, for example index.js.",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.BuildCollection": {
                 "description": "Array of [`Hosting.V1.NodeJs.BuildResource`](#model/hostingv1nodejsbuildresource)",
                 "type": "array",
@@ -24676,6 +25091,38 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.LogEntryCollection": {
+                "description": "Array of [`Hosting.V1.NodeJs.LogEntryResource`](#model/hostingv1nodejslogentryresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.LogEntryResource"
+                }
+            },
+            "Hosting.V1.NodeJs.LogEntryResource": {
+                "required": [
+                    "timestamp",
+                    "level",
+                    "message"
+                ],
+                "properties": {
+                    "timestamp": {
+                        "description": "ISO 8601 timestamp of the log entry",
+                        "type": "string",
+                        "example": "2026-03-03T09:11:02.001Z"
+                    },
+                    "level": {
+                        "description": "Log level in upper case (usually ERROR, WARN, INFO, LOG, DEBUG or TRACE).\nNumeric pino levels are mapped to these names.",
+                        "type": "string",
+                        "example": "INFO"
+                    },
+                    "message": {
+                        "description": "Log message",
+                        "type": "string",
+                        "example": "Server started on port 3000"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.PatchResultResource": {
                 "properties": {
                     "pr_url": {
@@ -24706,12 +25153,126 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.NodeJs.RuntimeLogsResource": {
+                "required": [
+                    "logs",
+                    "started_at",
+                    "total_lines",
+                    "last_deployed_at"
+                ],
+                "properties": {
+                    "logs": {
+                        "$ref": "#/components/schemas/Hosting.V1.NodeJs.LogEntryCollection"
+                    },
+                    "started_at": {
+                        "description": "Timestamp of the first line of the log file; null when the file is empty or its first\nline has no timestamp field",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-03T09:11:02Z",
+                        "nullable": true
+                    },
+                    "total_lines": {
+                        "description": "Total number of lines in the raw log file. Send total_lines + 1 as from_line in the\nnext poll to receive only new entries.",
+                        "type": "integer",
+                        "example": 5042
+                    },
+                    "last_deployed_at": {
+                        "description": "Time of the last completed build; entries before it belong to the previous\ndeployment. null when no build has completed yet.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-03-03T08:58:41Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.SourceOptionsResource": {
                 "properties": {
                     "archive_path": {
                         "description": "Present if sourceType is \"archive\"",
                         "type": "string",
                         "example": "archive.zip",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.StoredBuildSettingsResource": {
+                "required": [
+                    "node_version",
+                    "app_type",
+                    "root_directory",
+                    "output_directory",
+                    "build_script",
+                    "entry_file",
+                    "package_manager"
+                ],
+                "properties": {
+                    "node_version": {
+                        "description": "Node.js major version used to build and run the application",
+                        "type": "integer",
+                        "example": 20
+                    },
+                    "app_type": {
+                        "description": "Detected or chosen application framework",
+                        "type": "string",
+                        "enum": [
+                            "create-react-app",
+                            "gatsby",
+                            "vite",
+                            "angular",
+                            "react",
+                            "vue",
+                            "parcel",
+                            "next",
+                            "nuxt",
+                            "nest",
+                            "express",
+                            "fastify",
+                            "astro",
+                            "svelte",
+                            "svelte-kit",
+                            "hono",
+                            "react-router",
+                            "nitro",
+                            "other"
+                        ],
+                        "example": "vite",
+                        "nullable": true
+                    },
+                    "root_directory": {
+                        "description": "Application root directory (where package.json is located) relative to public_html;\nnull means public_html itself",
+                        "type": "string",
+                        "example": "frontend",
+                        "nullable": true
+                    },
+                    "output_directory": {
+                        "description": "Build output directory relative to the root directory",
+                        "type": "string",
+                        "example": "dist",
+                        "nullable": true
+                    },
+                    "build_script": {
+                        "description": "The package.json script that builds the application",
+                        "type": "string",
+                        "example": "build",
+                        "nullable": true
+                    },
+                    "entry_file": {
+                        "description": "The main entry point file for the application",
+                        "type": "string",
+                        "example": "server.js",
+                        "nullable": true
+                    },
+                    "package_manager": {
+                        "description": "Package manager used to install dependencies",
+                        "type": "string",
+                        "enum": [
+                            "npm",
+                            "yarn",
+                            "pnpm"
+                        ],
+                        "example": "npm",
                         "nullable": true
                     }
                 },
