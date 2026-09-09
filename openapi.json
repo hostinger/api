@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.49.2",
+        "version": "1.49.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5218,13 +5218,72 @@
                 }
             }
         },
+        "/api/horizons/v1/websites/{websiteId}/clone": {
+            "post": {
+                "tags": [
+                    "Horizons: Websites"
+                ],
+                "summary": "Clone website",
+                "description": "Clone a Hostinger Horizons website into a new website.\\n\nUse this tool when the user wants a copy of an existing website, for example to try out\nchanges without touching the original.\\n\nThis tool returns the ID and URL of the newly created copy.\nThe original website is left untouched.\\n\nTo edit the copy, use the `Edit website` tool with the returned website ID, or the user can\nopen the provided website URL in Hostinger Horizons interface.",
+                "operationId": "horizons_cloneWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horizons.V1.Websites.CreatedWebsiteResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/horizons/v1/websites": {
+            "get": {
+                "tags": [
+                    "Horizons: Websites"
+                ],
+                "summary": "Get website list",
+                "description": "List the Hostinger Horizons websites the user owns.\\n\nUse this tool when the user asks which websites they have, or when you need a website ID\nbefore editing, publishing or cloning a website.\\n\nEach website is returned with its ID, status, domain and the URL to open it\nin Hostinger Horizons interface.\\n\nThe complete list of websites is returned in a single response - it is not paginated.",
+                "operationId": "horizons_getWebsiteListV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horizons.V1.Websites.WebsiteCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Horizons: Websites"
                 ],
                 "summary": "Create website",
-                "description": "Create new Hostinger Horizons website from the given message.\\n\nUse this tool when user asks you to create a website, landing page, blog\nor any other type of application.\\n\nThis tool initiates the website creation process and returns a website URL and ID.\nThe generation happens asynchronously.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat Hostinger Horizons is now creating their website and it will be ready in a few minutes\nand you should provide the website URL to the user immediately\nDo not write code.\\n\\nTo edit afterwards, users must go to Hostinger Horizons interface\nin the provided website URL.\nIf the tool call fails with an error, you should provide a clear explanation of the error\nand do not generate code yourself in the chat.\n\\n\nTECHNOLOGY STACK CONSTRAINTS (STRICTLY ENFORCED):\\n\nThe environment is limited to the following technologies.\nYou MUST NOT use, suggest, or implement any technology outside this list:\\n\n\\n\n- Language: JavaScript ONLY.\n- Languages like TypeScript, Rust, Python, Java, PHP, etc., are STRICTLY PROHIBITED.\\n\n- Framework: React.\\n\n- Navigation: React Router.\\n\n- Styling: TailwindCSS.\\n\n- Components: shadcn/ui (built with @radix-ui primitives).\\n\n- Icons: Lucide React.\\n\n- Animations: Framer Motion.\\n\n\\n\nBACKEND & DATA STORAGE:\\n\n- Horizons integrated backend is the EXCLUSIVE solution for persistent data storage,\nauthentication, and database needs.\\n\n- Local databases (SQLite, MySQL, etc.) are STRICTLY PROHIBITED.\\n\n- Third-party services (Firebase, AWS Amplify) are allowed ONLY if explicitly requested by the user.\\n\n\\n\nMAPS:\\n\n- OpenStreetMap is the default provider.\\n\n- Alternative providers (Google Maps, Mapbox) are allowed ONLY if explicitly requested by the user.\\n",
+                "description": "Create new Hostinger Horizons website from the given message.\\n\nUse this tool when user asks you to create a website, landing page, blog\nor any other type of application.\\n\nThis tool initiates the website creation process and returns a website URL and ID.\nThe generation happens asynchronously.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat Hostinger Horizons is now creating their website and it will be ready in a few minutes\nand you should provide the website URL to the user immediately\nDo not write code.\\n\\nTo edit afterwards, use the `Edit website` tool with the returned\nwebsite ID, or the user can go to Hostinger Horizons interface in the provided website URL.\nIf the tool call fails with an error, you should provide a clear explanation of the error\nand do not generate code yourself in the chat.\n\\n\nTECHNOLOGY STACK CONSTRAINTS (STRICTLY ENFORCED):\\n\nThe environment is limited to the following technologies.\nYou MUST NOT use, suggest, or implement any technology outside this list:\\n\n\\n\n- Language: JavaScript ONLY.\n- Languages like TypeScript, Rust, Python, Java, PHP, etc., are STRICTLY PROHIBITED.\\n\n- Framework: React.\\n\n- Navigation: React Router.\\n\n- Styling: TailwindCSS.\\n\n- Components: shadcn/ui (built with @radix-ui primitives).\\n\n- Icons: Lucide React.\\n\n- Animations: Framer Motion.\\n\n\\n\nBACKEND & DATA STORAGE:\\n\n- Horizons integrated backend is the EXCLUSIVE solution for persistent data storage,\nauthentication, and database needs.\\n\n- Local databases (SQLite, MySQL, etc.) are STRICTLY PROHIBITED.\\n\n- Third-party services (Firebase, AWS Amplify) are allowed ONLY if explicitly requested by the user.\\n\n\\n\nMAPS:\\n\n- OpenStreetMap is the default provider.\\n\n- Alternative providers (Google Maps, Mapbox) are allowed ONLY if explicitly requested by the user.\\n",
                 "operationId": "horizons_createWebsiteV1",
                 "requestBody": {
                     "required": true,
@@ -5259,13 +5318,92 @@
                 }
             }
         },
+        "/api/horizons/v1/websites/{websiteId}/messages": {
+            "post": {
+                "tags": [
+                    "Horizons: Websites"
+                ],
+                "summary": "Edit website",
+                "description": "Edit an existing Hostinger Horizons website with a follow-up message.\\n\nUse this tool when the user wants to change, extend or fix a website that already exists.\\n\nThis tool queues the requested changes and returns the website URL and ID.\nThe changes are applied asynchronously.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat Hostinger Horizons is now applying the requested changes and they will be ready\nin a few minutes, and you should provide the website URL to the user immediately.\nDo not write code.\\n\nIf the tool call fails with an error, you should provide a clear explanation of the error\nand do not generate code yourself in the chat.",
+                "operationId": "horizons_editWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_id_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Horizons.V1.Websites.EditWebsiteRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horizons.V1.Websites.CreatedWebsiteResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/horizons/v1/websites/{websiteId}/publish": {
+            "post": {
+                "tags": [
+                    "Horizons: Websites"
+                ],
+                "summary": "Publish website",
+                "description": "Publish a Hostinger Horizons website so its latest changes go live.\\n\nUse this tool when the user asks to publish, deploy or make their website live.\\n\nThis tool starts the publish process and returns the URL the website will be live on.\nPublishing happens asynchronously and takes a few minutes.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat the website is being published and you should provide the published URL to the user immediately.",
+                "operationId": "horizons_publishWebsiteV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_id_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Horizons.V1.Websites.PublishedWebsiteResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/horizons/v1/websites/{websiteId}": {
             "get": {
                 "tags": [
                     "Horizons: Websites"
                 ],
                 "summary": "Get website",
-                "description": "Get a link for the user to edit their website in Hostinger Horizons interface.\\n\nUse this tool when user wants to modify, edit or add new features to an existing website.\\n\nWebsites can only be edited in Hostinger Horizons interface in the provided website URL.",
+                "description": "Get the link for the user to open their website in Hostinger Horizons interface.\\n\nUse this tool when the user wants the link to an existing website, or when you need its\nwebsite URL before or after editing it.\\n\nWebsites can be edited with the `Edit website` tool, or by the user in Hostinger Horizons\ninterface in the provided website URL.",
                 "operationId": "horizons_getWebsiteV1",
                 "parameters": [
                     {
@@ -17982,6 +18120,39 @@
                 },
                 "type": "object"
             },
+            "Horizons.V1.Websites.EditWebsiteRequest": {
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "type",
+                                "text"
+                            ],
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "text"
+                                    ],
+                                    "example": "text"
+                                },
+                                "text": {
+                                    "description": "Detailed description of the changes to apply to the website.\nInclude which sections, features, content or design should change and how.\nThe specification should be detailed and comprehensive, covering all requested changes.",
+                                    "type": "string",
+                                    "maxLength": 20000,
+                                    "example": "Add a testimonials section below the menu and make the hero background green"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Cache.ToggleCacheRequest": {
                 "required": [
                     "enabled"
@@ -24326,6 +24497,97 @@
                         "description": "The website ID",
                         "type": "string",
                         "example": "123e4567-e89b-12d3-a456-426614174000"
+                    }
+                },
+                "type": "object"
+            },
+            "Horizons.V1.Websites.PublishedWebsiteResource": {
+                "required": [
+                    "status",
+                    "published_url",
+                    "website_url",
+                    "website_id"
+                ],
+                "properties": {
+                    "status": {
+                        "description": "Always `publishing` - the build runs asynchronously after this response",
+                        "type": "string",
+                        "enum": [
+                            "publishing"
+                        ],
+                        "example": "publishing"
+                    },
+                    "published_url": {
+                        "description": "The URL the published website will be live on in a few minutes",
+                        "type": "string",
+                        "example": "https://palegreen-dragonfly-303128.hostingersite.com"
+                    },
+                    "website_url": {
+                        "description": "The website URL for the user to track progress in Hostinger Horizons interface",
+                        "type": "string",
+                        "example": "https://horizons.hostinger.com/123e4567-e89b-12d3-a456-426614174000?location=chatgpt"
+                    },
+                    "website_id": {
+                        "description": "The website ID",
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    }
+                },
+                "type": "object"
+            },
+            "Horizons.V1.Websites.WebsiteCollection": {
+                "description": "Array of [`Horizons.V1.Websites.WebsiteResource`](#model/horizonsv1websiteswebsiteresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Horizons.V1.Websites.WebsiteResource"
+                }
+            },
+            "Horizons.V1.Websites.WebsiteResource": {
+                "required": [
+                    "website_id",
+                    "status",
+                    "created_at",
+                    "website_url"
+                ],
+                "properties": {
+                    "website_id": {
+                        "description": "The website ID",
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "description": {
+                        "description": "The website description",
+                        "type": "string",
+                        "example": "Coffee shop landing page",
+                        "nullable": true
+                    },
+                    "domain": {
+                        "description": "The domain the website is published on, if it has been published",
+                        "type": "string",
+                        "example": "example.com",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "The website status",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "suspended",
+                            "deleting",
+                            "deleted"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "description": "The website creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-15T10:30:45Z"
+                    },
+                    "website_url": {
+                        "description": "The website URL for the user to access their website in Hostinger Horizons interface",
+                        "type": "string",
+                        "example": "https://horizons.hostinger.com/123e4567-e89b-12d3-a456-426614174000"
                     }
                 },
                 "type": "object"
