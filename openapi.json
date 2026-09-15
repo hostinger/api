@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.52.0",
+        "version": "1.52.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6756,6 +6756,84 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/git/installations": {
+            "get": {
+                "tags": [
+                    "Hosting: Git"
+                ],
+                "summary": "List Git installations",
+                "description": "Lists the Git provider accounts the customer has connected. Only installations with status\n`active` are returned unless the `status` filter says otherwise.\n\nAn empty list means the customer has no active installation. Check `status=suspended` and\n`status=pending` as well. If there is none at all, GitHub has to be connected once in hPanel\n(Websites, Manage, Advanced, Git, Connect GitHub; or Add Website, Node.js Web App, Import Git\nRepository, Continue with GitHub); this endpoint then lists the new installation.\n\nUse `uuid` as the path parameter of `List Git installation repositories`.",
+                "operationId": "hosting_listGitInstallationsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/provider"
+                    },
+                    {
+                        "$ref": "#/components/parameters/status"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Git.GitInstallationCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/git/installations/{uuid}/repositories": {
+            "get": {
+                "tags": [
+                    "Hosting: Git"
+                ],
+                "summary": "List Git installation repositories",
+                "description": "Lists the repositories the Git installation can access, read live from the provider. Works\nfor github and gitlab installations. Use an active installation: a suspended or pending one\nis still queried and the call fails with whatever the provider answers. The list is cut at\nthe first 500 repositories in the order the provider returns them; when the account has\nmore, name the repository directly instead of searching this list.\n\n`owner`, `name` and `default_branch` identify a repository and a branch to deploy. Returns\n404 when the installation does not belong to the customer. Limited to 10 calls per minute\nper API client (429 above that).",
+                "operationId": "hosting_listGitInstallationRepositoriesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/git_installation_uuid_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Git.GitRepositoryCollection"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -25208,6 +25286,157 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Git.GitInstallationCollection": {
+                "description": "Array of [`Hosting.V1.Git.GitInstallationResource`](#model/hostingv1gitgitinstallationresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Git.GitInstallationResource"
+                }
+            },
+            "Hosting.V1.Git.GitInstallationResource": {
+                "required": [
+                    "uuid",
+                    "provider",
+                    "account_login",
+                    "account_type",
+                    "account_avatar_url",
+                    "status",
+                    "installed_at",
+                    "created_at",
+                    "has_oauth"
+                ],
+                "properties": {
+                    "uuid": {
+                        "description": "Installation identifier. Use it as the path parameter of List Git installation repositories.",
+                        "type": "string",
+                        "example": "018f5e2a-1234-7890-abcd-1234567890ab"
+                    },
+                    "provider": {
+                        "description": "Git provider the account belongs to",
+                        "type": "string",
+                        "enum": [
+                            "github",
+                            "gitlab",
+                            "bitbucket"
+                        ],
+                        "example": "github"
+                    },
+                    "account_login": {
+                        "description": "Login of the connected provider account (user or organization)",
+                        "type": "string",
+                        "example": "octocat",
+                        "nullable": true
+                    },
+                    "account_type": {
+                        "description": "Whether the connected account is a user or an organization",
+                        "type": "string",
+                        "enum": [
+                            "User",
+                            "Organization"
+                        ],
+                        "example": "User",
+                        "nullable": true
+                    },
+                    "account_avatar_url": {
+                        "description": "Avatar URL of the connected provider account",
+                        "type": "string",
+                        "example": "https://avatars.githubusercontent.com/u/583231",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "Installation status. Only active installations are listed unless the status filter says\notherwise.",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "active",
+                            "suspended"
+                        ],
+                        "example": "active"
+                    },
+                    "installed_at": {
+                        "description": "When the provider app was installed on the account",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-15T10:30:00Z",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "When the installation record was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-15T10:00:00Z"
+                    },
+                    "has_oauth": {
+                        "description": "True when the GitHub user account has a stored OAuth token whose refresh token is\nstill valid, false when the token is missing or its refresh token expired. Null for\norganization accounts and for providers other than GitHub.",
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Git.GitRepositoryCollection": {
+                "description": "Array of [`Hosting.V1.Git.GitRepositoryResource`](#model/hostingv1gitgitrepositoryresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Git.GitRepositoryResource"
+                }
+            },
+            "Hosting.V1.Git.GitRepositoryResource": {
+                "required": [
+                    "id",
+                    "name",
+                    "full_name",
+                    "owner",
+                    "is_private",
+                    "html_url",
+                    "clone_url",
+                    "default_branch"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Repository identifier assigned by the Git provider",
+                        "type": "integer",
+                        "example": 12345
+                    },
+                    "name": {
+                        "description": "Repository name without the .git suffix",
+                        "type": "string",
+                        "example": "my-repository"
+                    },
+                    "full_name": {
+                        "description": "Owner and repository name joined with a slash",
+                        "type": "string",
+                        "example": "octocat/my-repository"
+                    },
+                    "owner": {
+                        "description": "Repository owner login",
+                        "type": "string",
+                        "example": "octocat"
+                    },
+                    "is_private": {
+                        "description": "Whether the repository is private",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "html_url": {
+                        "description": "Repository page URL",
+                        "type": "string",
+                        "example": "https://github.com/octocat/my-repository"
+                    },
+                    "clone_url": {
+                        "description": "HTTPS clone URL",
+                        "type": "string",
+                        "example": "https://github.com/octocat/my-repository.git"
+                    },
+                    "default_branch": {
+                        "description": "Default branch of the repository",
+                        "type": "string",
+                        "example": "main"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.BuildAnalysisResource": {
                 "required": [
                     "analysis",
@@ -31362,6 +31591,49 @@
                     "nullable": true
                 }
             },
+            "status": {
+                "name": "status",
+                "in": "query",
+                "description": "Filter by installation status",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "default": "active",
+                    "enum": [
+                        "pending",
+                        "active",
+                        "suspended"
+                    ],
+                    "example": "active"
+                }
+            },
+            "git_installation_uuid_path": {
+                "name": "uuid",
+                "in": "path",
+                "description": "Git installation UUID from the List Git installations endpoint",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "018f5e2a-1234-7890-abcd-1234567890ab"
+                }
+            },
+            "provider": {
+                "name": "provider",
+                "in": "query",
+                "description": "Filter by Git provider",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "github",
+                        "gitlab",
+                        "bitbucket"
+                    ],
+                    "example": "github",
+                    "nullable": true
+                }
+            },
             "order_id": {
                 "name": "order_id",
                 "in": "query",
@@ -32390,6 +32662,12 @@
             "x-parent": "Hosting"
         },
         {
+            "name": "Hosting: Git",
+            "description": "Work with the Git provider accounts a customer connected in\nhPanel. This category lists the connected Git installations and\nthe repositories each installation can access.",
+            "x-displayName": "Git",
+            "x-parent": "Hosting"
+        },
+        {
             "name": "Hosting: NodeJS",
             "description": "Hosting: NodeJS",
             "x-displayName": "NodeJS",
@@ -32807,6 +33085,7 @@
                 "Hosting: Databases",
                 "Hosting: Domains",
                 "Hosting: Files",
+                "Hosting: Git",
                 "Hosting: NodeJS",
                 "Hosting: Orders",
                 "Hosting: PHP",
