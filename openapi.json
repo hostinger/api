@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.52.2",
+        "version": "1.53.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -8135,6 +8135,169 @@
                             "maxLength": 255,
                             "example": "https://example.com/old-page"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/ssl/setup": {
+            "post": {
+                "tags": [
+                    "Hosting: SSL"
+                ],
+                "summary": "Install SSL",
+                "description": "Requests a lifetime SSL certificate for the website. The installation runs in the background;\n`Get SSL status` reports `active` or `failed` when it ends. An `active` lifetime certificate\ndoes not block the request: a new installation is requested, which is how a certificate is\nreinstalled.\n\nReturns 422 for free subdomains (their certificate is managed by the platform), while an\ninstallation is `installing` or `waiting_for_retry`, when the website's certificate was\nrevoked (it cannot be reissued), and when an uploaded custom certificate is installed; that\none has to be uninstalled first.",
+                "operationId": "hosting_installSSLV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/ssl/status": {
+            "get": {
+                "tags": [
+                    "Hosting: SSL"
+                ],
+                "summary": "Get SSL status",
+                "description": "Returns the SSL state of the website: the certificate `status` and `provider`, whether the\ncertificate is a lifetime one managed by the platform, whether HTTP requests are redirected to\nHTTPS, when the certificate stops being valid and the last installation error.\n\n`installing` and `waiting_for_retry` mean an installation is in progress. `failed` means the\nlast installation gave up, or the website was not updated for 60 minutes while `installing`;\n`last_error` holds the reason when it is a known message, otherwise it is null. `expired`\nmeans the assigned certificate's validity has ended. `not_installed` means no certificate is\nassigned. Free subdomains use a platform-managed certificate: with no installation recorded\nthey report `active` with `provider` and `expires_at` null.",
+                "operationId": "hosting_getSSLStatusV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Ssl.SslStatusResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/ssl/https-redirect/toggle": {
+            "patch": {
+                "tags": [
+                    "Hosting: SSL"
+                ],
+                "summary": "Toggle HTTPS redirect",
+                "description": "Turns the HTTP to HTTPS redirect of the website on or off, based on `is_enabled`. Does\nnothing when the redirect is already in the requested state. Turning it on requires an\ninstalled certificate (`status` `active` or `expired` on `Get SSL status`) and returns 422\nwhen there is none; turning it off is always accepted.",
+                "operationId": "hosting_toggleHTTPSRedirectV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Ssl.ToggleHttpsRedirectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/ssl": {
+            "delete": {
+                "tags": [
+                    "Hosting: SSL"
+                ],
+                "summary": "Uninstall SSL",
+                "description": "Removes the SSL certificate assigned to the website, turns the HTTPS redirect off and cancels\na pending installation retry. The website serves plain HTTP until a new installation\ncompletes. `Get SSL status` reports `not_installed` as soon as the call returns; the call also\nsucceeds when no certificate is assigned, so repeating it is safe.\n\nReturns 422 for free subdomains (their certificate is managed by the platform) and while an\ninstallation is `installing`.",
+                "operationId": "hosting_uninstallSSLV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
                     }
                 ],
                 "responses": {
@@ -19217,6 +19380,19 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Ssl.ToggleHttpsRedirectRequest": {
+                "required": [
+                    "is_enabled"
+                ],
+                "properties": {
+                    "is_enabled": {
+                        "description": "Turn the HTTP to HTTPS redirect on (true) or off (false) for the website.",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Websites.CreateWebsiteRequest": {
                 "required": [
                     "domain",
@@ -26560,6 +26736,68 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Ssl.SslStatusResource": {
+                "required": [
+                    "status",
+                    "provider",
+                    "is_lifetime",
+                    "is_https_redirect_enabled",
+                    "expires_at",
+                    "last_error"
+                ],
+                "properties": {
+                    "status": {
+                        "description": "Current certificate status",
+                        "type": "string",
+                        "enum": [
+                            "not_installed",
+                            "installing",
+                            "waiting_for_retry",
+                            "active",
+                            "expired",
+                            "failed"
+                        ],
+                        "example": "active"
+                    },
+                    "provider": {
+                        "description": "Provider of the assigned certificate, or of the last recorded installation when none is\nassigned. `custom` means an uploaded certificate. Null when no certificate is assigned and\nno installation is recorded, which is also the case for free subdomains on the\nplatform-managed certificate.",
+                        "type": "string",
+                        "enum": [
+                            "custom",
+                            "letsencrypt",
+                            "zerossl",
+                            "googlessl",
+                            "hssl"
+                        ],
+                        "example": "letsencrypt",
+                        "nullable": true
+                    },
+                    "is_lifetime": {
+                        "description": "Whether the certificate comes from a lifetime provider managed by the platform, not an\nuploaded one. Follows `provider`: it reflects the last recorded installation when no\ncertificate is assigned, and is false when `provider` is null.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_https_redirect_enabled": {
+                        "description": "Whether HTTP requests to the website are redirected to HTTPS",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "expires_at": {
+                        "description": "End of the assigned certificate validity period; null when no certificate details are\navailable.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-01-15T10:30:00Z",
+                        "nullable": true
+                    },
+                    "last_error": {
+                        "description": "Last installation error, when it is one of the known displayable messages",
+                        "type": "string",
+                        "example": "Max attempts to retry were reached",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Websites.WebsiteCollection": {
                 "description": "Array of [`Hosting.V1.Websites.WebsiteResource`](#model/hostingv1websiteswebsiteresource)",
                 "type": "array",
@@ -33028,6 +33266,12 @@
             "x-parent": "Hosting"
         },
         {
+            "name": "Hosting: SSL",
+            "description": "Hosting: SSL",
+            "x-displayName": "SSL",
+            "x-parent": "Hosting"
+        },
+        {
             "name": "Hosting: Websites",
             "description": "Manage hosted websites and web applications. This category\nincludes endpoints for website deployment, configuration,\nmonitoring, and management of hosting resources.",
             "x-displayName": "Websites",
@@ -33426,6 +33670,7 @@
                 "Hosting: Orders",
                 "Hosting: PHP",
                 "Hosting: Redirects",
+                "Hosting: SSL",
                 "Hosting: Websites"
             ]
         },
