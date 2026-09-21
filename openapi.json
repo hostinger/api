@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.54.0",
+        "version": "1.54.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6309,6 +6309,55 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/databases/setup": {
+            "post": {
+                "tags": [
+                    "Hosting: Databases"
+                ],
+                "summary": "Setup website database",
+                "description": "Creates a new MySQL database for the website and writes its connection details into the\nwebsite's environment variables, then restarts the application. The platform generates the\npassword (and the database name and user, unless supplied). The password is never returned;\nthe application reads it from the environment.\n\nWritten variables: `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` and\n`DATABASE_URL` (`mysql://user:password@host:port/name`, user and password percent-encoded).\nExisting variables are kept. If the website already has any variable with one of these\nnames the call fails with 422 and nothing is created; the `Replace Node.js environment\nvariables` endpoint removes them.\n\nAfter this call the variables are ordinary environment variables: the\n`Replace Node.js environment variables` endpoint changes or removes them like any other.\n\nA restart is enough for apps that read environment variables at process start, such as\nExpress or NestJS. Frameworks that bake variables into the build output (Next.js,\n`NEXT_PUBLIC_*`) see the new values only after a fresh build (`Start Node.js build` endpoint).\n\nA password in the request is ignored; the platform always generates it. The optional `name`\nand `user` are identifiers, not secrets.",
+                "operationId": "hosting_setupWebsiteDatabaseV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Databases.SetupDatabaseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Databases.WebsiteDatabaseResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -18898,6 +18947,27 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Databases.SetupDatabaseRequest": {
+                "properties": {
+                    "name": {
+                        "description": "Optional database name. Generated when omitted. Letters, digits and underscores;\nmust not start with an underscore. Up to 14 characters without the account username\nprefix (`u123456789_`), which is added automatically when missing. With the prefix\nthe full name is 12 to 25 characters.",
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_]*$",
+                        "example": "u123456789_blog"
+                    },
+                    "user": {
+                        "description": "Optional database user. Generated when omitted. Letters, digits and underscores;\nmust not start with an underscore. Up to 14 characters without the account username\nprefix (`u123456789_`), which is added automatically when missing. With the prefix\nthe full user is 12 to 25 characters.",
+                        "type": "string",
+                        "maxLength": 25,
+                        "minLength": 1,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_]*$",
+                        "example": "u123456789_blog_admin"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Datacenters.ListRequest": {
                 "required": [
                     "order_id"
@@ -25560,6 +25630,64 @@
                         "description": "Allowed remote host: an IPv4/IPv6 address, or \"%\" for any host.",
                         "type": "string",
                         "example": "192.0.2.10"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Databases.WebsiteDatabaseConnectionResource": {
+                "required": [
+                    "name",
+                    "user",
+                    "host",
+                    "port"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Database name, as written into DB_NAME",
+                        "type": "string",
+                        "example": "u123456789_aB3dE"
+                    },
+                    "user": {
+                        "description": "Database user, as written into DB_USER",
+                        "type": "string",
+                        "example": "u123456789_xY9zW"
+                    },
+                    "host": {
+                        "description": "MySQL host as written into DB_HOST. The application connects over the loopback.",
+                        "type": "string",
+                        "example": "localhost"
+                    },
+                    "port": {
+                        "description": "MySQL port as written into DB_PORT",
+                        "type": "integer",
+                        "example": 3306
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Databases.WebsiteDatabaseResource": {
+                "required": [
+                    "database",
+                    "env_var_keys"
+                ],
+                "properties": {
+                    "database": {
+                        "$ref": "#/components/schemas/Hosting.V1.Databases.WebsiteDatabaseConnectionResource"
+                    },
+                    "env_var_keys": {
+                        "description": "Names of the environment variables written for this database. Values are never returned.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "DB_HOST",
+                            "DB_PORT",
+                            "DB_NAME",
+                            "DB_USER",
+                            "DB_PASSWORD",
+                            "DATABASE_URL"
+                        ]
                     }
                 },
                 "type": "object"
