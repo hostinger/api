@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.53.1",
+        "version": "1.54.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -789,6 +789,159 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains/{domain}/ssl/reinstall": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: SSL"
+                ],
+                "summary": "Reinstall website SSL",
+                "description": "Replaces the Let's Encrypt certificate of the domain: the current platform certificate, when\none is recorded, is revoked and removed, then a new setup starts in the background. Returns at\nonce; `Get website SSL status` reports `installing` while it runs, then `active` or `failed`.\n\nReturns 422 for free subdomains, when a certificate process is recorded for the domain (a\nfailed setup counts until it is cleaned up), or when the domain hit its limit of three setups\nper seven days. Returns 429 when the same domain was requested less than a minute ago, and 403\nwhen the website is suspended or locked, and 404 when the website or the domain does not exist.",
+                "operationId": "agency-hosting_reinstallWebsiteSSLV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains/{domain}/ssl/setup": {
+            "post": {
+                "tags": [
+                    "Agency Hosting: SSL"
+                ],
+                "summary": "Install website SSL",
+                "description": "Starts a Let's Encrypt certificate setup for the domain and returns at once; the setup runs in\nthe background. `Get website SSL status` reports `installing` while it runs, then `active` or\n`failed`; the `ssl_setup` entry of `List website processes` shows the same progress.\n\nReturns 422 when the domain already has a platform certificate that is not expired, when a\ncertificate process is recorded for the domain (a failed setup counts until it is cleaned up),\nor when the domain hit its limit of three setups per seven days. Returns 429 when the same\ndomain was requested less than a minute ago, 403 when the website is suspended or locked, and\n404 when the website or the domain does not exist.",
+                "operationId": "agency-hosting_installWebsiteSSLV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains/{domain}/ssl/status": {
+            "get": {
+                "tags": [
+                    "Agency Hosting: SSL"
+                ],
+                "summary": "Get website SSL status",
+                "description": "Returns the SSL state of one domain of an Agency Plan website: the certificate `status`,\nwhether the certificate was uploaded by the customer, and when it stops being valid.\n\n`installing` means a certificate setup is running or retrying; the `ssl_setup` entry of\n`List website processes` shows the same progress. `active` means a valid certificate is in\nplace: uploaded by the customer, issued by the platform, or a lifetime certificate bought for\nthe domain. `failed` means the last setup gave up and no valid certificate is in place.\n`expired` means the certificate has run out. `not_installed` means the domain has no\ncertificate and no setup process. Returns 404 when the website or the domain does not exist.",
+                "operationId": "agency-hosting_getWebsiteSSLStatusV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgencyHosting.V1.Ssl.SslStatusResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agency-hosting/v1/websites/{website_uid}/domains/{domain}/ssl": {
+            "delete": {
+                "tags": [
+                    "Agency Hosting: SSL"
+                ],
+                "summary": "Uninstall website SSL",
+                "description": "Removes the platform-issued Let's Encrypt certificate of the domain: the certificate is revoked\nand deleted before the response, so the domain is no longer served with a platform certificate\nuntil a new setup completes. Also succeeds when the domain has no platform certificate to\nremove. Uploaded (custom) certificates are not affected.\n\nReturns 422 when a certificate process is recorded for the domain (a failed setup counts until\nit is cleaned up), 429 when the same domain was requested less than a minute ago, and 403 when\nthe website is suspended or locked, and 404 when the website or the domain does not exist.",
+                "operationId": "agency-hosting_uninstallWebsiteSSLV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/website_uid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -21571,6 +21724,40 @@
                 },
                 "type": "object"
             },
+            "AgencyHosting.V1.Ssl.SslStatusResource": {
+                "required": [
+                    "status",
+                    "is_custom",
+                    "expires_at"
+                ],
+                "properties": {
+                    "status": {
+                        "description": "`installing` while a certificate setup is running or retrying, `active` when a valid\ncertificate is in place (uploaded, platform-issued, or a lifetime certificate bought for\nthe domain), `failed` when the last setup gave up and no valid certificate is in place,\n`expired` when the certificate has run out, `not_installed` when the domain has no\ncertificate and no setup process.",
+                        "type": "string",
+                        "enum": [
+                            "not_installed",
+                            "installing",
+                            "failed",
+                            "active",
+                            "expired"
+                        ],
+                        "example": "active"
+                    },
+                    "is_custom": {
+                        "description": "Whether the certificate was uploaded by the customer instead of issued or sold by the\nplatform.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "expires_at": {
+                        "description": "End of the validity period of the certificate in place; null when there is none or the\nuploaded certificate carries no expiry.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-01-15T10:30:00Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "AgencyHosting.V1.Websites.BuilderWebsiteDetailsResource": {
                 "properties": {
                     "id": {
@@ -33341,6 +33528,12 @@
             "x-parent": "Agency Hosting"
         },
         {
+            "name": "Agency Hosting: SSL",
+            "description": "Agency Hosting: SSL",
+            "x-displayName": "SSL",
+            "x-parent": "Agency Hosting"
+        },
+        {
             "name": "Agency Hosting: Websites",
             "description": "Agency Hosting: Websites",
             "x-displayName": "Websites",
@@ -33687,6 +33880,7 @@
                 "Agency Hosting: Orders",
                 "Agency Hosting: PHP",
                 "Agency Hosting: Website Setups",
+                "Agency Hosting: SSL",
                 "Agency Hosting: Websites",
                 "Agency Hosting: WordPress"
             ]
