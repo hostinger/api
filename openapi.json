@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.54.2",
+        "version": "1.55.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -6152,7 +6152,7 @@
                     "Hosting: Databases"
                 ],
                 "summary": "Create database remote connection",
-                "description": "Allows a remote host to connect to the specified database.\n\nProvide an IPv4/IPv6 address, or \"%\" to allow any host. The database name must be\nthe full name returned by the list databases endpoint.",
+                "description": "Allows a remote host to connect to the specified database.\n\nProvide an IPv4/IPv6 address, or \"%\" to allow any host. The database name must be\nthe full name returned by the list databases endpoint. Database creation is synchronous,\nso a 404 here means no database with that name exists under the username, not that it\nis still being created.",
                 "operationId": "hosting_createDatabaseRemoteConnectionV1",
                 "parameters": [
                     {
@@ -6756,7 +6756,7 @@
                     "Hosting: Files"
                 ],
                 "summary": "Generate upload URL",
-                "description": "Generate a file browser upload URL with authentication credentials\nfor uploading files directly to a website's file storage.\n\nReturns `url`, `auth_key` and `rest_auth_key`. Use these to upload a file to the\nwebsite's `public_html` directory via the TUS resumable upload protocol (TUS 1.0.0).\nSend `X-Auth: {auth_key}` and `X-Auth-Rest: {rest_auth_key}` headers on every request\nbelow.\n\n1. Create the upload: `POST` to `{url}/{relative_file_path}?override=true` with headers\n   `upload-length: {file size in bytes}` and `upload-offset: 0`. Expect `201 Created`.\n2. Upload the file: send the file bytes to the same location (any TUS 1.0.0 client, or\n   `PATCH` requests with an `upload-offset` header tracking progress) until complete.\n\n`relative_file_path` is the destination path inside `public_html`, e.g. `app.zip`.\n\nInstead of a TUS client, plain `curl` also works:\n```\nFILE=app.zip\nSIZE=$(stat -f%z \"$FILE\")   # stat -c%s on Linux\n\ncurl -i -X POST \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Upload-Length: ${SIZE}\" \\\n  -H \"Upload-Offset: 0\"\n# -> 201 Created\n\ncurl -i -X PATCH \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Content-Type: application/offset+octet-stream\" \\\n  -H \"Upload-Offset: 0\" \\\n  --data-binary \"@${FILE}\"\n# -> 204 No Content, Upload-Offset response header equals SIZE when done\n```",
+                "description": "Generate a file browser upload URL with authentication credentials\nfor uploading files directly to a website's file storage.\n\nWhile the website is still being set up (`status: running` on the list website setups\nendpoint) this endpoint returns 409 with a `Retry-After` header: wait that many\nseconds and retry, or poll the website setups until the status is `completed`.\n\nReturns `url`, `auth_key` and `rest_auth_key`. Use these to upload a file to the\nwebsite's `public_html` directory via the TUS resumable upload protocol (TUS 1.0.0).\nSend `X-Auth: {auth_key}` and `X-Auth-Rest: {rest_auth_key}` headers on every request\nbelow.\n\n1. Create the upload: `POST` to `{url}/{relative_file_path}?override=true` with headers\n   `upload-length: {file size in bytes}` and `upload-offset: 0`. Expect `201 Created`.\n2. Upload the file: send the file bytes to the same location (any TUS 1.0.0 client, or\n   `PATCH` requests with an `upload-offset` header tracking progress) until complete.\n\n`relative_file_path` is the destination path inside `public_html`, e.g. `app.zip`.\n\nInstead of a TUS client, plain `curl` also works:\n```\nFILE=app.zip\nSIZE=$(stat -f%z \"$FILE\")   # stat -c%s on Linux\n\ncurl -i -X POST \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Upload-Length: ${SIZE}\" \\\n  -H \"Upload-Offset: 0\"\n# -> 201 Created\n\ncurl -i -X PATCH \"{url}/${FILE}?override=true\" \\\n  -H \"X-Auth: {auth_key}\" \\\n  -H \"X-Auth-Rest: {rest_auth_key}\" \\\n  -H \"Tus-Resumable: 1.0.0\" \\\n  -H \"Content-Type: application/offset+octet-stream\" \\\n  -H \"Upload-Offset: 0\" \\\n  --data-binary \"@${FILE}\"\n# -> 204 No Content, Upload-Offset response header equals SIZE when done\n```",
                 "operationId": "hosting_generateUploadURLV1",
                 "requestBody": {
                     "required": true,
@@ -6784,6 +6784,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ConflictResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -7911,6 +7914,51 @@
                 }
             }
         },
+        "/api/hosting/v1/onboardings": {
+            "get": {
+                "tags": [
+                    "Hosting: Websites"
+                ],
+                "summary": "List website setups",
+                "description": "Returns the website setups started in the last 24 hours for the hosting accounts\naccessible to the authenticated client, newest first.\n\nMeant for polling right after creating a website: the website shows up in the\nwebsites list before its server-side setup has finished, and while the setup is\n`running` endpoints that operate on that website may respond with `404` or `409`.\nPoll this endpoint with the `domain` filter every 10 to 15 seconds and wait for\n`status: completed` before uploading files, deploying or creating databases.\n`failed` means the setup stopped before finishing or has not reported progress for\nover an hour. Setups older than 24 hours are not listed.",
+                "operationId": "hosting_listWebsiteSetupsV1",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "Filter by domain name (exact match)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255,
+                            "example": "example.com",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Onboardings.OnboardingCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/orders": {
             "get": {
                 "tags": [
@@ -8531,7 +8579,7 @@
                     "Hosting: Websites"
                 ],
                 "summary": "List websites",
-                "description": "Retrieve a paginated list of websites (CloudLinux, Builder, and Horizons) accessible to the\nauthenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nEach website includes a `website_type` field describing the type of\nwebsite detected on the underlying platform (`wordpress`, `builder`,\n`horizons`, `nodejs`, or `other`). Some fields, such as\n`vhost_type`, `username`, and `root_directory`, only apply to\nCloudLinux websites and are null for other platforms.\n\nUse `website_types` to list only websites of a given detected type, e.g. only\nWordPress websites (`website_types=wordpress`) or only Node.js websites\n(`website_types=nodejs`). Combine with the other available query parameters to\nfilter by username, order ID, enabled status, or domain name for more targeted\nresults.",
+                "description": "Retrieve a paginated list of websites (CloudLinux, Builder, and Horizons) accessible to the\nauthenticated client.\n\nThis endpoint returns websites from your hosting accounts as well as\nwebsites from other client hosting accounts that have shared access\nwith you.\n\nEach website includes a `website_type` field describing the type of\nwebsite detected on the underlying platform (`wordpress`, `builder`,\n`horizons`, `nodejs`, or `other`). Some fields, such as\n`vhost_type`, `username`, and `root_directory`, only apply to\nCloudLinux websites and are null for other platforms.\n\nUse `website_types` to list only websites of a given detected type, e.g. only\nWordPress websites (`website_types=wordpress`) or only Node.js websites\n(`website_types=nodejs`). Combine with the other available query parameters to\nfilter by username, order ID, enabled status, or domain name for more targeted\nresults.\n\nA website appears in this list before its server-side setup has finished, and\n`is_enabled` reflects suspension, not readiness. To know when a newly created website\nis ready for file, deploy or database operations, poll the list website setups\nendpoint instead.",
                 "operationId": "hosting_listWebsitesV1",
                 "parameters": [
                     {
@@ -8588,7 +8636,7 @@
                     "Hosting: Websites"
                 ],
                 "summary": "Create website",
-                "description": "Create a new website for the authenticated client.\n\nYou must choose which hosting order to create this website on. Pass that\norder as `order_id` together with the domain name. List orders to see\navailable IDs; the website is provisioned on that order's hosting plan.\n\nThe datacenter_code parameter is required when creating the first website\non a new hosting plan - this will set up and configure new hosting account\nin the selected datacenter.\n\nSubsequent websites will be hosted on the same datacenter automatically.\n\nWebsite creation takes up to a few minutes to complete. Check the\nwebsites list endpoint to see when your new website becomes available.",
+                "description": "Create a new website for the authenticated client.\n\nYou must choose which hosting order to create this website on. Pass that\norder as `order_id` together with the domain name. List orders to see\navailable IDs; the website is provisioned on that order's hosting plan.\n\nThe datacenter_code parameter is required when creating the first website\non a new hosting plan - this will set up and configure new hosting account\nin the selected datacenter.\n\nSubsequent websites will be hosted on the same datacenter automatically.\n\nWebsite creation is asynchronous and takes up to a few minutes. Poll the list website\nsetups endpoint with the `domain` filter every 10 to 15 seconds and wait for `status:\ncompleted` before uploading files, deploying or creating databases. While the setup is\n`running`, endpoints that operate on the website may respond with `404` or `409`.\n`is_enabled` on the websites list reflects suspension, not readiness.",
                 "operationId": "hosting_createWebsiteV1",
                 "requestBody": {
                     "required": true,
@@ -26862,6 +26910,57 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Onboardings.OnboardingCollection": {
+                "description": "Array of [`Hosting.V1.Onboardings.OnboardingResource`](#model/hostingv1onboardingsonboardingresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Onboardings.OnboardingResource"
+                }
+            },
+            "Hosting.V1.Onboardings.OnboardingResource": {
+                "required": [
+                    "domain",
+                    "username",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain of the website being set up.",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "username": {
+                        "description": "Hosting account username.",
+                        "type": "string",
+                        "example": "u123456789"
+                    },
+                    "status": {
+                        "description": "`running` while the website is still being set up, `completed` once the setup has finished, `failed` when it stopped before finishing or has not reported progress for over an hour.",
+                        "type": "string",
+                        "enum": [
+                            "running",
+                            "completed",
+                            "failed"
+                        ],
+                        "example": "running"
+                    },
+                    "created_at": {
+                        "description": "When the setup was requested.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15T10:30:00.000000Z"
+                    },
+                    "updated_at": {
+                        "description": "When the setup last reported progress.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15T10:32:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Orders.OrderCollection": {
                 "description": "Array of [`Hosting.V1.Orders.OrderResource`](#model/hostingv1ordersorderresource)",
                 "type": "array",
@@ -27141,7 +27240,7 @@
                         "nullable": true
                     },
                     "is_enabled": {
-                        "description": "Whether website is enabled",
+                        "description": "True unless the website is suspended. Not a readiness signal: a website that is still being set up is enabled too, see the list website setups endpoint.",
                         "type": "boolean",
                         "example": true
                     },
@@ -31972,6 +32071,38 @@
             }
         },
         "responses": {
+            "Common.Response.ConflictResponse": {
+                "description": "Conflict response. `Retry-After`, when present, is the number of seconds to wait before retrying.",
+                "headers": {
+                    "Retry-After": {
+                        "description": "Seconds to wait before retrying the request",
+                        "schema": {
+                            "type": "integer",
+                            "example": 30
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Message of the error",
+                                    "type": "string",
+                                    "example": "Error message"
+                                },
+                                "correlation_id": {
+                                    "description": "Request correlation ID",
+                                    "type": "string",
+                                    "example": "26a91bd9-f8c8-4a83-9df9-83e23d696fe3"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "x-scalar-ignore": true
+            },
             "Common.Response.ErrorResponse": {
                 "description": "Error response",
                 "content": {
