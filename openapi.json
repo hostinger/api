@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.55.0",
+        "version": "1.56.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3469,6 +3469,45 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Domains: Transfer"
+                ],
+                "summary": "Start domain transfer",
+                "description": "Transfer a domain from another registrar to your account.\n\nThe transfer runs on a domain transfer service you have already purchased.\n\nBefore making request, unlock the domain at the current registrar and get its authorization\ncode.\n\nA successful response means the transfer has been started. Completion depends on the current\nregistrar and can be followed with the [transfer list endpoint](#tag/domains-transfer).\n\nIf no WHOIS information is provided, default contact information for that TLD will be used.\nBefore making request, ensure WHOIS information for desired TLD exists in your account.\n\nUse this endpoint to bring domains registered elsewhere into your account.",
+                "operationId": "domains_startDomainTransferV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Domains.V1.Transfer.TransferRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -18138,6 +18177,57 @@
                 "type": "object"
             },
             "Domains.V1.Transfer.ClaimRequest": {
+                "required": [
+                    "domain",
+                    "auth_code"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name",
+                        "type": "string",
+                        "example": "my-new-domain.tld"
+                    },
+                    "auth_code": {
+                        "description": "Authorization code from the current registrar",
+                        "type": "string",
+                        "example": "Auth123Code456"
+                    },
+                    "domain_contacts": {
+                        "description": "Domain contact information",
+                        "properties": {
+                            "owner_id": {
+                                "description": "Owner contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "admin_id": {
+                                "description": "Administrative contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 546123
+                            },
+                            "billing_id": {
+                                "description": "Billing contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            },
+                            "tech_id": {
+                                "description": "Technical contact WHOIS record ID",
+                                "type": "integer",
+                                "example": 741288
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "should_keep_ns": {
+                        "description": "Keep the existing nameservers of the domain",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Transfer.TransferRequest": {
                 "required": [
                     "domain",
                     "auth_code"
