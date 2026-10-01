@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.57.0",
+        "version": "1.58.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -21170,6 +21170,39 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Mcp.ExecuteMcpToolRequest": {
+                "required": [
+                    "tool_name"
+                ],
+                "properties": {
+                    "tool_name": {
+                        "description": "Tool name as returned by the List MCP tools endpoint.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "example": "hostinger-ai/pages-get"
+                    },
+                    "parameters": {
+                        "description": "Tool input matching the input schema returned by the Show MCP tool info endpoint.",
+                        "type": "object",
+                        "example": {
+                            "id": 1
+                        },
+                        "additionalProperties": true
+                    },
+                    "server": {
+                        "description": "MCP server exposing the tool. Defaults to the mcp-adapter default server.",
+                        "type": "string",
+                        "enum": [
+                            "mcp-adapter-default-server",
+                            "hostinger-ai-assistant-mcp-server"
+                        ],
+                        "example": "mcp-adapter-default-server",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.Memcached.ToggleMemcachedRequest": {
                 "required": [
                     "enabled"
@@ -31782,6 +31815,20 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Mcp.McpToolResultResource": {
+                "description": "Structured content returned by the WordPress MCP server, passed through as-is. The shape\ndepends on the endpoint and the tool: the list endpoint returns the available tools, the\ninfo endpoint returns the tool definition with its input and output schemas, and the\nexecute endpoint returns the tool output. Plain text responses are wrapped as\n`{\"text\": \"...\"}`.",
+                "type": "object",
+                "example": {
+                    "abilities": [
+                        {
+                            "name": "hostinger-ai/pages-get",
+                            "label": "Get Page",
+                            "description": "Get a single WordPress page by ID."
+                        }
+                    ]
+                },
+                "additionalProperties": true
+            },
             "WordPress.V1.Memcached.MemcachedStatusResource": {
                 "properties": {
                     "status": {
@@ -33560,6 +33607,21 @@
                     "example": 1268054
                 }
             },
+            "mcp_server": {
+                "name": "server",
+                "in": "query",
+                "description": "MCP server exposing the tools. Defaults to the mcp-adapter default server.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "mcp-adapter-default-server",
+                        "hostinger-ai-assistant-mcp-server"
+                    ],
+                    "example": "mcp-adapter-default-server",
+                    "nullable": true
+                }
+            },
             "software_path": {
                 "name": "software",
                 "in": "path",
@@ -33947,6 +34009,12 @@
             "x-parent": "WordPress"
         },
         {
+            "name": "WordPress: MCP",
+            "description": "Work with the MCP (Model Context Protocol) tools exposed by a\nWordPress installation. This category includes endpoints for\ndiscovering the available tools, inspecting a tool's input and\noutput schemas, and executing a tool on the site.",
+            "x-displayName": "MCP",
+            "x-parent": "WordPress"
+        },
+        {
             "name": "Horizons"
         },
         {
@@ -34245,7 +34313,8 @@
                 "WordPress: LiteSpeed Cache",
                 "WordPress: Maintenance",
                 "WordPress: Login",
-                "WordPress: AI Tools"
+                "WordPress: AI Tools",
+                "WordPress: MCP"
             ]
         },
         {
