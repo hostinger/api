@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.58.0",
+        "version": "1.58.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7195,6 +7195,158 @@
                     },
                     "429": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/git/repositories/deploy": {
+            "post": {
+                "tags": [
+                    "Hosting: Git"
+                ],
+                "summary": "Deploy website Git repository",
+                "description": "Clones a Git repository into a directory of the website, or pulls it again. An empty or missing\ndirectory gets a clone of the branch. A directory that already holds this repository and branch is\nreset to its last commit and pulled: changes made on the server to files the repository tracks are\ndiscarded, files it does not track stay. A directory that holds other files, including another\nrepository or another branch of this one, is rejected. `composer install` runs after the clone or\npull when the repository has a `composer.json`.\n\nThe call waits for the deployment and returns its log. `is_success` false means Git or composer\nfailed and the log says why. A second call for the same directory is rejected while the first is\nstill waiting for the server. If the request times out, the deployment may still finish on the\nserver; calling again later with the same repository and branch pulls.\n\nPrivate repositories need an SSH URL and the account's Git SSH key from `Generate Git SSH key`,\nadded to the repository as a deploy key.",
+                "operationId": "hosting_deployWebsiteGitRepositoryV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Git.DeployWebsiteGitRepositoryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Git.GitDeployOutputResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/git/repositories": {
+            "get": {
+                "tags": [
+                    "Hosting: Git"
+                ],
+                "summary": "List website Git repositories",
+                "description": "Lists the Git repositories linked to directories of the website, with\n`Deploy website Git repository` or in the Git section of hPanel: clone URL, branch and directory of\neach one. A repository whose clone failed stays listed; deploying it again retries the clone. GitHub\nand GitLab auto-deployments are not listed here; see `Get Git auto-deployment settings`.",
+                "operationId": "hosting_listWebsiteGitRepositoriesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Git.WebsiteGitRepositoryCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/git/ssh-key": {
+            "get": {
+                "tags": [
+                    "Hosting: Git"
+                ],
+                "summary": "Get Git SSH public key",
+                "description": "Returns the public SSH key of the hosting account. `Deploy website Git repository` uses this key to\nclone and pull over SSH, so a private repository works once the key is added to it as a deploy key\non the Git host. `public_key` is null when the account has no key yet.",
+                "operationId": "hosting_getGitSSHPublicKeyV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Git.GitSshKeyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hosting: Git"
+                ],
+                "summary": "Generate Git SSH key",
+                "description": "Creates the SSH key pair of the hosting account and returns the public key. When the account already\nhas a key, returns that key unchanged. One key serves every website of the account; add the public\nkey to a private repository as a deploy key before deploying it.",
+                "operationId": "hosting_generateGitSSHKeyV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Git.GitSshKeyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -19187,6 +19339,38 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Git.DeployWebsiteGitRepositoryRequest": {
+                "required": [
+                    "repository_url",
+                    "branch"
+                ],
+                "properties": {
+                    "repository_url": {
+                        "description": "Clone URL of the repository on any Git host, SSH or HTTPS. Private repositories need an SSH URL\nand the account's Git SSH key added to the repository as a deploy key. An HTTP or HTTPS URL with\na username or token, or any URL with a password, is rejected.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "example": "git@github.com:octocat/my-site.git"
+                    },
+                    "branch": {
+                        "description": "Branch to clone and pull",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1,
+                        "pattern": "^[a-zA-Z0-9._-]([a-zA-Z0-9\\/._-]{0,253}[a-zA-Z0-9._-])?$",
+                        "example": "main"
+                    },
+                    "directory": {
+                        "description": "Directory under the website document root, exactly as `List website Git repositories` returns\nit for an existing repository. Empty, null or omitted means the document root.",
+                        "type": "string",
+                        "default": "",
+                        "maxLength": 100,
+                        "example": "my-site",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Git.UpdateGitAutoDeploymentSettingsRequest": {
                 "required": [
                     "installation_uuid",
@@ -26242,6 +26426,26 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Git.GitDeployOutputResource": {
+                "description": "Result of cloning or pulling a Git repository into the website",
+                "required": [
+                    "is_success",
+                    "output"
+                ],
+                "properties": {
+                    "is_success": {
+                        "description": "Whether the clone or pull, and composer install when it ran, finished without errors",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "output": {
+                        "description": "Log of the deployment steps, and the Git or composer error when `is_success` is false",
+                        "type": "string",
+                        "example": "Deployment start\nRepository cloned\nDeployment end\n"
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Git.GitInstallationCollection": {
                 "description": "Array of [`Hosting.V1.Git.GitInstallationResource`](#model/hostingv1gitgitinstallationresource)",
                 "type": "array",
@@ -26389,6 +26593,93 @@
                         "description": "Default branch of the repository",
                         "type": "string",
                         "example": "main"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Git.GitSshKeyResource": {
+                "description": "Public SSH key the hosting account uses to clone and pull Git repositories",
+                "required": [
+                    "public_key"
+                ],
+                "properties": {
+                    "public_key": {
+                        "description": "Public key to add as a deploy key on the Git host. Null when the account has no key yet.",
+                        "type": "string",
+                        "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7 u123456789@example-server",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Git.WebsiteGitRepositoryCollection": {
+                "description": "Array of [`Hosting.V1.Git.WebsiteGitRepositoryResource`](#model/hostingv1gitwebsitegitrepositoryresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Hosting.V1.Git.WebsiteGitRepositoryResource"
+                }
+            },
+            "Hosting.V1.Git.WebsiteGitRepositoryResource": {
+                "description": "Git repository linked to a directory of the website. A repository whose clone failed stays listed;\ndeploying it again retries the clone.",
+                "required": [
+                    "repository_url",
+                    "branch",
+                    "directory",
+                    "webhook"
+                ],
+                "properties": {
+                    "repository_url": {
+                        "description": "Clone URL of the repository. A username, password or token in an HTTP(S) URL, or a password in any\nURL, is shown as `***`.",
+                        "type": "string",
+                        "example": "git@github.com:octocat/my-site.git"
+                    },
+                    "branch": {
+                        "description": "Branch that is cloned and pulled",
+                        "type": "string",
+                        "example": "main"
+                    },
+                    "directory": {
+                        "description": "Directory under the website document root. Empty means the document root.",
+                        "type": "string",
+                        "example": "my-site"
+                    },
+                    "webhook": {
+                        "$ref": "#/components/schemas/Hosting.V1.Git.WebsiteGitRepositoryWebhookResource"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Git.WebsiteGitRepositoryWebhookResource": {
+                "description": "Auto-deployment webhook of the repository, the same one the Git section of hPanel shows",
+                "required": [
+                    "url",
+                    "provider",
+                    "setup_url",
+                    "tutorial_url"
+                ],
+                "properties": {
+                    "url": {
+                        "description": "Webhook URL to add on the Git host for automatic deployment",
+                        "type": "string",
+                        "example": "https://webhooks.hostinger.com/deploy/6f1ed002ab5595859014ebf0951522d9"
+                    },
+                    "provider": {
+                        "description": "Git host detected from the repository URL. Null when it is not GitHub, GitLab or Bitbucket.",
+                        "type": "string",
+                        "example": "Github",
+                        "nullable": true
+                    },
+                    "setup_url": {
+                        "description": "Page on the Git host where the webhook is added. Null when the host is not detected.",
+                        "type": "string",
+                        "example": "https://github.com/octocat/my-site/settings/hooks/new",
+                        "nullable": true
+                    },
+                    "tutorial_url": {
+                        "description": "Git host guide for adding a webhook. Null when the host is not detected.",
+                        "type": "string",
+                        "example": "https://developer.github.com/webhooks/creating/",
+                        "nullable": true
                     }
                 },
                 "type": "object"
