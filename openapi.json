@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.59.0",
+        "version": "1.60.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5647,13 +5647,23 @@
                     "Horizons: Websites"
                 ],
                 "summary": "Publish website",
-                "description": "Publish a Hostinger Horizons website so its latest changes go live.\\n\nUse this tool when the user asks to publish, deploy or make their website live.\\n\nThis tool starts the publish process and returns the URL the website will be live on.\nPublishing happens asynchronously and takes a few minutes.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat the website is being published and you should provide the published URL to the user immediately.",
+                "description": "Publish a Hostinger Horizons website so its latest changes go live.\\n\nUse this tool when the user asks to publish, deploy or make their website live.\\n\nThis tool starts the publish process and returns the URL the website will be live on.\nPublishing happens asynchronously and takes a few minutes.\\n\nSet `is_template` only when the user explicitly asks to share the website as a template:\ntrue adds a \"Use template\" banner to its published pages that copies the website into the\nvisitor's own account, and false removes it. Leave it out to keep the current setting.\\n\nAfter invoking this tool, your chat reply must be EXACTLY 1 sentence summarizing\nthat the website is being published and you should provide the published URL to the user immediately.",
                 "operationId": "horizons_publishWebsiteV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/website_id_path"
                     }
                 ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Horizons.V1.Websites.PublishWebsiteRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -5664,6 +5674,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -5680,7 +5693,7 @@
                     "Horizons: Websites"
                 ],
                 "summary": "Get website",
-                "description": "Get the link for the user to open their website in Hostinger Horizons interface.\\n\nUse this tool when the user wants the link to an existing website, or when you need its\nwebsite URL before or after editing it.\\n\nWebsites can be edited with the `Edit website` tool, or by the user in Hostinger Horizons\ninterface in the provided website URL.",
+                "description": "Get the link for the user to open their website in Hostinger Horizons interface.\\n\nUse this tool when the user wants the link to an existing website, or when you need its\nwebsite URL before or after editing it.\\n\n`is_in_progress` is true while changes are being generated or the website is being published;\nwait until it is false before publishing. `published_at` is when the website was last published,\n`is_template` is whether its published pages show the \"Use template\" banner, and\n`has_ecommerce_store` is whether it has an online store.\\n\nWebsites can be edited with the `Edit website` tool, or by the user in Hostinger Horizons\ninterface in the provided website URL.",
                 "operationId": "horizons_getWebsiteV1",
                 "parameters": [
                     {
@@ -19191,6 +19204,16 @@
                 },
                 "type": "object"
             },
+            "Horizons.V1.Websites.PublishWebsiteRequest": {
+                "properties": {
+                    "is_template": {
+                        "description": "Set to true to publish the website as a template: its published pages show a \"Use template\" banner\nthat copies the website into the visitor's own account. Set to false to remove the banner.\nLeave it out to keep the current setting.",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.Cache.ToggleCacheRequest": {
                 "required": [
                     "enabled"
@@ -25971,6 +25994,28 @@
                         "description": "The website URL for the user to access their website in Hostinger Horizons interface",
                         "type": "string",
                         "example": "https://horizons.hostinger.com/123e4567-e89b-12d3-a456-426614174000?location=chatgpt"
+                    },
+                    "published_at": {
+                        "description": "When the website was last published, or null if it has never been published",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-01-15T10:30:45Z",
+                        "nullable": true
+                    },
+                    "is_template": {
+                        "description": "Whether the website is published as a template, so its published pages show a \"Use template\" banner",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_in_progress": {
+                        "description": "Whether Hostinger Horizons is still generating changes or publishing the website.\nPublishing is refused while it is true, and editing while changes are being generated.\nAn unfinished template migration also refuses publishing, with its own error,\nwithout setting this flag.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "has_ecommerce_store": {
+                        "description": "Whether the website has an ecommerce store",
+                        "type": "boolean",
+                        "example": false
                     }
                 },
                 "type": "object"
