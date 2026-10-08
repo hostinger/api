@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.60.0",
+        "version": "1.60.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -23614,12 +23614,14 @@
                         "example": "2025-02-27T11:54:22Z"
                     },
                     "expires_at": {
+                        "description": "Final date when the subscription will be or was cancelled and expire. Set when a cancellation is scheduled (e.g. after auto-renewal is disabled) or the subscription is already cancelled; `null` otherwise.",
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z",
                         "nullable": true
                     },
                     "next_billing_at": {
+                        "description": "Date when the next charge will happen while the subscription is auto-renewing. Only relevant when `is_auto_renewed` is `true`; ignore it otherwise.",
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-02-28T11:54:22Z",
