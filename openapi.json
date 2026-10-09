@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.60.1",
+        "version": "1.61.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -14131,7 +14131,7 @@
                     "VPS: Public Keys"
                 ],
                 "summary": "Attach public key",
-                "description": "Attach existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.\n\nUse this endpoint to enable SSH key authentication for VPS instances.",
+                "description": "Deprecated: use `POST /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys` instead.\n\nAttach existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.\n\nUse this endpoint to enable SSH key authentication for VPS instances.",
                 "operationId": "VPS_attachPublicKeyV1",
                 "parameters": [
                     {
@@ -14168,7 +14168,9 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
             }
         },
         "/api/vps/v1/public-keys/{publicKeyId}": {
@@ -14177,7 +14179,7 @@
                     "VPS: Public Keys"
                 ],
                 "summary": "Delete public key",
-                "description": "Delete a public key from your account. \n\n**Deleting public key from account does not remove it from virtual machine** \n       \nUse this endpoint to remove unused SSH keys from account.",
+                "description": "Deprecated: account-level public keys have no direct replacement. Root SSH keys are now managed per\nvirtual machine via `DELETE /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys`.\n\nDelete a public key from your account. \n\n**Deleting public key from account does not remove it from virtual machine** \n       \nUse this endpoint to remove unused SSH keys from account.",
                 "operationId": "VPS_deletePublicKeyV1",
                 "parameters": [
                     {
@@ -14201,7 +14203,9 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
             }
         },
         "/api/vps/v1/public-keys": {
@@ -14210,7 +14214,7 @@
                     "VPS: Public Keys"
                 ],
                 "summary": "Get public keys",
-                "description": "Retrieve public keys associated with your account.\n\nUse this endpoint to view available SSH keys for VPS authentication.",
+                "description": "Deprecated: account-level public keys have no direct replacement. Root SSH keys are now managed per\nvirtual machine via `GET /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys`.\n\nRetrieve public keys associated with your account.\n\nUse this endpoint to view available SSH keys for VPS authentication.",
                 "operationId": "VPS_getPublicKeysV1",
                 "parameters": [
                     {
@@ -14242,14 +14246,16 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
             },
             "post": {
                 "tags": [
                     "VPS: Public Keys"
                 ],
                 "summary": "Create public key",
-                "description": "Add a new public key to your account.\n\nUse this endpoint to register SSH keys for VPS authentication.",
+                "description": "Deprecated: account-level public keys have no direct replacement. Root SSH keys are now managed per\nvirtual machine via `POST /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys`.\n\nAdd a new public key to your account.\n\nUse this endpoint to register SSH keys for VPS authentication.",
                 "operationId": "VPS_createPublicKeyV1",
                 "requestBody": {
                     "required": true,
@@ -14268,6 +14274,129 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
+            }
+        },
+        "/api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys": {
+            "get": {
+                "tags": [
+                    "VPS: SSH Keys"
+                ],
+                "summary": "List virtual machine SSH keys",
+                "description": "Retrieve SSH public keys currently configured on a specified virtual machine.\n\nOnly keys of the `root` user are listed.\n\nUse this endpoint to view SSH keys that can be used for authentication on VPS instances.",
+                "operationId": "VPS_listVirtualMachineSSHKeysV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.SshKey.SshKeyCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "VPS: SSH Keys"
+                ],
+                "summary": "Add virtual machine SSH keys",
+                "description": "Add one or more SSH public keys to a specified virtual machine.\n\nKeys are added to the `root` user and can be used for passwordless SSH authentication.\nReturns the complete list of SSH keys currently configured on the virtual machine.\n\nUse this endpoint to enable SSH key authentication for VPS instances.",
+                "operationId": "VPS_addVirtualMachineSSHKeysV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.SshKey.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.SshKey.SshKeyCollection"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "VPS: SSH Keys"
+                ],
+                "summary": "Remove virtual machine SSH keys",
+                "description": "Remove one or more SSH public keys from a specified virtual machine.\n\nRemoved keys can no longer be used to authenticate via SSH as the `root` user.\nReturns the remaining list of SSH keys configured on the virtual machine.\n\nUse this endpoint to revoke SSH key access to VPS instances.",
+                "operationId": "VPS_removeVirtualMachineSSHKeysV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/virtualMachineId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VPS.V1.SshKey.DestroyRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VPS.V1.SshKey.SshKeyCollection"
                                 }
                             }
                         }
@@ -14431,7 +14560,7 @@
                     "VPS: Virtual machine"
                 ],
                 "summary": "Get attached public keys",
-                "description": "Retrieve public keys attached to a specified virtual machine.\n\nUse this endpoint to view SSH keys configured for specific VPS instances.",
+                "description": "Deprecated: use `GET /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys` instead.\n\nRetrieve public keys attached to a specified virtual machine.\n\nUse this endpoint to view SSH keys configured for specific VPS instances.",
                 "operationId": "VPS_getAttachedPublicKeysV1",
                 "parameters": [
                     {
@@ -14466,7 +14595,9 @@
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
-                }
+                },
+                "deprecated": true,
+                "x-scalar-ignore": true
             }
         },
         "/api/vps/v1/virtual-machines/{virtualMachineId}/backups": {
@@ -21020,6 +21151,42 @@
                     "key": {
                         "type": "string",
                         "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.SshKey.DestroyRequest": {
+                "required": [
+                    "keys"
+                ],
+                "properties": {
+                    "keys": {
+                        "description": "SSH public keys in OpenSSH format to remove",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0g... user@example.com"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "VPS.V1.SshKey.StoreRequest": {
+                "required": [
+                    "keys"
+                ],
+                "properties": {
+                    "keys": {
+                        "description": "SSH public keys in OpenSSH format to add",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0g... user@example.com"
+                        ]
                     }
                 },
                 "type": "object"
@@ -31788,6 +31955,38 @@
                 },
                 "type": "object"
             },
+            "VPS.V1.SshKey.SshKeyCollection": {
+                "description": "Array of [`VPS.V1.SshKey.SshKeyResource`](#model/vpsv1sshkeysshkeyresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/VPS.V1.SshKey.SshKeyResource"
+                }
+            },
+            "VPS.V1.SshKey.SshKeyResource": {
+                "properties": {
+                    "key": {
+                        "description": "SSH public key in OpenSSH format",
+                        "type": "string",
+                        "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0g... user@example.com"
+                    },
+                    "type": {
+                        "description": "SSH key type",
+                        "type": "string",
+                        "example": "ssh-rsa"
+                    },
+                    "data": {
+                        "description": "SSH key data (base64 encoded public key)",
+                        "type": "string",
+                        "example": "AAAAB3NzaC1yc2EAAAADAQABAAABAQC0g..."
+                    },
+                    "name": {
+                        "description": "SSH key comment/name",
+                        "type": "string",
+                        "example": "user@example.com"
+                    }
+                },
+                "type": "object"
+            },
             "VPS.V1.Template.TemplateCollection": {
                 "description": "Array of [`VPS.V1.Template.TemplateResource`](#model/vpsv1templatetemplateresource)",
                 "type": "array",
@@ -34662,6 +34861,12 @@
             "x-parent": "VPS"
         },
         {
+            "name": "VPS: SSH Keys",
+            "description": "Manage SSH keys configured directly on virtual machines.\nThis category covers listing, adding and removing keys\nused for SSH authentication as the root user.",
+            "x-displayName": "SSH Keys",
+            "x-parent": "VPS"
+        },
+        {
             "name": "VPS: Virtual machine",
             "description": "Core virtual machine management functionality. Endpoints in\nthis category let you retrieve machine details, configure\nsettings (hostname, nameservers, passwords), and perform\noperations like start, stop, restart, or recreate.",
             "x-displayName": "Virtual machine",
@@ -34858,6 +35063,7 @@
                 "VPS: Public Keys",
                 "VPS: Recovery",
                 "VPS: Snapshots",
+                "VPS: SSH Keys",
                 "VPS: Virtual machine"
             ]
         },
