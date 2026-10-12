@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.63.0",
+        "version": "1.64.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -12798,39 +12798,6 @@
                 }
             }
         },
-        "/api/reach/v1/profiles/{profileUuid}/domains/dns-status": {
-            "get": {
-                "tags": [
-                    "Reach: Profiles"
-                ],
-                "summary": "Get profile domain DNS status",
-                "description": "Retrieve the DNS configuration status for a profile's domain.\n\nThis endpoint reports the state of MX, SPF, DKIM and DMARC records, including the\nactual records found and the suggested records required for correct email delivery.",
-                "operationId": "reach_getProfileDomainDNSStatusV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/profileUuid"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsStatusResource"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                }
-            }
-        },
         "/api/reach/v1/profiles/{profileUuid}/domains": {
             "get": {
                 "tags": [
@@ -12851,6 +12818,130 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.SendingDomainResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Connect sending domain",
+                "description": "Connect a sending domain to the profile so emails can be sent from addresses on it.\n\nConnecting does not make the domain ready to send: check the DNS status endpoint next for\nrecords that are still missing. A domain the account owns or has already verified connects\nimmediately. Any other domain starts a TXT ownership verification and returns `409`;\ncomplete the verification in Reach, then retry. Returns `422` when the profile or another\nprofile already has the domain, the domain is blocked, or its ownership cannot be verified.\nAn already connected domain is never replaced.\n\nOn success the sender address of draft and scheduled campaigns, and of published automation\nand double opt-in emails, moves onto the new domain in the background, keeping the part\nbefore the `@`.",
+                "operationId": "reach_connectSendingDomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.ConnectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ConflictResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Delete sending domain",
+                "description": "Disconnect the sending domain from the profile.\n\nThe domain record is removed, so the profile has no sending domain afterwards and campaigns\ncannot be sent until a domain is connected again. Sender addresses already stored on\ncampaigns, automations and settings are left untouched and keep pointing at the removed\ndomain. A domain that is not connected to the profile also succeeds, so success is not proof\nthat anything was deleted. DNS records at the DNS provider are not removed. To switch\ndomains, delete this one and connect the new one. Confirm the domain with the customer\nbefore calling.",
+                "operationId": "reach_deleteSendingDomainV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DisconnectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/domains/dns-status": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Get profile domain DNS status",
+                "description": "Retrieve the DNS configuration status for a profile's domain.\n\nThis endpoint reports the state of MX, SPF, DKIM and DMARC records, including the\nactual records found and the suggested records required for correct email delivery.",
+                "operationId": "reach_getProfileDomainDNSStatusV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsStatusResource"
                                 }
                             }
                         }
@@ -12948,6 +13039,83 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/settings": {
+            "get": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Get profile settings",
+                "description": "Get the profile's saved sender identity and brand details.\n\nRead the default sender before creating a campaign instead of asking the customer, and\nreuse the brand fields when generating email content. Any field can be `null` for a profile\nthat never filled its settings in. This does not check that the sending domain is\nverified, use the connected sending domain endpoint for that.",
+                "operationId": "reach_getProfileSettingsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Settings.SettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Reach: Profiles"
+                ],
+                "summary": "Update profile settings",
+                "description": "Change the profile's default sender and brand details.\n\nSend only the fields to change: every omitted field keeps its value, and `null` or an empty\nstring clears a text field. The default sender is what campaigns created afterwards start\nfrom; existing campaigns keep their own sender. `sender_email` is only the part before the\n`@`, because Reach combines it with the profile's connected sending domain, so an address\noutside that domain cannot be set. Connecting a sending domain is a separate endpoint and\na connected domain cannot be changed here. Returns the settings after the change.",
+                "operationId": "reach_updateProfileSettingsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Profiles.Settings.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Profiles.Settings.SettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -20996,6 +21164,174 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Domains.ConnectRequest": {
+                "description": "Sending domain to connect to the profile",
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Domains.DisconnectRequest": {
+                "description": "Sending domain to disconnect from the profile",
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Settings.UpdateRequest": {
+                "description": "Settings to change. Only the fields sent are changed; `null` or an empty string clears a text field.",
+                "properties": {
+                    "brand_name": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "example": "Acme Corporation",
+                        "nullable": true
+                    },
+                    "website_url": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "https://example.com",
+                        "nullable": true
+                    },
+                    "business_address": {
+                        "type": "string",
+                        "maxLength": 120,
+                        "nullable": true
+                    },
+                    "privacy_policy_url": {
+                        "type": "string",
+                        "maxLength": 2048,
+                        "nullable": true
+                    },
+                    "accent_color": {
+                        "type": "string",
+                        "example": "#FF0000",
+                        "nullable": true
+                    },
+                    "button_color": {
+                        "type": "string",
+                        "example": "#00FF00",
+                        "nullable": true
+                    },
+                    "background_color": {
+                        "type": "string",
+                        "example": "#FFFFFF",
+                        "nullable": true
+                    },
+                    "text_color": {
+                        "type": "string",
+                        "example": "#000000",
+                        "nullable": true
+                    },
+                    "links_color": {
+                        "type": "string",
+                        "example": "#0000FF",
+                        "nullable": true
+                    },
+                    "button_text": {
+                        "description": "Button text colour.",
+                        "type": "string",
+                        "example": "#FFFFFF",
+                        "nullable": true
+                    },
+                    "button_corners": {
+                        "type": "integer",
+                        "maximum": 100,
+                        "minimum": 0,
+                        "nullable": true
+                    },
+                    "font_family": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "nullable": true
+                    },
+                    "heading_font_family": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "nullable": true
+                    },
+                    "logo_url": {
+                        "description": "Public image URL. Logo uploads are not supported.",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "nullable": true
+                    },
+                    "social_links": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 2048
+                        }
+                    },
+                    "socials": {
+                        "description": "Social profile links keyed by platform.",
+                        "type": "object",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string",
+                            "maxLength": 2048
+                        }
+                    },
+                    "about": {
+                        "type": "string",
+                        "maxLength": 1000,
+                        "nullable": true
+                    },
+                    "keywords": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 100
+                        },
+                        "nullable": true
+                    },
+                    "topics": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 100
+                        },
+                        "nullable": true
+                    },
+                    "selling_points": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 255
+                        },
+                        "nullable": true
+                    },
+                    "sender_name": {
+                        "description": "Default sender name. Letters, numbers and spaces only.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "example": "Acme",
+                        "nullable": true
+                    },
+                    "sender_email": {
+                        "description": "Part of the default sender address before the `@`, for example `hello`. Never send a\nfull address: Reach adds the profile's connected sending domain itself.",
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "hello",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -30878,6 +31214,9 @@
                     },
                     "dmarc": {
                         "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
+                    },
+                    "a": {
+                        "$ref": "#/components/schemas/Reach.V1.Profiles.Domains.DnsRecordStatus"
                     }
                 },
                 "type": "object"
@@ -31103,6 +31442,139 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Profiles.Settings.SettingsResource": {
+                "description": "Sender identity and brand details saved on the profile.\n\nA profile that never filled its settings in returns empty values, so every field can be\n`null`.",
+                "properties": {
+                    "brand_name": {
+                        "type": "string",
+                        "example": "Acme Corporation",
+                        "nullable": true
+                    },
+                    "website_url": {
+                        "type": "string",
+                        "example": "https://example.com",
+                        "nullable": true
+                    },
+                    "business_address": {
+                        "type": "string",
+                        "example": "123 Main St, New York, NY 10001",
+                        "nullable": true
+                    },
+                    "privacy_policy_url": {
+                        "type": "string",
+                        "example": "https://example.com/privacy",
+                        "nullable": true
+                    },
+                    "accent_color": {
+                        "type": "string",
+                        "example": "#FF0000",
+                        "nullable": true
+                    },
+                    "button_color": {
+                        "type": "string",
+                        "example": "#00FF00",
+                        "nullable": true
+                    },
+                    "background_color": {
+                        "type": "string",
+                        "example": "#FFFFFF",
+                        "nullable": true
+                    },
+                    "text_color": {
+                        "type": "string",
+                        "example": "#000000",
+                        "nullable": true
+                    },
+                    "links_color": {
+                        "type": "string",
+                        "example": "#0000FF",
+                        "nullable": true
+                    },
+                    "button_text": {
+                        "description": "Button text colour.",
+                        "type": "string",
+                        "example": "#FFFFFF",
+                        "nullable": true
+                    },
+                    "button_corners": {
+                        "description": "Button corner radius in pixels.",
+                        "type": "integer",
+                        "example": 8,
+                        "nullable": true
+                    },
+                    "font_family": {
+                        "description": "Body and button font.",
+                        "type": "string",
+                        "example": "Arial",
+                        "nullable": true
+                    },
+                    "heading_font_family": {
+                        "type": "string",
+                        "example": "Poppins",
+                        "nullable": true
+                    },
+                    "logo_url": {
+                        "type": "string",
+                        "example": "https://example.com/logo.png",
+                        "nullable": true
+                    },
+                    "social_links": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "https://facebook.com/example"
+                        },
+                        "nullable": true
+                    },
+                    "socials": {
+                        "description": "Social profile links keyed by platform.",
+                        "type": "object",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "about": {
+                        "type": "string",
+                        "example": "We provide innovative solutions.",
+                        "nullable": true
+                    },
+                    "keywords": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "topics": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "selling_points": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "sender_name": {
+                        "description": "Default sender name that campaigns created afterwards start from.",
+                        "type": "string",
+                        "example": "Acme",
+                        "nullable": true
+                    },
+                    "sender_email": {
+                        "description": "Part of the default sender address before the `@`. It is combined with the\nprofile's connected sending domain, see the connected sending domain endpoint.",
+                        "type": "string",
+                        "example": "hello",
+                        "nullable": true
                     }
                 },
                 "type": "object"
