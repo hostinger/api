@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.65.0",
+        "version": "1.66.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7354,6 +7354,47 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Hosting.V1.Git.GitSshKeyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/headless/agent-reports": {
+            "post": {
+                "tags": [
+                    "Hosting: Headless"
+                ],
+                "summary": "Submit headless build report",
+                "description": "Submits the build report the headless skill writes at the end of a run (including early\nstops), so Hostinger can learn where builds get stuck. Send one report per call, with the\nreport JSON as the request body, unchanged. Only send a report when the user agreed to it.\n\nThe report must match report.schema.json v1; an invalid report returns 422 and is not\nstored. The report is linked to the authenticated account, so do not add account details\nto it.",
+                "operationId": "hosting_submitHeadlessBuildReportV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Hosting.V1.Headless.StoreAgentReportRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.Headless.AgentReportResource"
                                 }
                             }
                         }
@@ -19854,6 +19895,197 @@
                 },
                 "type": "object"
             },
+            "Hosting.V1.Headless.StoreAgentReportRequest": {
+                "description": "Headless build report (report.schema.json v1), as written by the headless skill at the end of a run. Send the report unchanged.",
+                "required": [
+                    "schema_version",
+                    "generated_at",
+                    "consent",
+                    "run",
+                    "info",
+                    "timing",
+                    "tokens",
+                    "issues",
+                    "user_feedback",
+                    "skill_gaps",
+                    "what_went_well",
+                    "previous_runs"
+                ],
+                "properties": {
+                    "schema_version": {
+                        "description": "Report schema version",
+                        "type": "string",
+                        "enum": [
+                            "1"
+                        ],
+                        "example": "1"
+                    },
+                    "generated_at": {
+                        "description": "When the report was written",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-10-14T10:30:00Z"
+                    },
+                    "consent": {
+                        "description": "Upload status of the report, as written by the headless skill",
+                        "required": [
+                            "sent"
+                        ],
+                        "properties": {
+                            "sent": {
+                                "type": "boolean",
+                                "example": false
+                            },
+                            "note": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "run": {
+                        "description": "The run the report is for",
+                        "required": [
+                            "id",
+                            "kind"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "example": "2026-10-14T10-00-00Z"
+                            },
+                            "kind": {
+                                "type": "string",
+                                "enum": [
+                                    "build",
+                                    "resume",
+                                    "redesign",
+                                    "iterate"
+                                ],
+                                "example": "build"
+                            },
+                            "skill": {
+                                "type": "string",
+                                "nullable": true
+                            },
+                            "follow_ups": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "info": {
+                        "description": "Website, tool and outcome of the run",
+                        "required": [
+                            "domain",
+                            "tool",
+                            "outcome"
+                        ],
+                        "properties": {
+                            "domain": {
+                                "type": "string",
+                                "example": "example.com"
+                            },
+                            "tool": {
+                                "type": "string",
+                                "example": "claude-code",
+                                "nullable": true
+                            },
+                            "outcome": {
+                                "type": "string",
+                                "enum": [
+                                    "live",
+                                    "stopped",
+                                    "failed",
+                                    "abandoned"
+                                ],
+                                "example": "live"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "timing": {
+                        "description": "Run start and end times and per-stage timings",
+                        "required": [
+                            "started_at",
+                            "ended_at",
+                            "minutes_total",
+                            "stages"
+                        ],
+                        "properties": {
+                            "started_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "ended_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "minutes_total": {
+                                "type": "number",
+                                "nullable": true
+                            },
+                            "stages": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tokens": {
+                        "description": "Token usage, only when the tool reports its own usage",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "issues": {
+                        "description": "Problems hit during the run",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "user_feedback": {
+                        "description": "Feedback the user gave during the run",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "skill_gaps": {
+                        "description": "Places where the skill instructions were missing or wrong",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "what_went_well": {
+                        "description": "Things that worked well during the run",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "logging_gaps": {
+                        "description": "Where the run log is missing or unsure",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "previous_runs": {
+                        "description": "Earlier runs for the same website",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Hosting.V1.NodeJs.CreateFromArchiveRequest": {
                 "required": [
                     "archive"
@@ -27487,6 +27719,27 @@
                         "type": "string",
                         "example": "https://developer.github.com/webhooks/creating/",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Headless.AgentReportResource": {
+                "properties": {
+                    "id": {
+                        "description": "Stored report ID",
+                        "type": "integer",
+                        "example": 1024
+                    },
+                    "run_id": {
+                        "description": "ID of the run the report is for",
+                        "type": "string",
+                        "example": "2026-10-14T10-00-00Z"
+                    },
+                    "created_at": {
+                        "description": "When the report was received",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-10-14T10:30:00.000000Z"
                     }
                 },
                 "type": "object"
@@ -35162,6 +35415,12 @@
             "x-parent": "Hosting"
         },
         {
+            "name": "Hosting: Headless",
+            "description": "Support the headless website build flow. This category includes\nan endpoint for submitting the build report written by the\nheadless skill at the end of a run.",
+            "x-displayName": "Headless",
+            "x-parent": "Hosting"
+        },
+        {
             "name": "Hosting: NodeJS",
             "description": "Hosting: NodeJS",
             "x-displayName": "NodeJS",
@@ -35610,6 +35869,7 @@
                 "Hosting: Domains",
                 "Hosting: Files",
                 "Hosting: Git",
+                "Hosting: Headless",
                 "Hosting: NodeJS",
                 "Hosting: Orders",
                 "Hosting: PHP",
