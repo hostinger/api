@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.64.1",
+        "version": "1.65.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -15815,6 +15815,55 @@
                 }
             }
         },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/content/images/generate": {
+            "post": {
+                "tags": [
+                    "WordPress: AI Content"
+                ],
+                "summary": "Generate images",
+                "description": "Generate one or more images from a prompt and an image type for the specified\nWordPress installation. Images are returned inline as base64-encoded PNGs. They match\nthe requested aspect ratio and are never smaller than the requested size; logos are\ntransparent PNGs cropped to the mark.\n\nGeneration is synchronous and can take up to a minute. The endpoint is limited to\n10 requests per minute.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
+                "operationId": "hosting_generateImagesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WordPress.V1.Content.GenerateImagesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Content.GeneratedImagesResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
         "/api/hosting/v1/accounts/{username}/wordpress/{software}/hostinger-plugins/ai-option/status": {
             "get": {
                 "tags": [
@@ -21796,6 +21845,74 @@
                             }
                         },
                         "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Content.GenerateImagesRequest": {
+                "description": "Generate images from a prompt and an image type",
+                "required": [
+                    "prompt",
+                    "image_type"
+                ],
+                "properties": {
+                    "prompt": {
+                        "description": "What the image should show. For the logo type, the wordmark and mark to render.",
+                        "type": "string",
+                        "maxLength": 2500,
+                        "minLength": 3,
+                        "example": "A cozy artisan bakery interior at sunrise with fresh bread on wooden shelves"
+                    },
+                    "image_type": {
+                        "description": "Kind of image to generate. It sets the default size and cropping.",
+                        "type": "string",
+                        "enum": [
+                            "hero",
+                            "background",
+                            "inline",
+                            "gallery",
+                            "product",
+                            "logo"
+                        ],
+                        "example": "hero"
+                    },
+                    "num_of_images": {
+                        "description": "How many images to generate",
+                        "type": "integer",
+                        "default": 1,
+                        "maximum": 10,
+                        "minimum": 1,
+                        "example": 1
+                    },
+                    "width": {
+                        "description": "Output width in pixels. Defaults per image type and is ignored for the logo type.",
+                        "type": "integer",
+                        "maximum": 2048,
+                        "minimum": 128,
+                        "example": 1200,
+                        "nullable": true
+                    },
+                    "height": {
+                        "description": "Output height in pixels. Defaults per image type and is ignored for the logo type.",
+                        "type": "integer",
+                        "maximum": 2048,
+                        "minimum": 128,
+                        "example": 675,
+                        "nullable": true
+                    },
+                    "style": {
+                        "description": "Style tokens appended to photographic prompts. Ignored for the logo type.",
+                        "type": "string",
+                        "maxLength": 500,
+                        "example": "Warm 35mm film photography, soft grain",
+                        "nullable": true
+                    },
+                    "color_guidance": {
+                        "description": "Colour direction for the logo type only. It is not rendered as text.",
+                        "type": "string",
+                        "maxLength": 500,
+                        "example": "Deep navy and muted gold",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -32661,6 +32778,33 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Content.GeneratedImagesResource": {
+                "description": "Images generated by the AI image generator.",
+                "required": [
+                    "images",
+                    "content_type"
+                ],
+                "properties": {
+                    "images": {
+                        "description": "Generated images, each encoded as a base64 string",
+                        "type": "array",
+                        "items": {
+                            "description": "Base64-encoded image",
+                            "type": "string",
+                            "example": "iVBORw0KGgoAAAANSUhEUgAA..."
+                        },
+                        "example": [
+                            "iVBORw0KGgoAAAANSUhEUgAA..."
+                        ]
+                    },
+                    "content_type": {
+                        "description": "MIME type shared by all returned images",
+                        "type": "string",
+                        "example": "image/png"
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.HostingerPlugins.AiOptionStatusResource": {
                 "properties": {
                     "is_llmstxt_enabled": {
@@ -35186,6 +35330,12 @@
             "x-parent": "WordPress"
         },
         {
+            "name": "WordPress: AI Content",
+            "description": "WordPress: AI Content",
+            "x-displayName": "AI Content",
+            "x-parent": "WordPress"
+        },
+        {
             "name": "WordPress: MCP",
             "description": "Work with the MCP (Model Context Protocol) tools exposed by a\nWordPress installation. This category includes endpoints for\ndiscovering the available tools, inspecting a tool's input and\noutput schemas, and executing a tool on the site.",
             "x-displayName": "MCP",
@@ -35497,6 +35647,7 @@
                 "WordPress: Maintenance",
                 "WordPress: Login",
                 "WordPress: AI Tools",
+                "WordPress: AI Content",
                 "WordPress: MCP"
             ]
         },
