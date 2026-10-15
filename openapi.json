@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.66.0",
+        "version": "1.67.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1625,6 +1625,108 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/AgencyHosting.V1.WordPress.VersionCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agent-readiness/v1/checks": {
+            "get": {
+                "tags": [
+                    "Agent Readiness: Checks"
+                ],
+                "summary": "List checks",
+                "description": "List every check an agent readiness scan runs, with its name, category and weight.\\n\nUse it to show the human-readable name of each `check_id` in a scan's results.",
+                "operationId": "agent-readiness_listChecksV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgentReadiness.V1.Checks.CheckCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agent-readiness/v1/scans": {
+            "post": {
+                "tags": [
+                    "Agent Readiness: Scans"
+                ],
+                "summary": "Run website scan",
+                "description": "Start a scan of how ready a public website is for AI agents to discover, read and act on.\\n\nScanning is asynchronous: this operation only starts the scan, and the returned scan is usually `pending`\nwith no results yet. To get the results, poll the `Get website scan` operation with the same domain every\nfew seconds until its status is `completed` or `failed`. The scan itself is limited to 60 seconds,\nplus any time it waits in the queue. A `failed` scan is not retried; run this operation again.\\n\nStarting a scan for a domain that already has a pending scan from the last 5 minutes\nreturns that scan instead of starting a new one.",
+                "operationId": "agent-readiness_runWebsiteScanV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AgentReadiness.V1.Scans.RunScanRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgentReadiness.V1.Scans.ScanResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/agent-readiness/v1/scans/{domain}": {
+            "get": {
+                "tags": [
+                    "Agent Readiness: Scans"
+                ],
+                "summary": "Get website scan",
+                "description": "Get the latest agent readiness scan of a website.\\n\nScans started with the `Run website scan` operation are asynchronous. While the status is `pending`,\nthe result fields are null; wait a few seconds and call this operation again until the status is\n`completed` or `failed`. A `failed` scan is not retried; run the scan again.\\n\nA completed scan has a 0-100 score, a letter grade, a score per category, and the result of every\ncheck with the evidence found and how to fix it. Check names are listed by the `List checks` operation.\\n\nReturns 404 when the domain has never been scanned; use the `Run website scan` operation first.",
+                "operationId": "agent-readiness_getWebsiteScanV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/agent_readiness_domain_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgentReadiness.V1.Scans.ScanResource"
                                 }
                             }
                         }
@@ -18185,6 +18287,19 @@
                 },
                 "type": "object"
             },
+            "AgentReadiness.V1.Scans.RunScanRequest": {
+                "required": [
+                    "domain"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name or full URL of the website to scan. Only the host is used.",
+                        "type": "string",
+                        "example": "example.com"
+                    }
+                },
+                "type": "object"
+            },
             "Billing.V1.Order.PurchaseRequest": {
                 "required": [
                     "items"
@@ -24098,6 +24213,266 @@
                         "description": "WordPress core version.",
                         "type": "string",
                         "example": "6.5.5"
+                    }
+                },
+                "type": "object"
+            },
+            "AgentReadiness.V1.Checks.CheckCollection": {
+                "description": "Array of [`AgentReadiness.V1.Checks.CheckResource`](#model/agentreadinessv1checkscheckresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/AgentReadiness.V1.Checks.CheckResource"
+                }
+            },
+            "AgentReadiness.V1.Checks.CheckResource": {
+                "required": [
+                    "id",
+                    "name",
+                    "category",
+                    "category_label",
+                    "weight"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Check ID, as used by `check_id` in scan results",
+                        "type": "string",
+                        "example": "crawl_permission.robots_txt_valid"
+                    },
+                    "name": {
+                        "description": "Human-readable check name",
+                        "type": "string",
+                        "example": "robots.txt is present and parseable"
+                    },
+                    "category": {
+                        "description": "Category the check belongs to",
+                        "type": "string",
+                        "example": "crawl_permission"
+                    },
+                    "category_label": {
+                        "description": "Human-readable category name",
+                        "type": "string",
+                        "example": "Crawl permission"
+                    },
+                    "weight": {
+                        "description": "Points this check can earn",
+                        "type": "integer",
+                        "example": 4
+                    }
+                },
+                "type": "object"
+            },
+            "AgentReadiness.V1.Scans.CategoriesResource": {
+                "required": [
+                    "crawl_permission",
+                    "findability",
+                    "readability",
+                    "structured_meaning",
+                    "commercial_legibility",
+                    "agent_native_content",
+                    "agent_interaction"
+                ],
+                "properties": {
+                    "crawl_permission": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    },
+                    "findability": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    },
+                    "readability": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    },
+                    "structured_meaning": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    },
+                    "commercial_legibility": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    },
+                    "agent_native_content": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    },
+                    "agent_interaction": {
+                        "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoryScoreResource"
+                    }
+                },
+                "type": "object"
+            },
+            "AgentReadiness.V1.Scans.CategoryScoreResource": {
+                "required": [
+                    "score",
+                    "weight",
+                    "earned",
+                    "possible"
+                ],
+                "properties": {
+                    "score": {
+                        "description": "Points this category contributes to the 0-100 total score",
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "weight": {
+                        "description": "Maximum points this category can contribute",
+                        "type": "integer",
+                        "example": 20
+                    },
+                    "earned": {
+                        "description": "Points earned by the counted checks in this category",
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "possible": {
+                        "description": "Points possible for the counted checks in this category",
+                        "type": "integer",
+                        "example": 20
+                    }
+                },
+                "type": "object"
+            },
+            "AgentReadiness.V1.Scans.CheckResultResource": {
+                "required": [
+                    "check_id",
+                    "category",
+                    "status",
+                    "earned",
+                    "possible",
+                    "evidence",
+                    "fix"
+                ],
+                "properties": {
+                    "check_id": {
+                        "description": "Check ID, as listed by the `List checks` operation",
+                        "type": "string",
+                        "example": "crawl_permission.robots_txt_valid"
+                    },
+                    "category": {
+                        "description": "Category the check belongs to",
+                        "type": "string",
+                        "example": "crawl_permission"
+                    },
+                    "status": {
+                        "description": "Check outcome. `not_applicable` and `error` checks do not count towards the category score.",
+                        "type": "string",
+                        "enum": [
+                            "pass",
+                            "partial",
+                            "fail",
+                            "not_applicable",
+                            "error"
+                        ],
+                        "example": "pass"
+                    },
+                    "earned": {
+                        "description": "Points earned by this check",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "possible": {
+                        "description": "Points this check can earn",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "evidence": {
+                        "description": "What the scanner observed",
+                        "type": "string",
+                        "example": "robots.txt returned 200 and parsed cleanly"
+                    },
+                    "fix": {
+                        "description": "How to improve the result, or null when there is nothing to fix",
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AgentReadiness.V1.Scans.ScanResource": {
+                "required": [
+                    "domain",
+                    "status",
+                    "score",
+                    "grade",
+                    "is_unreachable",
+                    "scanner_version",
+                    "is_outdated",
+                    "scanned_at",
+                    "categories",
+                    "unassessed_categories",
+                    "results"
+                ],
+                "properties": {
+                    "domain": {
+                        "description": "Domain name that was scanned",
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "status": {
+                        "description": "Scan status. Result fields are null until the status is `completed`.",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "completed",
+                            "failed"
+                        ],
+                        "example": "completed"
+                    },
+                    "score": {
+                        "description": "Agent readiness score from 0 to 100. Null unless completed, and null when unreachable.",
+                        "type": "integer",
+                        "example": 78,
+                        "nullable": true
+                    },
+                    "grade": {
+                        "description": "Letter grade for the score, from `A` to `F`. Null unless completed, and null when unreachable.",
+                        "type": "string",
+                        "example": "B",
+                        "nullable": true
+                    },
+                    "is_unreachable": {
+                        "description": "Whether the website homepage could not be fetched",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "scanner_version": {
+                        "description": "Version of the scoring method that produced this scan",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "is_outdated": {
+                        "description": "Whether the scan was produced by an older scoring method than the current one",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "scanned_at": {
+                        "description": "When the scan finished. Null unless completed.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-10-15T12:00:00Z",
+                        "nullable": true
+                    },
+                    "categories": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CategoriesResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Score breakdown per category. Null unless completed."
+                    },
+                    "unassessed_categories": {
+                        "description": "Categories where no check could be counted. They still cost their full weight. Null unless completed.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "agent_interaction"
+                        },
+                        "nullable": true
+                    },
+                    "results": {
+                        "description": "Result of every check. Null unless completed.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AgentReadiness.V1.Scans.CheckResultResource"
+                        },
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -34089,6 +34464,16 @@
                     "nullable": true
                 }
             },
+            "agent_readiness_domain_path": {
+                "name": "domain",
+                "in": "path",
+                "description": "Domain name the scan was run for",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "example.com"
+                }
+            },
             "category": {
                 "name": "category",
                 "in": "query",
@@ -35223,6 +35608,21 @@
     ],
     "tags": [
         {
+            "name": "Agent Readiness"
+        },
+        {
+            "name": "Agent Readiness: Scans",
+            "description": "Scan any public website for how ready it is for AI agents to\ndiscover, read and act on. A scan scores crawl permission,\nfindability, readability, structured data, commercial\nlegibility, agent-native content and agent interaction, and\nreturns a 0-100 score, a letter grade and a fix for every check.",
+            "x-displayName": "Scans",
+            "x-parent": "Agent Readiness"
+        },
+        {
+            "name": "Agent Readiness: Checks",
+            "description": "List the checks the agent readiness scanner runs, with the\ncategory and weight of each, so scan results can be shown\nwith human-readable check names.",
+            "x-displayName": "Checks",
+            "x-parent": "Agent Readiness"
+        },
+        {
             "name": "Billing"
         },
         {
@@ -35812,6 +36212,13 @@
         }
     ],
     "x-tagGroups": [
+        {
+            "name": "Agent Readiness",
+            "tags": [
+                "Agent Readiness: Scans",
+                "Agent Readiness: Checks"
+            ]
+        },
         {
             "name": "Billing",
             "tags": [
