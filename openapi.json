@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.67.0",
+        "version": "1.67.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -1671,9 +1671,9 @@
                 "tags": [
                     "Agent Readiness: Scans"
                 ],
-                "summary": "Run website scan",
-                "description": "Start a scan of how ready a public website is for AI agents to discover, read and act on.\\n\nScanning is asynchronous: this operation only starts the scan, and the returned scan is usually `pending`\nwith no results yet. To get the results, poll the `Get website scan` operation with the same domain every\nfew seconds until its status is `completed` or `failed`. The scan itself is limited to 60 seconds,\nplus any time it waits in the queue. A `failed` scan is not retried; run this operation again.\\n\nStarting a scan for a domain that already has a pending scan from the last 5 minutes\nreturns that scan instead of starting a new one.",
-                "operationId": "agent-readiness_runWebsiteScanV1",
+                "summary": "Run agent readiness scan",
+                "description": "Start a scan of how ready a public website is for AI agents to discover, read and act on.\\n\nScanning is asynchronous: this operation only starts the scan, and the returned scan is usually `pending`\nwith no results yet. To get the results, poll the `Get agent readiness scan` operation with the same\ndomain every few seconds until its status is `completed` or `failed`. The scan itself is limited to 60 seconds,\nplus any time it waits in the queue. A `failed` scan is not retried; run this operation again.\\n\nStarting a scan for a domain that already has a pending scan from the last 5 minutes\nreturns that scan instead of starting a new one.",
+                "operationId": "agent-readiness_runAgentReadinessScanV1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1712,9 +1712,9 @@
                 "tags": [
                     "Agent Readiness: Scans"
                 ],
-                "summary": "Get website scan",
-                "description": "Get the latest agent readiness scan of a website.\\n\nScans started with the `Run website scan` operation are asynchronous. While the status is `pending`,\nthe result fields are null; wait a few seconds and call this operation again until the status is\n`completed` or `failed`. A `failed` scan is not retried; run the scan again.\\n\nA completed scan has a 0-100 score, a letter grade, a score per category, and the result of every\ncheck with the evidence found and how to fix it. Check names are listed by the `List checks` operation.\\n\nReturns 404 when the domain has never been scanned; use the `Run website scan` operation first.",
-                "operationId": "agent-readiness_getWebsiteScanV1",
+                "summary": "Get agent readiness scan",
+                "description": "Get the latest agent readiness scan of a website.\\n\nScans started with the `Run agent readiness scan` operation are asynchronous. While the status is\n`pending`, the result fields are null; wait a few seconds and call this operation again until the status is\n`completed` or `failed`. A `failed` scan is not retried; run the scan again.\\n\nA completed scan has a 0-100 score, a letter grade, a score per category, and the result of every\ncheck with the evidence found and how to fix it. Check names are listed by the `List checks` operation.\\n\nReturns 404 when the domain has never been scanned; use the `Run agent readiness scan` operation first.",
+                "operationId": "agent-readiness_getAgentReadinessScanV1",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/agent_readiness_domain_path"
