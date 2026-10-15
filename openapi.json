@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "1.68.0",
+        "version": "2.0.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -15968,7 +15968,7 @@
                     "WordPress: AI Content"
                 ],
                 "summary": "Generate images",
-                "description": "Generate one or more images from a prompt and an image type for the specified\nWordPress installation. Images are returned inline as base64-encoded PNGs. They match\nthe requested aspect ratio and are never smaller than the requested size; logos are\ntransparent PNGs cropped to the mark.\n\nGeneration is synchronous and can take up to a minute. The endpoint is limited to\n10 requests per minute.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
+                "description": "Start generating one or more images from a prompt and an image type for the specified\nWordPress installation. The generation runs asynchronously: the response is returned\nright away with `status: in-progress` and a `generation_id`. Poll\nGET /api/hosting/v1/accounts/{username}/wordpress/{software}/content/generations/{generation_id}\nevery few seconds until `status` is `completed` or `failed`.\n\nA completed generation returns temporary image URLs together with the time they expire;\ndownload the images before then. Images match the requested aspect ratio and are never\nsmaller than the requested size; logos are transparent images cropped to the mark.\n\nOnly one image generation can run per installation at a time: while one is still in\nprogress the endpoint returns 409 without the ID of the running generation, so a caller\nthat did not receive the `202` has to wait for it to finish (up to a few minutes) before\nstarting a new one. The endpoint is limited to 10 requests per minute.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
                 "operationId": "hosting_generateImagesV1",
                 "parameters": [
                     {
@@ -15989,12 +15989,12 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Success response",
+                    "202": {
+                        "description": "Accepted response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/WordPress.V1.Content.GeneratedImagesResource"
+                                    "$ref": "#/components/schemas/WordPress.V1.Content.GenerationResource"
                                 }
                             }
                         }
@@ -16004,6 +16004,60 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ConflictResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/wordpress/{software}/content/generations/{generation_id}": {
+            "get": {
+                "tags": [
+                    "WordPress: AI Content"
+                ],
+                "summary": "Get generation result",
+                "description": "Get the result of an AI content generation started for the specified WordPress\ninstallation, such as an image generation started with\nPOST /api/hosting/v1/accounts/{username}/wordpress/{software}/content/images/generate.\n\nWhile the generation is still running only `status: in-progress` is returned; poll every\nfew seconds. Once `completed`, `result` holds the generated content shaped according to\n`type`: temporary image URLs together with the time they expire for `image-generation`, or\nthe generated website document for `website-generation` (started from the Hostinger\nWordPress plugin). A `failed` generation has no `result`. Unknown or expired generation\nIDs return 404.\n\nProvide the WordPress installation (software) identifier in the path. It can\nbe obtained from GET /api/hosting/v1/wordpress/installations (the `id` field).",
+                "operationId": "hosting_getGenerationResultV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/software_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/generation_id_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/wordpress_generation_type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WordPress.V1.Content.GenerationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -33416,29 +33470,122 @@
                 },
                 "type": "object"
             },
+            "WordPress.V1.Content.GeneratedImageResource": {
+                "description": "Single image generated by the AI image generator.",
+                "required": [
+                    "url",
+                    "width",
+                    "height",
+                    "content_type"
+                ],
+                "properties": {
+                    "url": {
+                        "description": "Temporary URL of the generated image, valid until the `expires_at` time of the result",
+                        "type": "string",
+                        "example": "https://storage.googleapis.com/ai-images/hero-1.webp?X-Goog-Signature=abc123"
+                    },
+                    "width": {
+                        "description": "Image width in pixels",
+                        "type": "integer",
+                        "example": 1600
+                    },
+                    "height": {
+                        "description": "Image height in pixels",
+                        "type": "integer",
+                        "example": 900
+                    },
+                    "content_type": {
+                        "description": "MIME type of the image",
+                        "type": "string",
+                        "example": "image/webp"
+                    }
+                },
+                "type": "object"
+            },
             "WordPress.V1.Content.GeneratedImagesResource": {
                 "description": "Images generated by the AI image generator.",
                 "required": [
                     "images",
-                    "content_type"
+                    "expires_at"
                 ],
                 "properties": {
                     "images": {
-                        "description": "Generated images, each encoded as a base64 string",
+                        "description": "Generated images, each available at a temporary URL",
                         "type": "array",
                         "items": {
-                            "description": "Base64-encoded image",
-                            "type": "string",
-                            "example": "iVBORw0KGgoAAAANSUhEUgAA..."
-                        },
-                        "example": [
-                            "iVBORw0KGgoAAAANSUhEUgAA..."
-                        ]
+                            "$ref": "#/components/schemas/WordPress.V1.Content.GeneratedImageResource"
+                        }
                     },
-                    "content_type": {
-                        "description": "MIME type shared by all returned images",
+                    "expires_at": {
+                        "description": "Time after which the image URLs stop working. Download the images before then.",
                         "type": "string",
-                        "example": "image/png"
+                        "format": "date-time",
+                        "example": "2026-10-15T10:29:23+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "WordPress.V1.Content.GenerationResource": {
+                "description": "State of an AI content generation and, once completed, its result.",
+                "required": [
+                    "generation_id",
+                    "type",
+                    "status",
+                    "result"
+                ],
+                "properties": {
+                    "generation_id": {
+                        "description": "Generation ID (UUID) used to poll for the result",
+                        "type": "string",
+                        "example": "9d4f8a1e-2b3c-4d5e-8f6a-7b8c9d0e1f2a"
+                    },
+                    "type": {
+                        "description": "Kind of generation, determines the shape of `result`",
+                        "type": "string",
+                        "enum": [
+                            "website-generation",
+                            "image-generation"
+                        ],
+                        "example": "image-generation"
+                    },
+                    "status": {
+                        "description": "`in-progress` while the generation is still running, `completed` once `result` is available, `failed` when the generation stopped without a result.",
+                        "type": "string",
+                        "enum": [
+                            "in-progress",
+                            "completed",
+                            "failed"
+                        ],
+                        "example": "in-progress"
+                    },
+                    "result": {
+                        "description": "Generated content, `null` until the status is `completed`. For `image-generation` it is the generated images object; for `website-generation` it is the generated website document.",
+                        "nullable": true,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/WordPress.V1.Content.GeneratedImagesResource"
+                            },
+                            {
+                                "title": "Website generation document",
+                                "type": "object",
+                                "example": {
+                                    "editor": "gutenberg",
+                                    "single_page": false,
+                                    "home_page_id": "home",
+                                    "language": {
+                                        "name": "en",
+                                        "code": "en"
+                                    },
+                                    "brand": {
+                                        "name": "Kava House",
+                                        "tagline": "Weekly roasts from our counter"
+                                    },
+                                    "theme": [],
+                                    "menu": [],
+                                    "pages": []
+                                }
+                            }
+                        ]
                     }
                 },
                 "type": "object"
@@ -35574,6 +35721,32 @@
                 "schema": {
                     "type": "integer",
                     "example": 1268054
+                }
+            },
+            "generation_id_path": {
+                "name": "generation_id",
+                "in": "path",
+                "description": "Generation ID returned when the generation was started",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "9d4f8a1e-2b3c-4d5e-8f6a-7b8c9d0e1f2a"
+                }
+            },
+            "wordpress_generation_type": {
+                "name": "type",
+                "in": "query",
+                "description": "Generation type to look up. When omitted, every generation type is checked.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "website-generation",
+                        "image-generation"
+                    ],
+                    "example": "image-generation",
+                    "nullable": true
                 }
             },
             "mcp_server": {
