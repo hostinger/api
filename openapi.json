@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.1.2",
+        "version": "2.1.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -13049,6 +13049,89 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
+            },
+            "patch": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Update form",
+                "description": "Rename a form and/or change its status.\n\nSetting a `draft` or `paused` form to `active` takes it live: its latest saved design is published\nand visitors can submit it. `paused` and `draft` stop the form from accepting submissions. A form is\nnot reachable by visitors until it is taken live. Design changes saved while the form is already\n`active` stay unpublished until the form is paused and set to `active` again. Renaming does not rename\nthe automatic `form:{name}` tag.",
+                "operationId": "reach_updateFormV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Forms.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Forms.FormResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/forms/{formUuid}/duplicate": {
+            "post": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Duplicate form",
+                "description": "Copy a form into a new draft form with the same name and design.\n\nThe copy shares the source's automatic `form:{name}` tag; other submitter tags are not copied. The\ncopy is not live until its status is set to `active`.",
+                "operationId": "reach_duplicateFormV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Forms.FormResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/reach/v1/profiles/{profileUuid}/forms": {
@@ -13068,6 +13151,20 @@
                     },
                     {
                         "$ref": "#/components/parameters/per_page"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Return only forms with this status.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "paused",
+                                "draft"
+                            ]
+                        }
                     }
                 ],
                 "responses": {
@@ -13088,6 +13185,198 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Create form",
+                "description": "Create an empty draft form.\n\nReach also adds an automatic `form:{name}` tag that every submitter receives. A draft has no design\nand is not reachable by visitors: save a design with the update form template operation, then take\nthe form live by setting its status to `active`. Creating a form does not consume AI credits.",
+                "operationId": "reach_createFormV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Forms.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Forms.FormResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/forms/{formUuid}/tags": {
+            "post": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Add form submitter tags",
+                "description": "Add tags to a form so that every contact who submits it from now on receives them.\n\nA tag the form already has is skipped; an unknown tag is rejected. Contacts who submitted earlier are\nnot tagged.",
+                "operationId": "reach_addFormSubmitterTagsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Forms.AssignTagsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Remove form submitter tag",
+                "description": "Stop a form from applying a tag to its future submitters.\n\nSucceeds also when the form did not have the tag. Contacts who already received the tag keep it, and\nthe tag itself is not deleted. The automatic `form:{name}` tag cannot be removed and is rejected with\na conflict.",
+                "operationId": "reach_removeFormSubmitterTagV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Forms.RemoveTagRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/forms/{formUuid}/template": {
+            "patch": {
+                "tags": [
+                    "Reach: Forms"
+                ],
+                "summary": "Update form template",
+                "description": "Save `content` as the latest design of a form and return the stored version.\n\nThe HTML is sanitized and, unless the plan allows removing it, the Reach signature is added. Visitors\nsubmit the form with an `email` field (required) and optional `name`, `surname` and `phone`. After\nsanitizing, the design must contain a form container (`data-reach-form`), an email input\n(`data-reach-field=\"email\"`) and a submit button (`data-reach-submit`); otherwise the request fails\nwith `422` and `errors.content` lists `missing_form_container`, `missing_email_field` and/or\n`missing_submit_button`.\n\nA `draft` or `paused` form stays unreachable until its status is set to `active`, which publishes this\ndesign. On a form that is already `active` the saved design is not public until the form is paused and\nset to `active` again. Saving a design does not consume AI credits.",
+                "operationId": "reach_updateFormTemplateV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/formUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Forms.UpdateTemplateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Forms.FormTemplateVersionResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -21883,6 +22172,91 @@
                             },
                             "type": "object"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.AssignTagsRequest": {
+                "description": "Tags every future submitter of the form receives",
+                "required": [
+                    "tag_uuids"
+                ],
+                "properties": {
+                    "tag_uuids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1,
+                        "example": [
+                            "550e8400-e29b-41d4-a716-446655440000"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.RemoveTagRequest": {
+                "description": "Tag the form stops applying to future submitters",
+                "required": [
+                    "tag_uuid"
+                ],
+                "properties": {
+                    "tag_uuid": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.StoreRequest": {
+                "description": "Create a draft form",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Form name. Letters, digits, spaces and - . ' _ only.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "pattern": "^[\\p{L}\\p{M}\\p{N}\\s\\-.'_]+$",
+                        "example": "Newsletter signup"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.UpdateRequest": {
+                "description": "Rename a form and/or change its status. Send at least one field.",
+                "properties": {
+                    "name": {
+                        "description": "Form name. Letters, digits, spaces and - . ' _ only.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "pattern": "^[\\p{L}\\p{M}\\p{N}\\s\\-.'_]+$",
+                        "example": "Newsletter signup"
+                    },
+                    "status": {
+                        "description": "`active` takes the form live, `paused` and `draft` stop it accepting submissions.",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "paused",
+                            "draft"
+                        ],
+                        "example": "active"
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.UpdateTemplateRequest": {
+                "description": "Save the design of a form",
+                "required": [
+                    "content"
+                ],
+                "properties": {
+                    "content": {
+                        "description": "HTML of the form design. After sanitizing it must still contain a form container\n(`data-reach-form`), an email input (`data-reach-field=\"email\"`) and a submit button\n(`data-reach-submit`).",
+                        "type": "string",
+                        "example": "<form data-reach-form><input type=\"email\" name=\"email\" data-reach-field=\"email\" /><button type=\"submit\" data-reach-submit>Subscribe</button></form>"
                     }
                 },
                 "type": "object"
@@ -32239,6 +32613,41 @@
                         "type": "string",
                         "example": "forms/8f2c1b9e-1f4a-4a1e-9a2b-2f3c4d5e6f70/9a1b2c3d.html",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Forms.FormTemplateVersionResource": {
+                "description": "The stored version of a saved form design.",
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "example": "2080cc86-e026-4f7b-9598-d4132f8c7c2f"
+                    },
+                    "path": {
+                        "description": "Storage path of the template HTML, relative to the storage directory of this profile.",
+                        "type": "string",
+                        "example": "forms/8f2c1b9e-1f4a-4a1e-9a2b-2f3c4d5e6f70/9a1b2c3d.html"
+                    },
+                    "edit_type": {
+                        "description": "Whether the design was saved by hand or by the AI builder.",
+                        "type": "string",
+                        "enum": [
+                            "manual",
+                            "ai"
+                        ],
+                        "example": "manual",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-27T11:54:22Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-04T09:12:07Z"
                     }
                 },
                 "type": "object"
