@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.1.3",
+        "version": "2.2.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -7890,6 +7890,95 @@
                             "type": "string"
                         },
                         "example": "example.zip"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hosting.V1.NodeJs.BuildSettingsResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/hosting/v1/accounts/{username}/websites/{domain}/nodejs/builds/settings/from-repository": {
+            "get": {
+                "tags": [
+                    "Hosting: NodeJS"
+                ],
+                "summary": "Get Node.js build settings from repository",
+                "description": "Determine the build settings for a Node.js application from the package.json file of a branch\nin a Git repository. Use before starting a Git-source build to find out the auto-detected\nsettings instead of guessing them.\n\nThe repository is read through a Git installation: take `installation_uuid` from\n`List Git installations` and `owner` and `repository` from `List Git installation repositories`.\n\nReturns 422 when the installation is not found, the repository or branch is not found, or\nthe branch has no package.json.",
+                "operationId": "hosting_getNode.jsBuildSettingsFromRepositoryV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/username_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/domain"
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "Repository owner login. GitLab group paths use slashes.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 200,
+                            "minLength": 1,
+                            "pattern": "^[a-zA-Z0-9_]([a-zA-Z0-9_.-]{0,198}[a-zA-Z0-9_])?(\\/[a-zA-Z0-9_]([a-zA-Z0-9_.-]{0,198}[a-zA-Z0-9_])?)*$"
+                        },
+                        "example": "octocat"
+                    },
+                    {
+                        "name": "repository",
+                        "in": "query",
+                        "description": "Repository name without the .git suffix",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100,
+                            "minLength": 1,
+                            "pattern": "^[a-zA-Z0-9_-]([a-zA-Z0-9._-]{0,98}[a-zA-Z0-9_-])?$"
+                        },
+                        "example": "my-site"
+                    },
+                    {
+                        "name": "branch",
+                        "in": "query",
+                        "description": "Branch whose package.json is inspected",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 200,
+                            "minLength": 1,
+                            "pattern": "^[a-zA-Z0-9._-]([a-zA-Z0-9\\/._-]{0,198}[a-zA-Z0-9._-])?$"
+                        },
+                        "example": "main"
+                    },
+                    {
+                        "name": "installation_uuid",
+                        "in": "query",
+                        "description": "Git installation used to access the repository, taken from `List Git installations`",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": "018f5e2a-1234-7890-abcd-1234567890ab"
                     }
                 ],
                 "responses": {
@@ -20896,6 +20985,46 @@
                         ],
                         "example": "npm",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.NodeJs.GetBuildSettingsFromRepositoryRequest": {
+                "required": [
+                    "owner",
+                    "repository",
+                    "branch",
+                    "installation_uuid"
+                ],
+                "properties": {
+                    "owner": {
+                        "description": "Repository owner login, as returned by `List Git installation repositories`. GitLab group\npaths use slashes.",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "pattern": "^[a-zA-Z0-9_]([a-zA-Z0-9_.-]{0,198}[a-zA-Z0-9_])?(\\/[a-zA-Z0-9_]([a-zA-Z0-9_.-]{0,198}[a-zA-Z0-9_])?)*$",
+                        "example": "octocat"
+                    },
+                    "repository": {
+                        "description": "Repository name without the .git suffix",
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1,
+                        "pattern": "^[a-zA-Z0-9_-]([a-zA-Z0-9._-]{0,98}[a-zA-Z0-9_-])?$",
+                        "example": "my-site"
+                    },
+                    "branch": {
+                        "description": "Branch whose package.json is inspected",
+                        "type": "string",
+                        "maxLength": 200,
+                        "minLength": 1,
+                        "pattern": "^[a-zA-Z0-9._-]([a-zA-Z0-9\\/._-]{0,198}[a-zA-Z0-9._-])?$",
+                        "example": "main"
+                    },
+                    "installation_uuid": {
+                        "description": "Git installation used to access the repository, taken from `List Git installations`",
+                        "type": "string",
+                        "example": "018f5e2a-1234-7890-abcd-1234567890ab"
                     }
                 },
                 "type": "object"
