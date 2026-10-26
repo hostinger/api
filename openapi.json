@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.2.0",
+        "version": "2.3.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -12060,7 +12060,7 @@
                     "Reach: Contacts"
                 ],
                 "summary": "Create contacts in bulk",
-                "description": "Create many contacts in a profile in a single call.\n\nThe contacts are imported in the background, so a success response means the import was\naccepted rather than finished. Contacts whose email already exists in the profile are\nleft as they are. If double opt-in is enabled, new contacts start off pending and are\nsent a confirmation email.",
+                "description": "Create many contacts in a profile in a single call.\n\nThe contacts are imported in the background, so a success response means the import was\naccepted rather than finished. Contacts whose email already exists in the profile keep\ntheir current values; only the ones that are still empty, custom fields included, are\nfilled in. If double opt-in is enabled, new contacts start off pending and are sent a\nconfirmation email.",
                 "operationId": "reach_createContactsInBulkV1",
                 "parameters": [
                     {
@@ -21659,6 +21659,33 @@
                                     "maxLength": 20,
                                     "example": "+14155552671",
                                     "nullable": true
+                                },
+                                "fields": {
+                                    "description": "Custom field values to set on the contact. For a contact whose email already\nexists, only fields that have no value yet are filled. Unknown field UUIDs and\nvalues that do not match the field type are skipped.",
+                                    "type": "array",
+                                    "items": {
+                                        "required": [
+                                            "uuid"
+                                        ],
+                                        "properties": {
+                                            "uuid": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "description": "For the scalar field types",
+                                                "type": "string",
+                                                "nullable": true
+                                            },
+                                            "selected_option_uuids": {
+                                                "description": "For the choice field types",
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
                                 }
                             },
                             "type": "object"
@@ -22172,6 +22199,33 @@
                         "type": "array",
                         "items": {
                             "type": "string"
+                        }
+                    },
+                    "fields": {
+                        "description": "Custom field values to set on the contact. When a contact with this email already exists,\nonly fields that have no value yet are filled. Unknown field UUIDs and values that do not\nmatch the field type are skipped.",
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "uuid"
+                            ],
+                            "properties": {
+                                "uuid": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "description": "For the scalar field types",
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "selected_option_uuids": {
+                                    "description": "For the choice field types",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 },
