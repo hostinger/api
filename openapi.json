@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.4.1",
+        "version": "2.4.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -21841,6 +21841,51 @@
                         "description": "Relative path to the archive file from website root directory",
                         "type": "string",
                         "example": "uploads/archive.zip"
+                    }
+                },
+                "type": "object"
+            },
+            "Hosting.V1.Websites.TriggerEventRequest": {
+                "required": [
+                    "event"
+                ],
+                "properties": {
+                    "event": {
+                        "description": "Event to trigger; `name` decides which `params` it takes",
+                        "required": [
+                            "name",
+                            "params"
+                        ],
+                        "properties": {
+                            "name": {
+                                "description": "Name of the event:\n- `headless_onboarding.tool.connected`: an AI coding tool started building this website\n  with the Hostinger headless skill. Takes `params.tool`.",
+                                "type": "string",
+                                "enum": [
+                                    "headless_onboarding.tool.connected"
+                                ],
+                                "example": "headless_onboarding.tool.connected"
+                            },
+                            "params": {
+                                "description": "Fields of the event",
+                                "required": [
+                                    "tool"
+                                ],
+                                "properties": {
+                                    "tool": {
+                                        "description": "Lowercase slug of the AI coding tool. Known slugs: `claude` (Claude Code),\n`cursor` (Cursor), `codex` (Codex), `vscode` (VS Code), `antigravity` (Antigravity)\nand `devin` (Devin). For any other tool, send its own slug.",
+                                        "type": "string",
+                                        "maxLength": 32,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9-]+$",
+                                        "example": "claude"
+                                    }
+                                },
+                                "type": "object",
+                                "additionalProperties": false
+                            }
+                        },
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 },
                 "type": "object"
