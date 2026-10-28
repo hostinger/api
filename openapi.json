@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.4.3",
+        "version": "2.4.4",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -37478,6 +37478,12 @@
             "x-parent": "Hosting"
         },
         {
+            "name": "Hosting: Previews",
+            "description": "Hosting: Previews",
+            "x-displayName": "Previews",
+            "x-parent": "Hosting"
+        },
+        {
             "name": "Hosting: Redirects",
             "description": "Manage redirects for hosted websites. This category includes\nendpoints for listing, creating, and deleting redirects.",
             "x-displayName": "Redirects",
@@ -37926,6 +37932,7 @@
                 "Hosting: NodeJS",
                 "Hosting: Orders",
                 "Hosting: PHP",
+                "Hosting: Previews",
                 "Hosting: Redirects",
                 "Hosting: SSL",
                 "Hosting: Websites"
