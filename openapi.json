@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.4.4",
+        "version": "2.5.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -13841,12 +13841,49 @@
             }
         },
         "/api/reach/v1/profiles/{profileUuid}/ecommerce/stores/{storeId}": {
+            "post": {
+                "tags": [
+                    "Reach: Integrations"
+                ],
+                "summary": "Connect Ecommerce store",
+                "description": "Connect one of the customer's eCommerce stores to the profile, so Reach receives its\ncustomers and orders.\n\nTake `store_id` from the list eCommerce stores endpoint. Fails with not found\n(`ECOMMERCE_STORE_NOT_FOUND`) when the store is not one of the customer's own stores, also\nwhen the eCommerce service cannot be reached. Fails with a conflict\n(`ECOMMERCE_CONNECTION_ALREADY_EXISTS`) when the store is connected to any profile or this\nprofile already has a store - to move a store to another plan, disconnect it from the\nprofile that holds it first.",
+                "operationId": "reach_connectEcommerceStoreV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/storeId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Stores.ConnectionResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ConflictResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Reach: Integrations"
                 ],
                 "summary": "Disconnect Ecommerce store",
-                "description": "Disconnect an eCommerce store from the profile.\n\nReach stops receiving the store's customers and orders, and its products and coupons are\nremoved from Reach; contacts and past orders stay. Take `store_id` from the list eCommerce\nstores endpoint; for a store that is `connected_to_other_profile`, call this with that\nprofile. Also succeeds when the store is not connected to this profile, so success is not\nproof that anything was disconnected. Confirm the store and the plan with the customer\nbefore calling.",
+                "description": "Disconnect an eCommerce store from the profile.\n\nReach stops receiving the store's customers and orders, and its products and coupons are\nremoved from Reach; contacts and past orders stay. Take `store_id` from the list eCommerce\nstores endpoint; for a store that is `connected_to_other_profile`, call this with that\nprofile. Also succeeds when the store is not connected to this profile, so success is not\nproof that anything was disconnected. To move the store to another plan, connect it to the\nnew profile afterwards. Confirm the store and the plan with the customer before calling.",
                 "operationId": "reach_disconnectEcommerceStoreV1",
                 "parameters": [
                     {
@@ -13882,7 +13919,7 @@
                     "Reach: Integrations"
                 ],
                 "summary": "List Ecommerce stores",
-                "description": "Get all of the customer's Hostinger eCommerce stores, each with its `store_id` and\n`connection_status` for the profile in the path.\n\nA store is connected to at most one profile. `connected_to_other_profile` does not name that\nprofile - call this for each profile to find it. The list is empty, not an error, when the\neCommerce service cannot be reached. Pass `store_id` to the disconnect eCommerce store\nendpoint. Connecting an AI Website Builder site connects the store selling on it.",
+                "description": "Get all of the customer's Hostinger eCommerce stores, each with its `store_id` and\n`connection_status` for the profile in the path.\n\nA store is connected to at most one profile. `connected_to_other_profile` does not name that\nprofile - call this for each profile to find it. The list is empty, not an error, when the\neCommerce service cannot be reached. Pass `store_id` to the connect or disconnect eCommerce\nstore endpoint.",
                 "operationId": "reach_listEcommerceStoresV1",
                 "parameters": [
                     {
@@ -33673,6 +33710,42 @@
                         "description": "Part of the default sender address before the `@`. It is combined with the\nprofile's connected sending domain, see the connected sending domain endpoint.",
                         "type": "string",
                         "example": "hello",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Stores.ConnectionResource": {
+                "properties": {
+                    "uuid": {
+                        "description": "UUID of the connection between the store and the profile.",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "store_id": {
+                        "type": "string",
+                        "example": "ec_123"
+                    },
+                    "store": {
+                        "description": "Reach store created for the connection.",
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "example": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+                            },
+                            "currency": {
+                                "type": "string",
+                                "example": "EUR",
+                                "nullable": true
+                            },
+                            "synced_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2025-01-15T10:30:00Z",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object",
                         "nullable": true
                     }
                 },
