@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.5.1",
+        "version": "2.6.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -27126,6 +27126,9 @@
                         "example": "Ship in a gift box.",
                         "nullable": true
                     },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Ecommerce.V1.Order.OrderMetadataResource"
+                    },
                     "subtotal": {
                         "description": "Subtotal in the smallest currency unit.",
                         "type": "integer",
@@ -27377,6 +27380,22 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/Ecommerce.V1.Order.OrderDetailResource"
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Order.OrderMetadataResource": {
+                "properties": {
+                    "attributes": {
+                        "description": "Custom attributes collected at checkout, keyed by attribute name, or null.",
+                        "type": "object",
+                        "example": {
+                            "gift_message": "Happy birthday!"
+                        },
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
                     }
                 },
                 "type": "object"
