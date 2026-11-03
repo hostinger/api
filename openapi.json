@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.6.2",
+        "version": "2.7.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5587,6 +5587,136 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/pools/groups": {
+            "get": {
+                "tags": [
+                    "GPU: Catalog"
+                ],
+                "summary": "Get pool groups",
+                "description": "Retrieve GPU pool groups, ordered by name.\n\nEach group bundles the pools of one GPU model and lists its currently available pools,\nwhether any of them is available and the lowest hourly price among its instance types.\nThe price is returned even when the group is out of stock.\n\nUse this endpoint to show which GPU models can be ordered and from what price.",
+                "operationId": "GPU_getPoolGroupsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/gpu_currency_query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Pool.PoolGroupCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/pools/{poolId}/instances": {
+            "get": {
+                "tags": [
+                    "GPU: Catalog"
+                ],
+                "summary": "Get pool instance types",
+                "description": "Retrieve the instance types offered by a specified GPU pool, ordered by CPU core count.\n\nEach instance type describes its CPU, memory and storage, and its hourly price.\nOnly instance types that can currently be ordered are returned.\n\nUse this endpoint to choose the `pool_instance_id` for a new GPU instance.",
+                "operationId": "GPU_getPoolInstanceTypesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/poolId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Pool.PoolInstanceCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/pools/{poolId}/instances/{poolInstanceId}/os-templates": {
+            "get": {
+                "tags": [
+                    "GPU: Catalog"
+                ],
+                "summary": "Get pool OS templates",
+                "description": "Retrieve the OS templates that can be installed on a specified GPU pool instance type.\n\nUse this endpoint to choose the `os_template_id` for a new GPU instance.",
+                "operationId": "GPU_getPoolOSTemplatesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/poolId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/poolInstanceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.OsTemplate.OsTemplateCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/pools": {
+            "get": {
+                "tags": [
+                    "GPU: Catalog"
+                ],
+                "summary": "Get pool list",
+                "description": "Retrieve all available GPU pools, ordered by name.\n\nA pool serves GPU accelerators of one model from a single region.\n\nUse this endpoint to choose a pool before listing its instance types.",
+                "operationId": "GPU_getPoolListV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Pool.PoolCollection"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -28447,6 +28577,208 @@
                 },
                 "type": "object"
             },
+            "GPU.V1.OsTemplate.OsTemplateCollection": {
+                "description": "Array of [`GPU.V1.OsTemplate.OsTemplateResource`](#model/gpuv1ostemplateostemplateresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.OsTemplate.OsTemplateResource"
+                }
+            },
+            "GPU.V1.OsTemplate.OsTemplateResource": {
+                "properties": {
+                    "id": {
+                        "description": "OS template ID",
+                        "type": "integer",
+                        "example": 23
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ubuntu 24.04 with CUDA"
+                    },
+                    "kb_url": {
+                        "description": "Knowledge base article about the template",
+                        "type": "string",
+                        "example": "https://support.hostinger.com/os-templates/ubuntu-cuda"
+                    },
+                    "image": {
+                        "description": "Icon image ID",
+                        "type": "string",
+                        "example": "hgpu-app-icon-ubuntu",
+                        "nullable": true
+                    },
+                    "dark_image_id": {
+                        "description": "Dark theme icon image ID",
+                        "type": "string",
+                        "example": "hgpu-app-icon-ubuntu-dark",
+                        "nullable": true
+                    },
+                    "light_image_id": {
+                        "description": "Light theme icon image ID",
+                        "type": "string",
+                        "example": "hgpu-app-icon-ubuntu-light",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Pool.PoolCollection": {
+                "description": "Array of [`GPU.V1.Pool.PoolResource`](#model/gpuv1poolpoolresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.Pool.PoolResource"
+                }
+            },
+            "GPU.V1.Pool.PoolGroupCollection": {
+                "description": "Array of [`GPU.V1.Pool.PoolGroupResource`](#model/gpuv1poolpoolgroupresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.Pool.PoolGroupResource"
+                }
+            },
+            "GPU.V1.Pool.PoolGroupResource": {
+                "properties": {
+                    "id": {
+                        "description": "GPU pool group ID",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "NVIDIA H100"
+                    },
+                    "vram": {
+                        "description": "Total VRAM in bytes",
+                        "type": "integer",
+                        "example": 80000000000,
+                        "nullable": true
+                    },
+                    "is_available": {
+                        "description": "Whether the group has any available pools",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "min_price_per_hour": {
+                        "description": "Lowest hourly price of the group instance types, in the requested currency",
+                        "type": "number",
+                        "format": "float",
+                        "example": 0.65,
+                        "nullable": true
+                    },
+                    "pools": {
+                        "$ref": "#/components/schemas/GPU.V1.Pool.PoolCollection"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Pool.PoolInstanceCollection": {
+                "description": "Array of [`GPU.V1.Pool.PoolInstanceResource`](#model/gpuv1poolpoolinstanceresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.Pool.PoolInstanceResource"
+                }
+            },
+            "GPU.V1.Pool.PoolInstanceResource": {
+                "properties": {
+                    "id": {
+                        "description": "GPU pool instance type ID",
+                        "type": "integer",
+                        "example": 232
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "small"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Instance description",
+                        "nullable": true
+                    },
+                    "cpu_cores": {
+                        "description": "Number of CPU cores",
+                        "type": "integer",
+                        "example": 16
+                    },
+                    "ram": {
+                        "description": "Total RAM in bytes",
+                        "type": "integer",
+                        "example": 137438953472
+                    },
+                    "storage": {
+                        "description": "Total storage in bytes",
+                        "type": "integer",
+                        "example": 549755813888
+                    },
+                    "price_per_hour": {
+                        "description": "Hourly price in cents (USD)",
+                        "type": "integer",
+                        "example": 35
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Pool.PoolResource": {
+                "properties": {
+                    "id": {
+                        "description": "GPU pool ID",
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "NVIDIA H100 Pool"
+                    },
+                    "gpus": {
+                        "description": "Number of GPUs",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "vram": {
+                        "description": "Total VRAM in bytes",
+                        "type": "integer",
+                        "example": 80000000000
+                    },
+                    "is_available": {
+                        "description": "Whether the pool has available instances for booking",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "region": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/GPU.V1.Region.RegionResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Region the pool is served from"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Region.RegionResource": {
+                "properties": {
+                    "id": {
+                        "description": "Region ID",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "name": {
+                        "description": "Region name",
+                        "type": "string",
+                        "example": "eu-north-1",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Vilnius"
+                    },
+                    "country": {
+                        "description": "ISO 3166-1 alpha-2 country code",
+                        "type": "string",
+                        "example": "LT"
+                    }
+                },
+                "type": "object"
+            },
             "Horizons.V1.Websites.CreatedWebsiteResource": {
                 "required": [
                     "website_url",
@@ -36267,6 +36599,86 @@
                     "example": 564651
                 }
             },
+            "gpu_currency_query": {
+                "name": "currency",
+                "in": "query",
+                "description": "Currency of the returned prices, `USD` by default",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "USD",
+                        "ARS",
+                        "AMD",
+                        "AUD",
+                        "AZN",
+                        "BDT",
+                        "BRL",
+                        "BTC",
+                        "BYN",
+                        "CAD",
+                        "CHF",
+                        "CLP",
+                        "CNY",
+                        "COP",
+                        "CZK",
+                        "DKK",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "GEL",
+                        "HKD",
+                        "HRK",
+                        "HUF",
+                        "IDR",
+                        "ILS",
+                        "INR",
+                        "JPY",
+                        "KGS",
+                        "KRW",
+                        "KZT",
+                        "MAD",
+                        "MXN",
+                        "MYR",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PEN",
+                        "PHP",
+                        "PKR",
+                        "PLN",
+                        "SEK",
+                        "SGD",
+                        "THB",
+                        "TJS",
+                        "TRY",
+                        "TWD",
+                        "UAH",
+                        "VND",
+                        "ZAR"
+                    ],
+                    "example": "EUR"
+                }
+            },
+            "poolId": {
+                "name": "poolId",
+                "in": "path",
+                "description": "GPU pool ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 12
+                }
+            },
+            "poolInstanceId": {
+                "name": "poolInstanceId",
+                "in": "path",
+                "description": "GPU pool instance type ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 232
+                }
+            },
             "website_id_path": {
                 "name": "websiteId",
                 "in": "path",
@@ -37897,6 +38309,15 @@
             "x-parent": "VPS"
         },
         {
+            "name": "GPU"
+        },
+        {
+            "name": "GPU: Catalog",
+            "description": "Browse the GPU catalog before creating an instance. Pools are\nGPU accelerators served from a single region, grouped by GPU\nmodel. Each pool offers instance types with their CPU, memory,\nstorage and hourly price, and every instance type lists the OS\ntemplates that can be installed on it.",
+            "x-displayName": "Catalog",
+            "x-parent": "GPU"
+        },
+        {
             "name": "Ecommerce"
         },
         {
@@ -38101,6 +38522,12 @@
                 "VPS: Snapshots",
                 "VPS: SSH Keys",
                 "VPS: Virtual machine"
+            ]
+        },
+        {
+            "name": "GPU",
+            "tags": [
+                "GPU: Catalog"
             ]
         },
         {
