@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.7.0",
+        "version": "2.8.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5925,7 +5925,7 @@
                     "Horizons: Websites"
                 ],
                 "summary": "Get website",
-                "description": "Get the link for the user to open their website in Hostinger Horizons interface.\\n\nUse this tool when the user wants the link to an existing website, or when you need its\nwebsite URL before or after editing it.\\n\n`is_in_progress` is true while changes are being generated or the website is being published;\nwait until it is false before publishing. `published_at` is when the website was last published,\n`is_template` is whether its published pages show the \"Use template\" banner, and\n`has_ecommerce_store` is whether it has an online store.\\n\nWebsites can be edited with the `Edit website` tool, or by the user in Hostinger Horizons\ninterface in the provided website URL.",
+                "description": "Get the link for the user to open their website in Hostinger Horizons interface.\\n\nUse this tool when the user wants the link to an existing website, or when you need its\nwebsite URL before or after editing it.\\n\n`is_in_progress` is true while changes are being generated or the website is being published;\nwait until it is false before publishing. `is_generating` is true while changes are being generated,\nand `actions_in_progress` has `website_publish` while the website is being published.\n`published_at` is when the website was last published,\n`is_template` is whether its published pages show the \"Use template\" banner, and\n`has_ecommerce_store` is whether it has an online store.\\n\nWebsites can be edited with the `Edit website` tool, or by the user in Hostinger Horizons\ninterface in the provided website URL.",
                 "operationId": "horizons_getWebsiteV1",
                 "parameters": [
                     {
@@ -28915,6 +28915,20 @@
                         "description": "Whether Hostinger Horizons is still generating changes or publishing the website.\nPublishing is refused while it is true, and editing while changes are being generated.\nAn unfinished template migration also refuses publishing, with its own error,\nwithout setting this flag.",
                         "type": "boolean",
                         "example": false
+                    },
+                    "is_generating": {
+                        "description": "Whether Hostinger Horizons is generating changes to the website. Editing and publishing are refused\nwhile it is true",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "actions_in_progress": {
+                        "description": "What is running on the website right now: `website_publish` while it is being published right now,\nwhen publishing is refused; empty otherwise. An unfinished template migration also refuses publishing,\nwith its own error, without appearing here.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "website_publish"
+                        },
+                        "example": []
                     },
                     "has_ecommerce_store": {
                         "description": "Whether the website has an ecommerce store",
