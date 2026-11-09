@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.9.0",
+        "version": "2.9.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2557,7 +2557,7 @@
                     "Domains: Forwarding"
                 ],
                 "summary": "Get domain forwarding",
-                "description": "Retrieve domain forwarding data.\n\nUse this endpoint to view current redirect configuration for domains.",
+                "description": "Retrieve domain forwarding data.\n\nReturns 404 when the domain has no forwarding.\n\nUse this endpoint to view current redirect configuration for domains.",
                 "operationId": "domains_getDomainForwardingV1",
                 "parameters": [
                     {
