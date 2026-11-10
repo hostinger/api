@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.10.0",
+        "version": "2.11.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2516,7 +2516,7 @@
                     "Domains: Availability"
                 ],
                 "summary": "Check domain availability",
-                "description": "Check availability of domain names across multiple TLDs.\n\nMultiple TLDs can be checked at once.\nIf you want alternative domains with response, provide only one TLD and set `with_alternatives` to `true`.\nTLDs should be provided without leading dot (e.g. `com`, `net`, `org`).\n\nEndpoint has rate limit of 90 requests per minute.\n\nUse this endpoint to verify domain availability before purchase.",
+                "description": "Check availability of domain names across multiple TLDs.\n\nMultiple TLDs can be checked at once.\nIf you want alternative domains with response, provide only one TLD and set `with_alternatives` to `true`.\nTLDs should be provided without leading dot (e.g. `com`, `net`, `org`).\nPremium domains are included: an available premium domain has `is_available` and `is_premium` set to `true`.\n\nEndpoint has rate limit of 90 requests per minute.\n\nUse this endpoint to verify domain availability before purchase.",
                 "operationId": "domains_checkDomainAvailabilityV1",
                 "requestBody": {
                     "required": true,
@@ -26576,6 +26576,11 @@
                     },
                     "is_alternative": {
                         "description": "`true` if domain is provided as an alternative",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_premium": {
+                        "description": "`true` if domain is premium and is charged at a premium price",
                         "type": "boolean",
                         "example": false
                     },
