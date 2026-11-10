@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.12.4",
+        "version": "2.13.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3183,7 +3183,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Get domain details",
-                "description": "Retrieve detailed information for specified domain.\n\nA domain is found here only once it is registered. Until then, `Get domain list` shows it, and\nits `verification` field says what registration waits for when the domain is held for\nverification.\n\nUse this endpoint to view comprehensive domain configuration and status.",
+                "description": "Retrieve detailed information for specified domain.\n\nA domain is found here only once it is registered. Until then, `Get domain list` shows it, and\nits `verification` field says what registration waits for when the domain is held for\nverification.\n\nAfter registration, the registry may require the owner contact to be verified by email, phone\nnumber or contact name before a deadline, after which the domain is suspended. The\n`contact_verification` field shows what needs verifying, its state and the deadline.\n\nUse this endpoint to view comprehensive domain configuration and status.",
                 "operationId": "domains_getDomainDetailsV1",
                 "parameters": [
                     {
@@ -26602,6 +26602,60 @@
                     "$ref": "#/components/schemas/Domains.V1.Domain.DomainResource"
                 }
             },
+            "Domains.V1.Domain.DomainContactVerificationChannelResource": {
+                "properties": {
+                    "status": {
+                        "description": "- `pending`: not verified yet. Verify it in [hPanel](https://hpanel.hostinger.com/) before\n  `ends_at`.\n- `verified`: verified, or never required for this TLD. Nothing to do.\n- `suspended`: not verified in time, so the domain is suspended until the owner contact is\n  verified in [hPanel](https://hpanel.hostinger.com/).",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "verified",
+                            "suspended"
+                        ],
+                        "example": "pending"
+                    },
+                    "ends_at": {
+                        "description": "Deadline to verify by while `status` is `pending`, after which the domain is suspended. It can\nstill hold the past deadline once the channel is `verified` or `suspended`.",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-03-14T23:59:59Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Domain.DomainContactVerificationResource": {
+                "properties": {
+                    "email": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Domains.V1.Domain.DomainContactVerificationChannelResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Verification of the owner email address. `null` when it reports no verification status."
+                    },
+                    "phone": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Domains.V1.Domain.DomainContactVerificationChannelResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Verification of the owner phone number. `null` when it reports no verification status."
+                    },
+                    "contact_name": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Domains.V1.Domain.DomainContactVerificationChannelResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Verification of the owner contact name. `null` when it reports no verification status."
+                    }
+                },
+                "type": "object"
+            },
             "Domains.V1.Domain.DomainExtendedResource": {
                 "properties": {
                     "domain": {
@@ -26737,6 +26791,15 @@
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z",
                         "nullable": true
+                    },
+                    "contact_verification": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Domains.V1.Domain.DomainContactVerificationResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Owner contact verification after registration, per channel. `null` when no channel reports a\nverification status."
                     }
                 },
                 "type": "object"
