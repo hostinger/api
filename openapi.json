@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.11.1",
+        "version": "2.12.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3183,7 +3183,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Get domain details",
-                "description": "Retrieve detailed information for specified domain.\n\nUse this endpoint to view comprehensive domain configuration and status.",
+                "description": "Retrieve detailed information for specified domain.\n\nA domain is found here only once it is registered. Until then, `Get domain list` shows it, and\nits `verification` field says what registration waits for when the domain is held for\nverification.\n\nUse this endpoint to view comprehensive domain configuration and status.",
                 "operationId": "domains_getDomainDetailsV1",
                 "parameters": [
                     {
@@ -3216,7 +3216,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Get domain list",
-                "description": "Retrieve all domains associated with your account.\n\nA plan can include both a free domain (`type: free_domain`) and a free domain\ntransfer (`type: free_domain_transfer`). They are alternatives: claiming one\nremoves the other, which may still be listed for a short time after the claim.\n\nUse this endpoint to view user's domain portfolio.",
+                "description": "Retrieve all domains associated with your account.\n\nA plan can include both a free domain (`type: free_domain`) and a free domain\ntransfer (`type: free_domain_transfer`). They are alternatives: claiming one\nremoves the other, which may still be listed for a short time after the claim.\n\nA domain held for verification before it is registered has `status: pending_verification`,\nand its `verification` field says what registration waits for: a manual review, an SMS code,\nor owner contact verification.\n\nUse this endpoint to view user's domain portfolio.",
                 "operationId": "domains_getDomainListV1",
                 "responses": {
                     "200": {
@@ -3390,7 +3390,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Complete domain setup",
-                "description": "Register a domain you have already paid for but which has not been set up yet.\n\nUse this endpoint when an order completed without registering the domain, for example when\n`Purchase new domain` returned `202 Accepted` and the domain was added to your account without\nbeing registered, or when an earlier setup attempt failed. No new order is placed and no payment\nis taken: the subscription you already own is used, for the period you already paid for.\n\nA domain is left awaiting setup when the details needed to register it were missing or invalid\nas the order completed. Domains ordered elsewhere can be awaiting setup for the same reason.\nComplete the missing information, then call this endpoint. If the order itself has not completed\nyet, the domain is not on your account, wait until it appears in `Get domain list`.\n\nIf `domain_contacts` is omitted, the default WHOIS profile of that TLD is used for all four\nroles. The profile must exist and be complete for the TLD, an incomplete profile is the most\ncommon reason a domain is left awaiting setup. Create one with `Create WHOIS profile`.\n\nSome TLDs require `additional_details`. These are validated before setup, so a missing or\ninvalid value is rejected without any registration being attempted.\n\nThe domain is set up with the default nameservers and with privacy protection. Use\n`Update domain nameservers` and `Disable privacy protection` afterwards to change either.\n\nA successful response means the setup request was accepted, not that the domain is already\nregistered. Poll `Get domain list` for the outcome, the domain appears in `Get domain details`\nonly once it is registered.\n\nUse this endpoint to finish registering a domain that is awaiting setup on your account.",
+                "description": "Register a domain you have already paid for but which has not been set up yet.\n\nUse this endpoint when an order completed without registering the domain, for example when\n`Purchase new domain` returned `202 Accepted` and the domain was added to your account without\nbeing registered, or when an earlier setup attempt failed. No new order is placed and no payment\nis taken: the subscription you already own is used, for the period you already paid for.\n\nA domain is left awaiting setup when the details needed to register it were missing or invalid\nas the order completed. Domains ordered elsewhere can be awaiting setup for the same reason.\nComplete the missing information, then call this endpoint. If the order itself has not completed\nyet, the domain is not on your account, wait until it appears in `Get domain list`.\n\nIf `domain_contacts` is omitted, the default WHOIS profile of that TLD is used for all four\nroles. The profile must exist and be complete for the TLD, an incomplete profile is the most\ncommon reason a domain is left awaiting setup. Create one with `Create WHOIS profile`.\n\nSome TLDs require `additional_details`. These are validated before setup, so a missing or\ninvalid value is rejected without any registration being attempted.\n\nThe domain is set up with the default nameservers and with privacy protection. Use\n`Update domain nameservers` and `Disable privacy protection` afterwards to change either.\n\nA successful response means the setup request was accepted, not that the domain is already\nregistered. Poll `Get domain list` for the outcome, the domain appears in `Get domain details`\nonly once it is registered. When the domain is held for verification, its `verification` field\nin `Get domain list` says what registration waits for.\n\nUse this endpoint to finish registering a domain that is awaiting setup on your account.",
                 "operationId": "domains_completeDomainSetupV1",
                 "parameters": [
                     {
@@ -26785,6 +26785,30 @@
                         "format": "date-time",
                         "example": "2025-03-27T11:54:22Z",
                         "nullable": true
+                    },
+                    "verification": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Domains.V1.Domain.DomainVerificationResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "What registration of this domain waits for. Set only when `type` is `domain` and `status` is\n`pending_verification`; `null` otherwise, including for a `domain_transfer` in\n`pending_verification`."
+                    }
+                },
+                "type": "object"
+            },
+            "Domains.V1.Domain.DomainVerificationResource": {
+                "properties": {
+                    "type": {
+                        "description": "What registration waits for:\n- `manual_review`: a check you cannot complete yourself, such as a review of the order by\n  Hostinger. You have nothing to do.\n- `sms_code`: a code was sent by SMS to the phone number of the owner WHOIS profile. Enter it\n  in [hPanel](https://hpanel.hostinger.com/).\n- `contact_verification`: the registry requires the owner WHOIS profile to be verified first,\n  by email, phone number or contact name. Complete it in\n  [hPanel](https://hpanel.hostinger.com/); registration resumes once the profile is verified.",
+                        "type": "string",
+                        "enum": [
+                            "manual_review",
+                            "sms_code",
+                            "contact_verification"
+                        ],
+                        "example": "contact_verification"
                     }
                 },
                 "type": "object"
