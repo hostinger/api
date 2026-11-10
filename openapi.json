@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.12.2",
+        "version": "2.12.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2706,7 +2706,7 @@
                     "Domains: WHOIS"
                 ],
                 "summary": "Get pending IRTP verification",
-                "description": "Retrieve a pending IRTP verification for a domain.\n\nBoth the old and new registrant must confirm it before the WHOIS change takes effect.\n\nUse this endpoint to check the status of a WHOIS change awaiting registrant confirmation.",
+                "description": "Retrieve a pending IRTP verification for a domain.\n\nBoth the old and new registrant must confirm it before the WHOIS change takes effect.\n\nReturns 404 when the domain has no pending IRTP verification.\n\nUse this endpoint to check the status of a WHOIS change awaiting registrant confirmation.",
                 "operationId": "domains_getPendingIRTPVerificationV1",
                 "parameters": [
                     {
