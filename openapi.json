@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.9.1",
+        "version": "2.10.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -3357,7 +3357,7 @@
                     "Domains: Portfolio"
                 ],
                 "summary": "Get domain renewal information",
-                "description": "Retrieve renewal information for a specified domain, including its status and current\nexpiration date.\n\nUse this endpoint to build renewal automation and expiry monitoring for a single domain.",
+                "description": "Retrieve renewal information for a specified domain, including its status, current\nexpiration date, whether it can be renewed, whether it is in its grace or redemption period,\nand when each of those periods ends.\n\nUse this endpoint to build renewal automation and expiry monitoring for a single domain.",
                 "operationId": "domains_getDomainRenewalInformationV1",
                 "parameters": [
                     {
@@ -26971,7 +26971,36 @@
                         "description": "Domain expiration date",
                         "type": "string",
                         "format": "date-time",
-                        "example": "2027-05-25 13:53:04"
+                        "example": "2027-05-25T13:53:04Z"
+                    },
+                    "is_grace_period": {
+                        "description": "Whether the domain is in its post-expiration grace period",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "grace_period_ends_at": {
+                        "description": "When the grace period ends, set even when the domain is not in it",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-06-24T13:53:04Z",
+                        "nullable": true
+                    },
+                    "is_redemption_period": {
+                        "description": "Whether the domain is in its redemption period",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "redemption_period_ends_at": {
+                        "description": "When the redemption period ends, set even when the domain is not in it",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2027-07-24T13:53:04Z",
+                        "nullable": true
+                    },
+                    "is_renewable": {
+                        "description": "Whether the domain can be renewed",
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
