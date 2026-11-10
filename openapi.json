@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.12.3",
+        "version": "2.12.4",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -16782,7 +16782,7 @@
                     "VPS: Snapshots"
                 ],
                 "summary": "Get snapshot",
-                "description": "Retrieve snapshot for a specified virtual machine.\n\nUse this endpoint to view current VPS snapshot information.",
+                "description": "Retrieve snapshot for a specified virtual machine.\n\nUse this endpoint to view current VPS snapshot information.\n\nReturns 404 when the virtual machine has no snapshot.",
                 "operationId": "VPS_getSnapshotV1",
                 "parameters": [
                     {
@@ -16802,6 +16802,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
