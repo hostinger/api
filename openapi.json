@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.14.0",
+        "version": "2.14.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -9958,7 +9958,7 @@
                     "Mail: API Tokens"
                 ],
                 "summary": "Create API token",
-                "description": "Create an API token for the given mail order. The token grants access\nto the [Hostinger Email API](https://api.mail.hostinger.com/), where\nyou can provision and manage the mailboxes it is scoped to.\n\nThe plaintext token is returned only in this response, never again.\nA maximum of 10 tokens can exist per order. Use\n`scope.has_all_mailboxes` to cover all current and future mailboxes,\nor list specific mailboxes in `scope.mailbox_ids`.",
+                "description": "Create an API token for the given mail order. Through the\n[Hostinger Mail API](https://api.mail.hostinger.com/), the token\ngrants access to the mailboxes it is scoped to (for example, to read,\nsearch, send and organise email messages), without signing in with a\nmailbox password over IMAP, SMTP or webmail.\n\nA token covers either all mailboxes of the order or only the ones you\nchoose. Set `scope.has_all_mailboxes` to `true` to cover all current\nand future mailboxes, or to `false` and list specific mailboxes in\n`scope.mailbox_ids`.\n\nThe plaintext token is returned only in this response, never again.\nStore it securely, because anyone who has it gets the same access. A\nmaximum of 10 tokens can exist per order.",
                 "operationId": "mail_createAPITokenV1",
                 "parameters": [
                     {
@@ -10010,7 +10010,7 @@
                     "Mail: API Tokens"
                 ],
                 "summary": "Revoke API token",
-                "description": "Revoke an API token. The token immediately loses access to the\n[Hostinger Email API](https://api.mail.hostinger.com/). This action\ncannot be undone.",
+                "description": "Revoke an API token. The token immediately loses access to the\n[Hostinger Mail API](https://api.mail.hostinger.com/). This action\ncannot be undone.",
                 "operationId": "mail_revokeAPITokenV1",
                 "parameters": [
                     {
@@ -10049,7 +10049,7 @@
                     "Mail: API Tokens"
                 ],
                 "summary": "List API tokens",
-                "description": "Retrieve a paginated list of\n[Hostinger Email API](https://api.mail.hostinger.com/) tokens across\nall your mail orders, optionally filtered by order. Plaintext tokens\nare never included; they are returned only when a token is created.",
+                "description": "Retrieve a paginated list of\n[Hostinger Mail API](https://api.mail.hostinger.com/) tokens across\nall your mail orders, optionally filtered by order. Plaintext tokens\nare never included; they are returned only when a token is created.",
                 "operationId": "mail_listAPITokensV1",
                 "parameters": [
                     {
@@ -31580,7 +31580,7 @@
                         "example": "019683f8-1234-7abc-8def-0123456789ab"
                     },
                     "token": {
-                        "description": "Plaintext API token, returned only in this response. Grants access to the [Hostinger Email API](https://api.mail.hostinger.com/) for mailbox provisioning and management.",
+                        "description": "Plaintext API token, returned only in this response. Grants access to the mailboxes it is scoped to through the [Hostinger Mail API](https://api.mail.hostinger.com/).",
                         "type": "string",
                         "example": "4a6f8b2d1e9c3f7a0b5d8e2c4f1a7b3d9e6c2f8a1b4d7e0c3f6a9b2d5e8c1f4a"
                     },
@@ -38545,7 +38545,7 @@
         },
         {
             "name": "Mail: API Tokens",
-            "description": "Manage API tokens for the\n[Hostinger Email API](https://api.mail.hostinger.com/). Tokens are\nscoped to mailboxes of a mail order and grant access to mailbox\nprovisioning and management through the Email API.",
+            "description": "Manage API tokens for the\n[Hostinger Mail API](https://api.mail.hostinger.com/). Tokens are\nscoped to mailboxes of a mail order and grant access to them through\nthe Mail API (for example, to read, search, send and organise email).",
             "x-displayName": "API Tokens",
             "x-parent": "Mail"
         },
