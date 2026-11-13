@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.14.1",
+        "version": "2.14.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -9083,7 +9083,7 @@
                     "Hosting: PocketBase"
                 ],
                 "summary": "Get PocketBase backend",
-                "description": "Returns the PocketBase backend of a website: its REST API and dashboard URLs, live state\nand version. A PocketBase backend gives the website a database, authentication, file\nstorage and a realtime REST API, served from the website's own domain under `/api` and\n`/_`. Returns 404 when the website has no PocketBase backend.\n\nThe superuser password is only shown once, when it is set, and is never returned here. If it\nis lost, set a new one with the `Set PocketBase superuser` endpoint.\n\nThe instance sleeps when idle and wakes on the first request, so `asleep` is a normal state\nand the first call to a sleeping instance can take a few seconds. `starting`, `running` and\n`stopping` are healthy; `failed` or `unregistered` mean the instance is broken; `missing`\nmeans its files are gone from the server, and creating the PocketBase backend again sets up\na new, empty one. `state` is null when the server could not be reached; retry later.\n\nPocketBase is rolling out gradually: an account without access yet gets 422.",
+                "description": "Returns the PocketBase backend of a website: its REST API and dashboard URLs, live state\nand version. A PocketBase backend gives the website a database, authentication, file\nstorage and a realtime REST API, served from the website's own domain under `/api` and\n`/_`. Returns 404 when the website has no PocketBase backend.\n\nThe superuser password is only shown once, when it is set, and is never returned here. If it\nis lost, set a new one with the `Set PocketBase superuser` endpoint.\n\nThe instance sleeps when idle and wakes on the first request, so `asleep` is a normal state\nand the first call to a sleeping instance can take a few seconds. `starting`, `running` and\n`stopping` are healthy.\n\n`failed` means the last start did not succeed. Hostinger starts it again on its own after\n`retry_after_seconds`, and the data is intact: wait and call again, do not delete the\nbackend. `failure_reason` says why: `process_limit` means the hosting account has no free\nprocess slots, usually because its Node.js apps are running.\n\n`unregistered` means the instance is broken. `missing` means its files are gone from the\nserver, and creating the PocketBase backend again sets up a new, empty one. `state` is null\nwhen the server could not be reached; retry later.\n\nPocketBase is rolling out gradually: an account without access yet gets 422.",
                 "operationId": "hosting_getPocketBaseBackendV1",
                 "parameters": [
                     {
@@ -9224,7 +9224,7 @@
                     "Hosting: PocketBase"
                 ],
                 "summary": "List account PocketBase backends",
-                "description": "Lists the PocketBase backends of all websites of a hosting account with their URLs, live\nstate, version and disk usage. A PocketBase backend gives a website a database,\nauthentication, file storage and a realtime REST API, served from the website's own\ndomain. An empty list means no website of the account has a PocketBase backend.\n\nStates: `asleep` is normal (the instance sleeps when idle and wakes on the first request);\n`starting`, `running` and `stopping` are healthy; `failed` or `unregistered` mean the\ninstance is broken; `missing` means its files are gone from the server, and creating the\nPocketBase backend again sets up a new, empty one. `state` is null when the server could\nnot be reached; retry later.\n\nPocketBase is rolling out gradually: an account without access yet gets 422.",
+                "description": "Lists the PocketBase backends of all websites of a hosting account with their URLs, live\nstate, version and disk usage. A PocketBase backend gives a website a database,\nauthentication, file storage and a realtime REST API, served from the website's own\ndomain. An empty list means no website of the account has a PocketBase backend.\n\nStates: `asleep` is normal (the instance sleeps when idle and wakes on the first request);\n`starting`, `running` and `stopping` are healthy.\n\n`failed` means the last start did not succeed. Hostinger starts it again on its own after\n`retry_after_seconds`, and the data is intact: wait and call again, do not delete the\nbackend. `failure_reason` says why: `process_limit` means the hosting account has no free\nprocess slots, usually because its Node.js apps are running.\n\n`unregistered` means the instance is broken. `missing` means its files are gone from the\nserver, and creating the PocketBase backend again sets up a new, empty one. `state` is null\nwhen the server could not be reached; retry later.\n\nPocketBase is rolling out gradually: an account without access yet gets 422.",
                 "operationId": "hosting_listAccountPocketBaseBackendsV1",
                 "parameters": [
                     {
@@ -31188,6 +31188,8 @@
                     "api_url",
                     "admin_url",
                     "state",
+                    "failure_reason",
+                    "retry_after_seconds",
                     "version",
                     "next_steps"
                 ],
@@ -31228,6 +31230,22 @@
                         "example": "asleep",
                         "nullable": true
                     },
+                    "failure_reason": {
+                        "description": "Why the last start did not succeed, set only while `state` is `failed`. `process_limit` means the\nhosting account has no free process slots, usually because its Node.js apps are running;\n`start_failed` is any other cause.",
+                        "type": "string",
+                        "enum": [
+                            "process_limit",
+                            "start_failed"
+                        ],
+                        "example": "process_limit",
+                        "nullable": true
+                    },
+                    "retry_after_seconds": {
+                        "description": "Seconds until Hostinger tries to start the instance again, set only while `state` is `failed`.\nNull when the next try is due now.",
+                        "type": "integer",
+                        "example": 300,
+                        "nullable": true
+                    },
                     "version": {
                         "description": "PocketBase version",
                         "type": "string",
@@ -31259,6 +31277,8 @@
                     "api_url",
                     "admin_url",
                     "state",
+                    "failure_reason",
+                    "retry_after_seconds",
                     "version",
                     "disk_usage_kb"
                 ],
@@ -31297,6 +31317,22 @@
                             "missing"
                         ],
                         "example": "asleep",
+                        "nullable": true
+                    },
+                    "failure_reason": {
+                        "description": "Why the last start did not succeed, set only while `state` is `failed`. `process_limit` means the\nhosting account has no free process slots, usually because its Node.js apps are running;\n`start_failed` is any other cause.",
+                        "type": "string",
+                        "enum": [
+                            "process_limit",
+                            "start_failed"
+                        ],
+                        "example": "process_limit",
+                        "nullable": true
+                    },
+                    "retry_after_seconds": {
+                        "description": "Seconds until Hostinger tries to start the instance again, set only while `state` is `failed`.\nNull when the next try is due now.",
+                        "type": "integer",
+                        "example": 300,
                         "nullable": true
                     },
                     "version": {
