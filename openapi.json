@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.16.1",
+        "version": "3.0.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5624,6 +5624,9 @@
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
@@ -5654,6 +5657,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -5691,6 +5697,9 @@
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
@@ -5723,6 +5732,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -5767,6 +5779,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -5868,6 +5883,9 @@
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
@@ -5880,13 +5898,8 @@
                     "GPU: Catalog"
                 ],
                 "summary": "Get pool groups",
-                "description": "Retrieve GPU pool groups, ordered by name.\n\nEach group bundles the pools of one GPU model and lists its currently available pools,\nwhether any of them is available and the lowest hourly price among its instance types.\nThe price is returned even when the group is out of stock.\n\nUse this endpoint to show which GPU models can be ordered and from what price.",
+                "description": "Retrieve GPU pool groups, ordered by name.\n\nEach group bundles the pools of one GPU model and lists its currently available pools,\nwhether any of them is available and the lowest hourly price, in credits, among its instance types.\nThe price is returned even when the group is out of stock.\n\nUse this endpoint to show which GPU models can be ordered and from what price.",
                 "operationId": "GPU_getPoolGroupsV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/gpu_currency_query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -5934,6 +5947,9 @@
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
                     },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
@@ -5969,6 +5985,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -21482,8 +21501,10 @@
                         "type": "array",
                         "items": {
                             "type": "string",
+                            "maxLength": 2048,
                             "example": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA user@laptop"
-                        }
+                        },
+                        "maxItems": 10
                     }
                 },
                 "type": "object"
@@ -29585,6 +29606,22 @@
                         ],
                         "example": "unlocked"
                     },
+                    "action_lock_reason": {
+                        "description": "Action in progress on the instance, `null` when unlocked",
+                        "type": "string",
+                        "enum": [
+                            "creating",
+                            "booting",
+                            "installing_template",
+                            "exposing_service",
+                            "concealing_service",
+                            "restarting",
+                            "destroying",
+                            "renaming"
+                        ],
+                        "example": "creating",
+                        "nullable": true
+                    },
                     "pool": {
                         "$ref": "#/components/schemas/GPU.V1.Pool.PoolResource"
                     },
@@ -29632,6 +29669,22 @@
                         ],
                         "example": "unlocked"
                     },
+                    "action_lock_reason": {
+                        "description": "Action in progress on the instance, `null` when unlocked",
+                        "type": "string",
+                        "enum": [
+                            "creating",
+                            "booting",
+                            "installing_template",
+                            "exposing_service",
+                            "concealing_service",
+                            "restarting",
+                            "destroying",
+                            "renaming"
+                        ],
+                        "example": "creating",
+                        "nullable": true
+                    },
                     "pool": {
                         "$ref": "#/components/schemas/GPU.V1.Pool.PoolResource"
                     },
@@ -29641,8 +29694,65 @@
                     "os_template": {
                         "$ref": "#/components/schemas/GPU.V1.OsTemplate.OsTemplateResource"
                     },
+                    "llm_model_variant": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/GPU.V1.LlmModelVariant.LlmModelVariantResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "LLM model variant installed on the instance, `null` for plain OS templates"
+                    },
                     "ssh_keys": {
                         "$ref": "#/components/schemas/GPU.V1.SshKey.SshKeyCollection"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.LlmModelVariant.LlmModelVariantResource": {
+                "properties": {
+                    "id": {
+                        "description": "LLM model variant ID",
+                        "type": "integer",
+                        "example": 42
+                    },
+                    "model_tag": {
+                        "type": "string",
+                        "example": "llama4:7b"
+                    },
+                    "parameter_count": {
+                        "type": "integer",
+                        "example": 7000000000
+                    },
+                    "capabilities": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "tools",
+                                "thinking",
+                                "vision",
+                                "sound",
+                                "embedding",
+                                "decision"
+                            ]
+                        },
+                        "example": [
+                            "tools",
+                            "thinking"
+                        ]
+                    },
+                    "dark_image_id": {
+                        "description": "Dark theme icon image ID",
+                        "type": "string",
+                        "example": "hgpu-llm-icon-llama-dark",
+                        "nullable": true
+                    },
+                    "light_image_id": {
+                        "description": "Light theme icon image ID",
+                        "type": "string",
+                        "example": "hgpu-llm-icon-llama-light",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -29717,12 +29827,6 @@
                         "type": "string",
                         "example": "https://support.hostinger.com/os-templates/ubuntu-cuda"
                     },
-                    "image": {
-                        "description": "Icon image ID",
-                        "type": "string",
-                        "example": "hgpu-app-icon-ubuntu",
-                        "nullable": true
-                    },
                     "dark_image_id": {
                         "description": "Dark theme icon image ID",
                         "type": "string",
@@ -29763,6 +29867,16 @@
                         "type": "string",
                         "example": "NVIDIA H100"
                     },
+                    "description": {
+                        "type": "string",
+                        "example": "Built for high-performance AI training",
+                        "nullable": true
+                    },
+                    "feature": {
+                        "type": "string",
+                        "example": "NVLink support",
+                        "nullable": true
+                    },
                     "vram": {
                         "description": "Total VRAM in bytes",
                         "type": "integer",
@@ -29775,10 +29889,9 @@
                         "example": true
                     },
                     "min_price_per_hour": {
-                        "description": "Lowest hourly price of the group instance types, in the requested currency",
-                        "type": "number",
-                        "format": "float",
-                        "example": 0.65,
+                        "description": "Lowest hourly price of the group instance types, in credits",
+                        "type": "integer",
+                        "example": 65,
                         "nullable": true
                     },
                     "pools": {
@@ -29826,7 +29939,7 @@
                         "example": 549755813888
                     },
                     "price_per_hour": {
-                        "description": "Hourly price in cents (USD)",
+                        "description": "Hourly price in credits",
                         "type": "integer",
                         "example": 35
                     }
@@ -38026,66 +38139,6 @@
                 "schema": {
                     "type": "integer",
                     "example": 564651
-                }
-            },
-            "gpu_currency_query": {
-                "name": "currency",
-                "in": "query",
-                "description": "Currency of the returned prices, `USD` by default",
-                "schema": {
-                    "type": "string",
-                    "enum": [
-                        "USD",
-                        "ARS",
-                        "AMD",
-                        "AUD",
-                        "AZN",
-                        "BDT",
-                        "BRL",
-                        "BTC",
-                        "BYN",
-                        "CAD",
-                        "CHF",
-                        "CLP",
-                        "CNY",
-                        "COP",
-                        "CZK",
-                        "DKK",
-                        "EGP",
-                        "EUR",
-                        "GBP",
-                        "GEL",
-                        "HKD",
-                        "HRK",
-                        "HUF",
-                        "IDR",
-                        "ILS",
-                        "INR",
-                        "JPY",
-                        "KGS",
-                        "KRW",
-                        "KZT",
-                        "MAD",
-                        "MXN",
-                        "MYR",
-                        "NGN",
-                        "NOK",
-                        "NZD",
-                        "PEN",
-                        "PHP",
-                        "PKR",
-                        "PLN",
-                        "SEK",
-                        "SGD",
-                        "THB",
-                        "TJS",
-                        "TRY",
-                        "TWD",
-                        "UAH",
-                        "VND",
-                        "ZAR"
-                    ],
-                    "example": "EUR"
                 }
             },
             "exposedServiceId": {
