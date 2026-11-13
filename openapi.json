@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.15.0",
+        "version": "2.16.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5651,6 +5651,119 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/instances/{instanceId}/exposed-services/{exposedServiceId}": {
+            "delete": {
+                "tags": [
+                    "GPU: Exposed services"
+                ],
+                "summary": "Delete exposed service",
+                "description": "Delete a specified exposed service of a GPU instance.\n\nThe service is removed asynchronously: a successful request returns immediately and the service\nstops being reachable from the internet shortly after.\n\nUse this endpoint to close public access to a service on your GPU instance.",
+                "operationId": "GPU_deleteExposedServiceV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/exposedServiceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/instances/{instanceId}/exposed-services": {
+            "get": {
+                "tags": [
+                    "GPU: Exposed services"
+                ],
+                "summary": "Get exposed services",
+                "description": "Retrieve the services exposed on a specified GPU instance.\n\nA newly created service is listed once it gets its public hostname and external port.\n\nUse this endpoint to find the public address of services running on your GPU instance.",
+                "operationId": "GPU_getExposedServicesV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.ExposedService.ExposedServiceCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "GPU: Exposed services"
+                ],
+                "summary": "Create exposed service",
+                "description": "Expose a service running on a specified GPU instance to the internet.\n\nThe service is exposed asynchronously: a successful request returns immediately, and the service\nappears in the exposed services list once it gets its public hostname and external port.\nFails when the instance already has the maximum of 4 exposed services.\n\nUse this endpoint to make an application on your GPU instance publicly reachable.",
+                "operationId": "GPU_createExposedServiceV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GPU.V1.ExposedService.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -21215,6 +21328,47 @@
                 },
                 "type": "object"
             },
+            "GPU.V1.ExposedService.StoreRequest": {
+                "required": [
+                    "name",
+                    "internal_port",
+                    "protocol",
+                    "type"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Service name, unique within the instance",
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 3,
+                        "example": "Ollama"
+                    },
+                    "internal_port": {
+                        "description": "Port the service listens on inside the instance, unique within the instance",
+                        "type": "integer",
+                        "maximum": 65535,
+                        "minimum": 1,
+                        "example": 8000
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "enum": [
+                            "tcp",
+                            "udp"
+                        ],
+                        "example": "tcp"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "http",
+                            "https"
+                        ],
+                        "example": "http"
+                    }
+                },
+                "type": "object"
+            },
             "GPU.V1.Instance.StoreRequest": {
                 "required": [
                     "pool_instance_id",
@@ -29172,6 +29326,58 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/Ecommerce.V1.Variant.VariantResource"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.ExposedService.ExposedServiceCollection": {
+                "description": "Array of [`GPU.V1.ExposedService.ExposedServiceResource`](#model/gpuv1exposedserviceexposedserviceresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.ExposedService.ExposedServiceResource"
+                }
+            },
+            "GPU.V1.ExposedService.ExposedServiceResource": {
+                "properties": {
+                    "id": {
+                        "description": "Exposed service ID",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ollama"
+                    },
+                    "hostname": {
+                        "description": "Public hostname or IP address of the service",
+                        "type": "string",
+                        "example": "1.2.3.4"
+                    },
+                    "internal_port": {
+                        "description": "Port the service listens on inside the instance",
+                        "type": "integer",
+                        "example": 8088
+                    },
+                    "external_port": {
+                        "description": "Public port the service is reachable on",
+                        "type": "integer",
+                        "example": 20000
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "enum": [
+                            "tcp",
+                            "udp"
+                        ],
+                        "example": "tcp"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "http",
+                            "https"
+                        ],
+                        "example": "http"
                     }
                 },
                 "type": "object"
@@ -37721,6 +37927,16 @@
                     "example": "EUR"
                 }
             },
+            "exposedServiceId": {
+                "name": "exposedServiceId",
+                "in": "path",
+                "description": "Exposed service ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 3621
+                }
+            },
             "instanceId": {
                 "name": "instanceId",
                 "in": "path",
@@ -39402,6 +39618,12 @@
             "x-parent": "GPU"
         },
         {
+            "name": "GPU: Exposed services",
+            "description": "Make services running on a GPU instance, such as an inference\nserver or a notebook, reachable from the internet. Each exposed\nservice maps a port inside the instance to a public hostname\nand port. An instance can have up to 4 exposed services.",
+            "x-displayName": "Exposed services",
+            "x-parent": "GPU"
+        },
+        {
             "name": "Ecommerce"
         },
         {
@@ -39613,7 +39835,8 @@
             "name": "GPU",
             "tags": [
                 "GPU: Catalog",
-                "GPU: Instances"
+                "GPU: Instances",
+                "GPU: Exposed services"
             ]
         },
         {
