@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.16.0",
+        "version": "2.16.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -12164,6 +12164,53 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
+            },
+            "patch": {
+                "tags": [
+                    "Reach: Campaigns"
+                ],
+                "summary": "Update campaign",
+                "description": "Update a campaign's content, sender, template and audience.\n\nOnly `draft`, `scheduled` and `failed` campaigns can be updated; a campaign that is sending or\nalready sent is rejected. Updating a `failed` campaign moves it back to `draft`. Audience changes\nreplace rather than merge: `all_contacts: true` targets every contact of the profile, while\n`segment_uuids` replaces the segments currently targeted. Leave both out to keep the audience as\nit is. This does not send the campaign - use the send endpoint for that.",
+                "operationId": "reach_updateCampaignV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/campaignUuid"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reach.V1.Campaigns.UpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reach.V1.Campaigns.CreatedCampaignResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
             }
         },
         "/api/reach/v1/profiles/{profileUuid}/campaigns": {
@@ -12256,6 +12303,42 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/reach/v1/profiles/{profileUuid}/campaigns/{campaignUuid}/send": {
+            "post": {
+                "tags": [
+                    "Reach: Campaigns"
+                ],
+                "summary": "Send campaign",
+                "description": "Send a campaign now to the audience stored on it.\n\nThis is irreversible: once accepted, the emails go out and cannot be recalled. Confirm with the\ncustomer before calling. The campaign needs a subject, sender, template and audience first - set\nthem with the update endpoint. Delivery is asynchronous, so success means accepted, not delivered:\nthe campaign moves to `sending` and later to `publish`, or to `failed`. Read the campaign to follow\nit. The request is rejected when the campaign has no recipients, its sender domain is not verified\nor is blocked, the plan's sending limits would be exceeded, or the campaign is already being sent.",
+                "operationId": "reach_sendCampaignV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/profileUuid"
+                    },
+                    {
+                        "$ref": "#/components/parameters/campaignUuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -22757,6 +22840,84 @@
                         "description": "Template to send, as returned by the template endpoints. Can be left out and\nattached later, but the campaign cannot be sent without one.",
                         "type": "string",
                         "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "metadata": {
+                        "description": "Extra campaign fields. Any key outside the listed ones is rejected.",
+                        "properties": {
+                            "preheader": {
+                                "description": "Preview text shown after the subject line in the inbox.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "example": "Our biggest deals of the year"
+                            },
+                            "source": {
+                                "description": "Where the campaign was created from.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "example": "api"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Reach.V1.Campaigns.UpdateRequest": {
+                "description": "Update a campaign. Send at least one field; fields left out keep their current value.",
+                "properties": {
+                    "title": {
+                        "description": "Name the campaign is listed under. Not shown to the recipients.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Black Friday Campaign"
+                    },
+                    "subject": {
+                        "description": "Subject line of the email.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Don't miss our Black Friday deals!"
+                    },
+                    "sender_name": {
+                        "description": "From name shown to the recipients.",
+                        "type": "string",
+                        "maxLength": 50,
+                        "example": "Marketing Team"
+                    },
+                    "sender_email": {
+                        "description": "From address of the campaign. Its domain has to be verified on the profile before\nthe campaign can be sent.",
+                        "type": "string",
+                        "example": "marketing@example.com"
+                    },
+                    "template_uuid": {
+                        "description": "Template to send, as returned by the template endpoints.",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "all_contacts": {
+                        "description": "`true` targets every contact of the profile, `false` targets only `segment_uuids`.\nRequired when `segment_uuids` or `excluded_segment_uuids` is sent.",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "segment_uuids": {
+                        "description": "Segments to target. Replaces the segments currently targeted.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": [
+                            "2080cc86-e026-4f7b-9598-d4132f8c7c2f"
+                        ]
+                    },
+                    "excluded_segment_uuids": {
+                        "description": "Segments to leave out. Only allowed together with `all_contacts: true`.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "example": []
                     },
                     "metadata": {
                         "description": "Extra campaign fields. Any key outside the listed ones is rejected.",
@@ -33893,7 +34054,7 @@
                         "nullable": true
                     },
                     "status": {
-                        "description": "Always `draft` for a campaign that was just created.",
+                        "description": "Always `draft` for a campaign that was just created; the current status after an update.",
                         "type": "string",
                         "enum": [
                             "draft",
