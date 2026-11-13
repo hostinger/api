@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "2.14.2",
+        "version": "2.15.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5587,6 +5587,170 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/instances/{instanceId}": {
+            "get": {
+                "tags": [
+                    "GPU: Instances"
+                ],
+                "summary": "Get instance details",
+                "description": "Retrieve detailed information about a specified GPU instance, including its SSH keys.\n\nUse this endpoint to follow the instance `status` after creating or deleting it.",
+                "operationId": "GPU_getInstanceDetailsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Instance.InstanceResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "GPU: Instances"
+                ],
+                "summary": "Delete instance",
+                "description": "Delete a specified GPU instance.\n\nThe instance is destroyed asynchronously: a successful request returns immediately and the instance\n`status` moves to `destroying`. Deleting fails while the instance is in `created`, `destroying`,\n`destroyed` or `abuse` status, or while another action is in progress on it.\n\nUse this endpoint to stop billing for a GPU instance you no longer need.",
+                "operationId": "GPU_deleteInstanceV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/instances": {
+            "get": {
+                "tags": [
+                    "GPU: Instances"
+                ],
+                "summary": "Get instances",
+                "description": "Retrieve all GPU instances of your account.\n\nUse this endpoint to view your GPU instances with their status, pool, instance type and OS template.",
+                "operationId": "GPU_getInstancesV1",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Instance.InstanceListCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "GPU: Instances"
+                ],
+                "summary": "Create instance",
+                "description": "Create a new GPU instance.\n\nPick `pool_instance_id` from the pool instance types list and `os_template_id` from the OS templates\navailable for that instance type. Your account must have enough credits to run the instance for its\nfirst hour.\n\nThe instance is created asynchronously: a successful request returns immediately, and the instance\nappears in the instance list while its `status` moves from `created` through `creating` to `running`.\n\nUse this endpoint to provision GPU compute.",
+                "operationId": "GPU_createInstanceV1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GPU.V1.Instance.StoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success empty response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/instances/{instanceId}/metrics": {
+            "get": {
+                "tags": [
+                    "GPU: Instances"
+                ],
+                "summary": "Get instance metrics",
+                "description": "Retrieve utilisation metrics of a specified GPU instance for the last hour.\n\nEach data point contains CPU, memory and GPU utilisation, used GPU memory and GPU throughput.\nThe list is empty until the instance is provisioned.\n\nUse this endpoint to monitor GPU instance load.",
+                "operationId": "GPU_getInstanceMetricsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Metrics.MetricsCollection"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -21051,6 +21215,42 @@
                 },
                 "type": "object"
             },
+            "GPU.V1.Instance.StoreRequest": {
+                "required": [
+                    "pool_instance_id",
+                    "os_template_id",
+                    "name"
+                ],
+                "properties": {
+                    "pool_instance_id": {
+                        "description": "Instance type ID from the pool instance types list",
+                        "type": "integer",
+                        "example": 232
+                    },
+                    "os_template_id": {
+                        "description": "OS template ID available for the selected instance type",
+                        "type": "integer",
+                        "example": 23
+                    },
+                    "name": {
+                        "description": "Instance name, unique among your instances. Letters, numbers, dashes and underscores only",
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9_-]+$",
+                        "example": "my-instance-1"
+                    },
+                    "public_keys": {
+                        "description": "SSH public keys to add to the instance",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA user@laptop"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Horizons.V1.Websites.CreateWebsiteRequest": {
                 "required": [
                     "message"
@@ -28976,6 +29176,157 @@
                 },
                 "type": "object"
             },
+            "GPU.V1.Instance.InstanceListCollection": {
+                "description": "Array of [`GPU.V1.Instance.InstanceListResource`](#model/gpuv1instanceinstancelistresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.Instance.InstanceListResource"
+                }
+            },
+            "GPU.V1.Instance.InstanceListResource": {
+                "properties": {
+                    "id": {
+                        "description": "GPU instance ID",
+                        "type": "integer",
+                        "example": 6325
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "my-instance-1"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "created",
+                            "creating",
+                            "running",
+                            "stopped",
+                            "destroying",
+                            "destroyed",
+                            "insufficient_funds",
+                            "error",
+                            "abuse"
+                        ],
+                        "example": "running"
+                    },
+                    "action_lock": {
+                        "description": "Whether an action is in progress on the instance",
+                        "type": "string",
+                        "enum": [
+                            "unlocked",
+                            "locked"
+                        ],
+                        "example": "unlocked"
+                    },
+                    "pool": {
+                        "$ref": "#/components/schemas/GPU.V1.Pool.PoolResource"
+                    },
+                    "pool_instance": {
+                        "$ref": "#/components/schemas/GPU.V1.Pool.PoolInstanceResource"
+                    },
+                    "os_template": {
+                        "$ref": "#/components/schemas/GPU.V1.OsTemplate.OsTemplateResource"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Instance.InstanceResource": {
+                "properties": {
+                    "id": {
+                        "description": "GPU instance ID",
+                        "type": "integer",
+                        "example": 6325
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "my-instance-1"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "created",
+                            "creating",
+                            "running",
+                            "stopped",
+                            "destroying",
+                            "destroyed",
+                            "insufficient_funds",
+                            "error",
+                            "abuse"
+                        ],
+                        "example": "running"
+                    },
+                    "action_lock": {
+                        "description": "Whether an action is in progress on the instance",
+                        "type": "string",
+                        "enum": [
+                            "unlocked",
+                            "locked"
+                        ],
+                        "example": "unlocked"
+                    },
+                    "pool": {
+                        "$ref": "#/components/schemas/GPU.V1.Pool.PoolResource"
+                    },
+                    "pool_instance": {
+                        "$ref": "#/components/schemas/GPU.V1.Pool.PoolInstanceResource"
+                    },
+                    "os_template": {
+                        "$ref": "#/components/schemas/GPU.V1.OsTemplate.OsTemplateResource"
+                    },
+                    "ssh_keys": {
+                        "$ref": "#/components/schemas/GPU.V1.SshKey.SshKeyCollection"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Metrics.MetricsCollection": {
+                "description": "Array of [`GPU.V1.Metrics.MetricsResource`](#model/gpuv1metricsmetricsresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.Metrics.MetricsResource"
+                }
+            },
+            "GPU.V1.Metrics.MetricsResource": {
+                "properties": {
+                    "timestamp": {
+                        "description": "Unix timestamp of the measurement",
+                        "type": "integer",
+                        "example": 1718000000
+                    },
+                    "cpu_percentage": {
+                        "description": "CPU utilisation in percent",
+                        "type": "number",
+                        "format": "float",
+                        "example": 42.5
+                    },
+                    "memory_used": {
+                        "description": "Used memory in bytes",
+                        "type": "number",
+                        "format": "float",
+                        "example": 8589934592
+                    },
+                    "gpu_percentage": {
+                        "description": "GPU utilisation in percent",
+                        "type": "number",
+                        "format": "float",
+                        "example": 87.3
+                    },
+                    "gpu_memory_used": {
+                        "description": "Used GPU memory in bytes",
+                        "type": "number",
+                        "format": "float",
+                        "example": 42949672960
+                    },
+                    "gpu_tflops": {
+                        "description": "GPU throughput in TFLOPS",
+                        "type": "number",
+                        "format": "float",
+                        "example": 312
+                    }
+                },
+                "type": "object"
+            },
             "GPU.V1.OsTemplate.OsTemplateCollection": {
                 "description": "Array of [`GPU.V1.OsTemplate.OsTemplateResource`](#model/gpuv1ostemplateostemplateresource)",
                 "type": "array",
@@ -29174,6 +29525,32 @@
                         "description": "ISO 3166-1 alpha-2 country code",
                         "type": "string",
                         "example": "LT"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.SshKey.SshKeyCollection": {
+                "description": "Array of [`GPU.V1.SshKey.SshKeyResource`](#model/gpuv1sshkeysshkeyresource)",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/GPU.V1.SshKey.SshKeyResource"
+                }
+            },
+            "GPU.V1.SshKey.SshKeyResource": {
+                "properties": {
+                    "id": {
+                        "description": "SSH key ID",
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "user@laptop",
+                        "nullable": true
+                    },
+                    "public_key": {
+                        "type": "string",
+                        "example": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA user@laptop"
                     }
                 },
                 "type": "object"
@@ -37344,6 +37721,16 @@
                     "example": "EUR"
                 }
             },
+            "instanceId": {
+                "name": "instanceId",
+                "in": "path",
+                "description": "GPU instance ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "example": 6325
+                }
+            },
             "poolId": {
                 "name": "poolId",
                 "in": "path",
@@ -39009,6 +39396,12 @@
             "x-parent": "GPU"
         },
         {
+            "name": "GPU: Instances",
+            "description": "Create, view, monitor and delete GPU instances. An instance runs\nthe chosen OS template on a GPU pool instance type and is billed\nhourly. Creating and deleting run asynchronously; poll the\ninstance to follow its `status`.",
+            "x-displayName": "Instances",
+            "x-parent": "GPU"
+        },
+        {
             "name": "Ecommerce"
         },
         {
@@ -39219,7 +39612,8 @@
         {
             "name": "GPU",
             "tags": [
-                "GPU: Catalog"
+                "GPU: Catalog",
+                "GPU: Instances"
             ]
         },
         {
