@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "3.0.0",
+        "version": "3.0.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -24280,11 +24280,12 @@
                 ],
                 "properties": {
                     "password": {
-                        "description": "Panel password for the virtual machine",
+                        "description": "Panel password for the virtual machine.\n12 to 50 characters with an uppercase letter, a lowercase letter, a number and at least one of\n#%+:?@ (no other symbols). Known compromised passwords are rejected.",
                         "type": "string",
                         "format": "password",
-                        "minLength": 8,
-                        "example": "oMeNRustosIO"
+                        "maxLength": 50,
+                        "minLength": 12,
+                        "example": "oMeNRustosIO7#"
                     }
                 },
                 "type": "object"
@@ -24328,7 +24329,7 @@
                     "root_password": {
                         "description": "Temporary root password for recovery mode",
                         "type": "string",
-                        "example": "oMeNRustosIO"
+                        "example": "oMeNRustosIO7#"
                     }
                 },
                 "type": "object"
@@ -24344,18 +24345,20 @@
                         "example": 1130
                     },
                     "password": {
-                        "description": "Root password for the virtual machine. If not provided, random password will be generated.\nPassword will not be shown in the response.",
+                        "description": "Root password for the virtual machine. If not provided, random password will be generated.\nPassword will not be shown in the response.\n12 to 50 characters with an uppercase letter, a lowercase letter, a number and at least one of\n-().&@?'#;/,+ (no other symbols). Known compromised passwords are rejected.",
                         "type": "string",
                         "format": "password",
+                        "maxLength": 50,
                         "minLength": 12,
-                        "example": "oMeNRustosIO"
+                        "example": "oMeNRustosIO7#"
                     },
                     "panel_password": {
-                        "description": "Panel password for the panel-based OS template. If not provided, random password will be generated.\nIf OS does not support panel_password this field will be ignored.\nPassword will not be shown in the response.",
+                        "description": "Panel password for the panel-based OS template. If not provided, random password will be generated.\nIf OS does not support panel_password this field will be ignored.\nPassword will not be shown in the response.\n12 to 50 characters with an uppercase letter, a lowercase letter, a number and at least one of\n#%+:?@ (no other symbols). Known compromised passwords are rejected.",
                         "type": "string",
                         "format": "password",
+                        "maxLength": 50,
                         "minLength": 12,
-                        "example": "Mna58c17a4d"
+                        "example": "Mna58c17a4d#"
                     },
                     "post_install_script_id": {
                         "description": "Post-install script to execute after virtual machine was recreated",
@@ -24371,11 +24374,12 @@
                 ],
                 "properties": {
                     "password": {
-                        "description": "Root password for the virtual machine",
+                        "description": "Root password for the virtual machine.\n12 to 50 characters with an uppercase letter, a lowercase letter, a number and at least one of\n-().&@?'#;/,+ (no other symbols). Known compromised passwords are rejected.",
                         "type": "string",
                         "format": "password",
+                        "maxLength": 50,
                         "minLength": 12,
-                        "example": "oMeNRustosIO"
+                        "example": "oMeNRustosIO7#"
                     }
                 },
                 "type": "object"
@@ -24402,11 +24406,12 @@
                         "example": 6324
                     },
                     "password": {
-                        "description": "Password for the virtual machine. If not provided, random password will be generated.\nPassword will not be shown in the response.",
+                        "description": "Password for the virtual machine. If not provided, random password will be generated.\nPassword will not be shown in the response.\nUsed as both the root and the panel password, so it must pass both rules: 12 to 50 characters\nwith an uppercase letter, a lowercase letter, a number and at least one of # + ? @ (no other symbols).\nKnown compromised passwords are rejected.",
                         "type": "string",
                         "format": "password",
+                        "maxLength": 50,
                         "minLength": 12,
-                        "example": "oMeNRustosIO"
+                        "example": "oMeNRustosIO7#"
                     },
                     "hostname": {
                         "description": "Override default hostname of the virtual machine",
@@ -35846,7 +35851,9 @@
                             "error",
                             "delayed",
                             "sent",
-                            "created"
+                            "created",
+                            "started",
+                            "cancelled"
                         ],
                         "example": "success",
                         "x-enum-descriptions": {
@@ -35854,7 +35861,9 @@
                             "error": "Action failed",
                             "delayed": "Action is delayed",
                             "sent": "Action was sent",
-                            "created": "Action was created"
+                            "created": "Action was created",
+                            "started": "Action is in progress",
+                            "cancelled": "Action was cancelled"
                         }
                     },
                     "created_at": {
@@ -36626,7 +36635,7 @@
                     "expires_at": {
                         "type": "string",
                         "format": "date-time",
-                        "example": "2025-03-19T11:54:22Z"
+                        "example": "2025-02-28T11:54:22Z"
                     }
                 },
                 "type": "object"
