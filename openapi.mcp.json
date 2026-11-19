@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "3.3.0",
+        "version": "3.3.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -2062,6 +2062,48 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/dns/v1/propagation/{domain}/{type}": {
+            "get": {
+                "tags": [
+                    "DNS: Propagation"
+                ],
+                "summary": "Check DNS record propagation",
+                "description": "Check whether a DNS record of a domain or host name has propagated to public resolvers around the world.\n\n`authoritative` shows what the domain's authoritative nameservers serve now. It is the best signal\nof the current record value. Its TTL tells how long resolvers may keep serving the old value.\n\n`vantage_points` shows what public resolvers at different locations return. `is_propagated` is true\nwhen the location returns the same records as the authoritative nameservers. For GeoDNS domains,\nwhose nameservers answer differently by region, true means the location returned a record.\nA records served from the Hostinger CDN count as propagated. When every responding authoritative\nnameserver returns no records, `is_propagated` is true.\n\nWorks for any domain or host name, either a domain or a subdomain. Read-only: it changes nothing.\n\nA 404 response with error code 2025 can also mean the check could not be completed, for example\nwhen the DNS checker is busy or timed out. It is safe to retry after a short delay.",
+                "operationId": "DNS_checkDNSRecordPropagationV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/dns_host_name_path"
+                    },
+                    {
+                        "$ref": "#/components/parameters/dns_record_type_path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DNS.V1.Propagation.PropagationReportResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
                     },
                     "500": {
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
@@ -26976,6 +27018,114 @@
                 "type": "object",
                 "x-scalar-ignore": true
             },
+            "DNS.V1.Propagation.AuthoritativeAnswerResource": {
+                "description": "What the authoritative nameservers serve now: the best signal of the current record value",
+                "properties": {
+                    "zone": {
+                        "description": "DNS zone that holds the record",
+                        "type": "string",
+                        "example": "mydomain.tld"
+                    },
+                    "nameservers": {
+                        "description": "Answer of each authoritative nameserver of the zone",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DNS.V1.Propagation.NameserverAnswerResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Propagation.NameserverAnswerResource": {
+                "properties": {
+                    "nameserver": {
+                        "description": "Authoritative nameserver",
+                        "type": "string",
+                        "example": "ns1.dns-parking.com"
+                    },
+                    "records": {
+                        "description": "Records the nameserver serves; null or empty when it serves none",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "192.0.2.10"
+                        },
+                        "nullable": true
+                    },
+                    "ttl": {
+                        "description": "TTL in seconds: how long resolvers may keep serving a previously cached value",
+                        "type": "integer",
+                        "example": 14400
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Propagation.PropagationReportResource": {
+                "properties": {
+                    "authoritative": {
+                        "$ref": "#/components/schemas/DNS.V1.Propagation.AuthoritativeAnswerResource"
+                    },
+                    "vantage_points": {
+                        "description": "Answers of public resolvers at locations around the world",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DNS.V1.Propagation.VantagePointResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "DNS.V1.Propagation.VantagePointResource": {
+                "description": "Answer of a public resolver at one location",
+                "properties": {
+                    "country": {
+                        "description": "Country code of the resolver",
+                        "type": "string",
+                        "example": "US"
+                    },
+                    "provider": {
+                        "description": "Resolver provider",
+                        "type": "string",
+                        "example": "Google"
+                    },
+                    "ip": {
+                        "description": "IP address of the resolver",
+                        "type": "string",
+                        "example": "8.8.8.8"
+                    },
+                    "location": {
+                        "description": "Location of the resolver",
+                        "type": "string",
+                        "example": "Mountain View"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 37.386
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "format": "float",
+                        "example": -122.0838
+                    },
+                    "records": {
+                        "description": "Records the resolver returned; null when it returned none or could not be queried",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "192.0.2.10"
+                        },
+                        "nullable": true
+                    },
+                    "is_propagated": {
+                        "description": "Whether this location returns the same records as the authoritative nameservers.\nFor GeoDNS domains, whose nameservers answer differently by region, true means the location\nreturned a record. A records served from the Hostinger CDN count as propagated when the location\nalso returns CDN addresses. True when every responding authoritative nameserver returns no\nrecords. Null when the location could not be queried or no authoritative answer could be compared.",
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "DNS.V1.Snapshot.SnapshotCollection": {
                 "description": "Array of [`DNS.V1.Snapshot.SnapshotResource`](#model/dnsv1snapshotsnapshotresource)",
                 "type": "array",
@@ -37871,6 +38021,26 @@
                     "example": 25
                 }
             },
+            "dns_host_name_path": {
+                "name": "domain",
+                "in": "path",
+                "description": "Domain or host name to check, either a domain or a subdomain",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "www.mydomain.tld"
+                }
+            },
+            "dns_record_type_path": {
+                "name": "type",
+                "in": "path",
+                "description": "DNS record type to check. One of: A, AAAA, CNAME, MX, SRV, TXT, CAA",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "A"
+                }
+            },
             "snapshotId": {
                 "name": "snapshotId",
                 "in": "path",
@@ -39100,6 +39270,12 @@
             "name": "DNS"
         },
         {
+            "name": "DNS: Propagation",
+            "description": "Check whether DNS records have propagated. This category\nincludes endpoints that compare what a domain's authoritative\nnameservers serve with what public resolvers around the world return.",
+            "x-displayName": "Propagation",
+            "x-parent": "DNS"
+        },
+        {
             "name": "DNS: Snapshot",
             "description": "Manage DNS snapshots for your domains.\nThis category includes endpoints for viewing and restoring\nsnapshots of your domain DNS zone.\nSnapshot is a point-in-time copy of your DNS zone, allowing you\nto restore your domain's DNS settings to a previous state.",
             "x-displayName": "Snapshot",
@@ -39683,6 +39859,7 @@
         {
             "name": "DNS",
             "tags": [
+                "DNS: Propagation",
                 "DNS: Snapshot",
                 "DNS: Zone"
             ]
