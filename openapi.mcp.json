@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "3.4.1",
+        "version": "3.4.2",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -16104,54 +16104,6 @@
                 }
             }
         },
-        "/api/vps/v1/public-keys/attach/{virtualMachineId}": {
-            "post": {
-                "tags": [
-                    "VPS: Public Keys"
-                ],
-                "summary": "Attach public key",
-                "description": "Deprecated: use `POST /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys` instead.\n\nAttach existing public keys from your account to a specified virtual machine.\n\nMultiple keys can be attached to a single virtual machine.\n\nUse this endpoint to enable SSH key authentication for VPS instances.",
-                "operationId": "VPS_attachPublicKeyV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/virtualMachineId"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/VPS.V1.PublicKey.AttachRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/VPS.V1.Action.ActionResource"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                },
-                "deprecated": true,
-                "x-scalar-ignore": true
-            }
-        },
         "/api/vps/v1/public-keys/{publicKeyId}": {
             "delete": {
                 "tags": [
@@ -16531,52 +16483,6 @@
                         "$ref": "#/components/responses/Common.Response.ErrorResponse"
                     }
                 }
-            }
-        },
-        "/api/vps/v1/virtual-machines/{virtualMachineId}/public-keys": {
-            "get": {
-                "tags": [
-                    "VPS: Virtual machine"
-                ],
-                "summary": "Get attached public keys",
-                "description": "Deprecated: use `GET /api/vps/v1/virtual-machines/{virtualMachineId}/ssh-keys` instead.\n\nRetrieve public keys attached to a specified virtual machine.\n\nUse this endpoint to view SSH keys configured for specific VPS instances.",
-                "operationId": "VPS_getAttachedPublicKeysV1",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/virtualMachineId"
-                    },
-                    {
-                        "$ref": "#/components/parameters/page"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/VPS.V1.PublicKey.PublicKeyCollection"
-                                        },
-                                        "meta": {
-                                            "$ref": "#/components/schemas/Common.Schema.PaginationMetaSchema"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
-                    }
-                },
-                "deprecated": true,
-                "x-scalar-ignore": true
             }
         },
         "/api/vps/v1/virtual-machines/{virtualMachineId}/backups": {
@@ -24016,25 +23922,6 @@
                         "description": "Content of the script",
                         "type": "string",
                         "example": "#!/bin/bash\n\necho 'Hello, World!'"
-                    }
-                },
-                "type": "object"
-            },
-            "VPS.V1.PublicKey.AttachRequest": {
-                "required": [
-                    "ids"
-                ],
-                "properties": {
-                    "ids": {
-                        "description": "Public Key IDs to attach",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        },
-                        "example": [
-                            18232,
-                            10230230
-                        ]
                     }
                 },
                 "type": "object"
