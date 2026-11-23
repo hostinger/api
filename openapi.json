@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "3.6.0",
+        "version": "3.7.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -24621,6 +24621,16 @@
                         "description": "Post-install script to execute after virtual machine was recreated",
                         "type": "integer",
                         "example": 6324
+                    },
+                    "ssh_keys": {
+                        "description": "SSH public keys to add to the recreated virtual machine",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyDataExampleKeyData admin@localhost"
+                        ]
                     }
                 },
                 "type": "object"
@@ -24698,7 +24708,7 @@
                         "example": "1.2.3.4"
                     },
                     "public_key": {
-                        "description": "Use SSH key",
+                        "description": "Use SSH key. Deprecated: use ssh_keys instead",
                         "properties": {
                             "name": {
                                 "description": "Name of the SSH key",
@@ -24711,7 +24721,18 @@
                                 "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2X..."
                             }
                         },
-                        "type": "object"
+                        "type": "object",
+                        "deprecated": true
+                    },
+                    "ssh_keys": {
+                        "description": "SSH public keys to add to the virtual machine",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleKeyDataExampleKeyData admin@localhost"
+                        ]
                     }
                 },
                 "type": "object"
