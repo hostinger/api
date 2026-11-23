@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "3.4.2",
+        "version": "3.4.3",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5629,6 +5629,150 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/Common.Response.UnprocessableContentResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/webhooks/{endpoint_id}": {
+            "get": {
+                "tags": [
+                    "Ecommerce: Webhooks"
+                ],
+                "summary": "Get an ecommerce webhook",
+                "description": "Get a subscription owned by your store, without signing secrets.",
+                "operationId": "ecommerce_getAnEcommerceWebhookV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "ID of the store owned by your account.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    },
+                    {
+                        "name": "endpoint_id",
+                        "in": "path",
+                        "description": "Webhook endpoint ID belonging to this store.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "whep_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Webhook.WebhookResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Ecommerce: Webhooks"
+                ],
+                "summary": "Delete an ecommerce webhook",
+                "description": "Delete a subscription owned by your store, retaining delivery audit records.",
+                "operationId": "ecommerce_deleteAnEcommerceWebhookV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "ID of the store owned by your account.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    },
+                    {
+                        "name": "endpoint_id",
+                        "in": "path",
+                        "description": "Webhook endpoint ID belonging to this store.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "whep_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common.SuccessEmptyResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/ecommerce/v1/stores/{store_id}/webhooks": {
+            "get": {
+                "tags": [
+                    "Ecommerce: Webhooks"
+                ],
+                "summary": "List ecommerce webhooks",
+                "description": "List your store's subscriptions for external automation systems, without signing secrets.",
+                "operationId": "ecommerce_listEcommerceWebhooksV1",
+                "parameters": [
+                    {
+                        "name": "store_id",
+                        "in": "path",
+                        "description": "ID of the store owned by your account.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "store_01J8Z5F8W9K8M4A7B3C2D1E0FG"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ecommerce.V1.Webhook.WebhookListResource"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
@@ -29390,6 +29534,139 @@
                 },
                 "type": "object"
             },
+            "Ecommerce.V1.Webhook.WebhookEndpointResource": {
+                "required": [
+                    "id",
+                    "store_id",
+                    "url",
+                    "events",
+                    "sales_channel_ids",
+                    "enabled",
+                    "disabled_reason",
+                    "disabled_at",
+                    "failing_since",
+                    "last_attempted_at",
+                    "last_succeeded_at",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Webhook endpoint ID.",
+                        "type": "string"
+                    },
+                    "store_id": {
+                        "description": "Owning store ID.",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "HTTPS receiver URL.",
+                        "type": "string"
+                    },
+                    "events": {
+                        "description": "Subscribed event types.\n\n- `order.placed`: a customer places an order, before any online payment is completed. Orders paid online\n  may not have an order number yet.\n- `order.paid`: an order becomes fully paid: an online payment is captured, a free order is placed or the\n  merchant marks it as paid. Partial payments don't send it.\n- `order.cancelled`: an unpaid order is canceled, for example by the merchant, a connected sales channel or\n  after a delayed payment fails. Paid orders can't be canceled, so a cancellation never involves a refund.\n- `order.refunded`: each time a full or partial refund is recorded, through the payment provider or\n  manually.\n- `order.fulfilled`: a fulfillment leaves every item in the order fulfilled. Partial fulfillments send\n  `fulfillment.created` instead.\n- `fulfillment.created`: each time items in an order are fulfilled, including partial fulfillments and\n  digital items fulfilled automatically after payment.\n- `fulfillment.updated`: a fulfillment's tracking details change, or a connected shipping service or sales\n  channel reports progress such as delivery.\n- `fulfillment.cancelled`: a fulfillment is canceled before it ships, for example when it is canceled or\n  its shipping label is voided.\n- `product.created`: a product is added to the store, including drafts and products created in bulk.\n- `product.updated`: a product changes, including its details, variants, prices, stock, visibility or\n  collections. Stock changes from orders also send it, so expect frequent events.\n- `product.deleted`: a product is deleted, individually or in bulk.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "order.placed",
+                                "order.paid",
+                                "order.cancelled",
+                                "order.refunded",
+                                "order.fulfilled",
+                                "fulfillment.created",
+                                "fulfillment.updated",
+                                "fulfillment.cancelled",
+                                "product.created",
+                                "product.updated",
+                                "product.deleted"
+                            ]
+                        }
+                    },
+                    "sales_channel_ids": {
+                        "description": "Channel filter; null means store-wide.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "enabled": {
+                        "description": "Whether delivery is enabled.",
+                        "type": "boolean"
+                    },
+                    "disabled_reason": {
+                        "description": "Reason delivery was disabled. receiver_gone and receiver_failing are automatic health disables that can be resumed with enabled: true; store_* reasons are permanent revocations.",
+                        "type": "string",
+                        "enum": [
+                            "merchant_disabled",
+                            "store_transferred",
+                            "store_suspended",
+                            "store_deleted",
+                            "receiver_gone",
+                            "receiver_failing"
+                        ],
+                        "nullable": true
+                    },
+                    "disabled_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "failing_since": {
+                        "description": "Start of the current failure streak; null after a successful delivery attempt, a URL change or re-enabling.",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "last_attempted_at": {
+                        "description": "When the latest delivery attempt started, whether or not it reached the receiver; null before any attempt.",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "last_succeeded_at": {
+                        "description": "When the latest successful delivery completed; null before any success.",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Webhook.WebhookListResource": {
+                "required": [
+                    "endpoints"
+                ],
+                "properties": {
+                    "endpoints": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Ecommerce.V1.Webhook.WebhookEndpointResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Ecommerce.V1.Webhook.WebhookResource": {
+                "required": [
+                    "endpoint"
+                ],
+                "properties": {
+                    "endpoint": {
+                        "$ref": "#/components/schemas/Ecommerce.V1.Webhook.WebhookEndpointResource"
+                    }
+                },
+                "type": "object"
+            },
             "GPU.V1.ExposedService.ExposedServiceCollection": {
                 "description": "Array of [`GPU.V1.ExposedService.ExposedServiceResource`](#model/gpuv1exposedserviceexposedserviceresource)",
                 "type": "array",
@@ -39709,6 +39986,12 @@
             "x-parent": "Ecommerce"
         },
         {
+            "name": "Ecommerce: Webhooks",
+            "description": "Ecommerce: Webhooks",
+            "x-displayName": "Webhooks",
+            "x-parent": "Ecommerce"
+        },
+        {
             "name": "Ecommerce: Miscellaneous",
             "description": "Ecommerce: Miscellaneous",
             "x-displayName": "Miscellaneous",
@@ -39883,6 +40166,7 @@
                 "Ecommerce: Orders",
                 "Ecommerce: Shipping",
                 "Ecommerce: Payments",
+                "Ecommerce: Webhooks",
                 "Ecommerce: Miscellaneous"
             ]
         },
