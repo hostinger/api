@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "3.7.0",
+        "version": "3.8.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -5947,6 +5947,45 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Ecommerce.V1.Webhook.WebhookSecretResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Common.Response.UnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Common.Response.ConflictResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Common.Response.ErrorResponse"
+                    }
+                }
+            }
+        },
+        "/api/gpu/v1/instances/{instanceId}/credentials": {
+            "get": {
+                "tags": [
+                    "GPU: Instances"
+                ],
+                "summary": "Get instance credentials",
+                "description": "Retrieve SSH connection credentials (hostname, port, username and password) of a specified GPU instance.\n\nCredentials become available once the instance is provisioned; until then the endpoint responds with\n`409 Conflict`, so retry later.\n\nUse this endpoint to connect to a GPU instance over SSH.",
+                "operationId": "GPU_getInstanceCredentialsV1",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/instanceId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GPU.V1.Instance.CredentialsResource"
                                 }
                             }
                         }
@@ -30091,6 +30130,31 @@
                             "https"
                         ],
                         "example": "http"
+                    }
+                },
+                "type": "object"
+            },
+            "GPU.V1.Instance.CredentialsResource": {
+                "properties": {
+                    "hostname": {
+                        "description": "SSH host",
+                        "type": "string",
+                        "example": "instance1.hstgr.cloud"
+                    },
+                    "port": {
+                        "description": "SSH port",
+                        "type": "integer",
+                        "example": 32091
+                    },
+                    "username": {
+                        "description": "SSH username",
+                        "type": "string",
+                        "example": "ubuntu"
+                    },
+                    "password": {
+                        "description": "SSH password",
+                        "type": "string",
+                        "example": "MExrrK.LEmNS"
                     }
                 },
                 "type": "object"
