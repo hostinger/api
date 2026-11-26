@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "4.0.0",
+        "version": "4.0.1",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -27532,7 +27532,7 @@
                         "nullable": true
                     },
                     "is_privacy_protection_allowed": {
-                        "description": "Is privacy protection allowed for the domain",
+                        "description": "Whether the domain's TLD supports privacy protection",
                         "type": "boolean",
                         "example": true
                     },
@@ -27542,7 +27542,7 @@
                         "example": false
                     },
                     "is_lockable": {
-                        "description": "Is domain allowed to be locked",
+                        "description": "Whether the domain's TLD supports domain lock",
                         "type": "boolean",
                         "example": true
                     },
