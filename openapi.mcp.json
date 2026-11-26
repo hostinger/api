@@ -8,7 +8,7 @@
             "url": "https://developers.hostinger.com",
             "email": "devs@hostinger.com"
         },
-        "version": "4.0.2",
+        "version": "5.0.0",
         "x-scalar-sdk-installation": [
             {
                 "lang": "Shell",
@@ -27199,13 +27199,14 @@
                         "type": "string",
                         "enum": [
                             "active",
-                            "pending_setup",
-                            "expired",
                             "requested",
-                            "pending_verification",
-                            "deleted",
+                            "pending_delete",
+                            "expired",
                             "suspended",
-                            "failed"
+                            "failed",
+                            "restoring",
+                            "transferring",
+                            "unknown"
                         ],
                         "example": "active"
                     },
@@ -27648,7 +27649,14 @@
                     "status": {
                         "description": "Transfer status",
                         "type": "string",
-                        "example": "Completed"
+                        "enum": [
+                            "transferring",
+                            "cancelled",
+                            "completed",
+                            "error",
+                            "pending_verification"
+                        ],
+                        "example": "completed"
                     },
                     "initiated_at": {
                         "description": "When the transfer was initiated",
